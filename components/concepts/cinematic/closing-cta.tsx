@@ -3,13 +3,15 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
-import { certificates } from "@/content/certificates";
 import { contacts } from "@/content/company";
 import type { Dictionary } from "@/content/dictionaries";
+import { getCertificates } from "@/lib/content/source";
 import { localeHref, t, type Locale } from "@/lib/i18n";
 
 /** Certificates as a quiet rule of text, then a full-bleed closing frame. */
-export function ClosingCta({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function ClosingCta({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const certificates = await getCertificates();
+
   return (
     <>
       <section className="border-t border-sand-50/8 bg-[#0b0b0a] py-20">

@@ -13,7 +13,7 @@ import { Process } from "@/components/sections/process";
 import { QualityTeaser } from "@/components/sections/quality-teaser";
 import { StatsBand } from "@/components/sections/stats-band";
 import { getDictionary } from "@/content/dictionaries";
-import { products } from "@/content/products";
+import { getProducts } from "@/lib/content/source";
 import { isLocale, t, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 
@@ -38,6 +38,7 @@ export default async function HomePage({ params }: Props) {
 
   const locale = raw as Locale;
   const dict = getDictionary(locale);
+  const products = await getProducts();
 
   return (
     <>

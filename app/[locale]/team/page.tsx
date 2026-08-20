@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getDictionary } from "@/content/dictionaries";
-import { team } from "@/content/team";
+import { getTeam } from "@/lib/content/source";
 import type { TeamGroup, TeamMember } from "@/lib/content/types";
 import { isLocale, t, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
@@ -64,6 +64,7 @@ export default async function TeamPage({ params }: Props) {
 
   const locale = raw as Locale;
   const dict = getDictionary(locale);
+  const team = await getTeam();
 
   const groups: { key: TeamGroup; title: string }[] = [
     { key: "board", title: dict.team.board },

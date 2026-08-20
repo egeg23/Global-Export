@@ -6,10 +6,9 @@ import { ProductCard } from "@/components/cards/product-card";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/cn";
 import { plural } from "@/lib/format";
-import { categories } from "@/content/categories";
 import type { Dictionary } from "@/content/dictionaries";
 import type { CatalogItem } from "@/lib/content/catalog";
-import { t, type Locale } from "@/lib/i18n";
+import { type Locale } from "@/lib/i18n";
 
 /** history.replaceState fires no event of its own, so we raise one. */
 const LOCATION_EVENT = "catalog:locationchange";
@@ -45,10 +44,13 @@ function writeCategoryToUrl(slug: string) {
  */
 export function CatalogBrowser({
   items,
+  categories,
   locale,
   dict,
 }: {
   items: CatalogItem[];
+  /** Filter tabs, already translated on the server. */
+  categories: { slug: string; label: string }[];
   locale: Locale;
   dict: Dictionary;
 }) {
@@ -71,9 +73,7 @@ export function CatalogBrowser({
     });
   }, [items, category, query]);
 
-  const tabs = [{ slug: "", label: dict.catalog.allCategories }].concat(
-    categories.map((item) => ({ slug: item.slug, label: t(item.name, locale) })),
-  );
+  const tabs = [{ slug: "", label: dict.catalog.allCategories }, ...categories];
 
   const countLabel = plural(filtered.length, locale, {
     one: dict.catalog.resultsOne,

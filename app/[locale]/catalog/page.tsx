@@ -5,10 +5,9 @@ import { CatalogBrowser } from "@/components/catalog/catalog-browser";
 import { CtaForm } from "@/components/sections/cta-form";
 import { PageHero } from "@/components/sections/page-hero";
 import { Container } from "@/components/ui/container";
-import { categories } from "@/content/categories";
 import { getDictionary } from "@/content/dictionaries";
-import { products } from "@/content/products";
 import { toCatalogItems } from "@/lib/content/catalog";
+import { getCategories, getProducts } from "@/lib/content/source";
 import { isLocale, t, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 
@@ -34,6 +33,7 @@ export default async function CatalogPage({ params }: Props) {
 
   const locale = raw as Locale;
   const dict = getDictionary(locale);
+  const [products, categories] = await Promise.all([getProducts(), getCategories()]);
 
   return (
     <>
@@ -70,7 +70,15 @@ export default async function CatalogPage({ params }: Props) {
 
       <section className="bg-sand-50 py-16 lg:py-24">
         <Container>
-          <CatalogBrowser items={toCatalogItems(products, locale)} locale={locale} dict={dict} />
+          <CatalogBrowser
+            items={toCatalogItems(products, locale, categories)}
+            categories={categories.map((item) => ({
+              slug: item.slug,
+              label: t(item.name, locale),
+            }))}
+            locale={locale}
+            dict={dict}
+          />
         </Container>
       </section>
 

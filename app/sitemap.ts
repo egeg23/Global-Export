@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { news } from "@/content/news";
-import { products } from "@/content/products";
+import { getNews, getProducts } from "@/lib/content/source";
 import { localeTags, locales } from "@/lib/i18n";
 import { siteUrl } from "@/lib/seo";
 
@@ -16,8 +15,9 @@ type Entry = {
  * One entry per page per locale, each carrying the full hreflang alternate set
  * — including x-default — so Google can pair the language variants.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const buildDate = new Date();
+  const [products, news] = await Promise.all([getProducts(), getNews()]);
 
   const staticPages: Entry[] = [
     "",

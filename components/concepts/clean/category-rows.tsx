@@ -5,9 +5,8 @@ import { ArrowRight } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { plural } from "@/lib/format";
-import { categories } from "@/content/categories";
 import type { Dictionary } from "@/content/dictionaries";
-import { getProductsByCategory } from "@/content/products";
+import { getCategories, getProducts } from "@/lib/content/source";
 import { localeHref, t, type Locale } from "@/lib/i18n";
 
 /**
@@ -15,7 +14,9 @@ import { localeHref, t, type Locale } from "@/lib/i18n";
  * photograph and the actual variety list side by side, so a buyer sees what
  * is inside a category without opening it.
  */
-export function CategoryRows({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function CategoryRows({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const [categories, products] = await Promise.all([getCategories(), getProducts()]);
+
   return (
     <section className="bg-white py-24 lg:py-32">
       <Container>
@@ -40,7 +41,7 @@ export function CategoryRows({ locale, dict }: { locale: Locale; dict: Dictionar
 
         <ul className="mt-14 space-y-6">
           {categories.map((category, index) => {
-            const items = getProductsByCategory(category.slug);
+            const items = products.filter((product) => product.category === category.slug);
 
             return (
               <Reveal as="li" key={category.slug} delay={(index % 2) * 80}>
@@ -62,14 +63,16 @@ export function CategoryRows({ locale, dict }: { locale: Locale; dict: Dictionar
                   </div>
 
                   <div className="lg:col-span-4">
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem]">
-                      <Image
-                        src={category.image}
-                        alt=""
-                        fill
-                        sizes="(min-width: 1024px) 30vw, 100vw"
-                        className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
-                      />
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-sand-200">
+                      {category.image ? (
+                        <Image
+                          src={category.image}
+                          alt=""
+                          fill
+                          sizes="(min-width: 1024px) 30vw, 100vw"
+                          className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                        />
+                      ) : null}
                     </div>
                   </div>
 

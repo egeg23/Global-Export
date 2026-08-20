@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import type { Dictionary } from "@/content/dictionaries";
-import { featuredProducts, products } from "@/content/products";
+import { getProducts } from "@/lib/content/source";
 import { localeHref, t, type Locale } from "@/lib/i18n";
 
 /**
@@ -11,8 +11,10 @@ import { localeHref, t, type Locale } from "@/lib/i18n";
  * sideways against the vertical page, which is what makes the section feel
  * "designed" without any script behind it. Scroll snapping is pure CSS.
  */
-export function ProductRail({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  const items = (featuredProducts.length > 0 ? featuredProducts : products).slice(0, 8);
+export async function ProductRail({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const products = await getProducts();
+  const featured = products.filter((product) => product.featured);
+  const items = (featured.length > 0 ? featured : products).slice(0, 8);
   if (items.length === 0) return null;
 
   return (
@@ -40,14 +42,16 @@ export function ProductRail({ locale, dict }: { locale: Locale; dict: Dictionary
           {items.map((product) => (
             <li key={product.slug} className="w-[78vw] shrink-0 snap-start sm:w-[22rem]">
               <Link href={localeHref(locale, `catalog/${product.slug}`)} className="group block">
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt=""
-                    fill
-                    sizes="(min-width: 640px) 22rem, 78vw"
-                    className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
-                  />
+                <div className="relative aspect-[3/4] overflow-hidden bg-forest-950">
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 640px) 22rem, 78vw"
+                      className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+                    />
+                  ) : null}
                   <div
                     aria-hidden="true"
                     className="absolute inset-0 bg-gradient-to-t from-[#0b0b0a]/85 via-transparent to-transparent"

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ArrowRight } from "@/components/ui/button";
-import { getCategory } from "@/content/categories";
 import type { CatalogItem } from "@/lib/content/catalog";
 import { localeHref, t, type Locale } from "@/lib/i18n";
 
@@ -19,7 +18,9 @@ export function ProductCard({
   showCategory?: boolean;
   comingSoonLabel?: string;
 }) {
-  const category = showCategory ? getCategory(item.category) : undefined;
+  // Rendered inside a client component, so the label is resolved server-side
+  // and passed in rather than looked up from the catalogue here.
+  const categoryLabel = showCategory ? item.categoryLabel : undefined;
 
   return (
     <Link
@@ -27,16 +28,18 @@ export function ProductCard({
       className="group hover-lift flex h-full flex-col overflow-hidden rounded-card border border-forest-900/8 bg-white/80 shadow-[var(--shadow-soft)]"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-sand-200">
-        <Image
-          src={item.image}
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
-          className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
-        />
-        {category ? (
+        {item.image ? (
+          <Image
+            src={item.image}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+            className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
+          />
+        ) : null}
+        {categoryLabel ? (
           <span className="absolute left-4 top-4 rounded-full bg-forest-950/75 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-sand-100 backdrop-blur-sm">
-            {t(category.shortName, locale)}
+            {categoryLabel}
           </span>
         ) : null}
 

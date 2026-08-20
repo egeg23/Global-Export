@@ -1,15 +1,16 @@
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
-import { categories } from "@/content/categories";
 import { contacts } from "@/content/company";
 import type { Dictionary } from "@/content/dictionaries";
+import { getCategories } from "@/lib/content/source";
 import { localeHref, t, type Locale } from "@/lib/i18n";
 
 import { CurrentYear } from "./current-year";
 import { Logo } from "./logo";
 
-export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const categories = await getCategories();
   const buildYear = new Date().getFullYear();
 
   const navLinks = [

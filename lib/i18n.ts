@@ -39,9 +39,9 @@ export function isLocale(value: string): value is Locale {
 }
 
 /**
- * Localised string. Content is authored with `en` required so a page never
- * renders an empty node; `ru`/`uz` fall back to English when a translation
- * has not been supplied yet.
+ * Localised string. `en` is required in the modules under `content/`; entries
+ * written through the admin panel may leave any language blank, which is what
+ * the fallback in `t()` is for.
  */
 export type Localized = {
   en: string;
@@ -49,10 +49,28 @@ export type Localized = {
   uz?: string;
 };
 
+/**
+ * Reads a localised value, falling back to the first language that has one.
+ *
+ * The rule matters for the panel: the owner adds a certificate in Russian and
+ * saves. Without a fallback the English and Uzbek pages would show an empty
+ * heading. With it they show the Russian text — visibly untranslated, which is
+ * a prompt to translate it, rather than a hole in the page. English is tried
+ * first because it is the language the whole site is authored in.
+ */
 export function t(value: Localized | string | undefined, locale: Locale): string {
   if (value === undefined) return "";
   if (typeof value === "string") return value;
-  return value[locale] ?? value.en ?? "";
+
+  const own = value[locale];
+  if (own && own.trim()) return own;
+
+  for (const code of [defaultLocale, ...locales]) {
+    const candidate = value[code];
+    if (candidate && candidate.trim()) return candidate;
+  }
+
+  return "";
 }
 
 /** Builds an href that keeps the current locale prefix. */

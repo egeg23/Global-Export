@@ -5,11 +5,13 @@ import { ArrowRight } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { Eyebrow } from "@/components/ui/section-heading";
-import { certificates } from "@/content/certificates";
 import type { Dictionary } from "@/content/dictionaries";
+import { getCertificates } from "@/lib/content/source";
 import { localeHref, t, type Locale } from "@/lib/i18n";
 
-export function QualityTeaser({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function QualityTeaser({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const certificates = await getCertificates();
+
   return (
     <section className="bg-sand-50 py-24 lg:py-32">
       <Container>

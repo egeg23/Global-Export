@@ -30,7 +30,8 @@ export type Category = {
   name: Localized;
   shortName: Localized;
   description: Localized;
-  image: string;
+  /** Optional: an entry created in the panel may not have a photograph yet. */
+  image?: string;
 };
 
 export type Spec = {
@@ -45,7 +46,7 @@ export type Product = {
   latinName?: string;
   description: Localized;
   specs: Spec[];
-  image: string;
+  image?: string;
   /** Marks the products surfaced on the home page. */
   featured?: boolean;
   /** Origin regions inside Uzbekistan — used on the product page. */
@@ -84,7 +85,7 @@ export type NewsItem = {
   excerpt: Localized;
   /** Body is authored as markdown-ish plain paragraphs separated by blank lines. */
   body: Localized;
-  image: string;
+  image?: string;
   tag?: Localized;
 };
 

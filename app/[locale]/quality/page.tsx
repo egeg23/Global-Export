@@ -7,7 +7,8 @@ import { Container } from "@/components/ui/container";
 import { Icon } from "@/components/ui/icon";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { certificates, qualityStages, recognitions } from "@/content/certificates";
+import { qualityStages, recognitions } from "@/content/certificates";
+import { getCertificates } from "@/lib/content/source";
 import { getDictionary } from "@/content/dictionaries";
 import { isLocale, t, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
@@ -34,6 +35,7 @@ export default async function QualityPage({ params }: Props) {
 
   const locale = raw as Locale;
   const dict = getDictionary(locale);
+  const certificates = await getCertificates();
 
   return (
     <>

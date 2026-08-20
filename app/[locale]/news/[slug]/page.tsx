@@ -9,14 +9,15 @@ import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getDictionary } from "@/content/dictionaries";
-import { getNewsItem, news } from "@/content/news";
+import { getNews, getNewsItem } from "@/lib/content/source";
 import { formatDate, paragraphs } from "@/lib/format";
 import { isLocale, locales, localeHref, t, type Locale } from "@/lib/i18n";
 import { absoluteUrl, breadcrumbJsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const news = await getNews();
   return locales.flatMap((locale) => news.map((item) => ({ locale, slug: item.slug })));
 }
 
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
 
-  const item = getNewsItem(slug);
+  const item = await getNewsItem(slug);
   if (!item) return {};
 
   return pageMetadata({
@@ -43,10 +44,11 @@ export default async function ArticlePage({ params }: Props) {
   if (!isLocale(raw)) notFound();
 
   const locale = raw as Locale;
-  const item = getNewsItem(slug);
+  const item = await getNewsItem(slug);
   if (!item) notFound();
 
   const dict = getDictionary(locale);
+  const news = await getNews();
   const related = news.filter((entry) => entry.slug !== item.slug).slice(0, 3);
   const body = paragraphs(t(item.body, locale));
 

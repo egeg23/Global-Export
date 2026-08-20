@@ -1,15 +1,18 @@
 import { Container } from "@/components/ui/container";
 import { Icon } from "@/components/ui/icon";
 import { Reveal } from "@/components/ui/reveal";
-import { certificates, qualityStages } from "@/content/certificates";
+import { qualityStages } from "@/content/certificates";
 import type { Dictionary } from "@/content/dictionaries";
+import { getCertificates } from "@/lib/content/source";
 import { t, type Locale } from "@/lib/i18n";
 
 /**
  * Control stages as full-width rows, then the certificates as a snap-scrolling
  * rail — both taken from the pattern the client's reference uses.
  */
-export function QualityRows({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export async function QualityRows({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const certificates = await getCertificates();
+
   return (
     <section className="bg-sand-100 py-24 lg:py-32">
       <Container>

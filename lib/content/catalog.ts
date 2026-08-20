@@ -1,4 +1,4 @@
-import type { Product } from "@/lib/content/types";
+import type { Category, Product } from "@/lib/content/types";
 import { t, type Locale } from "@/lib/i18n";
 
 /**
@@ -12,17 +12,23 @@ import { t, type Locale } from "@/lib/i18n";
 export type CatalogItem = {
   slug: string;
   category: string;
+  /** Short category name, resolved on the server so the client needs no lookup. */
+  categoryLabel?: string;
   name: string;
   latinName?: string;
   /** Pre-lowercased haystack for the search box. */
   search: string;
-  image: string;
+  image?: string;
   specLabel?: string;
   specValue?: string;
   availability?: "available" | "soon";
 };
 
-export function toCatalogItem(product: Product, locale: Locale): CatalogItem {
+export function toCatalogItem(
+  product: Product,
+  locale: Locale,
+  categoryLabel?: string,
+): CatalogItem {
   const name = t(product.name, locale);
   const description = t(product.description, locale);
   const spec = product.specs?.[0];
@@ -30,6 +36,7 @@ export function toCatalogItem(product: Product, locale: Locale): CatalogItem {
   return {
     slug: product.slug,
     category: product.category,
+    categoryLabel,
     name,
     latinName: product.latinName,
     search: `${name} ${product.latinName ?? ""} ${description}`.toLowerCase(),
@@ -40,6 +47,15 @@ export function toCatalogItem(product: Product, locale: Locale): CatalogItem {
   };
 }
 
-export function toCatalogItems(products: Product[], locale: Locale): CatalogItem[] {
-  return products.map((product) => toCatalogItem(product, locale));
+export function toCatalogItems(
+  products: Product[],
+  locale: Locale,
+  categories: Category[] = [],
+): CatalogItem[] {
+  const labels = new Map(
+    categories.map((category) => [category.slug, t(category.shortName, locale)]),
+  );
+  return products.map((product) =>
+    toCatalogItem(product, locale, labels.get(product.category)),
+  );
 }

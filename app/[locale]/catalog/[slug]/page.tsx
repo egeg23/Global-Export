@@ -8,16 +8,21 @@ import { CtaForm } from "@/components/sections/cta-form";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { getCategory } from "@/content/categories";
 import { getDictionary } from "@/content/dictionaries";
-import { getProduct, getProductsByCategory, products } from "@/content/products";
+import {
+  getCategory,
+  getProduct,
+  getProducts,
+  getProductsByCategory,
+} from "@/lib/content/source";
 import { isLocale, locales, localeHref, t, type Locale } from "@/lib/i18n";
 import { toCatalogItem } from "@/lib/content/catalog";
 import { absoluteUrl, breadcrumbJsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const products = await getProducts();
   return locales.flatMap((locale) =>
     products.map((product) => ({ locale, slug: product.slug })),
   );
@@ -27,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
 
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return {};
 
   return pageMetadata({
@@ -44,12 +49,16 @@ export default async function ProductPage({ params }: Props) {
   if (!isLocale(raw)) notFound();
 
   const locale = raw as Locale;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) notFound();
 
   const dict = getDictionary(locale);
-  const category = getCategory(product.category);
-  const related = getProductsByCategory(product.category)
+  const [category, sameCategory, products] = await Promise.all([
+    getCategory(product.category),
+    getProductsByCategory(product.category),
+    getProducts(),
+  ]);
+  const related = sameCategory
     .filter((item) => item.slug !== product.slug)
     .slice(0, 3);
 
@@ -60,7 +69,7 @@ export default async function ProductPage({ params }: Props) {
     "@type": "Product",
     name: t(product.name, locale),
     description: t(product.description, locale),
-    image: absoluteUrl(product.image),
+    image: product.image ? absoluteUrl(product.image) : undefined,
     sku: product.slug,
     url: productUrl,
     category: category ? t(category.name, locale) : undefined,
@@ -131,16 +140,18 @@ export default async function ProductPage({ params }: Props) {
         <Container>
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-6">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-card">
-                <Image
-                  src={product.image}
-                  alt={t(product.name, locale)}
-                  fill
-                  priority
-                  fetchPriority="high"
-                  sizes="(min-width: 1024px) 48vw, 100vw"
-                  className="object-cover"
-                />
+              <div className="relative aspect-[4/3] overflow-hidden rounded-card bg-forest-900">
+                {product.image ? (
+                  <Image
+                    src={product.image}
+                    alt={t(product.name, locale)}
+                    fill
+                    priority
+                    fetchPriority="high"
+                    sizes="(min-width: 1024px) 48vw, 100vw"
+                    className="object-cover"
+                  />
+                ) : null}
               </div>
             </div>
 
@@ -270,7 +281,7 @@ export default async function ProductPage({ params }: Props) {
               {related.map((item, index) => (
                 <Reveal as="li" key={item.slug} delay={index * 80}>
                   <ProductCard
-                    item={toCatalogItem(item, locale)}
+                    item={toCatalogItem(item, locale, category ? t(category.shortName, locale) : undefined)}
                     locale={locale}
                     comingSoonLabel={dict.product.comingSoon}
                   />

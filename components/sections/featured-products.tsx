@@ -6,12 +6,15 @@ import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import type { Dictionary } from "@/content/dictionaries";
-import { featuredProducts, products } from "@/content/products";
-import { toCatalogItem } from "@/lib/content/catalog";
+import { toCatalogItems } from "@/lib/content/catalog";
+import { getCategories, getProducts } from "@/lib/content/source";
 import { localeHref, type Locale } from "@/lib/i18n";
 
-export function FeaturedProducts({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  const items = (featuredProducts.length > 0 ? featuredProducts : products).slice(0, 6);
+export async function FeaturedProducts({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const [products, categories] = await Promise.all([getProducts(), getCategories()]);
+
+  const featured = products.filter((product) => product.featured);
+  const items = toCatalogItems(featured.length > 0 ? featured : products, locale, categories).slice(0, 6);
   if (items.length === 0) return null;
 
   return (
@@ -33,10 +36,10 @@ export function FeaturedProducts({ locale, dict }: { locale: Locale; dict: Dicti
         />
 
         <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((product, index) => (
-            <Reveal as="li" key={product.slug} delay={(index % 3) * 80}>
+          {items.map((item, index) => (
+            <Reveal as="li" key={item.slug} delay={(index % 3) * 80}>
               <ProductCard
-                item={toCatalogItem(product, locale)}
+                item={item}
                 locale={locale}
                 showCategory
                 comingSoonLabel={dict.product.comingSoon}

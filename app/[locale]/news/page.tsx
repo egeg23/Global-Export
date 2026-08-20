@@ -7,7 +7,7 @@ import { PageHero } from "@/components/sections/page-hero";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { getDictionary } from "@/content/dictionaries";
-import { news } from "@/content/news";
+import { getNews } from "@/lib/content/source";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 
@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = getDictionary(locale);
+  const news = await getNews();
 
   return pageMetadata({
     locale,
@@ -33,6 +34,7 @@ export default async function NewsPage({ params }: Props) {
 
   const locale = raw as Locale;
   const dict = getDictionary(locale);
+  const news = await getNews();
 
   return (
     <>

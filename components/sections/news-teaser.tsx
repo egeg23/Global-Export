@@ -6,11 +6,11 @@ import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import type { Dictionary } from "@/content/dictionaries";
-import { getLatestNews } from "@/content/news";
+import { getLatestNews } from "@/lib/content/source";
 import { localeHref, type Locale } from "@/lib/i18n";
 
-export function NewsTeaser({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  const items = getLatestNews(3);
+export async function NewsTeaser({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const items = await getLatestNews(3);
   if (items.length === 0) return null;
 
   return (
