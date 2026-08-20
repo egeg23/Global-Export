@@ -36,9 +36,9 @@ export const categories: Category[] = [
     name: { en: "Organic Products", ru: "Органические продукты", uz: "Organik mahsulotlar" },
     shortName: { en: "Organic", ru: "Органика", uz: "Organik" },
     description: {
-      en: "Certified organic dried fruits and pulses for buyers who need documented organic status all the way back to the field.",
-      ru: "Сертифицированные органические сухофрукты и бобовые для покупателей, которым нужен документально подтверждённый органический статус вплоть до поля.",
-      uz: "Daladan boshlab hujjatlashtirilgan organik maqomni talab qiladigan xaridorlar uchun sertifikatlangan organik quritilgan mevalar va dukkaklilar.",
+      en: "An organic line of dried fruits, pulses and seeds, shown annually at BIOFACH. The range is announced and not yet shipping — certification documents are supplied on request.",
+      ru: "Органическая линейка сухофруктов, бобовых и семян, ежегодно представляемая на BIOFACH. Линейка анонсирована и пока не отгружается — сертификационные документы предоставляются по запросу.",
+      uz: "Har yili BIOFACH’da taqdim etiladigan quritilgan mevalar, dukkaklilar va urugʻlarning organik liniyasi. Liniya eʼlon qilingan va hozircha joʻnatilmaydi — sertifikat hujjatlari soʻrov boʻyicha beriladi.",
     },
     image: "/images/categories/organic.jpg",
   },
