@@ -9,7 +9,7 @@ import type { Localized } from "@/lib/i18n";
 export type Region = {
   key: string;
   name: Localized;
-  countries: string[];
+  countries: Localized[];
 };
 
 export const regions: Region[] = [
@@ -17,20 +17,27 @@ export const regions: Region[] = [
     key: "europe",
     name: { en: "Europe", ru: "Европа", uz: "Yevropa" },
     countries: [
-      "Netherlands",
-      "Germany",
-      "France",
-      "United Kingdom",
-      "Italy",
-      "Spain",
-      "Poland",
-      "Türkiye",
+      { en: "Netherlands", ru: "Нидерланды", uz: "Niderlandiya" },
+      { en: "Germany", ru: "Германия", uz: "Germaniya" },
+      { en: "France", ru: "Франция", uz: "Fransiya" },
+      { en: "United Kingdom", ru: "Великобритания", uz: "Buyuk Britaniya" },
+      { en: "Italy", ru: "Италия", uz: "Italiya" },
+      { en: "Spain", ru: "Испания", uz: "Ispaniya" },
+      { en: "Poland", ru: "Польша", uz: "Polsha" },
+      { en: "Türkiye", ru: "Турция", uz: "Turkiya" },
     ],
   },
   {
     key: "asia",
     name: { en: "Asia & Pacific", ru: "Азия и Океания", uz: "Osiyo va Tinch okeani" },
-    countries: ["China", "Japan", "South Korea", "India", "Vietnam", "Malaysia"],
+    countries: [
+      { en: "China", ru: "Китай", uz: "Xitoy" },
+      { en: "Japan", ru: "Япония", uz: "Yaponiya" },
+      { en: "South Korea", ru: "Южная Корея", uz: "Janubiy Koreya" },
+      { en: "India", ru: "Индия", uz: "Hindiston" },
+      { en: "Vietnam", ru: "Вьетнам", uz: "Vyetnam" },
+      { en: "Malaysia", ru: "Малайзия", uz: "Malayziya" },
+    ],
   },
   {
     key: "mena",
@@ -39,17 +46,30 @@ export const regions: Region[] = [
       ru: "Ближний Восток и Северная Африка",
       uz: "Yaqin Sharq va Shimoliy Afrika",
     },
-    countries: ["United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Egypt"],
+    countries: [
+      { en: "United Arab Emirates", ru: "ОАЭ", uz: "BAA" },
+      { en: "Saudi Arabia", ru: "Саудовская Аравия", uz: "Saudiya Arabistoni" },
+      { en: "Qatar", ru: "Катар", uz: "Qatar" },
+      { en: "Kuwait", ru: "Кувейт", uz: "Quvayt" },
+      { en: "Egypt", ru: "Египет", uz: "Misr" },
+    ],
   },
   {
     key: "cis",
     name: { en: "CIS & Caucasus", ru: "СНГ и Кавказ", uz: "MDH va Kavkaz" },
-    countries: ["Russia", "Kazakhstan", "Belarus", "Azerbaijan", "Armenia", "Georgia"],
+    countries: [
+      { en: "Russia", ru: "Россия", uz: "Rossiya" },
+      { en: "Kazakhstan", ru: "Казахстан", uz: "Qozogʻiston" },
+      { en: "Belarus", ru: "Беларусь", uz: "Belarus" },
+      { en: "Azerbaijan", ru: "Азербайджан", uz: "Ozarbayjon" },
+      { en: "Armenia", ru: "Армения", uz: "Armaniston" },
+      { en: "Georgia", ru: "Грузия", uz: "Gruziya" },
+    ],
   },
 ];
 
 export const geographyNote: Localized = {
   en: "More than 95% of production is exported. Selected destinations shown — the full list of 55 countries is available on request.",
   ru: "Более 95% продукции идёт на экспорт. Показаны отдельные направления — полный список из 55 стран предоставляется по запросу.",
-  uz: "Mahsulotning 95% dan ortig‘i eksportga chiqadi. Ayrim yo‘nalishlar ko‘rsatilgan — 55 mamlakatning to‘liq ro‘yxati so‘rov bo‘yicha taqdim etiladi.",
+  uz: "Mahsulotning 95% dan ortigʻi eksportga chiqadi. Ayrim yoʻnalishlar koʻrsatilgan — 55 mamlakatning toʻliq roʻyxati soʻrov boʻyicha taqdim etiladi.",
 };

@@ -26,17 +26,17 @@ export const company: Company = {
   tagline: {
     en: "Agricultural products from Uzbekistan, delivered to 55 countries",
     ru: "Сельхозпродукция из Узбекистана — поставки в 55 стран",
-    uz: "O‘zbekistondan qishloq xo‘jaligi mahsulotlari — 55 mamlakatga yetkazamiz",
+    uz: "Oʻzbekistondan qishloq xoʻjaligi mahsulotlari — 55 mamlakatga yetkazamiz",
   },
   description: {
     en: "Global Export Company is an Uzbekistan-based producer, processor, and exporter of agricultural products, supplying pulses, dried fruits, nuts, frozen fruits, and organic products to customers worldwide.",
     ru: "Global Export Company — узбекский производитель, переработчик и экспортёр сельскохозяйственной продукции: бобовые, сухофрукты, орехи, замороженные фрукты и органическая продукция для покупателей по всему миру.",
-    uz: "Global Export Company — O‘zbekistonda joylashgan qishloq xo‘jaligi mahsulotlari ishlab chiqaruvchisi, qayta ishlovchisi va eksportyori: dukkaklilar, quritilgan mevalar, yong‘oqlar, muzlatilgan mevalar va organik mahsulotlarni dunyo bo‘ylab yetkazib beradi.",
+    uz: "Global Export Company — Oʻzbekistonda joylashgan qishloq xoʻjaligi mahsulotlari ishlab chiqaruvchisi, qayta ishlovchisi va eksportyori: dukkaklilar, quritilgan mevalar, yongʻoqlar, muzlatilgan mevalar va organik mahsulotlarni dunyo boʻylab yetkazib beradi.",
   },
   mission: {
     en: "Our integrated supply chain covers raw material sourcing, processing, quality control, storage, and export logistics — so every shipment leaves Uzbekistan with the same guaranteed specification.",
     ru: "Наша интегрированная цепочка поставок охватывает закупку сырья, переработку, контроль качества, хранение и экспортную логистику — поэтому каждая отгрузка покидает Узбекистан с гарантированной спецификацией.",
-    uz: "Bizning integratsiyalashgan ta’minot zanjirimiz xomashyo xaridi, qayta ishlash, sifat nazorati, saqlash va eksport logistikasini qamrab oladi — shu sababli har bir jo‘natma O‘zbekistondan kafolatlangan spetsifikatsiya bilan chiqadi.",
+    uz: "Bizning integratsiyalashgan taʼminot zanjirimiz xomashyo xaridi, qayta ishlash, sifat nazorati, saqlash va eksport logistikasini qamrab oladi — shu sababli har bir joʻnatma Oʻzbekistondan kafolatlangan spetsifikatsiya bilan chiqadi.",
   },
 };
 
@@ -44,7 +44,7 @@ export const company: Company = {
 export const stats: Stat[] = [
   {
     value: "50 000",
-    suffix: "T",
+    suffix: { en: "T", ru: "т", uz: "t" },
     label: {
       en: "Annual production capacity",
       ru: "Производственная мощность в год",
@@ -65,17 +65,17 @@ export const stats: Stat[] = [
   },
   {
     value: "10 000",
-    suffix: "m²",
+    suffix: { en: "m²", ru: "м²", uz: "m²" },
     label: { en: "Warehouse area", ru: "Площадь складов", uz: "Ombor maydoni" },
   },
   {
     value: "15 000",
-    suffix: "T",
+    suffix: { en: "T", ru: "т", uz: "t" },
     label: { en: "Warehouse capacity", ru: "Ёмкость хранения", uz: "Saqlash hajmi" },
   },
   {
     value: "1 000",
-    suffix: "T",
+    suffix: { en: "T", ru: "т", uz: "t" },
     label: {
       en: "Cooling storage capacity",
       ru: "Ёмкость холодильного хранения",
@@ -84,7 +84,7 @@ export const stats: Stat[] = [
   },
   {
     value: "95",
-    suffix: "%",
+    suffix: { en: "%", ru: "%", uz: "%" },
     label: {
       en: "Of products are exported",
       ru: "Продукции идёт на экспорт",
@@ -94,18 +94,18 @@ export const stats: Stat[] = [
 ];
 
 /** Processing capacity per product line, as published by the company. */
-export const capacityLines: { label: Localized; value: string }[] = [
+export const capacityLines: { label: Localized; value: Localized }[] = [
   {
     label: { en: "Pulses", ru: "Бобовые", uz: "Dukkaklilar" },
-    value: "25 000 T",
+    value: { en: "25 000 T", ru: "25 000 т", uz: "25 000 t" },
   },
   {
     label: { en: "Dried fruits", ru: "Сухофрукты", uz: "Quritilgan mevalar" },
-    value: "15 000 T",
+    value: { en: "15 000 T", ru: "15 000 т", uz: "15 000 t" },
   },
   {
-    label: { en: "Nuts", ru: "Орехи", uz: "Yong‘oqlar" },
-    value: "10 000 T",
+    label: { en: "Nuts", ru: "Орехи", uz: "Yongʻoqlar" },
+    value: { en: "10 000 T", ru: "10 000 т", uz: "10 000 t" },
   },
 ];
 
@@ -115,12 +115,12 @@ export const advantages: Advantage[] = [
     title: {
       en: "Integrated supply chain",
       ru: "Интегрированная цепочка поставок",
-      uz: "Integratsiyalashgan ta’minot zanjiri",
+      uz: "Integratsiyalashgan taʼminot zanjiri",
     },
     description: {
       en: "Sourcing, processing, quality control, storage and export logistics sit under one roof — no intermediaries between the field and your container.",
       ru: "Закупка сырья, переработка, контроль качества, хранение и экспортная логистика — под одной крышей. Между полем и вашим контейнером нет посредников.",
-      uz: "Xomashyo xaridi, qayta ishlash, sifat nazorati, saqlash va eksport logistikasi — bir tom ostida. Dala bilan konteyneringiz o‘rtasida vositachi yo‘q.",
+      uz: "Xomashyo xaridi, qayta ishlash, sifat nazorati, saqlash va eksport logistikasi — bir tom ostida. Dala bilan konteyneringiz oʻrtasida vositachi yoʻq.",
     },
   },
   {
@@ -128,7 +128,7 @@ export const advantages: Advantage[] = [
     title: {
       en: "In-house laboratory",
       ru: "Собственная лаборатория",
-      uz: "O‘z laboratoriyamiz",
+      uz: "Oʻz laboratoriyamiz",
     },
     description: {
       en: "Every lot is tested before it is packed: moisture, foreign matter, calibration and food-safety parameters are checked on site.",
@@ -146,7 +146,7 @@ export const advantages: Advantage[] = [
     description: {
       en: "FSSC 22000, Sedex SMETA, Halal and organic certification keep our lots admissible in the EU, the Gulf and Asia.",
       ru: "FSSC 22000, Sedex SMETA, Halal и органическая сертификация обеспечивают допуск партий на рынки ЕС, стран Залива и Азии.",
-      uz: "FSSC 22000, Sedex SMETA, Halal va organik sertifikatlash partiyalarimizning Yevropa Ittifoqi, Fors ko‘rfazi va Osiyo bozorlariga kirishini ta’minlaydi.",
+      uz: "FSSC 22000, Sedex SMETA, Halal va organik sertifikatlash partiyalarimizning Yevropa Ittifoqi, Fors koʻrfazi va Osiyo bozorlariga kirishini taʼminlaydi.",
     },
   },
   {
@@ -159,7 +159,7 @@ export const advantages: Advantage[] = [
     description: {
       en: "More than 95% of what we produce is shipped abroad — to 55 countries across Europe, the Middle East, Asia and beyond.",
       ru: "Более 95% произведённого уходит на экспорт — в 55 стран Европы, Ближнего Востока, Азии и других регионов.",
-      uz: "Ishlab chiqargan mahsulotimizning 95% dan ortig‘i eksportga ketadi — Yevropa, Yaqin Sharq, Osiyo va boshqa mintaqalardagi 55 mamlakatga.",
+      uz: "Ishlab chiqargan mahsulotimizning 95% dan ortigʻi eksportga ketadi — Yevropa, Yaqin Sharq, Osiyo va boshqa mintaqalardagi 55 mamlakatga.",
     },
   },
   {
@@ -167,12 +167,12 @@ export const advantages: Advantage[] = [
     title: {
       en: "Complete export documentation",
       ru: "Полный пакет экспортных документов",
-      uz: "To‘liq eksport hujjatlari",
+      uz: "Toʻliq eksport hujjatlari",
     },
     description: {
       en: "Phytosanitary certificates, certificates of origin, lab reports and customs paperwork are prepared in-house for every shipment.",
       ru: "Фитосанитарные сертификаты, сертификаты происхождения, протоколы лаборатории и таможенные документы готовятся своими силами по каждой отгрузке.",
-      uz: "Fitosanitar sertifikatlar, kelib chiqish sertifikatlari, laboratoriya bayonnomalari va bojxona hujjatlari har bir jo‘natma uchun o‘zimizda tayyorlanadi.",
+      uz: "Fitosanitar sertifikatlar, kelib chiqish sertifikatlari, laboratoriya bayonnomalari va bojxona hujjatlari har bir joʻnatma uchun oʻzimizda tayyorlanadi.",
     },
   },
   {
@@ -180,12 +180,12 @@ export const advantages: Advantage[] = [
     title: {
       en: "Year-round availability",
       ru: "Наличие круглый год",
-      uz: "Yil bo‘yi mavjudlik",
+      uz: "Yil boʻyi mavjudlik",
     },
     description: {
       en: "10 000 m² of warehousing, including 1 000 tonnes of cold storage, lets us hold season stock and ship against contracts all year.",
       ru: "10 000 м² складов, включая 1 000 тонн холодильного хранения, позволяют держать сезонный запас и отгружать по контрактам круглый год.",
-      uz: "10 000 m² ombor, shu jumladan 1 000 tonna sovutgichli saqlash — mavsumiy zaxirani saqlash va yil bo‘yi shartnomalar bo‘yicha jo‘natish imkonini beradi.",
+      uz: "10 000 m² ombor, shu jumladan 1 000 tonna sovutgichli saqlash — mavsumiy zaxirani saqlash va yil boʻyi shartnomalar boʻyicha joʻnatish imkonini beradi.",
     },
   },
 ];
@@ -197,7 +197,7 @@ export const process: ProcessStep[] = [
     description: {
       en: "Raw material is contracted directly with farms in the growing regions of Uzbekistan.",
       ru: "Сырьё законтрактовано напрямую с хозяйствами в регионах выращивания Узбекистана.",
-      uz: "Xomashyo O‘zbekistonning yetishtirish hududlaridagi xo‘jaliklar bilan bevosita shartnoma asosida olinadi.",
+      uz: "Xomashyo Oʻzbekistonning yetishtirish hududlaridagi xoʻjaliklar bilan bevosita shartnoma asosida olinadi.",
     },
   },
   {
@@ -215,7 +215,7 @@ export const process: ProcessStep[] = [
     description: {
       en: "In-house laboratory testing against the buyer's specification before packing.",
       ru: "Лабораторные испытания по спецификации покупателя до упаковки.",
-      uz: "Qadoqlashdan oldin xaridor spetsifikatsiyasi bo‘yicha laboratoriya sinovlari.",
+      uz: "Qadoqlashdan oldin xaridor spetsifikatsiyasi boʻyicha laboratoriya sinovlari.",
     },
   },
   {
@@ -238,11 +238,11 @@ export const process: ProcessStep[] = [
   },
   {
     step: "06",
-    title: { en: "Shipping", ru: "Отгрузка", uz: "Jo‘natish" },
+    title: { en: "Shipping", ru: "Отгрузка", uz: "Joʻnatish" },
     description: {
       en: "Container loading and delivery on agreed Incoterms to your destination port.",
       ru: "Загрузка контейнера и доставка на согласованных условиях Incoterms до вашего порта назначения.",
-      uz: "Konteynerni yuklash va kelishilgan Incoterms shartlarida yetkazib berish porti bo‘yicha yetkazish.",
+      uz: "Konteynerni yuklash va kelishilgan Incoterms shartlarida yetkazib berish porti boʻyicha yetkazish.",
     },
   },
 ];
@@ -255,41 +255,41 @@ export const process: ProcessStep[] = [
 export const facilities: Facility[] = [
   {
     name: { en: "Pulses processing line", ru: "Линия переработки бобовых", uz: "Dukkaklilar liniyasi" },
-    location: { en: "Uzbekistan", ru: "Узбекистан", uz: "O‘zbekiston" },
-    capacity: "25 000 T",
+    location: { en: "Uzbekistan", ru: "Узбекистан", uz: "Oʻzbekiston" },
+    capacity: { en: "25 000 T", ru: "25 000 т", uz: "25 000 t" },
     description: {
       en: "Cleaning, calibration and packing of mung beans, kidney beans, chickpeas and lentils.",
       ru: "Очистка, калибровка и упаковка маша, красной фасоли, нута и чечевицы.",
-      uz: "Mosh, loviya, no‘xat va yasmiqni tozalash, kalibrlash va qadoqlash.",
+      uz: "Mosh, loviya, noʻxat va yasmiqni tozalash, kalibrlash va qadoqlash.",
     },
     image: "",
   },
   {
     name: { en: "Dried fruit facility", ru: "Площадка сухофруктов", uz: "Quritilgan mevalar maydonchasi" },
-    location: { en: "Uzbekistan", ru: "Узбекистан", uz: "O‘zbekiston" },
-    capacity: "15 000 T",
+    location: { en: "Uzbekistan", ru: "Узбекистан", uz: "Oʻzbekiston" },
+    capacity: { en: "15 000 T", ru: "15 000 т", uz: "15 000 t" },
     description: {
       en: "Drying, sorting and packing of apricots, raisins and prunes, conventional and organic.",
       ru: "Сушка, сортировка и упаковка кураги, изюма и чернослива — обычных и органических.",
-      uz: "O‘rik, mayiz va qoqi olxo‘rini quritish, saralash va qadoqlash — oddiy va organik.",
+      uz: "Oʻrik, mayiz va qoqi olxoʻrini quritish, saralash va qadoqlash — oddiy va organik.",
     },
     image: "",
   },
   {
-    name: { en: "Nut processing line", ru: "Линия переработки орехов", uz: "Yong‘oq liniyasi" },
-    location: { en: "Uzbekistan", ru: "Узбекистан", uz: "O‘zbekiston" },
-    capacity: "10 000 T",
+    name: { en: "Nut processing line", ru: "Линия переработки орехов", uz: "Yongʻoq liniyasi" },
+    location: { en: "Uzbekistan", ru: "Узбекистан", uz: "Oʻzbekiston" },
+    capacity: { en: "10 000 T", ru: "10 000 т", uz: "10 000 t" },
     description: {
       en: "Shelling, grading and packing of peanuts, walnuts and almonds.",
-      ru: "Очистка, калибровка и упаковка арахиса, грецкого ореха и миндаля.",
-      uz: "Yeryong‘oq, yong‘oq va bodomni po‘stlash, saralash va qadoqlash.",
+      ru: "Лущение, калибровка и упаковка арахиса, грецкого ореха и миндаля.",
+      uz: "Yeryongʻoq, yongʻoq va bodomni poʻstlash, saralash va qadoqlash.",
     },
     image: "",
   },
   {
     name: { en: "Warehouse & cold storage", ru: "Склад и холодильное хранение", uz: "Ombor va sovutgich" },
-    location: { en: "Uzbekistan", ru: "Узбекистан", uz: "O‘zbekiston" },
-    capacity: "15 000 T + 1 000 T",
+    location: { en: "Uzbekistan", ru: "Узбекистан", uz: "Oʻzbekiston" },
+    capacity: { en: "15 000 T + 1 000 T", ru: "15 000 т + 1 000 т", uz: "15 000 t + 1 000 t" },
     description: {
       en: "10 000 m² of warehousing with 1 000 tonnes of cold storage for season stock.",
       ru: "10 000 м² складов с холодильным хранением на 1 000 тонн для сезонного запаса.",
@@ -303,7 +303,7 @@ export const contacts: Contacts = {
   address: {
     en: "Tashkent, Uzbekistan",
     ru: "Ташкент, Узбекистан",
-    uz: "Toshkent, O‘zbekiston",
+    uz: "Toshkent, Oʻzbekiston",
   },
   // The company publishes no phone number online — request it from the client.
   phones: [],
@@ -314,22 +314,22 @@ export const contacts: Contacts = {
       href: "mailto:info@globalex.uz",
     },
     {
-      label: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport bo‘limi" },
+      label: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport boʻlimi" },
       value: "salim@globalex.uz",
       href: "mailto:salim@globalex.uz",
     },
     {
-      label: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport bo‘limi" },
+      label: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport boʻlimi" },
       value: "bi@globalex.uz",
       href: "mailto:bi@globalex.uz",
     },
     {
-      label: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport bo‘limi" },
+      label: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport boʻlimi" },
       value: "bekzod@globalex.uz",
       href: "mailto:bekzod@globalex.uz",
     },
     {
-      label: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport bo‘limi" },
+      label: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport boʻlimi" },
       value: "mukhammad@globalex.uz",
       href: "mailto:mukhammad@globalex.uz",
     },

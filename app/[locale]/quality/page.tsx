@@ -118,13 +118,7 @@ export default async function QualityPage({ params }: Props) {
           <SectionHeading
             eyebrow={dict.quality.eyebrow}
             title={dict.quality.traceabilityTitle}
-            text={
-              locale === "ru"
-                ? "Каждая упакованная партия имеет код, по которому прослеживается регион выращивания, дата переработки и протокол лаборатории. Арбитражные пробы хранятся весь срок годности партии."
-                : locale === "uz"
-                  ? "Har bir qadoqlangan partiyada kod bo‘ladi — u yetishtirish hududi, qayta ishlash sanasi va laboratoriya bayonnomasiga olib boradi. Namunalar partiyaning yaroqlilik muddati davomida saqlanadi."
-                  : "Every packed lot carries a code that traces back to the growing region, the processing date and the laboratory report. Retained samples are kept for the shelf life of the lot."
-            }
+            text={dict.quality.traceabilityText}
           />
 
           <ul className="mt-14 grid gap-6 md:grid-cols-2">

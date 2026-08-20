@@ -77,13 +77,7 @@ export default async function TeamPage({ params }: Props) {
         locale={locale}
         eyebrow={dict.team.eyebrow}
         title={dict.team.title}
-        text={
-          locale === "ru"
-            ? "Правление, директора департаментов и отдел экспорта — люди, с которыми вы будете работать напрямую."
-            : locale === "uz"
-              ? "Boshqaruv, departament direktorlari va eksport bo‘limi — siz bevosita ishlaydigan odamlar."
-              : "The management board, department directors and the export team — the people you will deal with directly."
-        }
+        text={dict.team.intro}
         breadcrumbLabel={dict.common.breadcrumb}
         breadcrumbs={[{ href: "", label: dict.nav.home }, { label: dict.nav.team }]}
       />

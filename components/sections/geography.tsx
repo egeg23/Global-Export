@@ -34,8 +34,8 @@ export function Geography({ locale, dict }: { locale: Locale; dict: Dictionary }
               </h3>
               <ul className="mt-4 space-y-2">
                 {region.countries.map((country) => (
-                  <li key={country} className="text-sm text-sand-200/70">
-                    {country}
+                  <li key={country.en} className="text-sm text-sand-200/70">
+                    {t(country, locale)}
                   </li>
                 ))}
               </ul>

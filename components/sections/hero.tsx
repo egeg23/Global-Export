@@ -78,7 +78,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               <dd className="mt-2 font-display text-3xl text-sand-50">
                 {stat.value}
                 {stat.suffix ? (
-                  <span className="ml-1 text-lg text-harvest-300">{stat.suffix}</span>
+                  <span className="ml-1 text-lg text-harvest-300">{t(stat.suffix, locale)}</span>
                 ) : null}
               </dd>
             </div>

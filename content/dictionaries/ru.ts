@@ -24,6 +24,7 @@ export const ru: Dictionary = {
     language: "Язык",
     mainNav: "Основная навигация",
     breadcrumb: "Хлебные крошки",
+    skipToContent: "Перейти к содержимому",
     scrollHint: "Листайте",
     founded: "Основана",
     loading: "Загрузка…",
@@ -58,6 +59,8 @@ export const ru: Dictionary = {
     missionTitle: "Наша миссия",
     storyTitle: "Наша история",
     facilitiesTitle: "Производственные площадки",
+    facilitiesText:
+      "Современные производственные мощности, собственная лаборатория, сертифицированные системы безопасности пищевой продукции и полный пакет экспортной документации обеспечивают эффективную организацию международных поставок.",
     valuesTitle: "Наши принципы",
     partnersTitle: "Работа с нами",
   },
@@ -70,6 +73,8 @@ export const ru: Dictionary = {
     controlTitle: "Этапы контроля качества",
     labTitle: "Лаборатория",
     traceabilityTitle: "Прослеживаемость",
+    traceabilityText:
+      "Каждая упакованная партия имеет код, по которому прослеживается регион выращивания, дата переработки и протокол лаборатории. Арбитражные пробы хранятся весь срок годности партии.",
   },
   team: {
     eyebrow: "Наши люди",
@@ -78,6 +83,8 @@ export const ru: Dictionary = {
     directors: "Директора департаментов",
     exportDept: "Отдел экспорта",
     contactPerson: "Связаться",
+    intro:
+      "Правление, директора департаментов и отдел экспорта — люди, с которыми вы будете работать напрямую.",
   },
   catalog: {
     eyebrow: "Каталог",
@@ -164,7 +171,7 @@ export const ru: Dictionary = {
     qualityDescription:
       "Сертификация, лабораторный контроль и прослеживаемость в Global Export Company.",
     teamTitle: "Команда",
-    teamDescription: "Наблюдательный совет и директора департаментов Global Export Company.",
+    teamDescription: "Правление и директора департаментов Global Export Company.",
     catalogTitle: "Продукция",
     catalogDescription:
       "Каталог бобовых, сухофруктов, орехов, органической продукции и сушёных овощей на экспорт.",

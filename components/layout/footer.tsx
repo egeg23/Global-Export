@@ -115,7 +115,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           <p>
             © {year} Global Export Company LLC. {dict.footer.rights}
           </p>
-          <p className="sm:text-right">Tashkent, Uzbekistan</p>
+          <p className="sm:text-right">{t(contacts.address, locale)}</p>
         </div>
       </Container>
     </footer>

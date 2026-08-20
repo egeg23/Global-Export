@@ -69,22 +69,18 @@ export default async function AboutPage({ params }: Props) {
                   {t(company.mission, locale)}
                 </p>
                 <p className="mt-6 text-base leading-relaxed text-ink-muted">
-                  {locale === "ru"
-                    ? "Современные производственные мощности, собственная лаборатория, сертифицированные системы безопасности пищевой продукции и полный пакет экспортной документации обеспечивают эффективную организацию международных поставок."
-                    : locale === "uz"
-                      ? "Zamonaviy ishlab chiqarish quvvatlari, o‘z laboratoriyamiz, sertifikatlangan oziq-ovqat xavfsizligi tizimlari va to‘liq eksport hujjatlari xalqaro yetkazib berishni samarali tashkil etishni ta’minlaydi."
-                      : "Modern production facilities, an in-house laboratory, certified food safety systems, and complete export documentation support the efficient management of international shipments."}
+                  {dict.about.facilitiesText}
                 </p>
               </Reveal>
 
               <dl className="mt-12 grid gap-5 sm:grid-cols-3">
                 {capacityLines.map((line, index) => (
-                  <Reveal key={line.value} delay={index * 80}>
+                  <Reveal key={line.label.en} delay={index * 80}>
                     <div className="rounded-2xl border border-forest-900/8 bg-white/70 px-6 py-6 shadow-[var(--shadow-soft)]">
                       <dt className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-forest-500">
                         {t(line.label, locale)}
                       </dt>
-                      <dd className="mt-2 font-display text-2xl text-forest-900">{line.value}</dd>
+                      <dd className="mt-2 font-display text-2xl text-forest-900">{t(line.value, locale)}</dd>
                     </div>
                   </Reveal>
                 ))}
@@ -114,7 +110,7 @@ export default async function AboutPage({ params }: Props) {
                     </h3>
                     {facility.capacity ? (
                       <span className="shrink-0 rounded-full bg-forest-800/8 px-3 py-1 text-xs font-semibold text-forest-700">
-                        {facility.capacity}
+                        {t(facility.capacity, locale)}
                       </span>
                     ) : null}
                   </div>

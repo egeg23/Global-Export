@@ -31,7 +31,7 @@ export const team: TeamMember[] = [
     position: {
       en: "Chief Strategic Officer",
       ru: "Директор по стратегии",
-      uz: "Strategiya bo‘yicha direktor",
+      uz: "Strategiya boʻyicha direktor",
     },
   },
   {
@@ -64,7 +64,7 @@ export const team: TeamMember[] = [
     position: {
       en: "Head of Human Resources",
       ru: "Руководитель отдела кадров",
-      uz: "Kadrlar bo‘limi boshlig‘i",
+      uz: "Kadrlar boʻlimi boshligʻi",
     },
   },
   {
@@ -73,7 +73,7 @@ export const team: TeamMember[] = [
     position: {
       en: "Head of Import Department",
       ru: "Руководитель отдела импорта",
-      uz: "Import bo‘limi boshlig‘i",
+      uz: "Import boʻlimi boshligʻi",
     },
   },
   {

@@ -22,6 +22,7 @@ export const en = {
     language: "Language",
     mainNav: "Main navigation",
     breadcrumb: "Breadcrumb",
+    skipToContent: "Skip to content",
     scrollHint: "Scroll",
     founded: "Founded",
     loading: "Loading…",
@@ -56,6 +57,8 @@ export const en = {
     missionTitle: "Our mission",
     storyTitle: "Our story",
     facilitiesTitle: "Production facilities",
+    facilitiesText:
+      "Modern production facilities, an in-house laboratory, certified food safety systems, and complete export documentation support the efficient management of international shipments.",
     valuesTitle: "What we stand for",
     partnersTitle: "Working with us",
   },
@@ -68,6 +71,8 @@ export const en = {
     controlTitle: "Quality control stages",
     labTitle: "Laboratory",
     traceabilityTitle: "Traceability",
+    traceabilityText:
+      "Every packed lot carries a code that traces back to the growing region, the processing date and the laboratory report. Retained samples are kept for the shelf life of the lot.",
   },
   team: {
     eyebrow: "Our people",
@@ -76,6 +81,8 @@ export const en = {
     directors: "Department directors",
     exportDept: "Export department",
     contactPerson: "Contact",
+    intro:
+      "The management board, department directors and the export team — the people you will deal with directly.",
   },
   catalog: {
     eyebrow: "Catalogue",

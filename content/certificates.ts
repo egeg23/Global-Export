@@ -14,7 +14,7 @@ export const certificates: Certificate[] = [
     description: {
       en: "Food safety management certified to the GFSI-recognised FSSC 22000 scheme, audited across processing, storage and dispatch.",
       ru: "Система менеджмента пищевой безопасности сертифицирована по признанной GFSI схеме FSSC 22000 — аудит охватывает переработку, хранение и отгрузку.",
-      uz: "Oziq-ovqat xavfsizligini boshqarish GFSI tomonidan tan olingan FSSC 22000 sxemasi bo‘yicha sertifikatlangan — audit qayta ishlash, saqlash va jo‘natishni qamrab oladi.",
+      uz: "Oziq-ovqat xavfsizligini boshqarish GFSI tomonidan tan olingan FSSC 22000 sxemasi boʻyicha sertifikatlangan — audit qayta ishlash, saqlash va joʻnatishni qamrab oladi.",
     },
   },
   {
@@ -24,7 +24,7 @@ export const certificates: Certificate[] = [
     description: {
       en: "Ethical trade audit covering labour standards, health and safety, environment and business ethics — the social compliance proof European retailers ask for.",
       ru: "Аудит этичной торговли: трудовые стандарты, охрана труда, экология и деловая этика — подтверждение социального соответствия, которое запрашивают европейские сети.",
-      uz: "Axloqiy savdo auditi: mehnat standartlari, mehnat muhofazasi, ekologiya va biznes axloqi — Yevropa tarmoqlari so‘raydigan ijtimoiy muvofiqlik isboti.",
+      uz: "Axloqiy savdo auditi: mehnat standartlari, mehnat muhofazasi, ekologiya va biznes axloqi — Yevropa tarmoqlari soʻraydigan ijtimoiy muvofiqlik isboti.",
     },
   },
   {
@@ -34,7 +34,7 @@ export const certificates: Certificate[] = [
     description: {
       en: "Halal certification, renewed annually, giving direct access to buyers in the Gulf, Türkiye, Malaysia and Indonesia.",
       ru: "Halal-сертификация, продлеваемая ежегодно, — прямой доступ к покупателям в странах Залива, Турции, Малайзии и Индонезии.",
-      uz: "Har yili yangilanadigan Halal sertifikati — Fors ko‘rfazi mamlakatlari, Turkiya, Malayziya va Indoneziyadagi xaridorlarga to‘g‘ridan-to‘g‘ri kirish.",
+      uz: "Har yili yangilanadigan Halal sertifikati — Fors koʻrfazi mamlakatlari, Turkiya, Malayziya va Indoneziyadagi xaridorlarga toʻgʻridan-toʻgʻri kirish.",
     },
   },
   {
@@ -44,7 +44,7 @@ export const certificates: Certificate[] = [
     description: {
       en: "Certified organic production line for dried fruits and pulses, presented annually at BIOFACH — the world's leading organic food trade fair.",
       ru: "Сертифицированная органическая линия сухофруктов и бобовых, ежегодно представляемая на BIOFACH — крупнейшей мировой выставке органических продуктов.",
-      uz: "Quritilgan mevalar va dukkaklilar uchun sertifikatlangan organik liniya, har yili BIOFACH — dunyodagi yetakchi organik oziq-ovqat ko‘rgazmasida taqdim etiladi.",
+      uz: "Quritilgan mevalar va dukkaklilar uchun sertifikatlangan organik liniya, har yili BIOFACH — dunyodagi yetakchi organik oziq-ovqat koʻrgazmasida taqdim etiladi.",
     },
   },
 ];
@@ -67,12 +67,12 @@ export const recognitions: { title: Localized; description: Localized }[] = [
     title: {
       en: "€10 million EBRD facility",
       ru: "Кредит EBRD на €10 млн",
-      uz: "EBRD’ning €10 million krediti",
+      uz: "EBRDʼning €10 million krediti",
     },
     description: {
       en: "A €10 million loan from the EBRD to expand processing capacity and working capital.",
       ru: "Кредит EBRD на €10 млн для расширения перерабатывающих мощностей и оборотного капитала.",
-      uz: "Qayta ishlash quvvatlari va aylanma mablag‘ni kengaytirish uchun EBRD’dan €10 million kredit.",
+      uz: "Qayta ishlash quvvatlari va aylanma mablagʻni kengaytirish uchun EBRDʼdan €10 million kredit.",
     },
   },
 ];
@@ -85,7 +85,7 @@ export const qualityStages: { title: Localized; description: Localized; icon: st
     description: {
       en: "Each delivery from the farms is sampled and checked for moisture, damage and foreign matter before it is accepted.",
       ru: "Каждая поставка с хозяйств выборочно проверяется на влажность, повреждения и посторонние примеси до приёмки.",
-      uz: "Xo‘jaliklardan kelgan har bir yetkazma qabul qilinishidan oldin namlik, shikastlanish va begona aralashmalarga tekshiriladi.",
+      uz: "Xoʻjaliklardan kelgan har bir yetkazma qabul qilinishidan oldin namlik, shikastlanish va begona aralashmalarga tekshiriladi.",
     },
   },
   {
@@ -103,7 +103,7 @@ export const qualityStages: { title: Localized; description: Localized; icon: st
     description: {
       en: "The in-house laboratory tests every lot against the buyer's specification before it is released for packing.",
       ru: "Собственная лаборатория проверяет каждую партию по спецификации покупателя до выпуска на упаковку.",
-      uz: "O‘z laboratoriyamiz har bir partiyani qadoqlashga chiqarishdan oldin xaridor spetsifikatsiyasi bo‘yicha tekshiradi.",
+      uz: "Oʻz laboratoriyamiz har bir partiyani qadoqlashga chiqarishdan oldin xaridor spetsifikatsiyasi boʻyicha tekshiradi.",
     },
   },
   {
@@ -112,12 +112,12 @@ export const qualityStages: { title: Localized; description: Localized; icon: st
     description: {
       en: "Every packed lot carries a code that traces back to the growing region, the processing date and the lab report.",
       ru: "Каждая упакованная партия имеет код, по которому прослеживается регион выращивания, дата переработки и протокол лаборатории.",
-      uz: "Har bir qadoqlangan partiyada kod bo‘ladi — u yetishtirish hududi, qayta ishlash sanasi va laboratoriya bayonnomasiga olib boradi.",
+      uz: "Har bir qadoqlangan partiyada kod boʻladi — u yetishtirish hududi, qayta ishlash sanasi va laboratoriya bayonnomasiga olib boradi.",
     },
   },
   {
     icon: "shield",
-    title: { en: "Pre-shipment check", ru: "Проверка перед отгрузкой", uz: "Jo‘natishdan oldingi tekshiruv" },
+    title: { en: "Pre-shipment check", ru: "Проверка перед отгрузкой", uz: "Joʻnatishdan oldingi tekshiruv" },
     description: {
       en: "Container loading is inspected and documented, with retained samples kept for the shelf life of the lot.",
       ru: "Загрузка контейнера инспектируется и документируется, арбитражные пробы хранятся весь срок годности партии.",

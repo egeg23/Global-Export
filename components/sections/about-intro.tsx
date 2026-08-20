@@ -27,11 +27,7 @@ export function AboutIntro({ locale, dict }: { locale: Locale; dict: Dictionary 
                 {t(company.description, locale)}
               </p>
               <p className="mt-5 text-base leading-relaxed text-ink-muted">
-                {locale === "ru"
-                  ? "Современные производственные площадки, собственная лаборатория, сертифицированные системы пищевой безопасности и полный пакет экспортных документов обеспечивают эффективное управление международными отгрузками."
-                  : locale === "uz"
-                    ? "Zamonaviy ishlab chiqarish maydonchalari, o‘z laboratoriyamiz, sertifikatlangan oziq-ovqat xavfsizligi tizimlari va to‘liq eksport hujjatlari xalqaro jo‘natmalarni samarali boshqarishni ta’minlaydi."
-                    : "Modern production facilities, an in-house laboratory, certified food safety systems, and complete export documentation support the efficient management of international shipments."}
+                {dict.about.facilitiesText}
               </p>
 
               <Link
@@ -59,14 +55,14 @@ export function AboutIntro({ locale, dict }: { locale: Locale; dict: Dictionary 
               <dl className="mt-6 grid gap-4 sm:grid-cols-3">
                 {capacityLines.map((line, index) => (
                   <div
-                    key={line.value}
+                    key={line.label.en}
                     className="rounded-2xl border border-forest-900/8 bg-white/70 px-5 py-5 shadow-[var(--shadow-soft)]"
                     style={{ transitionDelay: `${index * 60}ms` }}
                   >
                     <dt className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-forest-500">
                       {t(line.label, locale)}
                     </dt>
-                    <dd className="mt-2 font-display text-2xl text-forest-900">{line.value}</dd>
+                    <dd className="mt-2 font-display text-2xl text-forest-900">{t(line.value, locale)}</dd>
                   </div>
                 ))}
               </dl>

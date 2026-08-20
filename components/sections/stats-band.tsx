@@ -29,7 +29,7 @@ export function StatsBand({ locale, dict }: { locale: Locale; dict: Dictionary }
               <dd className="font-display text-4xl leading-none text-sand-50 sm:text-5xl">
                 {stat.value}
                 {stat.suffix ? (
-                  <span className="ml-1.5 text-2xl text-harvest-300">{stat.suffix}</span>
+                  <span className="ml-1.5 text-2xl text-harvest-300">{t(stat.suffix, locale)}</span>
                 ) : null}
               </dd>
               <dt className="mt-3 text-sm leading-snug text-sand-300/70">

@@ -19,7 +19,8 @@ export type Company = {
 
 export type Stat = {
   value: string;
-  suffix?: string;
+  /** Unit shown after the figure; localised because "T" is "т" in Russian. */
+  suffix?: Localized;
   label: Localized;
 };
 
@@ -85,7 +86,7 @@ export type Facility = {
   name: Localized;
   location: Localized;
   description: Localized;
-  capacity?: string;
+  capacity?: Localized;
   image: string;
 };
 

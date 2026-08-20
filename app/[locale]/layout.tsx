@@ -78,11 +78,7 @@ export default async function LocaleLayout({
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-forest-800 focus:px-5 focus:py-3 focus:text-sm focus:text-sand-50"
         >
-          {locale === "ru"
-            ? "Перейти к содержимому"
-            : locale === "uz"
-              ? "Asosiy qismga o‘tish"
-              : "Skip to content"}
+          {dict.common.skipToContent}
         </a>
 
         <Header locale={locale} dict={dict} />

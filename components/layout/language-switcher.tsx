@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 import { cn } from "@/lib/cn";
 import { localeNames, localeShortNames, locales, type Locale } from "@/lib/i18n";
@@ -20,7 +20,12 @@ export function LanguageSwitcher({
   className?: string;
 }) {
   const pathname = usePathname() ?? `/${locale}`;
+  const searchParams = useSearchParams();
   const rest = pathname.split("/").slice(2).join("/");
+  // The catalogue filter lives in the query string, so dropping it here would
+  // reset the visitor's filter every time they switch language.
+  const query = searchParams.toString();
+  const suffix = query ? `?${query}` : "";
 
   return (
     <div className={cn("flex items-center gap-0.5", className)}>
@@ -29,7 +34,7 @@ export function LanguageSwitcher({
         return (
           <Link
             key={code}
-            href={rest ? `/${code}/${rest}` : `/${code}`}
+            href={(rest ? `/${code}/${rest}` : `/${code}`) + suffix}
             hrefLang={code}
             // The accessible name has to start with the visible text (WCAG 2.5.3),
             // so voice control users can say "EN" and be understood.
