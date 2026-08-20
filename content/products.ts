@@ -1,9 +1,13 @@
 import type { Product } from "@/lib/content/types";
 
 /**
- * Product catalogue. Names, calibration and the purity/moisture figures are
- * taken from globalex.uz; packing, MOQ and HS codes are industry-standard
- * values that the client should confirm before launch.
+ * Product catalogue.
+ *
+ * Names, calibration and — for the pulses only — purity and moisture come from
+ * globalex.uz. Descriptions, packing, MOQ, shelf life, HS codes and growing
+ * regions are written here and are industry-typical, not the company's own
+ * figures: see docs/content-sources.md for the line-by-line split and confirm
+ * them with the client before launch.
  */
 export const products: Product[] = [
   {
@@ -178,9 +182,9 @@ export const products: Product[] = [
           "uz": "Saqlash muddati"
         },
         "value": {
-          "en": "12 months from packing date; germination 90% min. guaranteed for the first 6 months",
-          "ru": "12 месяцев с даты фасовки; всхожесть не менее 90% гарантируется первые 6 месяцев",
-          "uz": "Qadoqlangan sanadan 12 oy; dastlabki 6 oy davomida kamida 90% unuvchanlik kafolatlanadi"
+          "en": "12 months from packing date; germination 90% min. for the first 6 months",
+          "ru": "12 месяцев с даты фасовки; всхожесть не менее 90% первые 6 месяцев",
+          "uz": "Qadoqlangan sanadan 12 oy; dastlabki 6 oy davomida kamida 90% unuvchanlik"
         }
       },
       {
@@ -1333,7 +1337,7 @@ export const products: Product[] = [
     },
     "latinName": "Vigna radiata",
     "description": {
-      "en": "Certified organic green mung beans from the southern and central regions of Uzbekistan, machine-cleaned, de-stoned and colour-sorted to 99% purity. Uzbek mung has a thin skin, an even green colour and stable germination, so the same lot works for retail packing, dhal processing and sprouting programmes. Organic status is documented lot by lot and traceable back to the certified field.",
+      "en": "Certified organic green mung beans from the southern and central regions of Uzbekistan, machine-cleaned, de-stoned and colour-sorted to 99% purity. Uzbek mung has a thin skin, an even green colour and stable germination, so the same lot works for retail packing, dhal processing and sprouting programmes.",
       "ru": "Сертифицированный органический зелёный маш из южных и центральных регионов Узбекистана: машинная очистка, камнеотбор, фотосепарация, чистота от 99%. Узбекский маш отличается тонкой кожурой, ровным зелёным цветом и стабильной всхожестью — одна и та же партия подходит и для фасовки, и для переработки в дал, и для проращивания. Органический статус подтверждается по каждой партии и прослеживается до сертифицированного поля.",
       "uz": "Oʻzbekistonning janubiy va markaziy hududlarida yetishtirilgan sertifikatlangan organik yashil mosh: mashinada tozalangan, toshdan ajratilgan va foto-saralangan, tozaligi 99% dan kam emas. Oʻzbek moshining poʻsti yupqa, rangi bir tekis yashil, unib chiqish qobiliyati barqaror — shu bois bir partiya ham qadoqlash, ham dal ishlab chiqarish, ham undirish uchun mos keladi. Organik maqomi har bir partiya boʻyicha hujjatlashtiriladi va sertifikatlangan dalagacha kuzatiladi."
     },
@@ -1360,18 +1364,6 @@ export const products: Product[] = [
           "en": "Purity 99% min. / Moisture 11% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. / Влажность 11% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas / Namligi 11% dan koʻp emas / Kelib chiqishi: Oʻzbekiston"
-        }
-      },
-      {
-        "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1436,7 +1428,7 @@ export const products: Product[] = [
     },
     "latinName": "Vitis vinifera",
     "description": {
-      "en": "Seedless sultana raisins from certified organic vineyards, sun-dried in the traditional Uzbek way without sulphur dioxide or added oil. The continental climate gives a high natural sugar content and a firm, non-sticky berry that holds its shape in bakery, muesli and confectionery lines. Every consignment is cleaned, laser-sorted and metal-detected before packing, with organic certificates issued per lot.",
+      "en": "Seedless sultana raisins from certified organic vineyards, sun-dried in the traditional Uzbek way without sulphur dioxide or added oil. The continental climate gives a high natural sugar content and a firm, non-sticky berry that holds its shape in bakery, muesli and confectionery lines. Every consignment is cleaned, laser-sorted and metal-detected before packing,",
       "ru": "Изюм сорта «Султана» без косточек с сертифицированных органических виноградников, высушенный на солнце по традиционной узбекской технологии — без диоксида серы и без обработки маслом. Континентальный климат даёт высокое содержание природных сахаров и плотную, неслипающуюся ягоду, которая держит форму в хлебопечении, мюсли и кондитерских линиях. Каждая партия проходит очистку, лазерную сортировку и металлодетекцию, органические сертификаты оформляются на каждый лот.",
       "uz": "Sertifikatlangan organik uzumzorlardan olingan danaksiz sultoni mayiz anʼanaviy oʻzbek usulida quyoshda quritiladi — oltingugurt dioksidi va moy ishlatilmaydi. Kontinental iqlim tufayli tabiiy shakar miqdori yuqori, mevasi zich va yopishmaydi, shu bois nonvoychilik, musli va qandolat liniyalarida shaklini saqlaydi. Har bir partiya tozalash, lazerli saralash va metall detektoridan oʻtkaziladi, organik sertifikatlar har bir lot uchun rasmiylashtiriladi."
     },
@@ -1463,18 +1455,6 @@ export const products: Product[] = [
           "en": "Foreign matter 0.5% max., stems 1% max. / Moisture 15-17% / Origin: Uzbekistan",
           "ru": "Посторонние примеси 0,5% макс., плодоножки 1% макс. / Влажность 15-17% / Происхождение: Узбекистан",
           "uz": "Begona aralashmalar 0,5% dan koʻp emas, bandlar 1% dan koʻp emas / Namligi 15-17% / Kelib chiqishi: Oʻzbekiston"
-        }
-      },
-      {
-        "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1569,18 +1549,6 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
           "en": "Packaging",
           "ru": "Упаковка",
           "uz": "Qadoqlash"
@@ -1671,18 +1639,6 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
           "en": "Packaging",
           "ru": "Упаковка",
           "uz": "Qadoqlash"
@@ -1742,7 +1698,7 @@ export const products: Product[] = [
     },
     "latinName": "Panicum miliaceum",
     "description": {
-      "en": "Organic proso millet from the dryland belt of central Uzbekistan, supplied hulled as bright yellow grain or unhulled as seed. Low-input cultivation and dry harvesting conditions keep the grain clean and free of musty notes, which matters for porridge, gluten-free flour and bird-feed blends. Purity is brought to 99% on air-screen and optical equipment, with organic certification issued per lot.",
+      "en": "Organic proso millet from the dryland belt of central Uzbekistan, supplied hulled as bright yellow grain or unhulled as seed. Low-input cultivation and dry harvesting conditions keep the grain clean and free of musty notes, which matters for porridge, gluten-free flour and bird-feed blends. Purity is brought to 99% on air-screen and optical equipment,",
       "ru": "Органическое просо из богарного пояса центрального Узбекистана: поставляется в виде шелушёного пшена насыщенного жёлтого цвета или необрушенным зерном. Экстенсивная агротехника и сухие условия уборки дают чистое зерно без затхлых тонов — это важно для круп, безглютеновой муки и кормовых смесей. Чистота доводится до 99% на воздушно-ситовом и оптическом оборудовании, органический сертификат оформляется на каждую партию.",
       "uz": "Markaziy Oʻzbekistonning lalmikor mintaqasidan olingan organik tariq: poʻsti tozalangan sariq don yoki poʻstli urugʻ koʻrinishida yetkaziladi. Kam kimyoviy aralashuv va quruq hosil yigʻish sharoiti donni toza va begona hidsiz saqlaydi — bu boʻtqa, glyutensiz un va yem aralashmalari uchun muhim. Tozaligi havo-elak va optik uskunalarda 99% ga yetkaziladi, organik sertifikat har bir partiya uchun beriladi."
     },
@@ -1769,18 +1725,6 @@ export const products: Product[] = [
           "en": "Purity 99% min. / Moisture 13% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. / Влажность 13% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas / Namligi 13% dan koʻp emas / Kelib chiqishi: Oʻzbekiston"
-        }
-      },
-      {
-        "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1875,18 +1819,6 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
           "en": "Packaging",
           "ru": "Упаковка",
           "uz": "Qadoqlash"
@@ -1946,7 +1878,7 @@ export const products: Product[] = [
     },
     "latinName": "Prunus armeniaca",
     "description": {
-      "en": "Sun-dried organic apricots from mountain and foothill orchards, processed without sulphur dioxide, so the fruit keeps its natural dark-amber colour and concentrated sweetness. High day-night temperature contrast in the growing zones gives a dense, meaty pulp that holds up in bakery fillings, snack mixes and infant-food lines. Supplied whole and pitted in A / AA / AAA sizes, each lot certified organic and traceable to the orchard.",
+      "en": "Sun-dried organic apricots from mountain and foothill orchards, processed without sulphur dioxide, so the fruit keeps its natural dark-amber colour and concentrated sweetness. High day-night temperature contrast in the growing zones gives a dense, meaty pulp that holds up in bakery fillings, snack mixes and infant-food lines. Supplied whole and pitted in A / AA / AAA sizes, supplied from the company's organic range.",
       "ru": "Курага солнечной сушки с горных и предгорных садов, переработанная без диоксида серы — фрукт сохраняет натуральный тёмно-янтарный цвет и концентрированную сладость. Большой перепад дневных и ночных температур в зонах выращивания формирует плотную мясистую мякоть, которая держит форму в начинках, снековых миксах и линиях детского питания. Поставляется целой, без косточки, в размерах A / AA / AAA; каждая партия сертифицирована как органическая и прослеживается до сада.",
       "uz": "Togʻ va togʻoldi bogʻlaridan olingan quyoshda quritilgan organik oʻrik qoqi oltingugurt dioksidisiz tayyorlanadi — meva tabiiy toʻq qahrabo rangini va toʻyingan shirinligini saqlaydi. Yetishtirish hududlaridagi kunduzgi va tungi harorat farqi mevaga zich, etli magʻiz beradi: u nonvoychilik toʻldirmalari, snek aralashmalari va bolalar ovqati liniyalarida shaklini yoʻqotmaydi. Butun va danaksiz holda A / AA / AAA oʻlchamlarida yetkaziladi; har bir partiya organik sertifikatga ega va bogʻgacha kuzatiladi."
     },
@@ -1973,18 +1905,6 @@ export const products: Product[] = [
           "en": "Foreign matter 0.5% max. / Moisture 18-20% / Origin: Uzbekistan",
           "ru": "Посторонние примеси 0,5% макс. / Влажность 18-20% / Происхождение: Узбекистан",
           "uz": "Begona aralashmalar 0,5% dan koʻp emas / Namligi 18-20% / Kelib chiqishi: Oʻzbekiston"
-        }
-      },
-      {
-        "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -2080,18 +2000,6 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
           "en": "Packaging",
           "ru": "Упаковка",
           "uz": "Qadoqlash"
@@ -2182,18 +2090,6 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
           "en": "Packaging",
           "ru": "Упаковка",
           "uz": "Qadoqlash"
@@ -2253,7 +2149,7 @@ export const products: Product[] = [
     },
     "latinName": "Prunus domestica",
     "description": {
-      "en": "Pitted organic prunes of the Hungarian and Spanish plum types, dried without preservatives, sorbates or glycerine coating. Careful drying keeps the flesh soft and elastic with a clean, deep flavour, so the fruit performs well in bakery fillings, purees and snack packing. Sizes 60-80 and 80-100 pieces per kilo are available, each lot certified organic and traceable to the orchard.",
+      "en": "Pitted organic prunes of the Hungarian and Spanish plum types, dried without preservatives, sorbates or glycerine coating. Careful drying keeps the flesh soft and elastic with a clean, deep flavour, so the fruit performs well in bakery fillings, purees and snack packing. Sizes 60-80 and 80-100 pieces per kilo are available, supplied from the company's organic range.",
       "ru": "Органический чернослив без косточки из слив «Венгерка» и «Испанка», высушенный без консервантов, сорбатов и глицериновой обработки. Аккуратная сушка сохраняет мягкую эластичную мякоть и чистый глубокий вкус — фрукт хорошо ведёт себя в начинках, пюре и снековой фасовке. Доступны размеры 60-80 и 80-100 шт. на килограмм; каждая партия сертифицирована как органическая и прослеживается до сада.",
       "uz": "«Vengerka» va «Ispanka» navli olxoʻrilardan tayyorlangan danaksiz organik olxoʻri qoqisi konservantlar, sorbatlar va glitserin qoplamasisiz quritiladi. Ehtiyotkorona quritish magʻizni yumshoq va elastik, taʼmini esa toza va toʻyingan saqlaydi — u nonvoychilik toʻldirmalari, pyure va snek qadoqlashda yaxshi natija beradi. 1 kg da 60-80 va 80-100 dona oʻlchamlari mavjud; har bir partiya organik sertifikatga ega va bogʻgacha kuzatiladi."
     },
@@ -2280,18 +2176,6 @@ export const products: Product[] = [
           "en": "Foreign matter 0.5% max., pit fragments 1% max. / Moisture 21-23% / Origin: Uzbekistan",
           "ru": "Посторонние примеси 0,5% макс., фрагменты косточек 1% макс. / Влажность 21-23% / Происхождение: Узбекистан",
           "uz": "Begona aralashmalar 0,5% dan koʻp emas, danak boʻlakchalari 1% dan koʻp emas / Namligi 21-23% / Kelib chiqishi: Oʻzbekiston"
-        }
-      },
-      {
-        "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -2386,18 +2270,6 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
           "en": "Packaging",
           "ru": "Упаковка",
           "uz": "Qadoqlash"
@@ -2484,18 +2356,6 @@ export const products: Product[] = [
           "en": "Purity 99% min. (stalks and leaves 1% max.) / Moisture 10% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. (плодоножки и листья 1% макс.) / Влажность 10% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas (band va barglar 1% dan koʻp emas) / Namligi 10% dan koʻp emas / Kelib chiqishi: Oʻzbekiston"
-        }
-      },
-      {
-        "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatlash"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {

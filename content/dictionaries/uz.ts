@@ -128,7 +128,7 @@ export const uz: Dictionary = {
     eyebrow: "Biz bilan bogʻlaning",
     title: "Kontaktlar",
     intro:
-      "Bizga oʻzbek, rus yoki ingliz tilida yozing — eksport boʻlimi bir ish kuni ichida javob beradi.",
+      "Bizga oʻzbek, rus yoki ingliz tilida yozing — eksport boʻlimi imkon qadar tezroq javob beradi.",
     officeTitle: "Bosh ofis",
     departmentsTitle: "Boʻlimlar",
     hoursTitle: "Ish vaqti",
@@ -183,7 +183,7 @@ export const uz: Dictionary = {
     newsDescription: "Global Export Company yangiliklari va eʼlonlari.",
     contactsTitle: "Kontaktlar",
     contactsDescription:
-      "Global Export Companyʼning Toshkentdagi manzili, telefonlari va elektron pochtasi.",
+      "Global Export Companyʼning Toshkentdagi manzili va elektron pochtasi.",
   },
   notFound: {
     title: "Sahifa topilmadi",

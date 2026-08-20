@@ -20,7 +20,7 @@ export const team: TeamMember[] = [
     group: "board",
     position: {
       en: "Chief Commercial Officer",
-      ru: "Коммерческий директор",
+      ru: "Директор по коммерции",
       uz: "Bosh tijorat direktori",
     },
   },
@@ -85,24 +85,24 @@ export const team: TeamMember[] = [
     name: "Salim Kakhramonov",
     group: "export",
     email: "salim@globalex.uz",
-    position: { en: "Export manager", ru: "Менеджер по экспорту", uz: "Eksport menejeri" },
+    position: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport boʻlimi" },
   },
   {
     name: "Bobur Ilyasov",
     group: "export",
     email: "bi@globalex.uz",
-    position: { en: "Export manager", ru: "Менеджер по экспорту", uz: "Eksport menejeri" },
+    position: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport boʻlimi" },
   },
   {
     name: "Bekzod Bozorov",
     group: "export",
     email: "bekzod@globalex.uz",
-    position: { en: "Export manager", ru: "Менеджер по экспорту", uz: "Eksport menejeri" },
+    position: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport boʻlimi" },
   },
   {
     name: "Mukhammad Sharofov",
     group: "export",
     email: "mukhammad@globalex.uz",
-    position: { en: "Export manager", ru: "Менеджер по экспорту", uz: "Eksport menejeri" },
+    position: { en: "Export department", ru: "Отдел экспорта", uz: "Eksport boʻlimi" },
   },
 ];

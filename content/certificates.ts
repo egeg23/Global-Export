@@ -33,25 +33,27 @@ export const certificates: Certificate[] = [
     name: "Halal",
     issuer: "",
     description: {
-      en: "Halal certification, renewed annually, giving direct access to buyers in the Gulf, Türkiye, Malaysia and Indonesia.",
-      ru: "Halal-сертификация, продлеваемая ежегодно, — прямой доступ к покупателям в странах Залива, Турции, Малайзии и Индонезии.",
-      uz: "Har yili yangilanadigan Halal sertifikati — Fors koʻrfazi mamlakatlari, Turkiya, Malayziya va Indoneziyadagi xaridorlarga toʻgʻridan-toʻgʻri kirish.",
-    },
-  },
-  {
-    slug: "organic",
-    name: "Organic",
-    issuer: "",
-    description: {
-      en: "Certified organic production line for dried fruits and pulses, presented annually at BIOFACH — the world's leading organic food trade fair.",
-      ru: "Сертифицированная органическая линия сухофруктов и бобовых, ежегодно представляемая на BIOFACH — крупнейшей мировой выставке органических продуктов.",
-      uz: "Quritilgan mevalar va dukkaklilar uchun sertifikatlangan organik liniya, har yili BIOFACH — dunyodagi yetakchi organik oziq-ovqat koʻrgazmasida taqdim etiladi.",
+      en: "Halal certification, renewed in 2026, covering the company's production facilities.",
+      ru: "Halal-сертификация, продлённая в 2026 году, охватывает производственные площадки компании.",
+      uz: "2026-yilda yangilangan Halal sertifikati kompaniyaning ishlab chiqarish maydonchalarini qamrab oladi.",
     },
   },
 ];
 
 /** Institutional recognition, drawn from the company's own announcements. */
 export const recognitions: { title: Localized; description: Localized }[] = [
+  {
+    title: {
+      en: "Organic range at BIOFACH",
+      ru: "Органическая линейка на BIOFACH",
+      uz: "BIOFACH’dagi organik liniya",
+    },
+    description: {
+      en: "A dedicated organic product line, presented at BIOFACH — the world's leading organic food trade fair. Certification documents are supplied on request.",
+      ru: "Отдельная органическая линейка, представленная на BIOFACH — крупнейшей мировой выставке органических продуктов. Сертификационные документы предоставляются по запросу.",
+      uz: "BIOFACH — dunyodagi yetakchi organik oziq-ovqat koʻrgazmasida taqdim etilgan alohida organik liniya. Sertifikat hujjatlari soʻrov boʻyicha taqdim etiladi.",
+    },
+  },
   {
     title: {
       en: "EBRD Blue Ribbon Programme",
@@ -97,9 +99,9 @@ export const qualityStages: {
     icon: "chain",
     title: { en: "In-line control", ru: "Контроль на линии", uz: "Liniyadagi nazorat" },
     description: {
-      en: "Cleaning, sorting and calibration are monitored continuously, with operators pulling samples at fixed intervals.",
-      ru: "Очистка, сортировка и калибровка контролируются непрерывно, операторы отбирают пробы через заданные интервалы.",
-      uz: "Tozalash, saralash va kalibrlash uzluksiz nazorat qilinadi, operatorlar belgilangan oraliqlarda namuna oladi.",
+      en: "Cleaning, sorting and calibration run on the company's own processing lines under continuous supervision.",
+      ru: "Очистка, сортировка и калибровка идут на собственных линиях компании под постоянным контролем.",
+      uz: "Tozalash, saralash va kalibrlash kompaniyaning oʻz liniyalarida doimiy nazorat ostida amalga oshiriladi.",
     },
   },
   {
@@ -124,9 +126,9 @@ export const qualityStages: {
     icon: "shield",
     title: { en: "Pre-shipment check", ru: "Проверка перед отгрузкой", uz: "Joʻnatishdan oldingi tekshiruv" },
     description: {
-      en: "Container loading is inspected and documented, with retained samples kept for the shelf life of the lot.",
-      ru: "Загрузка контейнера инспектируется и документируется, арбитражные пробы хранятся весь срок годности партии.",
-      uz: "Konteynerni yuklash tekshiriladi va hujjatlashtiriladi, saqlanadigan namunalar partiyaning yaroqlilik muddati davomida saqlanadi.",
+      en: "Shipments leave with the complete export documentation the company prepares in-house.",
+      ru: "Отгрузка сопровождается полным пакетом экспортных документов, который компания готовит своими силами.",
+      uz: "Joʻnatmalar kompaniya oʻzi tayyorlaydigan toʻliq eksport hujjatlari bilan chiqadi.",
     },
   },
 ];

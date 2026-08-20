@@ -1,8 +1,9 @@
 import type { NewsItem } from "@/lib/content/types";
 
 /**
- * Newsroom. Every entry is a real publication from globalex.uz — English text
- * is the company's own, Russian and Uzbek are translations of it.
+ * Newsroom. Every entry is a real publication from globalex.uz; the English
+ * body is the company's own wording, and Russian and Uzbek are translations of
+ * it. Excerpts are written here for the card and listing views.
  */
 export const news: NewsItem[] = [
   {
@@ -219,9 +220,9 @@ export const news: NewsItem[] = [
       "uz": "Global Export jamoasi BIOFACH 2026da: organik segment boʻyicha mijozlar va hamkorlar bilan uchrashuvlar. 4-zal, 4-639 stend."
     },
     "body": {
-      "en": "BIOFACH 2026 is in full swing.\n\nOur team is actively engaged in meetings with both potential clients and existing partners, discussing ongoing projects and new cooperation opportunities within the organic segment.\n\nWe look forward to welcoming you at our stand.\n\nHall: 4\n\nStand: 4-639\n\nGlobal Export Company exports its products to 55 countries.",
-      "ru": "BIOFACH 2026 в самом разгаре.\n\nНаша команда активно проводит встречи с потенциальными клиентами и действующими партнёрами, обсуждая текущие проекты и новые возможности сотрудничества в органическом сегменте.\n\nБудем рады видеть вас на нашем стенде.\n\nЗал: 4\n\nСтенд: 4-639\n\nGlobal Export Company экспортирует свою продукцию в 55 стран.",
-      "uz": "BIOFACH 2026 qizgʻin davom etmoqda.\n\nJamoamiz potentsial mijozlar va mavjud hamkorlar bilan faol uchrashuvlar oʻtkazib, joriy loyihalar hamda organik segmentdagi yangi hamkorlik imkoniyatlarini muhokama qilmoqda.\n\nSizni stendimizda kutib qolamiz.\n\nZal: 4\n\nStend: 4-639\n\nGlobal Export Company oʻz mahsulotlarini 55 mamlakatga eksport qiladi."
+      "en": "BIOFACH 2026 is in full swing.\n\nOur team is actively engaged in meetings with both potential clients and existing partners, discussing ongoing projects and new cooperation opportunities within the organic segment.\n\nWe look forward to welcoming you at our stand.\n\nHall: 4\n\nStand: 4-639",
+      "ru": "BIOFACH 2026 в самом разгаре.\n\nНаша команда активно проводит встречи с потенциальными клиентами и действующими партнёрами, обсуждая текущие проекты и новые возможности сотрудничества в органическом сегменте.\n\nБудем рады видеть вас на нашем стенде.\n\nЗал: 4\n\nСтенд: 4-639",
+      "uz": "BIOFACH 2026 qizgʻin davom etmoqda.\n\nJamoamiz potentsial mijozlar va mavjud hamkorlar bilan faol uchrashuvlar oʻtkazib, joriy loyihalar hamda organik segmentdagi yangi hamkorlik imkoniyatlarini muhokama qilmoqda.\n\nSizni stendimizda kutib qolamiz.\n\nZal: 4\n\nStend: 4-639"
     },
     "image": "/images/news/global-export-at-biofach-2026-meet-us-at-our-stand.jpg",
     "tag": {
@@ -294,9 +295,9 @@ export const news: NewsItem[] = [
       "uz": "Dunyoning turli burchaklaridagi hamkorlar Global Export mahsulotlariga ishonadi, kompaniya esa sifatni oshirib, assortimentni kengaytirmoqda."
     },
     "body": {
-      "en": "We are proud that our products are trusted in different parts of the world. Exporting a wide range of products, we are constantly working to improve quality and expand our offer to meet the needs of our international partners.\n\nGlobal Export supplies its products to 55 countries around the world.",
-      "ru": "Мы гордимся тем, что нашей продукции доверяют в разных частях мира. Экспортируя широкий ассортимент продукции, мы постоянно работаем над повышением качества и расширением предложения, чтобы соответствовать потребностям наших международных партнёров.\n\nGlobal Export поставляет свою продукцию в 55 стран мира.",
-      "uz": "Mahsulotlarimizga dunyoning turli burchaklarida ishonch bildirilayotganidan faxrlanamiz. Keng assortimentdagi mahsulotlarni eksport qilar ekanmiz, xalqaro hamkorlarimiz ehtiyojlariga javob berish uchun sifatni oshirish va takliflarimizni kengaytirish ustida doimiy ishlaymiz.\n\nGlobal Export oʻz mahsulotlarini dunyoning 55 mamlakatiga yetkazib beradi."
+      "en": "We are proud that our products are trusted in different parts of the world. Exporting a wide range of products, we are constantly working to improve quality and expand our offer to meet the needs of our international partners.",
+      "ru": "Мы гордимся тем, что нашей продукции доверяют в разных частях мира. Экспортируя широкий ассортимент продукции, мы постоянно работаем над повышением качества и расширением предложения, чтобы соответствовать потребностям наших международных партнёров.",
+      "uz": "Mahsulotlarimizga dunyoning turli burchaklarida ishonch bildirilayotganidan faxrlanamiz. Keng assortimentdagi mahsulotlarni eksport qilar ekanmiz, xalqaro hamkorlarimiz ehtiyojlariga javob berish uchun sifatni oshirish va takliflarimizni kengaytirish ustida doimiy ishlaymiz."
     },
     "image": "/images/news/our-products-are-trusted-worldwide.jpg",
     "tag": {
@@ -319,9 +320,9 @@ export const news: NewsItem[] = [
       "uz": "Aralash quritilgan mevalarning navbatdagi partiyasi yoʻlga chiqdi — barqaror amaliyot, axloqiy xarid va izchil sifatga tayangan yetkazib berish."
     },
     "body": {
-      "en": "Our latest batch of mixed dried fruits has been shipped! We take pride in our commitment to sustainability, ethical sourcing, and providing high-quality products. Stay tuned for more updates from Global Export.\n\nGlobal Export supplies its products to 55 countries around the world.",
-      "ru": "Отправлена наша очередная партия микса сухофруктов! Мы гордимся своей приверженностью устойчивому развитию, этичным закупкам и поставкам продукции высокого качества. Следите за новостями Global Export.\n\nGlobal Export поставляет свою продукцию в 55 стран мира.",
-      "uz": "Aralash quritilgan mevalarning navbatdagi partiyasi joʻnatildi! Biz barqaror rivojlanishga, axloqiy xarid amaliyotiga va yuqori sifatli mahsulot yetkazib berishga sodiqligimizdan faxrlanamiz. Global Export yangiliklarini kuzatib boring.\n\nGlobal Export oʻz mahsulotlarini dunyoning 55 mamlakatiga yetkazib beradi."
+      "en": "Our latest batch of mixed dried fruits has been shipped! We take pride in our commitment to sustainability, ethical sourcing, and providing high-quality products. Stay tuned for more updates from Global Export.",
+      "ru": "Отправлена наша очередная партия микса сухофруктов! Мы гордимся своей приверженностью устойчивому развитию, этичным закупкам и поставкам продукции высокого качества. Следите за новостями Global Export.",
+      "uz": "Aralash quritilgan mevalarning navbatdagi partiyasi joʻnatildi! Biz barqaror rivojlanishga, axloqiy xarid amaliyotiga va yuqori sifatli mahsulot yetkazib berishga sodiqligimizdan faxrlanamiz. Global Export yangiliklarini kuzatib boring."
     },
     "image": "/images/news/delivering-quality-with-every-shipment.jpg",
     "tag": {

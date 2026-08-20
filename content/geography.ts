@@ -1,10 +1,13 @@
 import type { Localized } from "@/lib/i18n";
 
 /**
- * Export regions. The company states it ships to 55 countries but has not
- * published the full list — every country named here appears in its own
- * newsroom (exhibitions, first shipments, partnerships). Ask the client for
- * the complete list before launch.
+ * Export markets.
+ *
+ * The company states it ships to 55 countries but has never published the
+ * list. Only countries its own newsroom names — a first shipment, a signed
+ * partnership, a trade fair it exhibited at — appear below; nothing here is
+ * inferred from "probably also sells there". Ask the client for the full list
+ * and replace this file wholesale.
  */
 export type Region = {
   key: string;
@@ -18,12 +21,11 @@ export const regions: Region[] = [
     name: { en: "Europe", ru: "Европа", uz: "Yevropa" },
     countries: [
       { en: "Netherlands", ru: "Нидерланды", uz: "Niderlandiya" },
+      { en: "Belgium", ru: "Бельгия", uz: "Belgiya" },
       { en: "Germany", ru: "Германия", uz: "Germaniya" },
       { en: "France", ru: "Франция", uz: "Fransiya" },
       { en: "United Kingdom", ru: "Великобритания", uz: "Buyuk Britaniya" },
       { en: "Italy", ru: "Италия", uz: "Italiya" },
-      { en: "Spain", ru: "Испания", uz: "Ispaniya" },
-      { en: "Poland", ru: "Польша", uz: "Polsha" },
       { en: "Türkiye", ru: "Турция", uz: "Turkiya" },
     ],
   },
@@ -33,43 +35,30 @@ export const regions: Region[] = [
     countries: [
       { en: "China", ru: "Китай", uz: "Xitoy" },
       { en: "Japan", ru: "Япония", uz: "Yaponiya" },
-      { en: "South Korea", ru: "Южная Корея", uz: "Janubiy Koreya" },
-      { en: "India", ru: "Индия", uz: "Hindiston" },
-      { en: "Vietnam", ru: "Вьетнам", uz: "Vyetnam" },
-      { en: "Malaysia", ru: "Малайзия", uz: "Malayziya" },
     ],
   },
   {
     key: "mena",
     name: {
-      en: "Middle East & North Africa",
-      ru: "Ближний Восток и Северная Африка",
-      uz: "Yaqin Sharq va Shimoliy Afrika",
+      en: "Middle East",
+      ru: "Ближний Восток",
+      uz: "Yaqin Sharq",
     },
-    countries: [
-      { en: "United Arab Emirates", ru: "ОАЭ", uz: "BAA" },
-      { en: "Saudi Arabia", ru: "Саудовская Аравия", uz: "Saudiya Arabistoni" },
-      { en: "Qatar", ru: "Катар", uz: "Qatar" },
-      { en: "Kuwait", ru: "Кувейт", uz: "Quvayt" },
-      { en: "Egypt", ru: "Египет", uz: "Misr" },
-    ],
+    countries: [{ en: "United Arab Emirates", ru: "ОАЭ", uz: "BAA" }],
   },
   {
     key: "cis",
     name: { en: "CIS & Caucasus", ru: "СНГ и Кавказ", uz: "MDH va Kavkaz" },
     countries: [
       { en: "Russia", ru: "Россия", uz: "Rossiya" },
-      { en: "Kazakhstan", ru: "Казахстан", uz: "Qozogʻiston" },
-      { en: "Belarus", ru: "Беларусь", uz: "Belarus" },
       { en: "Azerbaijan", ru: "Азербайджан", uz: "Ozarbayjon" },
       { en: "Armenia", ru: "Армения", uz: "Armaniston" },
-      { en: "Georgia", ru: "Грузия", uz: "Gruziya" },
     ],
   },
 ];
 
 export const geographyNote: Localized = {
-  en: "More than 95% of production is exported. Selected destinations shown — the full list of 55 countries is available on request.",
-  ru: "Более 95% продукции идёт на экспорт. Показаны отдельные направления — полный список из 55 стран предоставляется по запросу.",
-  uz: "Mahsulotning 95% dan ortigʻi eksportga chiqadi. Ayrim yoʻnalishlar koʻrsatilgan — 55 mamlakatning toʻliq roʻyxati soʻrov boʻyicha taqdim etiladi.",
+  en: "Selected markets named in the company's own announcements. The full list of 55 destination countries is available on request.",
+  ru: "Отдельные рынки, названные в собственных публикациях компании. Полный список из 55 стран назначения предоставляется по запросу.",
+  uz: "Kompaniyaning oʻz eʼlonlarida nomi keltirilgan ayrim bozorlar. 55 ta yetkazib berish mamlakatining toʻliq roʻyxati soʻrov boʻyicha taqdim etiladi.",
 };

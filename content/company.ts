@@ -82,15 +82,6 @@ export const stats: Stat[] = [
       uz: "Sovutgichli saqlash hajmi",
     },
   },
-  {
-    value: "95",
-    suffix: { en: "%", ru: "%", uz: "%" },
-    label: {
-      en: "Of products are exported",
-      ru: "Продукции идёт на экспорт",
-      uz: "Mahsulot eksportga chiqadi",
-    },
-  },
 ];
 
 /** Processing capacity per product line, as published by the company. */
@@ -157,9 +148,9 @@ export const advantages: Advantage[] = [
       uz: "Isbotlangan eksport geografiyasi",
     },
     description: {
-      en: "More than 95% of what we produce is shipped abroad — to 55 countries across Europe, the Middle East, Asia and beyond.",
-      ru: "Более 95% произведённого уходит на экспорт — в 55 стран Европы, Ближнего Востока, Азии и других регионов.",
-      uz: "Ishlab chiqargan mahsulotimizning 95% dan ortigʻi eksportga ketadi — Yevropa, Yaqin Sharq, Osiyo va boshqa mintaqalardagi 55 mamlakatga.",
+      en: "The company ships to 55 countries across Europe, the Middle East, Asia and beyond.",
+      ru: "Компания поставляет продукцию в 55 стран Европы, Ближнего Востока, Азии и других регионов.",
+      uz: "Kompaniya Yevropa, Yaqin Sharq, Osiyo va boshqa mintaqalardagi 55 mamlakatga mahsulot yetkazadi.",
     },
   },
   {
@@ -170,9 +161,9 @@ export const advantages: Advantage[] = [
       uz: "Toʻliq eksport hujjatlari",
     },
     description: {
-      en: "Phytosanitary certificates, certificates of origin, lab reports and customs paperwork are prepared in-house for every shipment.",
-      ru: "Фитосанитарные сертификаты, сертификаты происхождения, протоколы лаборатории и таможенные документы готовятся своими силами по каждой отгрузке.",
-      uz: "Fitosanitar sertifikatlar, kelib chiqish sertifikatlari, laboratoriya bayonnomalari va bojxona hujjatlari har bir joʻnatma uchun oʻzimizda tayyorlanadi.",
+      en: "Complete export documentation is prepared in-house for every shipment, so nothing waits on a third party.",
+      ru: "Полный пакет экспортных документов готовится своими силами по каждой отгрузке — ничего не ждёт подрядчика.",
+      uz: "Har bir joʻnatma uchun toʻliq eksport hujjatlari oʻzimizda tayyorlanadi — hech narsa uchinchi tomonni kutmaydi.",
     },
   },
   {
@@ -258,9 +249,9 @@ export const facilities: Facility[] = [
     location: { en: "Uzbekistan", ru: "Узбекистан", uz: "Oʻzbekiston" },
     capacity: { en: "25 000 T", ru: "25 000 т", uz: "25 000 t" },
     description: {
-      en: "Cleaning, calibration and packing of mung beans, kidney beans, chickpeas and lentils.",
-      ru: "Очистка, калибровка и упаковка маша, красной фасоли, нута и чечевицы.",
-      uz: "Mosh, loviya, noʻxat va yasmiqni tozalash, kalibrlash va qadoqlash.",
+      en: "Annual processing capacity for the pulses line, as published by the company.",
+      ru: "Годовая мощность переработки по линии бобовых — по данным компании.",
+      uz: "Dukkaklilar liniyasining yillik qayta ishlash quvvati — kompaniya maʼlumotlariga koʻra.",
     },
     image: "",
   },
@@ -269,9 +260,9 @@ export const facilities: Facility[] = [
     location: { en: "Uzbekistan", ru: "Узбекистан", uz: "Oʻzbekiston" },
     capacity: { en: "15 000 T", ru: "15 000 т", uz: "15 000 t" },
     description: {
-      en: "Drying, sorting and packing of apricots, raisins and prunes, conventional and organic.",
-      ru: "Сушка, сортировка и упаковка кураги, изюма и чернослива — обычных и органических.",
-      uz: "Oʻrik, mayiz va qoqi olxoʻrini quritish, saralash va qadoqlash — oddiy va organik.",
+      en: "Annual processing capacity for the dried fruit line, as published by the company.",
+      ru: "Годовая мощность переработки по линии сухофруктов — по данным компании.",
+      uz: "Quritilgan mevalar liniyasining yillik qayta ishlash quvvati — kompaniya maʼlumotlariga koʻra.",
     },
     image: "",
   },
@@ -280,9 +271,9 @@ export const facilities: Facility[] = [
     location: { en: "Uzbekistan", ru: "Узбекистан", uz: "Oʻzbekiston" },
     capacity: { en: "10 000 T", ru: "10 000 т", uz: "10 000 t" },
     description: {
-      en: "Shelling, grading and packing of peanuts, walnuts and almonds.",
-      ru: "Лущение, калибровка и упаковка арахиса, грецкого ореха и миндаля.",
-      uz: "Yeryongʻoq, yongʻoq va bodomni poʻstlash, saralash va qadoqlash.",
+      en: "Annual processing capacity for the nut line, as published by the company.",
+      ru: "Годовая мощность переработки по линии орехов — по данным компании.",
+      uz: "Yongʻoqlar liniyasining yillik qayta ishlash quvvati — kompaniya maʼlumotlariga koʻra.",
     },
     image: "",
   },
@@ -341,9 +332,7 @@ export const contacts: Contacts = {
   ],
   mapEmbed:
     "https://www.google.com/maps?q=Tashkent,Uzbekistan&output=embed",
-  workingHours: {
-    en: "Monday – Friday, 09:00 – 18:00 (GMT+5)",
-    ru: "Понедельник – пятница, 09:00 – 18:00 (GMT+5)",
-    uz: "Dushanba – juma, 09:00 – 18:00 (GMT+5)",
-  },
+  // Not published by the company — ask the client. The UI hides the block
+  // while this is empty.
+  workingHours: { en: "" },
 };

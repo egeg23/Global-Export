@@ -109,19 +109,21 @@ export default async function ContactsPage({ params }: Props) {
                     </li>
                   ))}
 
-                  <li className="flex items-start gap-4">
-                    <span className="mt-0.5 text-forest-600">
-                      <Icon name="clock" className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-forest-500">
-                        {dict.contacts.hoursTitle}
-                      </p>
-                      <p className="mt-1 text-[0.95rem] text-forest-900">
-                        {t(contacts.workingHours, locale)}
-                      </p>
-                    </div>
-                  </li>
+                  {t(contacts.workingHours, locale) ? (
+                    <li className="flex items-start gap-4">
+                      <span className="mt-0.5 text-forest-600">
+                        <Icon name="clock" className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <p className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-forest-500">
+                          {dict.contacts.hoursTitle}
+                        </p>
+                        <p className="mt-1 text-[0.95rem] text-forest-900">
+                          {t(contacts.workingHours, locale)}
+                        </p>
+                      </div>
+                    </li>
+                  ) : null}
                 </ul>
 
                 {contacts.socials.length > 0 ? (

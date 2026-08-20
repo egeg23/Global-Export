@@ -128,7 +128,7 @@ export const ru: Dictionary = {
     eyebrow: "Свяжитесь с нами",
     title: "Контакты",
     intro:
-      "Пишите на русском, английском или узбекском — отдел экспорта отвечает в течение одного рабочего дня.",
+      "Пишите на русском, английском или узбекском — отдел экспорта ответит вам в ближайшее время.",
     officeTitle: "Головной офис",
     departmentsTitle: "Отделы",
     hoursTitle: "Время работы",
@@ -182,7 +182,7 @@ export const ru: Dictionary = {
     newsDescription: "Новости и анонсы Global Export Company.",
     contactsTitle: "Контакты",
     contactsDescription:
-      "Адрес, телефоны и email Global Export Company в Ташкенте, Узбекистан.",
+      "Адрес и email Global Export Company в Ташкенте, Узбекистан.",
   },
   notFound: {
     title: "Страница не найдена",

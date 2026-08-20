@@ -69,12 +69,14 @@ export function CtaForm({
                 </div>
               ))}
 
-              <div className="flex items-start gap-4">
-                <span className="mt-0.5 text-harvest-300">
-                  <Icon name="clock" className="h-5 w-5" />
-                </span>
-                <p className="text-sm text-sand-200/80">{t(contacts.workingHours, locale)}</p>
-              </div>
+              {t(contacts.workingHours, locale) ? (
+                <div className="flex items-start gap-4">
+                  <span className="mt-0.5 text-harvest-300">
+                    <Icon name="clock" className="h-5 w-5" />
+                  </span>
+                  <p className="text-sm text-sand-200/80">{t(contacts.workingHours, locale)}</p>
+                </div>
+              ) : null}
             </Reveal>
           </div>
 

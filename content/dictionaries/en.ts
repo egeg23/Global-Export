@@ -126,7 +126,7 @@ export const en = {
     eyebrow: "Get in touch",
     title: "Contacts",
     intro:
-      "Write to us in English, Russian or Uzbek — the export department answers within one business day.",
+      "Write to us in English, Russian or Uzbek — the export department will get back to you as soon as possible.",
     officeTitle: "Head office",
     departmentsTitle: "Departments",
     hoursTitle: "Working hours",
@@ -180,7 +180,7 @@ export const en = {
     newsDescription: "News and announcements from Global Export Company.",
     contactsTitle: "Contacts",
     contactsDescription:
-      "Address, phone numbers and email of Global Export Company in Tashkent, Uzbekistan.",
+      "Address and email contacts of Global Export Company in Tashkent, Uzbekistan.",
   },
   notFound: {
     title: "Page not found",
