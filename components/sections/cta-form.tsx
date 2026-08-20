@@ -56,7 +56,7 @@ export function CtaForm({
                     <Icon name="mail" className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="text-[0.7rem] uppercase tracking-[0.14em] text-sand-300/50">
+                    <p className="text-[0.7rem] uppercase tracking-[0.14em] text-sand-300/75">
                       {t(email.label, locale)}
                     </p>
                     <a

@@ -111,7 +111,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-sand-200/10 pt-8 text-xs text-sand-300/55 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-4 border-t border-sand-200/10 pt-8 text-xs text-sand-300/75 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} Global Export Company LLC. {dict.footer.rights}
           </p>

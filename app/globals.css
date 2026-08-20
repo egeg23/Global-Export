@@ -8,7 +8,9 @@
 @theme {
   --color-ink: #10201a;
   --color-ink-muted: #55665f;
-  --color-ink-subtle: #8b9a94;
+  /* Darkened from #8b9a94, which measured 2.8:1 on the sand background —
+     below the 4.5:1 AA floor for the small labels that use it. */
+  --color-ink-subtle: #64736d;
 
   --color-forest-50: #f1f7f4;
   --color-forest-100: #ddece5;

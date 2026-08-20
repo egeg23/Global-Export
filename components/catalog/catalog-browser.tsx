@@ -70,8 +70,10 @@ export function CatalogBrowser({
   return (
     <div>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        {/* A filter, not a tab set: there are no panels to switch between, so
+            these are toggle buttons rather than role="tab". */}
         <div
-          role="tablist"
+          role="group"
           aria-label={dict.catalog.filterBy}
           className="-mx-1 flex flex-wrap gap-2 px-1"
         >
@@ -81,8 +83,7 @@ export function CatalogBrowser({
               <button
                 key={tab.slug || "all"}
                 type="button"
-                role="tab"
-                aria-selected={active}
+                aria-pressed={active}
                 onClick={() => setCategory(tab.slug)}
                 className={cn(
                   "h-10 rounded-full px-5 text-sm font-medium transition-all duration-300",
@@ -112,7 +113,7 @@ export function CatalogBrowser({
         </div>
       </div>
 
-      <p className="mt-6 text-sm text-ink-subtle">
+      <p className="mt-6 text-sm text-ink-subtle" role="status" aria-live="polite">
         {filtered.length} {countLabel}
       </p>
 

@@ -36,13 +36,13 @@ export function LeadForm({
   const fieldClass = cn(
     "h-12 w-full rounded-xl border px-4 text-[0.95rem] transition-colors duration-300 outline-none",
     dark
-      ? "border-sand-50/15 bg-sand-50/5 text-sand-50 placeholder:text-sand-300/40 focus:border-harvest-300/70"
+      ? "border-sand-50/15 bg-sand-50/5 text-sand-50 placeholder:text-sand-300/65 focus:border-harvest-300/70"
       : "border-forest-900/12 bg-white text-forest-950 placeholder:text-ink-subtle focus:border-forest-600",
   );
 
   const labelClass = cn(
     "mb-2 block text-[0.7rem] font-semibold uppercase tracking-[0.14em]",
-    dark ? "text-sand-300/60" : "text-forest-600",
+    dark ? "text-sand-300/75" : "text-forest-600",
   );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -85,6 +85,8 @@ export function LeadForm({
   if (status === "success") {
     return (
       <div
+        role="status"
+        aria-live="polite"
         className={cn(
           "flex min-h-64 flex-col items-start justify-center rounded-card border p-8",
           dark ? "border-harvest-300/30 bg-sand-50/5" : "border-forest-600/25 bg-forest-50",
@@ -142,8 +144,13 @@ export function LeadForm({
             autoComplete="name"
             className={cn(fieldClass, errors.name && "border-red-500/70")}
             aria-invalid={Boolean(errors.name)}
+            aria-describedby={errors.name ? "lead-name-error" : undefined}
           />
-          {errors.name ? <p className="mt-1.5 text-xs text-red-500">{errors.name}</p> : null}
+          {errors.name ? (
+            <p id="lead-name-error" className="mt-1.5 text-xs text-red-600">
+              {errors.name}
+            </p>
+          ) : null}
         </div>
 
         <div>
@@ -170,8 +177,13 @@ export function LeadForm({
             autoComplete="email"
             className={cn(fieldClass, errors.email && "border-red-500/70")}
             aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? "lead-email-error" : undefined}
           />
-          {errors.email ? <p className="mt-1.5 text-xs text-red-500">{errors.email}</p> : null}
+          {errors.email ? (
+            <p id="lead-email-error" className="mt-1.5 text-xs text-red-600">
+              {errors.email}
+            </p>
+          ) : null}
         </div>
 
         <div>
@@ -242,7 +254,10 @@ export function LeadForm({
       </div>
 
       {status === "error" ? (
-        <p className="rounded-xl border border-red-500/30 bg-red-500/8 px-4 py-3 text-sm text-red-600">
+        <p
+          role="alert"
+          className="rounded-xl border border-red-500/30 bg-red-500/8 px-4 py-3 text-sm text-red-600"
+        >
           {dict.form.error}
         </p>
       ) : null}
@@ -261,7 +276,7 @@ export function LeadForm({
           {status === "submitting" ? dict.form.submitting : dict.form.submit}
         </button>
 
-        <p className={cn("max-w-xs text-xs", dark ? "text-sand-300/50" : "text-ink-subtle")}>
+        <p className={cn("max-w-xs text-xs", dark ? "text-sand-300/75" : "text-ink-subtle")}>
           {dict.form.consent}
         </p>
       </div>
