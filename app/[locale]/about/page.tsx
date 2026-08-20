@@ -43,9 +43,10 @@ export default async function AboutPage({ params }: Props) {
       <PageHero
         locale={locale}
         eyebrow={dict.about.eyebrow}
-        title={t(company.tagline, locale)}
+        title={dict.about.title}
         text={t(company.description, locale)}
         image="/images/production.jpg"
+        breadcrumbLabel={dict.common.breadcrumb}
         breadcrumbs={[
           { href: "", label: dict.nav.home },
           { label: dict.nav.about },

@@ -43,6 +43,7 @@ export default async function CatalogPage({ params }: Props) {
         title={dict.catalog.title}
         text={dict.catalog.intro}
         image="/images/categories/dried-fruits.jpg"
+        breadcrumbLabel={dict.common.breadcrumb}
         breadcrumbs={[{ href: "", label: dict.nav.home }, { label: dict.nav.catalog }]}
       />
 

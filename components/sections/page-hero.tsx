@@ -15,6 +15,8 @@ type PageHeroProps = {
   text?: string;
   image?: string;
   breadcrumbs?: Crumb[];
+  /** Localised label for the breadcrumb landmark. */
+  breadcrumbLabel?: string;
   className?: string;
 };
 
@@ -29,6 +31,7 @@ export function PageHero({
   text,
   image,
   breadcrumbs,
+  breadcrumbLabel = "Breadcrumb",
   className,
 }: PageHeroProps) {
   return (
@@ -60,7 +63,7 @@ export function PageHero({
 
       <Container className="relative">
         {breadcrumbs && breadcrumbs.length > 0 ? (
-          <nav aria-label="Breadcrumb" className="mb-6">
+          <nav aria-label={breadcrumbLabel} className="mb-6">
             <ol className="flex flex-wrap items-center gap-2 text-xs text-sand-300/75">
               {breadcrumbs.map((crumb, index) => (
                 <li key={`${crumb.label}-${index}`} className="flex items-center gap-2">

@@ -20,6 +20,8 @@ export const en = {
     menu: "Menu",
     close: "Close",
     language: "Language",
+    mainNav: "Main navigation",
+    breadcrumb: "Breadcrumb",
     scrollHint: "Scroll",
     founded: "Founded",
     loading: "Loading…",
@@ -50,6 +52,7 @@ export const en = {
   },
   about: {
     eyebrow: "About the company",
+    title: "A processor and exporter with its own supply chain",
     missionTitle: "Our mission",
     storyTitle: "Our story",
     facilitiesTitle: "Production facilities",

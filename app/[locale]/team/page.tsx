@@ -84,6 +84,7 @@ export default async function TeamPage({ params }: Props) {
               ? "Boshqaruv, departament direktorlari va eksport bo‘limi — siz bevosita ishlaydigan odamlar."
               : "The management board, department directors and the export team — the people you will deal with directly."
         }
+        breadcrumbLabel={dict.common.breadcrumb}
         breadcrumbs={[{ href: "", label: dict.nav.home }, { label: dict.nav.team }]}
       />
 

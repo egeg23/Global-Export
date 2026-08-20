@@ -22,6 +22,8 @@ export const uz: Dictionary = {
     menu: "Menyu",
     close: "Yopish",
     language: "Til",
+    mainNav: "Asosiy navigatsiya",
+    breadcrumb: "Yo‘l xaritasi",
     scrollHint: "Pastga",
     founded: "Tashkil etilgan",
     loading: "Yuklanmoqda…",
@@ -52,6 +54,7 @@ export const uz: Dictionary = {
   },
   about: {
     eyebrow: "Kompaniya haqida",
+    title: "O‘z ta’minot zanjiriga ega qayta ishlovchi va eksportyor",
     missionTitle: "Bizning missiyamiz",
     storyTitle: "Bizning tariximiz",
     facilitiesTitle: "Ishlab chiqarish maydonchalari",

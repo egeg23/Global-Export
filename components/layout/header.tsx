@@ -86,7 +86,7 @@ export function Header({ locale, dict }: HeaderProps) {
           <Logo tone={tone} />
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-7 lg:flex" aria-label={dict.common.mainNav}>
           {links.map((link) => {
             const href = localeHref(locale, link.href);
             const active = pathname === href || pathname.startsWith(`${href}/`);
@@ -95,6 +95,7 @@ export function Header({ locale, dict }: HeaderProps) {
                 key={link.href}
                 href={href}
                 data-active={active}
+                aria-current={active ? "page" : undefined}
                 className={cn(
                   "link-underline text-[0.9rem] transition-colors duration-300",
                   solid
@@ -128,6 +129,7 @@ export function Header({ locale, dict }: HeaderProps) {
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
             aria-label={menuOpen ? dict.common.close : dict.common.menu}
             className={cn(
               "flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 lg:hidden",
@@ -136,7 +138,6 @@ export function Header({ locale, dict }: HeaderProps) {
                 : "border-sand-50/25 text-sand-50 hover:bg-sand-50/10",
             )}
           >
-            <span className="sr-only">{menuOpen ? dict.common.close : dict.common.menu}</span>
             <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
               {menuOpen ? (
                 <path
@@ -158,11 +159,13 @@ export function Header({ locale, dict }: HeaderProps) {
         </div>
       </Container>
 
-      {/* Mobile panel */}
+      {/* Mobile panel. `invisible` matters as much as the height: a collapsed
+          panel that is merely clipped keeps every link in the tab order. */}
       <div
+        id="mobile-menu"
         className={cn(
           "overflow-hidden border-t border-forest-900/10 bg-sand-50 transition-[max-height,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden",
-          menuOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0",
+          menuOpen ? "max-h-[80vh] opacity-100" : "invisible max-h-0 opacity-0",
         )}
       >
         <Container className="flex flex-col gap-1 py-6">

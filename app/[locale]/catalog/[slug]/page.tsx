@@ -67,7 +67,7 @@ export default async function ProductPage({ params }: Props) {
     <>
       <section className="bg-forest-950 pt-32 lg:pt-40">
         <Container>
-          <nav aria-label="Breadcrumb" className="pb-8">
+          <nav aria-label={dict.common.breadcrumb} className="pb-8">
             <ol className="flex flex-wrap items-center gap-2 text-xs text-sand-300/75">
               <li>
                 <Link

@@ -43,6 +43,7 @@ export default async function ContactsPage({ params }: Props) {
         eyebrow={dict.contacts.eyebrow}
         title={dict.contacts.title}
         text={dict.contacts.intro}
+        breadcrumbLabel={dict.common.breadcrumb}
         breadcrumbs={[{ href: "", label: dict.nav.home }, { label: dict.nav.contacts }]}
       />
 

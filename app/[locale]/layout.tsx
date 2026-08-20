@@ -86,7 +86,10 @@ export default async function LocaleLayout({
         </a>
 
         <Header locale={locale} dict={dict} />
-        <main id="main">{children}</main>
+        {/* tabIndex makes the skip link actually move focus, not just scroll. */}
+        <main id="main" tabIndex={-1}>
+          {children}
+        </main>
         <Footer locale={locale} dict={dict} />
 
         <script

@@ -33,11 +33,14 @@ export function LeadForm({
 
   const dark = tone === "dark";
 
+  // Borders are deliberately heavy enough to read as a control boundary
+  // (3:1 against the field background), and the global focus ring is left
+  // intact rather than cleared with `outline-none`.
   const fieldClass = cn(
-    "h-12 w-full rounded-xl border px-4 text-[0.95rem] transition-colors duration-300 outline-none",
+    "h-12 w-full rounded-xl border px-4 text-[0.95rem] transition-colors duration-300",
     dark
-      ? "border-sand-50/15 bg-sand-50/5 text-sand-50 placeholder:text-sand-300/65 focus:border-harvest-300/70"
-      : "border-forest-900/12 bg-white text-forest-950 placeholder:text-ink-subtle focus:border-forest-600",
+      ? "border-sand-50/35 bg-sand-50/5 text-sand-50 placeholder:text-sand-300/65 focus:border-harvest-300"
+      : "border-forest-900/50 bg-white text-forest-950 placeholder:text-ink-subtle focus:border-forest-700",
   );
 
   const labelClass = cn(
@@ -142,12 +145,15 @@ export function LeadForm({
             id="lead-name"
             name="name"
             autoComplete="name"
-            className={cn(fieldClass, errors.name && "border-red-500/70")}
+            className={cn(fieldClass, errors.name && "border-red-500")}
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "lead-name-error" : undefined}
           />
           {errors.name ? (
-            <p id="lead-name-error" className="mt-1.5 text-xs text-red-600">
+            <p
+              id="lead-name-error"
+              className={cn("mt-1.5 text-xs", dark ? "text-red-200" : "text-red-700")}
+            >
               {errors.name}
             </p>
           ) : null}
@@ -175,12 +181,15 @@ export function LeadForm({
             type="email"
             inputMode="email"
             autoComplete="email"
-            className={cn(fieldClass, errors.email && "border-red-500/70")}
+            className={cn(fieldClass, errors.email && "border-red-500")}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "lead-email-error" : undefined}
           />
           {errors.email ? (
-            <p id="lead-email-error" className="mt-1.5 text-xs text-red-600">
+            <p
+              id="lead-email-error"
+              className={cn("mt-1.5 text-xs", dark ? "text-red-200" : "text-red-700")}
+            >
               {errors.email}
             </p>
           ) : null}
@@ -256,7 +265,12 @@ export function LeadForm({
       {status === "error" ? (
         <p
           role="alert"
-          className="rounded-xl border border-red-500/30 bg-red-500/8 px-4 py-3 text-sm text-red-600"
+          className={cn(
+            "rounded-xl border px-4 py-3 text-sm",
+            dark
+              ? "border-red-400/40 bg-red-400/10 text-red-200"
+              : "border-red-600/30 bg-red-600/8 text-red-700",
+          )}
         >
           {dict.form.error}
         </p>

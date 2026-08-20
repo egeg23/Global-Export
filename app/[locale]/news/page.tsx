@@ -41,11 +41,16 @@ export default async function NewsPage({ params }: Props) {
         eyebrow={dict.news.eyebrow}
         title={dict.news.title}
         text={dict.news.intro}
+        breadcrumbLabel={dict.common.breadcrumb}
         breadcrumbs={[{ href: "", label: dict.nav.home }, { label: dict.nav.news }]}
       />
 
       <section className="bg-sand-50 py-20 lg:py-28">
         <Container>
+          {/* The cards carry h3 headings; this keeps the outline h1 → h2 → h3
+              without adding a redundant visible title under the page hero. */}
+          <h2 className="sr-only">{dict.news.allNews}</h2>
+
           {news.length > 0 ? (
             <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {news.map((item, index) => (

@@ -22,6 +22,8 @@ export const ru: Dictionary = {
     menu: "Меню",
     close: "Закрыть",
     language: "Язык",
+    mainNav: "Основная навигация",
+    breadcrumb: "Хлебные крошки",
     scrollHint: "Листайте",
     founded: "Основана",
     loading: "Загрузка…",
@@ -52,6 +54,7 @@ export const ru: Dictionary = {
   },
   about: {
     eyebrow: "О компании",
+    title: "Переработчик и экспортёр с собственной цепочкой поставок",
     missionTitle: "Наша миссия",
     storyTitle: "Наша история",
     facilitiesTitle: "Производственные площадки",

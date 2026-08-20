@@ -31,7 +31,9 @@ export function LanguageSwitcher({
             key={code}
             href={rest ? `/${code}/${rest}` : `/${code}`}
             hrefLang={code}
-            aria-label={localeNames[code]}
+            // The accessible name has to start with the visible text (WCAG 2.5.3),
+            // so voice control users can say "EN" and be understood.
+            aria-label={`${localeShortNames[code]} — ${localeNames[code]}`}
             aria-current={active ? "true" : undefined}
             className={cn(
               "rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide transition-colors duration-300",

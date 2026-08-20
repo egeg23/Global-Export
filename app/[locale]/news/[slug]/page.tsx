@@ -65,7 +65,7 @@ export default async function ArticlePage({ params }: Props) {
     <>
       <section className="bg-forest-950 pb-16 pt-32 lg:pb-20 lg:pt-40">
         <Container size="narrow">
-          <nav aria-label="Breadcrumb">
+          <nav aria-label={dict.common.breadcrumb}>
             <ol className="flex flex-wrap items-center gap-2 text-xs text-sand-300/75">
               <li>
                 <Link

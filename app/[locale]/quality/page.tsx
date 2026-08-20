@@ -43,6 +43,7 @@ export default async function QualityPage({ params }: Props) {
         title={dict.quality.title}
         text={dict.quality.intro}
         image="/images/quality.jpg"
+        breadcrumbLabel={dict.common.breadcrumb}
         breadcrumbs={[{ href: "", label: dict.nav.home }, { label: dict.nav.quality }]}
       />
 
