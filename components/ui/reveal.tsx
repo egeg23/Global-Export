@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { cn } from "@/lib/cn";
 
@@ -18,16 +18,19 @@ type RevealProps = {
  * The transition itself lives in globals.css, so the only client-side cost is
  * one IntersectionObserver per element — no animation library, no layout
  * thrashing, and `prefers-reduced-motion` is handled by the stylesheet.
+ *
+ * The observer is attached from a ref callback rather than an effect, so it
+ * starts watching the moment the node exists and tears itself down when React
+ * detaches it.
  */
 export function Reveal({ children, className, delay = 0, as: Tag = "div" }: RevealProps) {
-  const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    const node = ref.current;
+  const attach = useCallback((node: HTMLElement | null) => {
     if (!node) return;
 
     if (typeof IntersectionObserver === "undefined") {
+      // Very old browser: show the content rather than hide it forever.
       setVisible(true);
       return;
     }
@@ -50,7 +53,7 @@ export function Reveal({ children, className, delay = 0, as: Tag = "div" }: Reve
 
   return (
     <Tag
-      ref={ref as never}
+      ref={attach as never}
       className={cn("reveal", visible && "reveal-visible", className)}
       style={delay ? ({ "--reveal-delay": `${delay}ms` } as React.CSSProperties) : undefined}
     >

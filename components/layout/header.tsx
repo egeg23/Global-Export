@@ -38,11 +38,6 @@ export function Header({ locale, dict }: HeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close the mobile panel whenever navigation happens.
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
-
   // The panel covers the page, so the body behind it must not scroll.
   useEffect(() => {
     if (!menuOpen) return;
@@ -175,6 +170,7 @@ export function Header({ locale, dict }: HeaderProps) {
             <Link
               key={link.href}
               href={localeHref(locale, link.href)}
+              onClick={() => setMenuOpen(false)}
               className="rounded-xl px-3 py-3 font-display text-xl text-forest-900 transition-colors hover:bg-forest-800/5"
             >
               {link.label}
@@ -185,6 +181,7 @@ export function Header({ locale, dict }: HeaderProps) {
             <LanguageSwitcher locale={locale} tone="dark" />
             <Link
               href={localeHref(locale, "contacts")}
+              onClick={() => setMenuOpen(false)}
               className="inline-flex h-11 items-center rounded-full bg-forest-800 px-6 text-sm font-medium text-sand-50"
             >
               {dict.common.requestQuote}
