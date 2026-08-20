@@ -1236,9 +1236,9 @@ export const products: Product[] = [
     },
     "latinName": "Arachis hypogaea L.",
     "description": {
-      "en": "Groundnuts supplied shelled (kernels) and unshelled from irrigated fields of the Fergana Valley and Tashkent region, calibrated by count per ounce for predictable roasting behaviour. Aflatoxin is controlled lot by lot, with third-party laboratory reports issued before shipment. Suitable for roasting and salting, peanut butter and paste, confectionery, bakery and snack lines.",
-      "ru": "Арахис поставляется очищенным (ядро) и в скорлупе с орошаемых полей Ферганской долины и Ташкентской области; калибровка по количеству ядер на унцию обеспечивает предсказуемое поведение при обжарке. Содержание афлатоксинов контролируется по каждой партии, до отгрузки предоставляются протоколы независимой лаборатории. Подходит для обжарки и соления, производства арахисовой пасты, кондитерских и хлебобулочных изделий, снековых линий.",
-      "uz": "Yer yongʻogʻi tozalangan (magʻiz) va poʻchogʻi bilan yetkaziladi; Fargʻona vodiysi va Toshkent viloyatining sugʻoriladigan dalalarida yetishtiriladi hamda unsiyadagi dona soni boʻyicha kalibrlanadi, bu qovurishda barqaror natija beradi. Aflatoksin miqdori har bir partiya boʻyicha nazorat qilinadi, joʻnatishdan oldin mustaqil laboratoriya bayonnomalari taqdim etiladi. Qovurish va tuzlash, yer yongʻogʻi pastasi, qandolat va non mahsulotlari hamda gazak liniyalari uchun mos."
+      "en": "Groundnuts supplied shelled (kernels) and unshelled from irrigated fields of the Fergana Valley and Tashkent region, calibrated by count per ounce for predictable roasting behaviour. Suitable for roasting and salting, peanut butter and paste, confectionery, bakery and snack lines.",
+      "ru": "Арахис поставляется очищенным (ядро) и в скорлупе с орошаемых полей Ферганской долины и Ташкентской области; калибровка по количеству ядер на унцию обеспечивает предсказуемое поведение при обжарке. Подходит для обжарки и соления, производства арахисовой пасты, кондитерских и хлебобулочных изделий, снековых линий.",
+      "uz": "Yer yongʻogʻi tozalangan (magʻiz) va poʻchogʻi bilan yetkaziladi; Fargʻona vodiysi va Toshkent viloyatining sugʻoriladigan dalalarida yetishtiriladi hamda unsiyadagi dona soni boʻyicha kalibrlanadi, bu qovurishda barqaror natija beradi. Qovurish va tuzlash, yer yongʻogʻi pastasi, qandolat va non mahsulotlari hamda gazak liniyalari uchun mos."
     },
     "specs": [
       {
@@ -1415,8 +1415,7 @@ export const products: Product[] = [
       "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-27 т в 40' контейнере",
       "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, soʻrov boʻyicha chakana qadoqlash; 40' konteynerda 25-27 tonna"
     },
-    "hsCode": "0713.31",
-    "availability": "soon"
+    "hsCode": "0713.31"
   },
   {
     "slug": "organic-sultana",
@@ -1505,8 +1504,7 @@ export const products: Product[] = [
       "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, вакуум или потребительская фасовка по запросу",
       "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, soʻrov boʻyicha vakuum yoki chakana qadoqlash"
     },
-    "hsCode": "0806.20",
-    "availability": "soon"
+    "hsCode": "0806.20"
   },
   {
     "slug": "organic-sesame-seeds",
@@ -1518,7 +1516,7 @@ export const products: Product[] = [
     },
     "latinName": "Sesamum indicum",
     "description": {
-      "en": "Whole natural sesame seeds grown on certified organic land in southern Uzbekistan and cleaned to 99.95% purity on gravity and optical sorters. Oil content of 48-52% and a clean, nutty profile make the seed suitable for tahini, bakery toppings and cold-pressed oil. Hulled seed can be supplied on request, and every lot carries an organic certificate traceable to the field.",
+      "en": "Whole natural sesame seeds grown on certified organic land in southern Uzbekistan and cleaned to 99.95% purity on gravity and optical sorters. Oil content of 48-52% and a clean, nutty profile make the seed suitable for tahini, bakery toppings and cold-pressed oil. Hulled seed can be supplied on request; certification documents are provided on request.",
       "ru": "Цельные натуральные семена кунжута, выращенные на сертифицированных органических землях юга Узбекистана и очищенные до 99,95% на гравитационных и оптических сепараторах. Масличность 48-52% и чистый ореховый вкус позволяют использовать семя для тахини, посыпки в хлебопечении и холодного отжима масла. По запросу поставляется очищенное (шелушёное) семя; на каждую партию оформляется органический сертификат с прослеживаемостью до поля.",
       "uz": "Oʻzbekiston janubidagi sertifikatlangan organik yerlarda yetishtirilgan butun tabiiy kunjut urugʻi gravitatsion va optik saralagichlarda 99,95% gacha tozalanadi. Moyliligi 48-52% va toza yongʻoqsimon taʼmi tufayli u tahin, nonvoychilik sepmasi va sovuq presslangan moy uchun mos keladi. Soʻrov boʻyicha poʻsti tozalangan urugʻ ham yetkaziladi; har bir partiyaga dalagacha kuzatiladigan organik sertifikat beriladi."
     },
@@ -1595,8 +1593,7 @@ export const products: Product[] = [
       "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-26 т в 40' контейнере",
       "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, soʻrov boʻyicha chakana qadoqlash; 40' konteynerda 25-26 tonna"
     },
-    "hsCode": "1207.40",
-    "availability": "soon"
+    "hsCode": "1207.40"
   },
   {
     "slug": "organic-kidney-beans",
@@ -1608,7 +1605,7 @@ export const products: Product[] = [
     },
     "latinName": "Phaseolus vulgaris",
     "description": {
-      "en": "Certified organic kidney beans in light speckled and red speckled types, calibrated at 180-220 seeds per 100 g and colour-sorted for uniform appearance. Grown on irrigated organic plots of the Fergana Valley, the beans cook evenly and keep their skin intact, which suits canning, dry retail packing and food-service programmes. Organic documentation is issued per lot and traceable to the field.",
+      "en": "Certified organic kidney beans in light speckled and red speckled types, calibrated at 180-220 seeds per 100 g and colour-sorted for uniform appearance. Grown on irrigated organic plots of the Fergana Valley, the beans cook evenly and keep their skin intact, which suits canning, dry retail packing and food-service programmes. Certification documents are provided on request.",
       "ru": "Сертифицированная органическая фасоль пёстрых и красных типов, откалиброванная на уровне 180-220 шт. на 100 г и отсортированная по цвету для однородного внешнего вида. Выращена на орошаемых органических участках Ферганской долины: равномерно разваривается и сохраняет целую кожуру, что важно для консервирования, сухой фасовки и сегмента HoReCa. Органические документы оформляются на каждую партию и прослеживаются до поля.",
       "uz": "Sertifikatlangan organik loviya — chipor va qizil turlari, 100 g da 180-220 dona qilib kalibrlangan va bir xil koʻrinish uchun rangi boʻyicha saralangan. Fargʻona vodiysining sugʻoriladigan organik maydonlarida yetishtiriladi, bir tekis pishadi va poʻsti butun qoladi — bu konservalash, quruq qadoqlash va HoReCa uchun muhim. Organik hujjatlar har bir partiya uchun rasmiylashtiriladi va dalagacha kuzatiladi."
     },
@@ -1788,7 +1785,7 @@ export const products: Product[] = [
     },
     "latinName": "Cicer arietinum",
     "description": {
-      "en": "Kabuli-type organic chickpeas in 7-8 mm and 8-9 mm calibres, grown on certified organic land in the south of Uzbekistan. The hot, dry ripening season produces a light cream colour, thin skin and reliable cooking behaviour for hummus, canning and retail packing. Lots are gravity-separated, colour-sorted and shipped with organic certificates traceable to the field.",
+      "en": "Kabuli-type organic chickpeas in 7-8 mm and 8-9 mm calibres, grown on certified organic land in the south of Uzbekistan. The hot, dry ripening season produces a light cream colour, thin skin and reliable cooking behaviour for hummus, canning and retail packing. Lots are gravity-separated and colour-sorted; certification documents are provided on request.",
       "ru": "Органический нут типа «кабули» калибров 7-8 мм и 8-9 мм, выращенный на сертифицированных органических землях юга Узбекистана. Жаркий и сухой период созревания даёт светлый кремовый цвет, тонкую кожуру и предсказуемое поведение при варке — для хумуса, консервирования и фасовки. Партии проходят гравитационную очистку и фотосепарацию, отгружаются с органическими сертификатами, прослеживаемыми до поля.",
       "uz": "Oʻzbekiston janubidagi sertifikatlangan organik yerlarda yetishtirilgan «kabuli» turidagi organik noʻxat, kalibri 7-8 mm va 8-9 mm. Issiq va quruq pishish davri unga och krem rang, yupqa poʻst va pishirishda barqaror xususiyat beradi — xummus, konservalash va qadoqlash uchun. Partiyalar gravitatsion tozalash va foto-saralashdan oʻtadi, dalagacha kuzatiladigan organik sertifikatlar bilan joʻnatiladi."
     },
@@ -1969,7 +1966,7 @@ export const products: Product[] = [
     },
     "latinName": "Juglans regia",
     "description": {
-      "en": "Organic walnut kernels hand-sorted into light halves and quarters, cracked from nuts grown in mountain valleys where walnut has been cultivated for centuries. Cool nights and low humidity at harvest keep the oil fresh and the kernel colour light, with peroxide values well inside industrial specifications. In-shell nuts of 30-34 mm are available on request; all lots carry organic certification traceable to the orchard.",
+      "en": "Organic walnut kernels hand-sorted into light halves and quarters, cracked from nuts grown in mountain valleys where walnut has been cultivated for centuries. Cool nights and low humidity at harvest keep the oil fresh and the kernel colour light, with peroxide values well inside industrial specifications. In-shell nuts are available on request; certification documents are provided on request.",
       "ru": "Органическое ядро грецкого ореха, отсортированное вручную на светлые половинки и четвертинки; орех выращен в горных долинах, где культура возделывается веками. Прохладные ночи и низкая влажность в период уборки сохраняют свежесть масла и светлый цвет ядра, перекисное число уверенно укладывается в промышленные требования. По запросу поставляем орех в скорлупе калибра 30-34 мм; все партии имеют органический сертификат с прослеживаемостью до сада.",
       "uz": "Organik yongʻoq magʻzi qoʻlda saralanadi — och rangli yarim va chorak magʻizlar; yongʻoq asrlar davomida yetishtirilib kelinayotgan togʻ vodiylaridan olinadi. Hosil davridagi salqin tunlar va past namlik moyning yangiligini va magʻizning och rangini saqlaydi, peroksid koʻrsatkichi sanoat talablari doirasida boʻladi. Soʻrov boʻyicha 30-34 mm kalibrli poʻstli yongʻoq ham yetkaziladi; barcha partiyalar bogʻgacha kuzatiladigan organik sertifikatga ega."
     },
@@ -2059,9 +2056,9 @@ export const products: Product[] = [
     },
     "latinName": "Arachis hypogaea",
     "description": {
-      "en": "Raw organic peanut kernels of 50/60 and 60/70 counts, grown on irrigated organic plots and dried down to 8% moisture immediately after lifting to control aflatoxin risk. The kernels are uniform in size with tight red skins, suitable for roasting, peanut butter and confectionery coatings. Aflatoxin is tested per lot against EU limits, and in-shell peanuts can be supplied on request.",
-      "ru": "Сырое органическое ядро арахиса калибров 50/60 и 60/70, выращенное на орошаемых органических участках и высушенное до 8% влажности сразу после подкопки — это ключевой контроль риска афлатоксинов. Ядро выровнено по размеру, с плотной красной оболочкой: подходит для обжарки, арахисовой пасты и кондитерских глазурей. Афлатоксин контролируется по каждой партии по нормам ЕС; по запросу поставляется арахис в скорлупе.",
-      "uz": "Sugʻoriladigan organik maydonlarda yetishtirilgan xom organik yeryongʻoq magʻzi, kalibri 50/60 va 60/70; kovlab olingandan soʻng darhol 8% namlikkacha quritiladi — bu aflatoksin xavfini nazorat qilishning asosiy usuli. Magʻizlar oʻlchami bir tekis, poʻsti qizil va zich: qovurish, yeryongʻoq pastasi va qandolat qoplamalari uchun mos. Aflatoksin har bir partiyada YeI meʼyorlari boʻyicha tekshiriladi; soʻrov boʻyicha poʻstli yeryongʻoq ham yetkaziladi."
+      "en": "Raw organic peanut kernels of 50/60 and 60/70 counts, grown on irrigated organic plots and dried down to 8% moisture immediately after lifting. The kernels are uniform in size with tight red skins, suitable for roasting, peanut butter and confectionery coatings.",
+      "ru": "Ядро выровнено по размеру, с плотной красной оболочкой: подходит для обжарки, арахисовой пасты и кондитерских глазурей. по запросу поставляется арахис в скорлупе.",
+      "uz": "Sugʻoriladigan organik maydonlarda yetishtirilgan xom organik yeryongʻoq magʻzi, kalibri 50/60 va 60/70; Magʻizlar oʻlchami bir tekis, poʻsti qizil va zich: qovurish, yeryongʻoq pastasi va qandolat qoplamalari uchun mos. soʻrov boʻyicha poʻstli yeryongʻoq ham yetkaziladi."
     },
     "specs": [
       {
@@ -2083,9 +2080,9 @@ export const products: Product[] = [
           "uz": "Tozalik va namlik"
         },
         "value": {
-          "en": "Purity 99% min. / Moisture 8% max. / Aflatoxin within EU limits / Origin: Uzbekistan",
-          "ru": "Чистота 99% мин. / Влажность 8% макс. / Афлатоксин в пределах норм ЕС / Происхождение: Узбекистан",
-          "uz": "Tozaligi 99% dan kam emas / Namligi 8% dan koʻp emas / Aflatoksin YeI meʼyorlari doirasida / Kelib chiqishi: Oʻzbekiston"
+          "en": "Purity 99% min. / Moisture 8% max./ Origin: Uzbekistan",
+          "ru": "Чистота 99% мин. / Влажность 8% макс./ Происхождение: Узбекистан",
+          "uz": "Tozaligi 99% dan kam emas / Namligi 8% dan koʻp emas / Kelib chiqishi: Oʻzbekiston"
         }
       },
       {
@@ -2329,7 +2326,7 @@ export const products: Product[] = [
     },
     "latinName": "Rosa canina",
     "description": {
-      "en": "Dried organic rosehip collected from certified wild-harvest areas in the mountains and foothills of Uzbekistan, then air-dried at low temperature to preserve natural vitamin C. The fruit is cleaned of stalks and leaves and supplied whole, cut and sifted, or milled for tea blends, herbal infusions and food-supplement extraction. Wild-collection areas are mapped and audited, so every lot stays traceable to its harvest zone.",
+      "en": "Dried organic rosehip collected from certified wild-harvest areas in the mountains and foothills of Uzbekistan, then air-dried at low temperature to preserve natural vitamin C. The fruit is cleaned of stalks and leaves and supplied whole, cut and sifted, or milled for tea blends, herbal infusions and food-supplement extraction. Certification documents for the wild-harvest range are provided on request.",
       "ru": "Сушёный органический шиповник с сертифицированных участков дикого сбора в горах и предгорьях Узбекистана; сушка воздушная, при низкой температуре — это сохраняет природный витамин C. Плоды очищаются от плодоножек и листьев и поставляются целыми, резаными (cut & sifted) или в помоле — для чайных смесей, травяных настоев и производства экстрактов для БАД. Участки дикого сбора картированы и проходят аудит, поэтому каждая партия прослеживается до зоны заготовки.",
       "uz": "Oʻzbekiston togʻlari va togʻoldi hududlaridagi sertifikatlangan yovvoyi yigʻim maydonlaridan terilgan quritilgan organik namatak past haroratda havoda quritiladi — bu tabiiy C vitaminini saqlaydi. Mevalar band va barglardan tozalanadi hamda butun, maydalangan (cut & sifted) yoki un holida yetkaziladi: choy aralashmalari, oʻsimlik damlamalari va BFQ uchun ekstrakt ishlab chiqarishga mos. Yovvoyi yigʻim maydonlari xaritaga olingan va auditdan oʻtadi, shu bois har bir partiya yigʻim hududigacha kuzatiladi."
     },

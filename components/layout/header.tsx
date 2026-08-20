@@ -58,14 +58,19 @@ export function Header({ locale, dict }: HeaderProps) {
   }, [menuOpen]);
 
   const solid = scrolled || menuOpen;
-  const tone = solid ? "dark" : "light";
+  // Concept A is dark end to end; a sand-coloured bar sliding in over it on
+  // scroll would break the frame. Concept B keeps the normal light header.
+  const onDarkConcept = pathname.includes("/concept-a");
+  const tone = solid && !onDarkConcept ? "dark" : "light";
 
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
         solid
-          ? "border-b border-forest-900/10 bg-sand-50/90 backdrop-blur-md"
+          ? onDarkConcept
+            ? "border-b border-sand-50/10 bg-[#0b0b0a]/92 backdrop-blur-md"
+            : "border-b border-forest-900/10 bg-sand-50/90 backdrop-blur-md"
           : "border-b border-transparent bg-transparent",
       )}
     >
@@ -164,7 +169,10 @@ export function Header({ locale, dict }: HeaderProps) {
       <div
         id="mobile-menu"
         className={cn(
-          "border-t border-forest-900/10 bg-sand-50 transition-[max-height,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden",
+          "border-t transition-[max-height,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden",
+          onDarkConcept
+            ? "border-sand-50/10 bg-[#0b0b0a]"
+            : "border-forest-900/10 bg-sand-50",
           menuOpen
             ? "max-h-[80vh] overflow-y-auto opacity-100"
             : "invisible max-h-0 overflow-hidden opacity-0",
@@ -176,14 +184,24 @@ export function Header({ locale, dict }: HeaderProps) {
               key={link.href}
               href={localeHref(locale, link.href)}
               onClick={() => setMenuOpen(false)}
-              className="rounded-xl px-3 py-3 font-display text-xl text-forest-900 transition-colors hover:bg-forest-800/5"
+              className={cn(
+                "rounded-xl px-3 py-3 font-display text-xl transition-colors",
+                onDarkConcept
+                  ? "text-sand-50 hover:bg-sand-50/5"
+                  : "text-forest-900 hover:bg-forest-800/5",
+              )}
             >
               {link.label}
             </Link>
           ))}
 
-          <div className="mt-4 flex items-center justify-between border-t border-forest-900/10 pt-5">
-            <LanguageSwitcher locale={locale} tone="dark" />
+          <div
+            className={cn(
+              "mt-4 flex items-center justify-between border-t pt-5",
+              onDarkConcept ? "border-sand-50/10" : "border-forest-900/10",
+            )}
+          >
+            <LanguageSwitcher locale={locale} tone={onDarkConcept ? "light" : "dark"} />
             <Link
               href={localeHref(locale, "contacts")}
               onClick={() => setMenuOpen(false)}
