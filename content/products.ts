@@ -23,9 +23,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Calibre / count",
-          "ru": "Калибр / счётность",
-          "uz": "Kalibr / donadorlik"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "+3 mm /+3,5 mm / Splited",
@@ -83,9 +83,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Minimum order / delivery terms",
-          "ru": "Минимальная партия / условия поставки",
-          "uz": "Minimal partiya / yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (24 MT) in 25 kg bags; FCA Tashkent, DAP or CIF on request",
@@ -125,9 +125,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Calibre / count",
-          "ru": "Калибр / счётность",
-          "uz": "Kalibr / donadorlik"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "+3,5 mm / 4 mm",
@@ -185,9 +185,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Minimum order / delivery terms",
-          "ru": "Минимальная партия / условия поставки",
-          "uz": "Minimal partiya / yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (24 MT) in 25 kg bags; FCA Tashkent, DAP or CIF on request",
@@ -226,9 +226,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Calibre / count",
-          "ru": "Калибр / счётность",
-          "uz": "Kalibr / donadorlik"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "200 - 220 P / 100 gr.",
@@ -286,9 +286,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Minimum order / delivery terms",
-          "ru": "Минимальная партия / условия поставки",
-          "uz": "Minimal partiya / yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (24 MT) in 25 kg bags; FCA Tashkent, DAP or CIF on request",
@@ -328,9 +328,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Calibre / count",
-          "ru": "Калибр / счётность",
-          "uz": "Kalibr / donadorlik"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "180 - 200 P / 100 gr.",
@@ -388,9 +388,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Minimum order / delivery terms",
-          "ru": "Минимальная партия / условия поставки",
-          "uz": "Minimal partiya / yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (24 MT) in 25 kg bags; FCA Tashkent, DAP or CIF on request",
@@ -429,9 +429,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Calibre / count",
-          "ru": "Калибр / счётность",
-          "uz": "Kalibr / donadorlik"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "300 - 330 P / 100gr.",
@@ -489,9 +489,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Minimum order / delivery terms",
-          "ru": "Минимальная партия / условия поставки",
-          "uz": "Minimal partiya / yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (24 MT) in 25 kg bags; FCA Tashkent, DAP or CIF on request",
@@ -530,9 +530,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Calibre / count",
-          "ru": "Калибр / счётность",
-          "uz": "Kalibr / donadorlik"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "200 - 220 P / 100gr.",
@@ -590,9 +590,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Minimum order / delivery terms",
-          "ru": "Минимальная партия / условия поставки",
-          "uz": "Minimal partiya / yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (24 MT) in 25 kg bags; FCA Tashkent, DAP or CIF on request",
@@ -631,9 +631,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Calibre / count",
-          "ru": "Калибр / счётность",
-          "uz": "Kalibr / donadorlik"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "340 - 370 P / 100gr.",
@@ -691,9 +691,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Minimum order / delivery terms",
-          "ru": "Минимальная партия / условия поставки",
-          "uz": "Minimal partiya / yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (24 MT) in 25 kg bags; FCA Tashkent, DAP or CIF on request",
@@ -734,7 +734,7 @@ export const products: Product[] = [
         "label": {
           "en": "Varieties",
           "ru": "Разновидности",
-          "uz": "Navlari"
+          "uz": "Turlari"
         },
         "value": {
           "en": "Black / Red / Golden / Brown",
@@ -746,7 +746,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "16% max.",
@@ -792,9 +792,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (approx. 18–20 MT); FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -836,7 +836,7 @@ export const products: Product[] = [
         "label": {
           "en": "Varieties",
           "ru": "Разновидности",
-          "uz": "Navlari"
+          "uz": "Turlari"
         },
         "value": {
           "en": "Sulphured / Natural",
@@ -848,7 +848,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "20% max.",
@@ -894,9 +894,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (approx. 16–18 MT); FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -938,7 +938,7 @@ export const products: Product[] = [
         "label": {
           "en": "Varieties",
           "ru": "Разновидности",
-          "uz": "Navlari"
+          "uz": "Turlari"
         },
         "value": {
           "en": "Without seeds - Ashlock / Spain / Hungarian\nWith seeds - Spain / Hungarian",
@@ -950,7 +950,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "25% max.",
@@ -996,9 +996,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (approx. 18–20 MT); FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -1039,7 +1039,7 @@ export const products: Product[] = [
         "label": {
           "en": "Varieties",
           "ru": "Разновидности",
-          "uz": "Navlari"
+          "uz": "Turlari"
         },
         "value": {
           "en": "White / Red",
@@ -1051,7 +1051,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "8% max.",
@@ -1097,9 +1097,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (approx. 12–14 MT of kernels); FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -1140,7 +1140,7 @@ export const products: Product[] = [
         "label": {
           "en": "Varieties",
           "ru": "Разновидности",
-          "uz": "Navlari"
+          "uz": "Turlari"
         },
         "value": {
           "en": "In-shell / Kernels (shelled)",
@@ -1152,7 +1152,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "6% max.",
@@ -1198,9 +1198,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (approx. 14–16 MT of kernels); FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -1241,7 +1241,7 @@ export const products: Product[] = [
         "label": {
           "en": "Varieties",
           "ru": "Разновидности",
-          "uz": "Navlari"
+          "uz": "Turlari"
         },
         "value": {
           "en": "Shelled / Unshelled",
@@ -1253,7 +1253,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "8% max.",
@@ -1299,9 +1299,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "1 x 20' FCL (approx. 20 MT); FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -1340,19 +1340,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -1364,14 +1352,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Purity 99% min. / Moisture 11% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. / Влажность 11% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas / Namligi 11% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1388,9 +1388,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "24 months in dry, ventilated warehouses at up to +20 °C, RH 65% max.",
@@ -1401,8 +1401,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
@@ -1442,19 +1442,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -1466,14 +1454,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Foreign matter 0.5% max., stems 1% max. / Moisture 15-17% / Origin: Uzbekistan",
           "ru": "Посторонние примеси 0,5% макс., плодоножки 1% макс. / Влажность 15-17% / Происхождение: Узбекистан",
           "uz": "Begona aralashmalar 0,5% dan ko‘p emas, bandlar 1% dan ko‘p emas / Namligi 15-17% / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1490,9 +1490,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "12 months at +5…+15 °C, RH 65% max., away from direct sunlight",
@@ -1503,8 +1503,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 5 MT trial lot, 18-20 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
@@ -1543,19 +1543,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -1567,14 +1555,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Purity 99.95% min. / Moisture 6% max. / Origin: Uzbekistan",
           "ru": "Чистота 99,95% мин. / Влажность 6% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99,95% dan kam emas / Namligi 6% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1591,9 +1591,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "18 months in dry, ventilated warehouses at up to +20 °C, RH 65% max.",
@@ -1604,8 +1604,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
@@ -1644,19 +1644,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -1668,14 +1656,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Purity 99% min. / Moisture 12% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. / Влажность 12% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas / Namligi 12% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1692,9 +1692,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "24 months in dry, ventilated warehouses at up to +20 °C, RH 65% max.",
@@ -1705,8 +1705,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
@@ -1745,19 +1745,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -1769,14 +1757,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Purity 99% min. / Moisture 13% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. / Влажность 13% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas / Namligi 13% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1793,9 +1793,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "12 months for hulled millet, 24 months for unhulled seed, in dry ventilated storage",
@@ -1806,8 +1806,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
@@ -1846,19 +1846,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -1870,14 +1858,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Purity 99% min. / Moisture 12% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. / Влажность 12% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas / Namligi 12% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1894,9 +1894,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "24 months in dry, ventilated warehouses at up to +20 °C, RH 65% max.",
@@ -1907,8 +1907,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
@@ -1947,19 +1947,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -1971,14 +1959,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Foreign matter 0.5% max. / Moisture 18-20% / Origin: Uzbekistan",
           "ru": "Посторонние примеси 0,5% макс. / Влажность 18-20% / Происхождение: Узбекистан",
           "uz": "Begona aralashmalar 0,5% dan ko‘p emas / Namligi 18-20% / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -1995,9 +1995,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "12 months at +2…+8 °C, RH 65% max. (unsulphured fruit requires cool storage)",
@@ -2008,8 +2008,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 5 MT trial lot, 18-20 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
@@ -2049,19 +2049,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -2073,14 +2061,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Kernel purity 99.5% min. (shell fragments 0.5% max.) / Moisture 5% max. / Origin: Uzbekistan",
           "ru": "Чистота ядра 99,5% мин. (частицы скорлупы 0,5% макс.) / Влажность 5% макс. / Происхождение: Узбекистан",
           "uz": "Mag‘iz tozaligi 99,5% dan kam emas (po‘st bo‘lakchalari 0,5% dan ko‘p emas) / Namligi 5% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -2097,9 +2097,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "12 months for kernels at 0…+4 °C, RH 60% max.; 12 months for in-shell in dry ventilated storage",
@@ -2110,8 +2110,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 3 MT trial lot, 16-18 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
@@ -2150,19 +2150,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -2174,14 +2162,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Purity 99% min. / Moisture 8% max. / Aflatoxin within EU limits / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. / Влажность 8% макс. / Афлатоксин в пределах норм ЕС / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas / Namligi 8% dan ko‘p emas / Aflatoksin YeI me’yorlari doirasida / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -2198,9 +2198,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "12 months in dry, ventilated storage at up to +20 °C, RH 65% max.",
@@ -2211,8 +2211,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 5 MT trial lot, 20-22 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
@@ -2251,19 +2251,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -2275,14 +2263,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Foreign matter 0.5% max., pit fragments 1% max. / Moisture 21-23% / Origin: Uzbekistan",
           "ru": "Посторонние примеси 0,5% макс., фрагменты косточек 1% макс. / Влажность 21-23% / Происхождение: Узбекистан",
           "uz": "Begona aralashmalar 0,5% dan ko‘p emas, danak bo‘lakchalari 1% dan ko‘p emas / Namligi 21-23% / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -2299,9 +2299,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "12 months at +2…+8 °C, RH 65% max. (preservative-free fruit requires cool storage)",
@@ -2312,8 +2312,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 5 MT trial lot, 18-20 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
@@ -2352,19 +2352,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -2376,14 +2364,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Purity 99% min. (shell fragments 0.5% max., broken 2% max.) / Moisture 6% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. (частицы скорлупы 0,5% макс., бой 2% макс.) / Влажность 6% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas (po‘st bo‘lakchalari 0,5%, singan mag‘iz 2% dan ko‘p emas) / Namligi 6% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -2400,9 +2400,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "12 months at +5…+15 °C, RH 65% max., away from direct sunlight",
@@ -2413,8 +2413,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 3 MT trial lot, 16-18 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
@@ -2453,19 +2453,7 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Certification",
-          "ru": "Сертификация",
-          "uz": "Sertifikatsiya"
-        },
-        "value": {
-          "en": "Organic (EU) — organic status traceable to the field",
-          "ru": "Organic (EU) — органический статус прослеживается до поля",
-          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
-        }
-      },
-      {
-        "label": {
-          "en": "Grade / calibration",
+          "en": "Grade & calibration",
           "ru": "Сорт и калибровка",
           "uz": "Nav va kalibrlash"
         },
@@ -2477,14 +2465,26 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Purity / Moisture",
-          "ru": "Чистота / Влажность",
-          "uz": "Tozaligi / Namligi"
+          "en": "Purity & moisture",
+          "ru": "Чистота и влажность",
+          "uz": "Tozalik va namlik"
         },
         "value": {
           "en": "Purity 99% min. (stalks and leaves 1% max.) / Moisture 10% max. / Origin: Uzbekistan",
           "ru": "Чистота 99% мин. (плодоножки и листья 1% макс.) / Влажность 10% макс. / Происхождение: Узбекистан",
           "uz": "Tozaligi 99% dan kam emas (band va barglar 1% dan ko‘p emas) / Namligi 10% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatlash"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
         }
       },
       {
@@ -2501,9 +2501,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "Shelf life & storage",
-          "ru": "Срок хранения и условия",
-          "uz": "Saqlash muddati va sharoiti"
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
         },
         "value": {
           "en": "24 months in dry, dark, ventilated storage at up to +20 °C, RH 65% max.",
@@ -2514,8 +2514,8 @@ export const products: Product[] = [
       {
         "label": {
           "en": "MOQ & delivery terms",
-          "ru": "MOQ и условия поставки",
-          "uz": "MOQ va yetkazib berish shartlari"
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 3 MT trial lot, 10-12 MT per FCL (low density); FCA Tashkent, DAP EU (Incoterms 2020)",
@@ -2554,9 +2554,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Form of supply / Calibration",
-          "ru": "Форма поставки / Калибр",
-          "uz": "Yetkazib berish shakli / Kalibr"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "Sliced / Red - Caliber: 6x6; 10x10 / Green - Caliber: 10x10 (mm); flakes and powder on request",
@@ -2568,7 +2568,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "7% max.",
@@ -2614,9 +2614,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 5–6 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -2656,9 +2656,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Form of supply / Calibration",
-          "ru": "Форма поставки / Калибр",
-          "uz": "Yetkazib berish shakli / Kalibr"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "Sliced (halves and slices); flakes and powder on request",
@@ -2670,7 +2670,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "8% max.",
@@ -2716,9 +2716,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 6–7 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -2758,9 +2758,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Form of supply / Calibration",
-          "ru": "Форма поставки / Калибр",
-          "uz": "Yetkazib berish shakli / Kalibr"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "Sliced (diced) / Caliber: 3x3; 5x5; 10x10 (mm); flakes and powder on request",
@@ -2772,7 +2772,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "6% max.",
@@ -2818,9 +2818,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 7–8 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -2859,9 +2859,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Form of supply / Calibration",
-          "ru": "Форма поставки / Калибр",
-          "uz": "Yetkazib berish shakli / Kalibr"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "Whole / Sliced / Powder / Caliber: 3x3; 5x5; 10x10 (mm)",
@@ -2873,7 +2873,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "10% max.",
@@ -2919,9 +2919,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 5–6 MT whole and sliced, 12–14 MT powder (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -2960,9 +2960,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Form of supply / Calibration",
-          "ru": "Форма поставки / Калибр",
-          "uz": "Yetkazib berish shakli / Kalibr"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "Sliced / Caliber: 10x10 (mm); flakes and powder on request",
@@ -2974,7 +2974,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "8% max.",
@@ -3020,9 +3020,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 6–7 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -3061,9 +3061,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Form of supply / Calibration",
-          "ru": "Форма поставки / Калибр",
-          "uz": "Yetkazib berish shakli / Kalibr"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "Sliced (cut) / Caliber: 3x3; 5x5; 10x10 (mm); flakes on request",
@@ -3075,7 +3075,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "6% max.",
@@ -3121,9 +3121,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 4–5 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -3162,9 +3162,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Form of supply / Calibration",
-          "ru": "Форма поставки / Калибр",
-          "uz": "Yetkazib berish shakli / Kalibr"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "Sliced / Caliber: 10x10 (mm); flakes and powder on request",
@@ -3176,7 +3176,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "8% max.",
@@ -3222,9 +3222,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 7–8 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
@@ -3263,9 +3263,9 @@ export const products: Product[] = [
     "specs": [
       {
         "label": {
-          "en": "Form of supply / Calibration",
-          "ru": "Форма поставки / Калибр",
-          "uz": "Yetkazib berish shakli / Kalibr"
+          "en": "Grade & calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
         },
         "value": {
           "en": "Sliced (cut leaf) / Caliber: 3x3; 5x5; 10x10 (mm); rubbed and powder on request",
@@ -3277,7 +3277,7 @@ export const products: Product[] = [
         "label": {
           "en": "Moisture",
           "ru": "Влажность",
-          "uz": "Namlik"
+          "uz": "Namligi"
         },
         "value": {
           "en": "8% max.",
@@ -3323,9 +3323,9 @@ export const products: Product[] = [
       },
       {
         "label": {
-          "en": "MOQ / Delivery terms",
-          "ru": "Минимальная партия / Условия поставки",
-          "uz": "Minimal partiya / Yetkazib berish shartlari"
+          "en": "MOQ & delivery terms",
+          "ru": "Мин. партия и условия поставки",
+          "uz": "Minimal partiya va yetkazib berish shartlari"
         },
         "value": {
           "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 2.5–3 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
