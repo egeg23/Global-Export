@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { locales, matchLocale } from "@/lib/i18n";
+import { refreshSession } from "@/lib/supabase/session";
 
 const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webmanifest)$/i;
 
@@ -8,8 +9,11 @@ const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webman
  * Every page lives under a locale prefix. A visit without one is redirected to
  * the language the browser asks for, so `globalex.uz` still works as an entry
  * point and search engines land on a canonical URL.
+ *
+ * The admin panel is the exception: it is a single-language tool, sits outside
+ * the prefix, and needs its Supabase session refreshed on the way through.
  */
-export function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
@@ -18,6 +22,13 @@ export function middleware(request: NextRequest) {
     PUBLIC_FILE.test(pathname)
   ) {
     return NextResponse.next();
+  }
+
+  // Rotating the refresh token needs a response to write cookies onto, which a
+  // Server Component cannot provide. Doing it here keeps the panel signed in.
+  // It only refreshes — the layout is what decides whether access is allowed.
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+    return refreshSession(request);
   }
 
   const [, first = "", ...rest] = pathname.split("/");
