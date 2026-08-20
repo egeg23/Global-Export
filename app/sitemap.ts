@@ -5,29 +5,68 @@ import { products } from "@/content/products";
 import { localeTags, locales } from "@/lib/i18n";
 import { siteUrl } from "@/lib/seo";
 
+type Entry = {
+  path: string;
+  lastModified: Date;
+  changeFrequency: "weekly" | "monthly";
+  priority: number;
+};
+
 /**
  * One entry per page per locale, each carrying the full hreflang alternate set
- * so Google can pair the language variants.
+ * — including x-default — so Google can pair the language variants.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPaths = ["", "about", "catalog", "quality", "team", "news", "contacts"];
-  const productPaths = products.map((product) => `catalog/${product.slug}`);
-  const newsPaths = news.map((item) => `news/${item.slug}`);
+  const buildDate = new Date();
 
-  const paths = [...staticPaths, ...productPaths, ...newsPaths];
-  const lastModified = new Date();
+  const staticPages: Entry[] = [
+    "",
+    "about",
+    "catalog",
+    "quality",
+    "team",
+    "news",
+    "contacts",
+  ].map((path) => ({
+    path,
+    lastModified: buildDate,
+    changeFrequency: "monthly",
+    priority: path === "" ? 1 : 0.8,
+  }));
 
-  return paths.flatMap((path) => {
-    const languages: Record<string, string> = {};
+  const productPages: Entry[] = products.map((product) => ({
+    path: `catalog/${product.slug}`,
+    lastModified: buildDate,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  // An article's lastmod is its publication date, not the time of the build —
+  // otherwise a 2021 post looks freshly edited on every deploy.
+  const newsPages: Entry[] = news.map((item) => {
+    const published = new Date(item.date);
+    return {
+      path: `news/${item.slug}`,
+      lastModified: Number.isNaN(published.getTime()) ? buildDate : published,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    };
+  });
+
+  return [...staticPages, ...productPages, ...newsPages].flatMap((entry) => {
+    const url = (code: string) =>
+      `${siteUrl}/${code}${entry.path ? `/${entry.path}` : ""}`;
+
+    const languages: Record<string, string> = { "x-default": url("en") };
     for (const code of locales) {
-      languages[localeTags[code]] = `${siteUrl}/${code}${path ? `/${path}` : ""}`;
+      languages[localeTags[code]] = url(code);
     }
 
     return locales.map((locale) => ({
-      url: `${siteUrl}/${locale}${path ? `/${path}` : ""}`,
-      lastModified,
-      changeFrequency: path.startsWith("news") ? ("weekly" as const) : ("monthly" as const),
-      priority: path === "" ? 1 : path.includes("/") ? 0.6 : 0.8,
+      url: url(locale),
+      lastModified: entry.lastModified,
+      changeFrequency: entry.changeFrequency,
+      priority: entry.priority,
       alternates: { languages },
     }));
   });

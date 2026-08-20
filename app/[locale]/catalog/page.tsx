@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 import { CatalogBrowser } from "@/components/catalog/catalog-browser";
 import { CtaForm } from "@/components/sections/cta-form";
@@ -70,9 +69,7 @@ export default async function CatalogPage({ params }: Props) {
 
       <section className="bg-sand-50 py-16 lg:py-24">
         <Container>
-          <Suspense fallback={<p className="text-sm text-ink-subtle">{dict.common.loading}</p>}>
-            <CatalogBrowser products={products} locale={locale} dict={dict} />
-          </Suspense>
+          <CatalogBrowser products={products} locale={locale} dict={dict} />
         </Container>
       </section>
 

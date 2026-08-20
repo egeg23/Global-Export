@@ -10,9 +10,9 @@ export const categories: Category[] = [
     name: { en: "Beans & Pulses", ru: "Бобовые", uz: "Dukkaklilar" },
     shortName: { en: "Beans", ru: "Бобовые", uz: "Dukkaklilar" },
     description: {
-      en: "Mung beans, kidney beans, chickpeas and lentils — cleaned, calibrated and packed to importer specification. 25 000 tonnes of annual processing capacity.",
-      ru: "Маш, красная фасоль, нут и чечевица — очищенные, откалиброванные и упакованные по спецификации импортёра. Мощность переработки — 25 000 тонн в год.",
-      uz: "Mosh, loviya, noʻxat va yasmiq — tozalangan, kalibrlangan va importchi spetsifikatsiyasi boʻyicha qadoqlangan. Yillik qayta ishlash quvvati — 25 000 tonna.",
+      en: "Mung beans, kidney beans and chickpeas — cleaned, calibrated and packed to importer specification. 25 000 tonnes of annual processing capacity.",
+      ru: "Маш, красная фасоль и нут — очищенные, откалиброванные и упакованные по спецификации импортёра. Мощность переработки — 25 000 тонн в год.",
+      uz: "Mosh, loviya va noʻxat — tozalangan, kalibrlangan va importchi spetsifikatsiyasi boʻyicha qadoqlangan. Yillik qayta ishlash quvvati — 25 000 tonna.",
     },
     image: "/images/categories/beans.jpg",
   },

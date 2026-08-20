@@ -1,10 +1,27 @@
 import type { Metadata } from "next";
 
-import { localeTags, locales, type Locale } from "@/lib/i18n";
+import { localeTags, locales, ogLocales, type Locale } from "@/lib/i18n";
 
 export const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.globalex.uz"
 ).replace(/\/$/, "");
+
+/** Absolute URL for an asset stored under /public. */
+export function absoluteUrl(path: string): string {
+  return path.startsWith("http") ? path : `${siteUrl}${path}`;
+}
+
+/**
+ * Trims a description to fit a search snippet without cutting a word in half.
+ */
+export function snippet(text: string, max = 280): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+
+  const cut = clean.slice(0, max);
+  const lastBreak = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf(" "));
+  return `${cut.slice(0, lastBreak > 0 ? lastBreak : max).replace(/[,;:.\s]+$/, "")}…`;
+}
 
 /**
  * Builds canonical + hreflang alternates for a page.
@@ -41,33 +58,37 @@ export function pageMetadata({
   path = "",
   title,
   description,
-  image,
+  image = "/images/hero.jpg",
   type = "website",
   publishedTime,
 }: PageMetaInput): Metadata {
   const clean = path.replace(/^\/+/, "");
   const url = `${siteUrl}/${locale}${clean ? `/${clean}` : ""}`;
-  const images = image ? [{ url: image, width: 1200, height: 630, alt: title }] : undefined;
+  const text = snippet(description);
+
+  // Dimensions are deliberately omitted: the images come in several aspect
+  // ratios and a wrong width/height is worse than none at all.
+  const images = [{ url: absoluteUrl(image), alt: title }];
 
   return {
     title,
-    description,
+    description: text,
     alternates: alternates(locale, path),
     openGraph: {
       title,
-      description,
+      description: text,
       url,
       siteName: "Global Export Company",
-      locale: localeTags[locale],
+      locale: ogLocales[locale],
       type,
       images,
       ...(publishedTime ? { publishedTime } : {}),
     },
     twitter: {
-      card: image ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title,
-      description,
-      images: image ? [image] : undefined,
+      description: text,
+      images: [absoluteUrl(image)],
     },
   };
 }
@@ -77,16 +98,40 @@ export function organizationJsonLd(locale: Locale, description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
     name: "Global Export Company LLC",
     alternateName: "Global Export",
     url: `${siteUrl}/${locale}`,
     description,
+    logo: {
+      "@type": "ImageObject",
+      url: absoluteUrl("/favicon.svg"),
+    },
+    image: absoluteUrl("/images/production.jpg"),
     address: {
       "@type": "PostalAddress",
       addressLocality: "Tashkent",
       addressCountry: "UZ",
     },
     email: "info@globalex.uz",
-    industry: "Agricultural export",
+    sameAs: [
+      "https://www.facebook.com/GEC.LLC",
+      "https://www.linkedin.com/company/38099307",
+      "https://www.instagram.com/globalexportllc/",
+    ],
+  };
+}
+
+/** BreadcrumbList JSON-LD for the detail pages. */
+export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${siteUrl}${item.path}`,
+    })),
   };
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/cn";
@@ -111,12 +111,7 @@ export function Header({ locale, dict }: HeaderProps) {
         </nav>
 
         <div className="flex items-center gap-3">
-          {/* The switcher reads the query string to preserve catalogue
-              filters; the boundary keeps that from opting pages out of
-              static rendering. */}
-          <Suspense fallback={<div className="hidden h-8 w-24 sm:block" />}>
-            <LanguageSwitcher locale={locale} tone={tone} className="hidden sm:flex" />
-          </Suspense>
+          <LanguageSwitcher locale={locale} tone={tone} className="hidden sm:flex" />
 
           <Link
             href={localeHref(locale, "contacts")}
@@ -186,9 +181,7 @@ export function Header({ locale, dict }: HeaderProps) {
           ))}
 
           <div className="mt-4 flex items-center justify-between border-t border-forest-900/10 pt-5">
-            <Suspense fallback={<div className="h-8 w-24" />}>
-              <LanguageSwitcher locale={locale} tone="dark" />
-            </Suspense>
+            <LanguageSwitcher locale={locale} tone="dark" />
             <Link
               href={localeHref(locale, "contacts")}
               onClick={() => setMenuOpen(false)}

@@ -1,7 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 
 import { ProductCard } from "@/components/cards/product-card";
 import { Icon } from "@/components/ui/icon";
@@ -12,6 +11,11 @@ import type { Dictionary } from "@/content/dictionaries";
 import type { Product } from "@/lib/content/types";
 import { t, type Locale } from "@/lib/i18n";
 
+function subscribeToLocation(onChange: () => void) {
+  window.addEventListener("popstate", onChange);
+  return () => window.removeEventListener("popstate", onChange);
+}
+
 /**
  * Category filter + name search over the whole catalogue.
  *
@@ -19,8 +23,11 @@ import { t, type Locale } from "@/lib/i18n";
  * a few dozen items, so this is instant and keeps every product in the
  * server-rendered HTML for search engines.
  *
- * The `?category=` link target is read here rather than on the server, which
- * lets the whole page stay statically prerendered.
+ * The `?category=` link target is read through useSyncExternalStore rather
+ * than useSearchParams: the latter opts the subtree out of prerendering, which
+ * would leave the static HTML with a loading placeholder and no product links
+ * for crawlers. Here the server renders the complete grid and the query string
+ * is applied on hydration.
  */
 export function CatalogBrowser({
   products,
@@ -31,8 +38,12 @@ export function CatalogBrowser({
   locale: Locale;
   dict: Dictionary;
 }) {
-  const searchParams = useSearchParams();
-  const requested = searchParams.get("category") ?? "";
+  const locationSearch = useSyncExternalStore(
+    subscribeToLocation,
+    () => window.location.search,
+    () => "",
+  );
+  const requested = new URLSearchParams(locationSearch).get("category") ?? "";
   const known = categories.some((item) => item.slug === requested);
 
   const [override, setOverride] = useState<string | null>(null);
@@ -108,7 +119,7 @@ export function CatalogBrowser({
             onChange={(event) => setQuery(event.target.value)}
             placeholder={dict.catalog.searchPlaceholder}
             aria-label={dict.catalog.searchPlaceholder}
-            className="h-11 w-full rounded-full border border-forest-900/12 bg-white pl-11 pr-4 text-sm text-forest-950 outline-none transition-colors duration-300 placeholder:text-ink-subtle focus:border-forest-600"
+            className="h-11 w-full rounded-full border border-forest-900/50 bg-white pl-11 pr-4 text-sm text-forest-950 transition-colors duration-300 placeholder:text-ink-subtle focus:border-forest-700"
           />
         </div>
       </div>
@@ -121,7 +132,12 @@ export function CatalogBrowser({
         <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((product) => (
             <li key={product.slug}>
-              <ProductCard product={product} locale={locale} showCategory={!category} />
+              <ProductCard
+                product={product}
+                locale={locale}
+                showCategory={!category}
+                comingSoonLabel={dict.product.comingSoon}
+              />
             </li>
           ))}
         </ul>

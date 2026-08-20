@@ -51,6 +51,11 @@ export type Product = {
   regions?: Localized;
   packaging?: Localized;
   hsCode?: string;
+  /**
+   * The organic line is announced but not yet shipping — globalex.uz marks
+   * every item in it "SOON". Defaults to available when omitted.
+   */
+  availability?: "available" | "soon";
 };
 
 export type Certificate = {

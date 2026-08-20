@@ -105,6 +105,9 @@ export const en = {
     hsCode: "HS code",
     category: "Category",
     related: "Other products in this category",
+    comingSoon: "Coming soon",
+    comingSoonNote:
+      "This item is part of our announced organic range and is not yet available for shipment — write to us to be notified when it is.",
     inquiryTitle: "Request this product",
     inquiryText:
       "Tell us the volume and destination port — we will come back with a price and packing options.",

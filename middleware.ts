@@ -20,17 +20,27 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const hasLocale = locales.some(
-    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
-  );
+  const [, first = "", ...rest] = pathname.split("/");
+  const lower = first.toLowerCase();
+  const matched = locales.find((locale) => locale === lower);
 
-  if (hasLocale) return NextResponse.next();
+  if (matched) {
+    // `/EN/about` would otherwise fall through and gain a second prefix.
+    if (first !== matched) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/${matched}${rest.length ? `/${rest.join("/")}` : ""}`;
+      return NextResponse.redirect(url, 308);
+    }
+    return NextResponse.next();
+  }
 
   const locale = matchLocale(request.headers.get("accept-language"));
   const url = request.nextUrl.clone();
   url.pathname = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
 
-  return NextResponse.redirect(url);
+  // 308 rather than the default 307: prefixing is permanent, and crawlers
+  // should consolidate signals onto the prefixed URL.
+  return NextResponse.redirect(url, 308);
 }
 
 export const config = {

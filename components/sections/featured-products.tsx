@@ -34,7 +34,12 @@ export function FeaturedProducts({ locale, dict }: { locale: Locale; dict: Dicti
         <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((product, index) => (
             <Reveal as="li" key={product.slug} delay={(index % 3) * 80}>
-              <ProductCard product={product} locale={locale} showCategory />
+              <ProductCard
+                product={product}
+                locale={locale}
+                showCategory
+                comingSoonLabel={dict.product.comingSoon}
+              />
             </Reveal>
           ))}
         </ul>

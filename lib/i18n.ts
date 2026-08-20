@@ -16,11 +16,22 @@ export const localeShortNames: Record<Locale, string> = {
   uz: "UZ",
 };
 
-/** BCP-47 tags used for <html lang>, hreflang and Open Graph. */
+/**
+ * Language tags for <html lang> and hreflang. Deliberately without a region:
+ * the Russian pages serve buyers in Kazakhstan and the Caucasus as much as in
+ * Russia, and "ru-RU" would tell Google to target one country only.
+ */
 export const localeTags: Record<Locale, string> = {
   en: "en",
-  ru: "ru-RU",
-  uz: "uz-UZ",
+  ru: "ru",
+  uz: "uz",
+};
+
+/** Open Graph wants language_TERRITORY, which is a different format again. */
+export const ogLocales: Record<Locale, string> = {
+  en: "en_US",
+  ru: "ru_RU",
+  uz: "uz_UZ",
 };
 
 export function isLocale(value: string): value is Locale {

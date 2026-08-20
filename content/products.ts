@@ -1423,7 +1423,8 @@ export const products: Product[] = [
       "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-27 т в 40' контейнере",
       "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, soʻrov boʻyicha chakana qadoqlash; 40' konteynerda 25-27 tonna"
     },
-    "hsCode": "0713.31"
+    "hsCode": "0713.31",
+    "availability": "soon"
   },
   {
     "slug": "organic-sultana",
@@ -1524,7 +1525,8 @@ export const products: Product[] = [
       "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, вакуум или потребительская фасовка по запросу",
       "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, soʻrov boʻyicha vakuum yoki chakana qadoqlash"
     },
-    "hsCode": "0806.20"
+    "hsCode": "0806.20",
+    "availability": "soon"
   },
   {
     "slug": "organic-sesame-seeds",
@@ -1625,7 +1627,8 @@ export const products: Product[] = [
       "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-26 т в 40' контейнере",
       "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, soʻrov boʻyicha chakana qadoqlash; 40' konteynerda 25-26 tonna"
     },
-    "hsCode": "1207.40"
+    "hsCode": "1207.40",
+    "availability": "soon"
   },
   {
     "slug": "organic-kidney-beans",
@@ -1726,7 +1729,8 @@ export const products: Product[] = [
       "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-27 т в 40' контейнере",
       "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, soʻrov boʻyicha chakana qadoqlash; 40' konteynerda 25-27 tonna"
     },
-    "hsCode": "0713.33"
+    "hsCode": "0713.33",
+    "availability": "soon"
   },
   {
     "slug": "organic-millet",
@@ -1827,7 +1831,8 @@ export const products: Product[] = [
       "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-26 т в 40' контейнере",
       "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, soʻrov boʻyicha chakana qadoqlash; 40' konteynerda 25-26 tonna"
     },
-    "hsCode": "1008.29"
+    "hsCode": "1008.29",
+    "availability": "soon"
   },
   {
     "slug": "organic-chickpeas",
@@ -1928,7 +1933,8 @@ export const products: Product[] = [
       "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-27 т в 40' контейнере",
       "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, soʻrov boʻyicha chakana qadoqlash; 40' konteynerda 25-27 tonna"
     },
-    "hsCode": "0713.20"
+    "hsCode": "0713.20",
+    "availability": "soon"
   },
   {
     "slug": "organic-dried-apricot",
@@ -2030,7 +2036,8 @@ export const products: Product[] = [
       "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, вакуум или потребительская фасовка по запросу",
       "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, soʻrov boʻyicha vakuum yoki chakana qadoqlash"
     },
-    "hsCode": "0813.10"
+    "hsCode": "0813.10",
+    "availability": "soon"
   },
   {
     "slug": "organic-walnuts",
@@ -2131,7 +2138,8 @@ export const products: Product[] = [
       "ru": "картонные короба 10 кг с пищевым ПЭ-вкладышем, вакуумные блоки по запросу; орех в скорлупе — мешки ПП или сетка 25 кг",
       "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg karton qutilar, soʻrov boʻyicha vakuum bloklar; poʻstli yongʻoq 25 kg PP yoki toʻr qoplarda"
     },
-    "hsCode": "0802.32"
+    "hsCode": "0802.32",
+    "availability": "soon"
   },
   {
     "slug": "organic-peanuts",
@@ -2232,7 +2240,8 @@ export const products: Product[] = [
       "ru": "мешки ПП или джут 25 кг / 50 кг, биг-бэги 1000 кг, вакуум или потребительская фасовка по запросу; 20-22 т в 40' контейнере",
       "uz": "25 kg / 50 kg PP yoki jut qoplar, 1000 kg big-bag, soʻrov boʻyicha vakuum yoki chakana qadoqlash; 40' konteynerda 20-22 tonna"
     },
-    "hsCode": "1202.42"
+    "hsCode": "1202.42",
+    "availability": "soon"
   },
   {
     "slug": "organic-prunes",
@@ -2333,7 +2342,8 @@ export const products: Product[] = [
       "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, вакуум или потребительская фасовка по запросу",
       "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, soʻrov boʻyicha vakuum yoki chakana qadoqlash"
     },
-    "hsCode": "0813.20"
+    "hsCode": "0813.20",
+    "availability": "soon"
   },
   {
     "slug": "organic-apricot-kernels",
@@ -2434,7 +2444,8 @@ export const products: Product[] = [
       "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, мешки ПП 25 кг или вакуумная упаковка по запросу",
       "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, soʻrov boʻyicha 25 kg PP qoplar yoki vakuum qadoqlash"
     },
-    "hsCode": "1212.99"
+    "hsCode": "1212.99",
+    "availability": "soon"
   },
   {
     "slug": "organic-rosehip",
@@ -2535,7 +2546,8 @@ export const products: Product[] = [
       "ru": "картонные короба 10 кг / 20 кг с ПЭ-вкладышем, мешки ПП 25 кг, биг-бэги для резаного сырья, потребительская фасовка по запросу",
       "uz": "PE ichlik bilan 10 kg / 20 kg karton qutilar, 25 kg PP qoplar, maydalangan xomashyo uchun big-bag, soʻrov boʻyicha chakana qadoqlash"
     },
-    "hsCode": "1211.90"
+    "hsCode": "1211.90",
+    "availability": "soon"
   },
   {
     "slug": "dried-bell-pepper",

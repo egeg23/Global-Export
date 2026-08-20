@@ -12,7 +12,7 @@ import { getCategory } from "@/content/categories";
 import { getDictionary } from "@/content/dictionaries";
 import { getProduct, getProductsByCategory, products } from "@/content/products";
 import { isLocale, locales, localeHref, t, type Locale } from "@/lib/i18n";
-import { pageMetadata, siteUrl } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: `catalog/${slug}`,
     title: t(product.name, locale),
-    description: t(product.description, locale).slice(0, 300),
+    description: t(product.description, locale),
     image: product.image,
   });
 }
@@ -52,16 +52,36 @@ export default async function ProductPage({ params }: Props) {
     .filter((item) => item.slug !== product.slug)
     .slice(0, 3);
 
+  const productUrl = `${siteUrl}/${locale}/catalog/${product.slug}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: t(product.name, locale),
     description: t(product.description, locale),
-    image: `${siteUrl}${product.image}`,
+    image: absoluteUrl(product.image),
+    sku: product.slug,
+    url: productUrl,
     category: category ? t(category.name, locale) : undefined,
     brand: { "@type": "Brand", name: "Global Export Company" },
     countryOfOrigin: "UZ",
+    // No offers node: the company quotes per enquiry and publishes no prices,
+    // and an offer without a price is worse than none at all.
+    additionalProperty: product.specs.map((spec) => ({
+      "@type": "PropertyValue",
+      name: t(spec.label, locale),
+      value: t(spec.value, locale),
+    })),
   };
+
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: dict.nav.home, path: `/${locale}` },
+    { name: dict.nav.catalog, path: `/${locale}/catalog` },
+    ...(category
+      ? [{ name: t(category.name, locale), path: `/${locale}/catalog?category=${category.slug}` }]
+      : []),
+    { name: t(product.name, locale), path: `/${locale}/catalog/${product.slug}` },
+  ]);
 
   return (
     <>
@@ -135,7 +155,16 @@ export default async function ProductPage({ params }: Props) {
               </h1>
 
               {product.latinName ? (
-                <p className="mt-2 text-sm italic text-sand-300/60">{product.latinName}</p>
+                <p className="mt-2 text-sm italic text-sand-300/75">{product.latinName}</p>
+              ) : null}
+
+              {product.availability === "soon" ? (
+                <p className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-harvest-300/30 bg-harvest-400/10 px-5 py-4 text-sm text-sand-200/85">
+                  <span className="rounded-full bg-harvest-400 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-forest-950">
+                    {dict.product.comingSoon}
+                  </span>
+                  {dict.product.comingSoonNote}
+                </p>
               ) : null}
 
               <p className="mt-6 text-base leading-relaxed text-sand-200/80">
@@ -238,7 +267,7 @@ export default async function ProductPage({ params }: Props) {
             <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item, index) => (
                 <Reveal as="li" key={item.slug} delay={index * 80}>
-                  <ProductCard product={item} locale={locale} />
+                  <ProductCard product={item} locale={locale} comingSoonLabel={dict.product.comingSoon} />
                 </Reveal>
               ))}
             </ul>
@@ -260,6 +289,11 @@ export default async function ProductPage({ params }: Props) {
         type="application/ld+json"
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
       />
     </>
   );

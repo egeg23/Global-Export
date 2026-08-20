@@ -1,10 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useSyncExternalStore } from "react";
 
 import { cn } from "@/lib/cn";
 import { localeNames, localeShortNames, locales, type Locale } from "@/lib/i18n";
+
+function subscribeToLocation(onChange: () => void) {
+  window.addEventListener("popstate", onChange);
+  return () => window.removeEventListener("popstate", onChange);
+}
 
 /**
  * Swaps the locale segment of the current path, so switching language keeps
@@ -20,12 +26,16 @@ export function LanguageSwitcher({
   className?: string;
 }) {
   const pathname = usePathname() ?? `/${locale}`;
-  const searchParams = useSearchParams();
   const rest = pathname.split("/").slice(2).join("/");
   // The catalogue filter lives in the query string, so dropping it here would
-  // reset the visitor's filter every time they switch language.
-  const query = searchParams.toString();
-  const suffix = query ? `?${query}` : "";
+  // reset the visitor's filter every time they switch language. Read through
+  // useSyncExternalStore rather than useSearchParams, which would opt the
+  // header out of static prerendering.
+  const suffix = useSyncExternalStore(
+    subscribeToLocation,
+    () => window.location.search,
+    () => "",
+  );
 
   return (
     <div className={cn("flex items-center gap-0.5", className)}>

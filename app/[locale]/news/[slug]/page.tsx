@@ -12,7 +12,7 @@ import { getDictionary } from "@/content/dictionaries";
 import { getNewsItem, news } from "@/content/news";
 import { formatDate, paragraphs } from "@/lib/format";
 import { isLocale, locales, localeHref, t, type Locale } from "@/lib/i18n";
-import { pageMetadata, siteUrl } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: `news/${slug}`,
     title: t(item.title, locale),
-    description: t(item.excerpt, locale).slice(0, 300),
+    description: t(item.excerpt, locale),
     image: item.image,
     type: "article",
     publishedTime: item.date,
@@ -50,16 +50,31 @@ export default async function ArticlePage({ params }: Props) {
   const related = news.filter((entry) => entry.slug !== item.slug).slice(0, 3);
   const body = paragraphs(t(item.body, locale));
 
+  const articleUrl = `${siteUrl}/${locale}/news/${item.slug}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     headline: t(item.title, locale),
     description: t(item.excerpt, locale),
     datePublished: item.date,
-    image: item.image ? `${siteUrl}${item.image}` : undefined,
+    dateModified: item.date,
+    inLanguage: locale,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    image: item.image ? absoluteUrl(item.image) : undefined,
     author: { "@type": "Organization", name: "Global Export Company" },
-    publisher: { "@type": "Organization", name: "Global Export Company" },
+    publisher: {
+      "@type": "Organization",
+      name: "Global Export Company",
+      logo: { "@type": "ImageObject", url: absoluteUrl("/favicon.svg") },
+    },
   };
+
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: dict.nav.home, path: `/${locale}` },
+    { name: dict.nav.news, path: `/${locale}/news` },
+    { name: t(item.title, locale), path: `/${locale}/news/${item.slug}` },
+  ]);
 
   return (
     <>
@@ -165,6 +180,11 @@ export default async function ArticlePage({ params }: Props) {
         type="application/ld+json"
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
       />
     </>
   );

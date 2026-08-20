@@ -107,6 +107,9 @@ export const uz: Dictionary = {
     hsCode: "TIF TN kodi",
     category: "Toifa",
     related: "Ushbu toifadagi boshqa mahsulotlar",
+    comingSoon: "Tez orada",
+    comingSoonNote:
+      "Ushbu pozitsiya eʼlon qilingan organik liniyaga kiradi va hozircha joʻnatishga tayyor emas — bizga yozing, sotuv boshlanishi haqida xabar beramiz.",
     inquiryTitle: "Ushbu mahsulotni soʻrash",
     inquiryText:
       "Hajm va yetkazib berish portini koʻrsating — narx va qadoqlash variantlari bilan javob qaytaramiz.",

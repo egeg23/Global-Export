@@ -10,10 +10,12 @@ export function ProductCard({
   product,
   locale,
   showCategory = false,
+  comingSoonLabel,
 }: {
   product: Product;
   locale: Locale;
   showCategory?: boolean;
+  comingSoonLabel?: string;
 }) {
   const category = showCategory ? getCategory(product.category) : undefined;
   const firstSpec = product.specs?.[0];
@@ -34,6 +36,12 @@ export function ProductCard({
         {category ? (
           <span className="absolute left-4 top-4 rounded-full bg-forest-950/75 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-sand-100 backdrop-blur-sm">
             {t(category.shortName, locale)}
+          </span>
+        ) : null}
+
+        {product.availability === "soon" && comingSoonLabel ? (
+          <span className="absolute right-4 top-4 rounded-full bg-harvest-400 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-forest-950">
+            {comingSoonLabel}
           </span>
         ) : null}
       </div>
