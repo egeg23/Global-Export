@@ -341,7 +341,6 @@ export const contacts: Contacts = {
   ],
   mapEmbed:
     "https://www.google.com/maps?q=Tashkent,Uzbekistan&output=embed",
-  mapLink: "https://www.google.com/maps/place/Tashkent,+Uzbekistan",
   workingHours: {
     en: "Monday – Friday, 09:00 – 18:00 (GMT+5)",
     ru: "Понедельник – пятница, 09:00 – 18:00 (GMT+5)",

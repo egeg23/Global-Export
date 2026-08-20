@@ -7,6 +7,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import type { Dictionary } from "@/content/dictionaries";
 import { featuredProducts, products } from "@/content/products";
+import { toCatalogItem } from "@/lib/content/catalog";
 import { localeHref, type Locale } from "@/lib/i18n";
 
 export function FeaturedProducts({ locale, dict }: { locale: Locale; dict: Dictionary }) {
@@ -35,7 +36,7 @@ export function FeaturedProducts({ locale, dict }: { locale: Locale; dict: Dicti
           {items.map((product, index) => (
             <Reveal as="li" key={product.slug} delay={(index % 3) * 80}>
               <ProductCard
-                product={product}
+                item={toCatalogItem(product, locale)}
                 locale={locale}
                 showCategory
                 comingSoonLabel={dict.product.comingSoon}

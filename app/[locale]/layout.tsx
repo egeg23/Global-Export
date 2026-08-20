@@ -53,7 +53,6 @@ export async function generateMetadata({
     description: dict.meta.homeDescription,
     alternates: alternates(locale),
     icons: { icon: "/favicon.svg" },
-    robots: { index: true, follow: true },
   };
 }
 

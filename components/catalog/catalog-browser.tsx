@@ -8,12 +8,27 @@ import { cn } from "@/lib/cn";
 import { plural } from "@/lib/format";
 import { categories } from "@/content/categories";
 import type { Dictionary } from "@/content/dictionaries";
-import type { Product } from "@/lib/content/types";
+import type { CatalogItem } from "@/lib/content/catalog";
 import { t, type Locale } from "@/lib/i18n";
+
+/** history.replaceState fires no event of its own, so we raise one. */
+const LOCATION_EVENT = "catalog:locationchange";
 
 function subscribeToLocation(onChange: () => void) {
   window.addEventListener("popstate", onChange);
-  return () => window.removeEventListener("popstate", onChange);
+  window.addEventListener(LOCATION_EVENT, onChange);
+  return () => {
+    window.removeEventListener("popstate", onChange);
+    window.removeEventListener(LOCATION_EVENT, onChange);
+  };
+}
+
+function writeCategoryToUrl(slug: string) {
+  const url = new URL(window.location.href);
+  if (slug) url.searchParams.set("category", slug);
+  else url.searchParams.delete("category");
+  window.history.replaceState(null, "", url);
+  window.dispatchEvent(new Event(LOCATION_EVENT));
 }
 
 /**
@@ -23,18 +38,17 @@ function subscribeToLocation(onChange: () => void) {
  * a few dozen items, so this is instant and keeps every product in the
  * server-rendered HTML for search engines.
  *
- * The `?category=` link target is read through useSyncExternalStore rather
- * than useSearchParams: the latter opts the subtree out of prerendering, which
- * would leave the static HTML with a loading placeholder and no product links
- * for crawlers. Here the server renders the complete grid and the query string
- * is applied on hydration.
+ * The selected category lives in the URL rather than in component state, so a
+ * filtered view is linkable and the back button works. It is read through
+ * useSyncExternalStore rather than useSearchParams, which would opt the subtree
+ * out of prerendering and leave crawlers with an empty grid.
  */
 export function CatalogBrowser({
-  products,
+  items,
   locale,
   dict,
 }: {
-  products: Product[];
+  items: CatalogItem[];
   locale: Locale;
   dict: Dictionary;
 }) {
@@ -43,30 +57,19 @@ export function CatalogBrowser({
     () => window.location.search,
     () => "",
   );
-  const requested = new URLSearchParams(locationSearch).get("category") ?? "";
-  const known = categories.some((item) => item.slug === requested);
 
-  const [override, setOverride] = useState<string | null>(null);
-  const category = override ?? (known ? requested : "");
-  const setCategory = (value: string) => setOverride(value);
+  const requested = new URLSearchParams(locationSearch).get("category") ?? "";
+  const category = categories.some((item) => item.slug === requested) ? requested : "";
 
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return products.filter((product) => {
-      if (category && product.category !== category) return false;
-      if (!needle) return true;
-      const haystack = [
-        t(product.name, locale),
-        product.latinName ?? "",
-        t(product.description, locale),
-      ]
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(needle);
+    return items.filter((item) => {
+      if (category && item.category !== category) return false;
+      return !needle || item.search.includes(needle);
     });
-  }, [products, category, query, locale]);
+  }, [items, category, query]);
 
   const tabs = [{ slug: "", label: dict.catalog.allCategories }].concat(
     categories.map((item) => ({ slug: item.slug, label: t(item.name, locale) })),
@@ -95,12 +98,12 @@ export function CatalogBrowser({
                 key={tab.slug || "all"}
                 type="button"
                 aria-pressed={active}
-                onClick={() => setCategory(tab.slug)}
+                onClick={() => writeCategoryToUrl(tab.slug)}
                 className={cn(
                   "h-10 rounded-full px-5 text-sm font-medium transition-all duration-300",
                   active
                     ? "bg-forest-800 text-sand-50"
-                    : "border border-forest-900/12 text-forest-800 hover:border-forest-800/40 hover:bg-forest-800/5",
+                    : "border border-forest-900/25 text-forest-800 hover:border-forest-800/60 hover:bg-forest-800/5",
                 )}
               >
                 {tab.label}
@@ -130,10 +133,10 @@ export function CatalogBrowser({
 
       {filtered.length > 0 ? (
         <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((product) => (
-            <li key={product.slug}>
+          {filtered.map((item) => (
+            <li key={item.slug}>
               <ProductCard
-                product={product}
+                item={item}
                 locale={locale}
                 showCategory={!category}
                 comingSoonLabel={dict.product.comingSoon}
@@ -147,7 +150,7 @@ export function CatalogBrowser({
           <button
             type="button"
             onClick={() => {
-              setOverride("");
+              writeCategoryToUrl("");
               setQuery("");
             }}
             className="mt-5 inline-flex h-10 items-center rounded-full bg-forest-800 px-6 text-sm font-medium text-sand-50"

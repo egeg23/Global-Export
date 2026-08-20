@@ -51,13 +51,18 @@ export function Reveal({ children, className, delay = 0, as: Tag = "div" }: Reve
     return () => observer.disconnect();
   }, []);
 
+  // TypeScript cannot reconcile the ref types across a union of intrinsic
+  // elements, so the tag is widened here rather than casting the ref away —
+  // that keeps `attach` itself type-checked.
+  const Component = Tag as React.ElementType;
+
   return (
-    <Tag
-      ref={attach as never}
+    <Component
+      ref={attach}
       className={cn("reveal", visible && "reveal-visible", className)}
       style={delay ? ({ "--reveal-delay": `${delay}ms` } as React.CSSProperties) : undefined}
     >
       {children}
-    </Tag>
+    </Component>
   );
 }

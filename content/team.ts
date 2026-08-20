@@ -106,5 +106,3 @@ export const team: TeamMember[] = [
     position: { en: "Export manager", ru: "Менеджер по экспорту", uz: "Eksport menejeri" },
   },
 ];
-
-export const teamGroups = ["board", "directors", "export"] as const;

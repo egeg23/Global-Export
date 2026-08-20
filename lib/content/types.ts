@@ -1,3 +1,4 @@
+import type { IconName } from "@/components/ui/icon";
 import type { Localized } from "@/lib/i18n";
 
 /**
@@ -107,14 +108,13 @@ export type Contacts = {
   emails: ContactChannel[];
   socials: { name: string; url: string }[];
   mapEmbed: string;
-  mapLink: string;
   workingHours: Localized;
 };
 
 export type Advantage = {
   title: Localized;
   description: Localized;
-  icon: string;
+  icon: IconName;
 };
 
 export type ProcessStep = {

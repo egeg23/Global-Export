@@ -12,6 +12,7 @@ import { getCategory } from "@/content/categories";
 import { getDictionary } from "@/content/dictionaries";
 import { getProduct, getProductsByCategory, products } from "@/content/products";
 import { isLocale, locales, localeHref, t, type Locale } from "@/lib/i18n";
+import { toCatalogItem } from "@/lib/content/catalog";
 import { absoluteUrl, breadcrumbJsonLd, pageMetadata, siteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -267,7 +268,11 @@ export default async function ProductPage({ params }: Props) {
             <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((item, index) => (
                 <Reveal as="li" key={item.slug} delay={index * 80}>
-                  <ProductCard product={item} locale={locale} comingSoonLabel={dict.product.comingSoon} />
+                  <ProductCard
+                    item={toCatalogItem(item, locale)}
+                    locale={locale}
+                    comingSoonLabel={dict.product.comingSoon}
+                  />
                 </Reveal>
               ))}
             </ul>

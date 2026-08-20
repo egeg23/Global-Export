@@ -40,7 +40,11 @@ export function middleware(request: NextRequest) {
 
   // 308 rather than the default 307: prefixing is permanent, and crawlers
   // should consolidate signals onto the prefixed URL.
-  return NextResponse.redirect(url, 308);
+  const response = NextResponse.redirect(url, 308);
+  // The target depends on the request header, so a shared cache must not
+  // serve one visitor's language to the next.
+  response.headers.set("Vary", "Accept-Language");
+  return response;
 }
 
 export const config = {

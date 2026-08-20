@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/container";
 import { categories } from "@/content/categories";
 import { getDictionary } from "@/content/dictionaries";
 import { products } from "@/content/products";
+import { toCatalogItems } from "@/lib/content/catalog";
 import { isLocale, t, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 
@@ -69,7 +70,7 @@ export default async function CatalogPage({ params }: Props) {
 
       <section className="bg-sand-50 py-16 lg:py-24">
         <Container>
-          <CatalogBrowser products={products} locale={locale} dict={dict} />
+          <CatalogBrowser items={toCatalogItems(products, locale)} locale={locale} dict={dict} />
         </Container>
       </section>
 

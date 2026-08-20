@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
  * Line icons drawn on a 24×24 grid with a 1.4 stroke, so they sit at the same
  * optical weight as the body text. Inline SVG — no icon package in the bundle.
  */
-const paths: Record<string, React.ReactNode> = {
+const paths = {
   chain: (
     <>
       <path d="M10 14a4 4 0 0 0 5.66 0l3-3A4 4 0 0 0 13 5.34l-1.2 1.2" />
@@ -89,12 +89,17 @@ const paths: Record<string, React.ReactNode> = {
       <path d="M12 7v5.3l3.4 2" />
     </>
   ),
-};
+} satisfies Record<string, React.ReactNode>;
 
+/**
+ * Union of the icons actually drawn above. `paths` is intentionally left
+ * un-annotated: typing it as Record<string, …> would widen this back to
+ * `string` and a misspelled name would compile.
+ */
 export type IconName = keyof typeof paths;
 
-export function Icon({ name, className }: { name: string; className?: string }) {
-  const node = paths[name] ?? paths.leaf;
+export function Icon({ name, className }: { name: IconName; className?: string }) {
+  const node = paths[name];
 
   return (
     <svg

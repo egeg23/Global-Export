@@ -1,3 +1,4 @@
+import type { IconName } from "@/components/ui/icon";
 import type { Certificate } from "@/lib/content/types";
 import type { Localized } from "@/lib/i18n";
 
@@ -78,7 +79,11 @@ export const recognitions: { title: Localized; description: Localized }[] = [
 ];
 
 /** Stages shown on the Quality page. */
-export const qualityStages: { title: Localized; description: Localized; icon: string }[] = [
+export const qualityStages: {
+  title: Localized;
+  description: Localized;
+  icon: IconName;
+}[] = [
   {
     icon: "leaf",
     title: { en: "Incoming raw material", ru: "Входной контроль сырья", uz: "Xomashyo qabuli" },
