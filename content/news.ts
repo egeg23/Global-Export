@@ -156,6 +156,131 @@ export const news: NewsItem[] = [
     }
   },
   {
+    "slug": "global-export-at-the-inc-world-nut-and-dried-fruit-congress-2026",
+    "date": "2026-05-13",
+    "title": {
+      "en": "Global Export at the INC World Nut and Dried Fruit Congress 2026",
+      "ru": "Global Export на конгрессе INC World Nut and Dried Fruit Congress 2026",
+      "uz": "Global Export INC World Nut and Dried Fruit Congress 2026 anjumanida"
+    },
+    "excerpt": {
+      "en": "Highlights from Day 1 of the INC World Nut and Dried Fruit Congress 2026 in Macao, one of the industry's key global gatherings.",
+      "ru": "Первый день конгресса INC в Макао: встречи с профессионалами отрасли сухофруктов и орехов со всего мира и новые возможности для сотрудничества.",
+      "uz": "Makaodagi INC anjumanining birinchi kuni: dunyoning turli mamlakatlaridan kelgan quruq meva va yong‘oq sohasi mutaxassislari bilan uchrashuvlar."
+    },
+    "body": {
+      "en": "Strong partnerships begin with meaningful conversations.\n\nA few moments from Day 1 of the INC World Nut and Dried Fruit Congress 2026 in Macao — one of the world’s leading events for the dried fruit and nut industry.\n\nThe congress brought together industry professionals, partners, and companies from around the world, creating valuable opportunities for networking, discussions, and future cooperation.",
+      "ru": "Крепкие партнёрства начинаются с содержательных разговоров.\n\nНесколько моментов первого дня INC World Nut and Dried Fruit Congress 2026 в Макао — одного из ведущих мировых событий отрасли сухофруктов и орехов.\n\nКонгресс собрал профессионалов отрасли, партнёров и компании со всего мира, создав ценные возможности для нетворкинга, обсуждений и будущего сотрудничества.",
+      "uz": "Mustahkam hamkorlik mazmunli suhbatlardan boshlanadi.\n\nMakaoda o‘tayotgan INC World Nut and Dried Fruit Congress 2026 — quruq meva va yong‘oq sanoatining dunyodagi yetakchi tadbirlaridan biri — birinchi kunidan lavhalar.\n\nAnjuman dunyoning turli burchaklaridan soha mutaxassislari, hamkorlar va kompaniyalarni bir joyga jamladi hamda muloqot, muhokama va kelgusi hamkorlik uchun qimmatli imkoniyatlar yaratdi."
+    },
+    "image": "/images/news/global-export-at-the-inc-world-nut-and-dried-fruit-congress-2026.jpg",
+    "tag": {
+      "en": "Exhibitions",
+      "ru": "Выставки",
+      "uz": "Ko‘rgazmalar"
+    }
+  },
+  {
+    "slug": "global-export-at-ife-2026-visit-our-stand",
+    "date": "2026-03-30",
+    "title": {
+      "en": "Global Export at IFE 2026: Visit Our Stand",
+      "ru": "Global Export на IFE 2026: приглашаем на наш стенд",
+      "uz": "Global Export IFE 2026da: stendimizga tashrif buyuring"
+    },
+    "excerpt": {
+      "en": "IFE 2026 has opened in London and our team is welcoming visitors at Stand N2160 in ExCeL London.",
+      "ru": "IFE 2026 в Лондоне стартовала: команда Global Export ждёт гостей на стенде N2160 в ExCeL London.",
+      "uz": "Londondagi IFE 2026 ochildi: Global Export jamoasi ExCeL London’dagi N2160 stendida mehmonlarni kutmoqda."
+    },
+    "body": {
+      "en": "Today is the first day of IFE 2026 in London, and it has already been a great success!\n\nWe are excited to be part of this major event and invite you to visit our stand.\n\nExCeL London\n\nStand: N2160\n\nVisit us to explore our products, discuss potential partnerships, and connect with our team. We look forward to meeting you!",
+      "ru": "Сегодня первый день IFE 2026 в Лондоне, и он уже проходит с большим успехом!\n\nМы рады быть частью этого крупного события и приглашаем вас посетить наш стенд.\n\nExCeL London\n\nСтенд: N2160\n\nПриходите, чтобы познакомиться с нашей продукцией, обсудить возможное партнёрство и пообщаться с нашей командой. Будем рады встрече!",
+      "uz": "Bugun Londonda IFE 2026 ko‘rgazmasining birinchi kuni va u allaqachon katta muvaffaqiyat bilan o‘tmoqda!\n\nUshbu yirik tadbir ishtirokchisi bo‘lganimizdan mamnunmiz va sizni stendimizga tashrif buyurishga taklif qilamiz.\n\nExCeL London\n\nStend: N2160\n\nMahsulotlarimiz bilan tanishish, hamkorlik imkoniyatlarini muhokama qilish va jamoamiz bilan bog‘lanish uchun keling. Uchrashuvni intiqlik bilan kutamiz!"
+    },
+    "image": "/images/news/global-export-at-ife-2026-visit-our-stand.jpg",
+    "tag": {
+      "en": "Exhibitions",
+      "ru": "Выставки",
+      "uz": "Ko‘rgazmalar"
+    }
+  },
+  {
+    "slug": "global-export-at-biofach-2026-meet-us-at-our-stand",
+    "date": "2026-02-11",
+    "title": {
+      "en": "Global Export at BIOFACH 2026: Meet Us at Our Stand",
+      "ru": "Global Export на BIOFACH 2026: ждём вас на нашем стенде",
+      "uz": "Global Export BIOFACH 2026da: stendimizda kutamiz"
+    },
+    "excerpt": {
+      "en": "Our team is on-site at BIOFACH 2026, meeting clients and partners in the organic segment. Find us in Hall 4, Stand 4-639.",
+      "ru": "Команда Global Export работает на BIOFACH 2026: встречи с клиентами и партнёрами в органическом сегменте. Зал 4, стенд 4-639.",
+      "uz": "Global Export jamoasi BIOFACH 2026da: organik segment bo‘yicha mijozlar va hamkorlar bilan uchrashuvlar. 4-zal, 4-639 stend."
+    },
+    "body": {
+      "en": "BIOFACH 2026 is in full swing.\n\nOur team is actively engaged in meetings with both potential clients and existing partners, discussing ongoing projects and new cooperation opportunities within the organic segment.\n\nWe look forward to welcoming you at our stand.\n\nHall: 4\n\nStand: 4-639\n\nGlobal Export Company exports its products to 55 countries.",
+      "ru": "BIOFACH 2026 в самом разгаре.\n\nНаша команда активно проводит встречи с потенциальными клиентами и действующими партнёрами, обсуждая текущие проекты и новые возможности сотрудничества в органическом сегменте.\n\nБудем рады видеть вас на нашем стенде.\n\nЗал: 4\n\nСтенд: 4-639\n\nGlobal Export Company экспортирует свою продукцию в 55 стран.",
+      "uz": "BIOFACH 2026 qizg‘in davom etmoqda.\n\nJamoamiz potentsial mijozlar va mavjud hamkorlar bilan faol uchrashuvlar o‘tkazib, joriy loyihalar hamda organik segmentdagi yangi hamkorlik imkoniyatlarini muhokama qilmoqda.\n\nSizni stendimizda kutib qolamiz.\n\nZal: 4\n\nStend: 4-639\n\nGlobal Export Company o‘z mahsulotlarini 55 mamlakatga eksport qiladi."
+    },
+    "image": "/images/news/global-export-at-biofach-2026-meet-us-at-our-stand.jpg",
+    "tag": {
+      "en": "Exhibitions",
+      "ru": "Выставки",
+      "uz": "Ko‘rgazmalar"
+    }
+  },
+  {
+    "slug": "global-export-at-anuga-2025-strengthening-international-cooperation",
+    "date": "2025-10-22",
+    "title": {
+      "en": "Global Export at Anuga 2025: Strengthening International Cooperation",
+      "ru": "Global Export на Anuga 2025: развитие международного сотрудничества",
+      "uz": "Global Export Anuga 2025da: xalqaro hamkorlikni mustahkamlash"
+    },
+    "excerpt": {
+      "en": "Global Export joined Anuga 2025 in Cologne, where more than 7,800 companies from over 100 countries met to talk business.",
+      "ru": "Компания приняла участие в Anuga 2025 в Кёльне, где собрались более 7 800 компаний из более чем 100 стран мира.",
+      "uz": "Kompaniya Kyoln shahridagi Anuga 2025 ko‘rgazmasida ishtirok etdi — tadbirga 100 dan ortiq mamlakatdan 7 800 dan ziyod kompaniya yig‘ildi."
+    },
+    "body": {
+      "en": "Global Export took part in Anuga 2025, one of the leading international food exhibitions, held in Cologne, Germany, from October 4–8.\n\nThis year, the event brought together more than 7,800 companies from over 100 countries worldwide, providing an important platform for meetings, negotiations, and knowledge exchange among professionals in the food industry.\n\nWe would like to thank everyone who visited our booth, showed interest in our products, and shared these inspiring days with us.\n\nIn the coming days, we will reach out to each of you for a follow-up on our discussions and agreements. We also encourage our partners to remain proactive in pursuing mutually beneficial deals.\n\nGlobal Export continues to expand its international cooperation and strengthen its presence in the global food market.",
+      "ru": "Global Export принял участие в Anuga 2025 — одной из ведущих международных выставок продуктов питания, которая прошла в Кёльне (Германия) с 4 по 8 октября.\n\nВ этом году мероприятие собрало более 7 800 компаний из более чем 100 стран мира и стало важной площадкой для встреч, переговоров и обмена опытом между профессионалами пищевой отрасли.\n\nБлагодарим всех, кто посетил наш стенд, проявил интерес к нашей продукции и разделил с нами эти вдохновляющие дни.\n\nВ ближайшие дни мы свяжемся с каждым из вас, чтобы продолжить обсуждение достигнутых договорённостей. Мы также призываем партнёров проявлять инициативу в развитии взаимовыгодного сотрудничества.\n\nGlobal Export продолжает расширять международное сотрудничество и укреплять свои позиции на мировом рынке продуктов питания.",
+      "uz": "Global Export 4–8 oktyabr kunlari Germaniyaning Kyoln shahrida o‘tkazilgan Anuga 2025 — oziq-ovqat sohasidagi yetakchi xalqaro ko‘rgazmalardan birida ishtirok etdi.\n\nBu yil tadbir dunyoning 100 dan ortiq mamlakatidan 7 800 dan ziyod kompaniyani birlashtirdi hamda oziq-ovqat sanoati mutaxassislari uchun uchrashuvlar, muzokaralar va tajriba almashish bo‘yicha muhim maydon bo‘ldi.\n\nStendimizga tashrif buyurgan, mahsulotlarimizga qiziqish bildirgan va bu ilhomlantiruvchi kunlarni biz bilan baham ko‘rgan barchaga minnatdorchilik bildiramiz.\n\nYaqin kunlarda muhokamalar va erishilgan kelishuvlar yuzasidan har biringiz bilan bog‘lanamiz. Hamkorlarimizni o‘zaro manfaatli bitimlarni ilgari surishda tashabbuskor bo‘lishga chaqiramiz.\n\nGlobal Export xalqaro hamkorlikni kengaytirish va jahon oziq-ovqat bozoridagi mavqeyini mustahkamlashda davom etmoqda."
+    },
+    "image": "/images/news/global-export-at-anuga-2025-strengthening-international-cooperation.jpg",
+    "tag": {
+      "en": "Exhibitions",
+      "ru": "Выставки",
+      "uz": "Ko‘rgazmalar"
+    }
+  },
+  {
+    "slug": "foodex-japan-2025-new-meetings-new-partnerships",
+    "date": "2025-03-17",
+    "title": {
+      "en": "FoodEx Japan 2025: New Meetings, New Partnerships",
+      "ru": "FoodEx Japan 2025: новые встречи, новые партнёрства",
+      "uz": "FoodEx Japan 2025: yangi uchrashuvlar, yangi hamkorliklar"
+    },
+    "excerpt": {
+      "en": "Four days at FoodEx Japan brought dozens of meetings with partners from around the world and opened the way to long-term cooperation in a key market.",
+      "ru": "Четыре дня на FoodEx Japan — десятки встреч с партнёрами со всего мира и начало долгосрочного сотрудничества на ключевом рынке.",
+      "uz": "FoodEx Japan’dagi to‘rt kun — dunyoning turli mamlakatlaridan kelgan hamkorlar bilan o‘nlab uchrashuv va muhim bozorda uzoq muddatli hamkorlik boshlanishi."
+    },
+    "body": {
+      "en": "Trust is built on quality!\n\nFour intense days, dozens of meetings, and invaluable business connections! We were delighted to showcase our products in Japan and discuss potential collaborations with partners from various countries.\n\nThank you to everyone who visited our booth! It was a pleasure to meet, exchange ideas, and explore opportunities for cooperation.\n\nJapan is an important market for our company, and we are confident that this is just the beginning of long-term partnerships!\n\nIf you have any questions or ideas for collaboration – we are always open to new opportunities!",
+      "ru": "Доверие строится на качестве!\n\nЧетыре насыщенных дня, десятки встреч и бесценные деловые контакты! Нам было приятно представить нашу продукцию в Японии и обсудить возможное сотрудничество с партнёрами из разных стран.\n\nБлагодарим всех, кто посетил наш стенд! Было приятно познакомиться, обменяться идеями и найти возможности для совместной работы.\n\nЯпония — важный рынок для нашей компании, и мы уверены, что это лишь начало долгосрочного партнёрства!\n\nЕсли у вас есть вопросы или идеи для сотрудничества — мы всегда открыты для новых возможностей!",
+      "uz": "Ishonch sifat asosida quriladi!\n\nTo‘rt kunlik jadal ish, o‘nlab uchrashuvlar va bebaho ishbilarmonlik aloqalari! Mahsulotlarimizni Yaponiyada namoyish etish va turli mamlakatlardan kelgan hamkorlar bilan hamkorlik imkoniyatlarini muhokama qilishdan mamnun bo‘ldik.\n\nStendimizga tashrif buyurgan barchaga minnatdorchilik bildiramiz! Tanishish, fikr almashish va hamkorlik imkoniyatlarini o‘rganish biz uchun katta mamnuniyat bo‘ldi.\n\nYaponiya kompaniyamiz uchun muhim bozor va bu uzoq muddatli hamkorlikning boshlanishi ekaniga ishonchimiz komil!\n\nSavollaringiz yoki hamkorlik bo‘yicha takliflaringiz bo‘lsa — biz doimo yangi imkoniyatlarga ochiqmiz!"
+    },
+    "image": "/images/news/foodex-japan-2025-new-meetings-new-partnerships.jpg",
+    "tag": {
+      "en": "Exhibitions",
+      "ru": "Выставки",
+      "uz": "Ko‘rgazmalar"
+    }
+  },
+  {
     "slug": "our-products-are-trusted-worldwide",
     "date": "2024-05-01",
     "title": {
@@ -203,6 +328,81 @@ export const news: NewsItem[] = [
       "en": "Company",
       "ru": "Компания",
       "uz": "Kompaniya"
+    }
+  },
+  {
+    "slug": "expanding-global-demand-for-uzbek-green-mung-beans",
+    "date": "2022-09-21",
+    "title": {
+      "en": "Expanding Global Demand for Uzbek Green Mung Beans",
+      "ru": "Растущий мировой спрос на узбекский маш",
+      "uz": "O‘zbek moshiga jahon talabining ortib borishi"
+    },
+    "excerpt": {
+      "en": "Between January and July 2022 Uzbekistan shipped 51.2 thousand tons of mung beans to 21 countries, with China, Kazakhstan and Iran leading demand.",
+      "ru": "С января по июль 2022 года Узбекистан поставил 51,2 тыс. тонн маша в 21 страну; наибольший спрос — со стороны Китая, Казахстана и Ирана.",
+      "uz": "2022-yil yanvar–iyul oylarida O‘zbekiston 21 ta mamlakatga 51,2 ming tonna mosh eksport qildi; eng katta talab Xitoy, Qozog‘iston va Erondan."
+    },
+    "body": {
+      "en": "Uzbekistan exported green mung beans worth $43.7 million.\n\nAccording to the State Statistics Committee, from January to July 2022, Uzbekistan exported 51.2 thousand tons of mung beans to 21 countries in the amount of 47.3 million US dollars.\n\nThe volume of exports is 19.5 thousand tons more than in the corresponding period of 2021 (65.91%).\n\nThe countries to which Uzbekistan exports mung beans the most:\n\nChina - 47.1 thousand tons\n\nKazakhstan - 5.5 thousand tons\n\nIran - 1.1 thousand tons",
+      "ru": "Узбекистан экспортировал маш на сумму 43,7 млн долларов США.\n\nПо данным Государственного комитета по статистике, с января по июль 2022 года Узбекистан экспортировал 51,2 тыс. тонн маша в 21 страну на сумму 47,3 млн долларов США.\n\nОбъём экспорта на 19,5 тыс. тонн больше, чем за соответствующий период 2021 года (65,91%).\n\nСтраны, в которые Узбекистан экспортирует маш больше всего:\n\nКитай — 47,1 тыс. тонн\n\nКазахстан — 5,5 тыс. тонн\n\nИран — 1,1 тыс. тонн",
+      "uz": "O‘zbekiston 43,7 million AQSh dollarlik mosh eksport qildi.\n\nDavlat statistika qo‘mitasi ma’lumotlariga ko‘ra, 2022-yilning yanvar–iyul oylarida O‘zbekiston 21 ta mamlakatga 47,3 million AQSh dollarlik 51,2 ming tonna mosh eksport qildi.\n\nEksport hajmi 2021-yilning shu davriga nisbatan 19,5 ming tonnaga (65,91%) ko‘p.\n\nO‘zbekiston moshni eng ko‘p eksport qiladigan mamlakatlar:\n\nXitoy — 47,1 ming tonna\n\nQozog‘iston — 5,5 ming tonna\n\nEron — 1,1 ming tonna"
+    },
+    "image": "/images/news/expanding-global-demand-for-uzbek-green-mung-beans.jpg",
+    "tag": {
+      "en": "Markets",
+      "ru": "Рынки",
+      "uz": "Bozorlar"
+    }
+  },
+  {
+    "slug": "uzbekistan-increases-the-acreage-of-kidney-beans",
+    "date": "2022-08-15",
+    "title": {
+      "en": "Uzbekistan increases the acreage of kidney beans",
+      "ru": "Узбекистан увеличивает посевные площади фасоли",
+      "uz": "O‘zbekistonda loviya ekiladigan maydonlar kengaymoqda"
+    },
+    "excerpt": {
+      "en": "Kidney beans now cover 35.8 thousand hectares across nine regions of Uzbekistan — 5.9 thousand hectares more than a year earlier.",
+      "ru": "Под фасоль в девяти регионах Узбекистана отведено 35,8 тыс. гектаров — на 5,9 тыс. гектаров больше, чем годом ранее.",
+      "uz": "O‘zbekistonning to‘qqiz hududida loviya uchun 35,8 ming gektar ajratilgan — bu o‘tgan yildagidan 5,9 ming gektar ko‘p."
+    },
+    "body": {
+      "en": "This year, more than 330.5 thousand hectares of leguminous crops have been sown in Uzbekistan, the correspondent of the news agency \"Dunyo\" reports with reference to data from the Ministry of Agriculture.\n\nOf these, kidney beans account for 35.8 thousand hectares, which is 5.9 thousand hectares more than last year. Kidney beans are sown on 5.1 thousand hectares as the main crop and 24.5 thousand hectares as a secondary crop, as well as 6.1 thousand hectares in the aisles of gardens. Today, this crop is grown by dehkans in Andijan, Jizzakh, Namangan, Samarkand, Tashkent, Kashkadarya, Ferghana, Syrdarya, Surkhandarya regions.\n\nDue to the short growing season of kidney beans, in the conditions of Uzbekistan, it can be grown twice a year. In particular, it is recommended to sow as the main crop in early spring and as a repeat crop in areas exempt from spring grain crops.\n\nKidney beans are a nutritious and delicious product. Seeds and unripe pods in cooked form are eaten and used in the canning industry. Kidney beans are high in calories and have a higher protein content than other types of legumes.",
+      "ru": "В этом году в Узбекистане засеяно более 330,5 тыс. гектаров бобовых культур, сообщает корреспондент информационного агентства «Дунё» со ссылкой на данные Министерства сельского хозяйства.\n\nИз них на фасоль приходится 35,8 тыс. гектаров, что на 5,9 тыс. гектаров больше, чем в прошлом году. Фасоль посеяна на 5,1 тыс. гектаров в качестве основной культуры и на 24,5 тыс. гектаров — в качестве повторной, а также на 6,1 тыс. гектаров в междурядьях садов. Сегодня эту культуру выращивают дехкане Андижанской, Джизакской, Наманганской, Самаркандской, Ташкентской, Кашкадарьинской, Ферганской, Сырдарьинской и Сурхандарьинской областей.\n\nБлагодаря короткому вегетационному периоду фасоли в условиях Узбекистана её можно выращивать дважды в год. В частности, её рекомендуется сеять как основную культуру ранней весной и как повторную — на площадях, освободившихся от весенних зерновых культур.\n\nФасоль — питательный и вкусный продукт. Семена и незрелые стручки в приготовленном виде употребляют в пищу и используют в консервной промышленности. Фасоль отличается высокой калорийностью и более высоким содержанием белка по сравнению с другими видами бобовых.",
+      "uz": "Bu yil O‘zbekistonda 330,5 ming gektardan ortiq maydonga dukkakli ekinlar ekildi, deb xabar bermoqda «Dunyo» axborot agentligi muxbiri Qishloq xo‘jaligi vazirligi ma’lumotlariga tayangan holda.\n\nShundan 35,8 ming gektari loviyaga to‘g‘ri keladi, bu o‘tgan yilgidan 5,9 ming gektar ko‘pdir. Loviya 5,1 ming gektarga asosiy ekin sifatida, 24,5 ming gektarga takroriy ekin sifatida, shuningdek, 6,1 ming gektar bog‘ qatorlari orasiga ekilgan. Bugungi kunda bu ekin Andijon, Jizzax, Namangan, Samarqand, Toshkent, Qashqadaryo, Farg‘ona, Sirdaryo va Surxondaryo viloyatlari dehqonlari tomonidan yetishtirilmoqda.\n\nLoviyaning o‘sish davri qisqa bo‘lgani bois O‘zbekiston sharoitida uni yiliga ikki marta yetishtirish mumkin. Xususan, uni erta bahorda asosiy ekin sifatida, bahorgi boshoqli ekinlardan bo‘shagan maydonlarga esa takroriy ekin sifatida ekish tavsiya etiladi.\n\nLoviya — to‘yimli va mazali mahsulot. Urug‘lari va pishmagan qo‘zoqlari pishirilgan holda iste’mol qilinadi hamda konserva sanoatida ishlatiladi. Loviya yuqori kaloriyaga ega bo‘lib, boshqa dukkakli ekin turlariga nisbatan ko‘proq oqsil saqlaydi."
+    },
+    "image": "/images/news/uzbekistan-increases-the-acreage-of-kidney-beans.jpg",
+    "tag": {
+      "en": "Markets",
+      "ru": "Рынки",
+      "uz": "Bozorlar"
+    }
+  },
+  {
+    "slug": "for-the-first-time-peanuts-from-uzbekistan-began-to-enter-the-dutch-market",
+    "date": "2021-03-27",
+    "title": {
+      "en": "For the first time, peanuts from Uzbekistan began to enter the Dutch market.",
+      "ru": "Впервые арахис из Узбекистана начал поступать на рынок Нидерландов",
+      "uz": "Ilk bor O‘zbekistondan yeryong‘oq Niderlandiya bozoriga chiqa boshladi"
+    },
+    "excerpt": {
+      "en": "A first-ever shipment of Uzbek peanuts worth USD 54,000 has reached the Netherlands, supplied by Global Export under a contract with a large distributor.",
+      "ru": "Первая партия узбекского арахиса на 54 000 долларов США поставлена в Нидерланды компанией Global Export по контракту с крупным дистрибьютором.",
+      "uz": "Global Export yirik distribyutor bilan tuzilgan shartnoma doirasida Niderlandiyaga 54 000 AQSh dollarlik o‘zbek yeryong‘og‘ining ilk partiyasini yetkazib berdi."
+    },
+    "body": {
+      "en": "Peanuts worth 54,000 US dollars have been delivered to the Netherlands from Uzbekistan, the correspondent of the news agency \"Dunyo\" reports.\n\nAccording to the Embassy of Uzbekistan in the Benelux country, the supplier is Global Export, a company specialising in the production and export of pulses, dried fruits and nut products in Central Asia. Despite the fact that not much time has passed since its foundation, the company already has strong partnerships with companies from more than 20 countries around the world, which indicates that \"Global Export\" is beginning to gain worldwide recognition as a reliable producer and supplier of agricultural products.\n\nReceiving recognition from European partners is an unconditional proof of the quality of the company's products. Thus, in June last year, Global Export, with the assistance of the Embassy of Uzbekistan, for the first time established export supplies of leguminous products (beans, mung beans) to the Netherlands and Belgium. This also became possible thanks to the introduction of the international food safety standard (FSSC 22000) at the company's enterprises with financial assistance from the Export Promotion Agency under the Ministry of Investment and Foreign Trade of Uzbekistan.\n\nAnother striking example is the first export of peanuts to the Dutch market, the supply of which is carried out within the framework of the concluded contract, with a large distribution company for 1 million US dollars.",
+      "ru": "Арахис на сумму 54 000 долларов США поставлен в Нидерланды из Узбекистана, сообщает корреспондент информационного агентства «Дунё».\n\nПо данным посольства Узбекистана в стране Бенилюкса, поставщиком выступила компания Global Export, специализирующаяся на производстве и экспорте бобовых, сухофруктов и ореховой продукции в Центральной Азии. Несмотря на то, что с момента основания компании прошло не так много времени, у неё уже налажены прочные партнёрские отношения с компаниями более чем из 20 стран мира, что свидетельствует о том, что Global Export начинает получать мировое признание как надёжный производитель и поставщик сельскохозяйственной продукции.\n\nПризнание со стороны европейских партнёров — безусловное подтверждение качества продукции компании. Так, в июне прошлого года Global Export при содействии посольства Узбекистана впервые наладила экспортные поставки бобовой продукции (фасоль, маш) в Нидерланды и Бельгию. Это стало возможным также благодаря внедрению на предприятиях компании международного стандарта безопасности пищевой продукции (FSSC 22000) при финансовой поддержке Агентства продвижения экспорта при Министерстве инвестиций и внешней торговли Узбекистана.\n\nЕщё один яркий пример — первый экспорт арахиса на нидерландский рынок, поставки которого осуществляются в рамках заключённого контракта с крупной дистрибьюторской компанией на 1 миллион долларов США.",
+      "uz": "O‘zbekistondan Niderlandiyaga 54 000 AQSh dollarlik yeryong‘oq yetkazib berildi, deb xabar qilmoqda «Dunyo» axborot agentligi muxbiri.\n\nO‘zbekistonning Benilyuks mamlakatidagi elchixonasi ma’lumotlariga ko‘ra, yetkazib beruvchi — Markaziy Osiyoda dukkakli ekinlar, quritilgan mevalar va yong‘oq mahsulotlarini ishlab chiqarish va eksport qilishga ixtisoslashgan Global Export kompaniyasi. Tashkil etilganiga ko‘p vaqt o‘tmagan bo‘lsa-da, kompaniya allaqachon dunyoning 20 dan ortiq mamlakatidagi kompaniyalar bilan mustahkam hamkorlik aloqalarini o‘rnatgan, bu esa Global Export ishonchli qishloq xo‘jaligi mahsulotlari ishlab chiqaruvchisi va yetkazib beruvchisi sifatida jahon miqyosida e’tirof etila boshlaganidan dalolat beradi.\n\nYevropalik hamkorlar tomonidan e’tirof etilishi — kompaniya mahsulotlari sifatining shubhasiz isbotidir. Jumladan, o‘tgan yilning iyun oyida Global Export O‘zbekiston elchixonasi ko‘magida ilk bor dukkakli mahsulotlar (loviya, mosh) eksportini Niderlandiya va Belgiyaga yo‘lga qo‘ydi. Bunga kompaniya korxonalarida O‘zbekiston Investitsiyalar va tashqi savdo vazirligi huzuridagi Eksportni qo‘llab-quvvatlash agentligining moliyaviy ko‘magida xalqaro oziq-ovqat xavfsizligi standarti (FSSC 22000) joriy etilgani ham imkon berdi.\n\nYana bir yorqin misol — yeryong‘oqning Niderlandiya bozoriga ilk eksporti bo‘lib, u yirik distribyutorlik kompaniyasi bilan 1 million AQSh dollariga tuzilgan shartnoma doirasida amalga oshirilmoqda."
+    },
+    "image": "/images/news/for-the-first-time-peanuts-from-uzbekistan-began-to-enter-the-dutch-market.jpg",
+    "tag": {
+      "en": "Markets",
+      "ru": "Рынки",
+      "uz": "Bozorlar"
     }
   }
 ];

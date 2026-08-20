@@ -1322,6 +1322,2030 @@ export const products: Product[] = [
       "uz": "25 va 50 kg PP qoplar, 1000 kg big-beglar; mag‘iz uchun 10 kg vakuumli kartonlar va chakana qadoq talab bo‘yicha. 20 futlik konteynerda taxminan 20 t."
     },
     "hsCode": "1202.41"
+  },
+  {
+    "slug": "organic-green-mung-beans",
+    "category": "organic",
+    "name": {
+      "en": "Organic Green Mung Beans",
+      "ru": "Органический зелёный маш",
+      "uz": "Organik yashil mosh"
+    },
+    "latinName": "Vigna radiata",
+    "description": {
+      "en": "Certified organic green mung beans from the southern and central regions of Uzbekistan, machine-cleaned, de-stoned and colour-sorted to 99% purity. Uzbek mung has a thin skin, an even green colour and stable germination, so the same lot works for retail packing, dhal processing and sprouting programmes. Organic status is documented lot by lot and traceable back to the certified field.",
+      "ru": "Сертифицированный органический зелёный маш из южных и центральных регионов Узбекистана: машинная очистка, камнеотбор, фотосепарация, чистота от 99%. Узбекский маш отличается тонкой кожурой, ровным зелёным цветом и стабильной всхожестью — одна и та же партия подходит и для фасовки, и для переработки в дал, и для проращивания. Органический статус подтверждается по каждой партии и прослеживается до сертифицированного поля.",
+      "uz": "O‘zbekistonning janubiy va markaziy hududlarida yetishtirilgan sertifikatlangan organik yashil mosh: mashinada tozalangan, toshdan ajratilgan va foto-saralangan, tozaligi 99% dan kam emas. O‘zbek moshining po‘sti yupqa, rangi bir tekis yashil, unib chiqish qobiliyati barqaror — shu bois bir partiya ham qadoqlash, ham dal ishlab chiqarish, ham undirish uchun mos keladi. Organik maqomi har bir partiya bo‘yicha hujjatlashtiriladi va sertifikatlangan dalagacha kuzatiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "+3.0 mm / +3.5 mm; split mung on request; machine-cleaned and colour-sorted",
+          "ru": "+3,0 мм / +3,5 мм; дроблёный по запросу; машинная очистка и фотосепарация",
+          "uz": "+3,0 mm / +3,5 mm; so‘rov bo‘yicha maydalangan; mashinada tozalangan va foto-saralangan"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Purity 99% min. / Moisture 11% max. / Origin: Uzbekistan",
+          "ru": "Чистота 99% мин. / Влажность 11% макс. / Происхождение: Узбекистан",
+          "uz": "Tozaligi 99% dan kam emas / Namligi 11% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request",
+          "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу",
+          "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "24 months in dry, ventilated warehouses at up to +20 °C, RH 65% max.",
+          "ru": "24 месяца в сухом вентилируемом складе при температуре до +20 °C и влажности не выше 65%",
+          "uz": "Quruq, shamollatiladigan omborda +20 °C gacha va nisbiy namlik 65% dan oshmaganda 24 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
+          "ru": "от 20 т (1 × 20' FCL); FCA Ташкент, FOB Поти / Актау, DAP ЕС (Инкотермс 2020)",
+          "uz": "20 tonnadan (1 × 20' FCL); FCA Toshkent, FOB Poti / Aktau, DAP YeI (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/organic-green-mung-beans.jpg",
+    "featured": true,
+    "regions": {
+      "en": "Kashkadarya, Surkhandarya, Jizzakh and Syrdarya regions — certified organic plots on irrigated and rain-fed land",
+      "ru": "Кашкадарьинская, Сурхандарьинская, Джизакская и Сырдарьинская области — сертифицированные органические участки на орошаемых и богарных землях",
+      "uz": "Qashqadaryo, Surxondaryo, Jizzax va Sirdaryo viloyatlari — sug‘oriladigan va lalmikor yerlardagi sertifikatlangan organik maydonlar"
+    },
+    "packaging": {
+      "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request; 25-27 MT per 40' FCL",
+      "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-27 т в 40' контейнере",
+      "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash; 40' konteynerda 25-27 tonna"
+    },
+    "hsCode": "0713.31"
+  },
+  {
+    "slug": "organic-sultana",
+    "category": "organic",
+    "name": {
+      "en": "Organic Sultana",
+      "ru": "Органический изюм «Сультана»",
+      "uz": "Organik sultoni mayiz"
+    },
+    "latinName": "Vitis vinifera",
+    "description": {
+      "en": "Seedless sultana raisins from certified organic vineyards, sun-dried in the traditional Uzbek way without sulphur dioxide or added oil. The continental climate gives a high natural sugar content and a firm, non-sticky berry that holds its shape in bakery, muesli and confectionery lines. Every consignment is cleaned, laser-sorted and metal-detected before packing, with organic certificates issued per lot.",
+      "ru": "Изюм сорта «Сультана» без косточек с сертифицированных органических виноградников, высушенный на солнце по традиционной узбекской технологии — без диоксида серы и без обработки маслом. Континентальный климат даёт высокое содержание природных сахаров и плотную, неслипающуюся ягоду, которая держит форму в хлебопечении, мюсли и кондитерских линиях. Каждая партия проходит очистку, лазерную сортировку и металлодетекцию, органические сертификаты оформляются на каждый лот.",
+      "uz": "Sertifikatlangan organik uzumzorlardan olingan danaksiz sultoni mayiz an’anaviy o‘zbek usulida quyoshda quritiladi — oltingugurt dioksidi va moy ishlatilmaydi. Kontinental iqlim tufayli tabiiy shakar miqdori yuqori, mevasi zich va yopishmaydi, shu bois nonvoychilik, musli va qandolat liniyalarida shaklini saqlaydi. Har bir partiya tozalash, lazerli saralash va metall detektoridan o‘tkaziladi, organik sertifikatlar har bir lot uchun rasmiylashtiriladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Seedless sun-dried sultana, natural (unsulphured), oil-free; 260-320 berries / 100 g, Jumbo grade on request",
+          "ru": "«Сультана» без косточек, солнечной сушки, натуральный (без сульфитов), без масла; 260-320 ягод / 100 г, Jumbo по запросу",
+          "uz": "Danaksiz quyoshda quritilgan sultoni, tabiiy (sulfitsiz), moysiz; 100 g da 260-320 dona, so‘rov bo‘yicha Jumbo"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Foreign matter 0.5% max., stems 1% max. / Moisture 15-17% / Origin: Uzbekistan",
+          "ru": "Посторонние примеси 0,5% макс., плодоножки 1% макс. / Влажность 15-17% / Происхождение: Узбекистан",
+          "uz": "Begona aralashmalar 0,5% dan ko‘p emas, bandlar 1% dan ko‘p emas / Namligi 15-17% / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 kg / 12.5 kg carton boxes with food-grade PE liner, 20 kg cartons, retail packing on request",
+          "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, потребительская фасовка по запросу",
+          "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "12 months at +5…+15 °C, RH 65% max., away from direct sunlight",
+          "ru": "12 месяцев при +5…+15 °C, влажность не выше 65%, без прямого солнечного света",
+          "uz": "+5…+15 °C da, nisbiy namlik 65% dan oshmaganda, to‘g‘ridan-to‘g‘ri quyosh nuridan uzoqda 12 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 5 MT trial lot, 18-20 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
+          "ru": "от 5 т пробной партии, 18-20 т в контейнере; FCA Ташкент, DAP ЕС (Инкотермс 2020), образцы авиапочтой",
+          "uz": "5 tonnalik sinov partiyasidan, konteynerda 18-20 tonna; FCA Toshkent, DAP YeI (Inkoterms 2020), namunalar aviapochta orqali"
+        }
+      }
+    ],
+    "image": "/images/products/organic-sultana.jpg",
+    "regions": {
+      "en": "Samarkand and Bukhara regions, Parkent and Bostanlyk districts of Tashkent region, Fergana Valley — certified organic vineyards",
+      "ru": "Самаркандская и Бухарская области, Паркентский и Бостанлыкский районы Ташкентской области, Ферганская долина — сертифицированные органические виноградники",
+      "uz": "Samarqand va Buxoro viloyatlari, Toshkent viloyatining Parkent va Bo‘stonliq tumanlari, Farg‘ona vodiysi — sertifikatlangan organik uzumzorlar"
+    },
+    "packaging": {
+      "en": "10 kg / 12.5 kg carton boxes with food-grade PE liner, 20 kg cartons, vacuum or retail packing on request",
+      "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, вакуум или потребительская фасовка по запросу",
+      "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, so‘rov bo‘yicha vakuum yoki chakana qadoqlash"
+    },
+    "hsCode": "0806.20"
+  },
+  {
+    "slug": "organic-sesame-seeds",
+    "category": "organic",
+    "name": {
+      "en": "Organic Sesame Seeds",
+      "ru": "Органические семена кунжута",
+      "uz": "Organik kunjut urug‘i"
+    },
+    "latinName": "Sesamum indicum",
+    "description": {
+      "en": "Whole natural sesame seeds grown on certified organic land in southern Uzbekistan and cleaned to 99.95% purity on gravity and optical sorters. Oil content of 48-52% and a clean, nutty profile make the seed suitable for tahini, bakery toppings and cold-pressed oil. Hulled seed can be supplied on request, and every lot carries an organic certificate traceable to the field.",
+      "ru": "Цельные натуральные семена кунжута, выращенные на сертифицированных органических землях юга Узбекистана и очищенные до 99,95% на гравитационных и оптических сепараторах. Масличность 48-52% и чистый ореховый вкус позволяют использовать семя для тахини, посыпки в хлебопечении и холодного отжима масла. По запросу поставляется очищенное (шелушёное) семя; на каждую партию оформляется органический сертификат с прослеживаемостью до поля.",
+      "uz": "O‘zbekiston janubidagi sertifikatlangan organik yerlarda yetishtirilgan butun tabiiy kunjut urug‘i gravitatsion va optik saralagichlarda 99,95% gacha tozalanadi. Moyliligi 48-52% va toza yong‘oqsimon ta’mi tufayli u tahin, nonvoychilik sepmasi va sovuq presslangan moy uchun mos keladi. So‘rov bo‘yicha po‘sti tozalangan urug‘ ham yetkaziladi; har bir partiyaga dalagacha kuzatiladigan organik sertifikat beriladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Whole natural white seed, oil content 48-52%; hulled seed on request",
+          "ru": "цельное натуральное белое семя, масличность 48-52%; шелушёное семя по запросу",
+          "uz": "Butun tabiiy oq urug‘, moyliligi 48-52%; so‘rov bo‘yicha po‘stsiz urug‘"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Purity 99.95% min. / Moisture 6% max. / Origin: Uzbekistan",
+          "ru": "Чистота 99,95% мин. / Влажность 6% макс. / Происхождение: Узбекистан",
+          "uz": "Tozaligi 99,95% dan kam emas / Namligi 6% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request",
+          "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу",
+          "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "18 months in dry, ventilated warehouses at up to +20 °C, RH 65% max.",
+          "ru": "18 месяцев в сухом вентилируемом складе при температуре до +20 °C и влажности не выше 65%",
+          "uz": "Quruq, shamollatiladigan omborda +20 °C gacha va nisbiy namlik 65% dan oshmaganda 18 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
+          "ru": "от 20 т (1 × 20' FCL); FCA Ташкент, FOB Поти / Актау, DAP ЕС (Инкотермс 2020)",
+          "uz": "20 tonnadan (1 × 20' FCL); FCA Toshkent, FOB Poti / Aktau, DAP YeI (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/organic-sesame-seeds.jpg",
+    "regions": {
+      "en": "Surkhandarya and Kashkadarya regions, Khorezm — warm southern zones with certified organic sesame plots",
+      "ru": "Сурхандарьинская и Кашкадарьинская области, Хорезм — тёплые южные зоны с сертифицированными органическими посевами кунжута",
+      "uz": "Surxondaryo va Qashqadaryo viloyatlari, Xorazm — sertifikatlangan organik kunjut maydonlari joylashgan issiq janubiy hududlar"
+    },
+    "packaging": {
+      "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request; 25-26 MT per 40' FCL",
+      "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-26 т в 40' контейнере",
+      "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash; 40' konteynerda 25-26 tonna"
+    },
+    "hsCode": "1207.40"
+  },
+  {
+    "slug": "organic-kidney-beans",
+    "category": "organic",
+    "name": {
+      "en": "Organic Kidney Beans",
+      "ru": "Органическая фасоль",
+      "uz": "Organik loviya"
+    },
+    "latinName": "Phaseolus vulgaris",
+    "description": {
+      "en": "Certified organic kidney beans in light speckled and red speckled types, calibrated at 180-220 seeds per 100 g and colour-sorted for uniform appearance. Grown on irrigated organic plots of the Fergana Valley, the beans cook evenly and keep their skin intact, which suits canning, dry retail packing and food-service programmes. Organic documentation is issued per lot and traceable to the field.",
+      "ru": "Сертифицированная органическая фасоль пёстрых и красных типов, откалиброванная на уровне 180-220 шт. на 100 г и отсортированная по цвету для однородного внешнего вида. Выращена на орошаемых органических участках Ферганской долины: равномерно разваривается и сохраняет целую кожуру, что важно для консервирования, сухой фасовки и сегмента HoReCa. Органические документы оформляются на каждую партию и прослеживаются до поля.",
+      "uz": "Sertifikatlangan organik loviya — chipor va qizil turlari, 100 g da 180-220 dona qilib kalibrlangan va bir xil ko‘rinish uchun rangi bo‘yicha saralangan. Farg‘ona vodiysining sug‘oriladigan organik maydonlarida yetishtiriladi, bir tekis pishadi va po‘sti butun qoladi — bu konservalash, quruq qadoqlash va HoReCa uchun muhim. Organik hujjatlar har bir partiya uchun rasmiylashtiriladi va dalagacha kuzatiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Light speckled and red speckled types, 180-220 seeds / 100 g; machine-cleaned and colour-sorted",
+          "ru": "пёстрая и красная фасоль, 180-220 шт. / 100 г; машинная очистка и фотосепарация",
+          "uz": "Chipor va qizil turlar, 100 g da 180-220 dona; mashinada tozalangan va foto-saralangan"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Purity 99% min. / Moisture 12% max. / Origin: Uzbekistan",
+          "ru": "Чистота 99% мин. / Влажность 12% макс. / Происхождение: Узбекистан",
+          "uz": "Tozaligi 99% dan kam emas / Namligi 12% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request",
+          "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу",
+          "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "24 months in dry, ventilated warehouses at up to +20 °C, RH 65% max.",
+          "ru": "24 месяца в сухом вентилируемом складе при температуре до +20 °C и влажности не выше 65%",
+          "uz": "Quruq, shamollatiladigan omborda +20 °C gacha va nisbiy namlik 65% dan oshmaganda 24 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
+          "ru": "от 20 т (1 × 20' FCL); FCA Ташкент, FOB Поти / Актау, DAP ЕС (Инкотермс 2020)",
+          "uz": "20 tonnadan (1 × 20' FCL); FCA Toshkent, FOB Poti / Aktau, DAP YeI (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/organic-kidney-beans.jpg",
+    "regions": {
+      "en": "Fergana Valley (Andijan, Namangan, Fergana regions) and Tashkent region — certified organic irrigated plots",
+      "ru": "Ферганская долина (Андижанская, Наманганская, Ферганская области) и Ташкентская область — сертифицированные органические орошаемые участки",
+      "uz": "Farg‘ona vodiysi (Andijon, Namangan, Farg‘ona viloyatlari) va Toshkent viloyati — sertifikatlangan organik sug‘oriladigan maydonlar"
+    },
+    "packaging": {
+      "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request; 25-27 MT per 40' FCL",
+      "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-27 т в 40' контейнере",
+      "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash; 40' konteynerda 25-27 tonna"
+    },
+    "hsCode": "0713.33"
+  },
+  {
+    "slug": "organic-millet",
+    "category": "organic",
+    "name": {
+      "en": "Organic Millet",
+      "ru": "Органическое просо (пшено)",
+      "uz": "Organik tariq"
+    },
+    "latinName": "Panicum miliaceum",
+    "description": {
+      "en": "Organic proso millet from the dryland belt of central Uzbekistan, supplied hulled as bright yellow grain or unhulled as seed. Low-input cultivation and dry harvesting conditions keep the grain clean and free of musty notes, which matters for porridge, gluten-free flour and bird-feed blends. Purity is brought to 99% on air-screen and optical equipment, with organic certification issued per lot.",
+      "ru": "Органическое просо из богарного пояса центрального Узбекистана: поставляется в виде шелушёного пшена насыщенного жёлтого цвета или необрушенным зерном. Экстенсивная агротехника и сухие условия уборки дают чистое зерно без затхлых тонов — это важно для круп, безглютеновой муки и кормовых смесей. Чистота доводится до 99% на воздушно-ситовом и оптическом оборудовании, органический сертификат оформляется на каждую партию.",
+      "uz": "Markaziy O‘zbekistonning lalmikor mintaqasidan olingan organik tariq: po‘sti tozalangan sariq don yoki po‘stli urug‘ ko‘rinishida yetkaziladi. Kam kimyoviy aralashuv va quruq hosil yig‘ish sharoiti donni toza va begona hidsiz saqlaydi — bu bo‘tqa, glyutensiz un va yem aralashmalari uchun muhim. Tozaligi havo-elak va optik uskunalarda 99% ga yetkaziladi, organik sertifikat har bir partiya uchun beriladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Hulled millet 1.8-2.2 mm, bright yellow, whole grain; unhulled seed on request",
+          "ru": "шелушёное пшено 1,8-2,2 мм, насыщенно-жёлтое, целое зерно; необрушенное зерно по запросу",
+          "uz": "Po‘sti tozalangan tariq 1,8-2,2 mm, to‘q sariq, butun don; so‘rov bo‘yicha po‘stli urug‘"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Purity 99% min. / Moisture 13% max. / Origin: Uzbekistan",
+          "ru": "Чистота 99% мин. / Влажность 13% макс. / Происхождение: Узбекистан",
+          "uz": "Tozaligi 99% dan kam emas / Namligi 13% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request",
+          "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу",
+          "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "12 months for hulled millet, 24 months for unhulled seed, in dry ventilated storage",
+          "ru": "12 месяцев для шелушёного пшена, 24 месяца для необрушенного зерна, в сухом вентилируемом складе",
+          "uz": "Po‘sti tozalangan tariq uchun 12 oy, po‘stli urug‘ uchun 24 oy — quruq, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
+          "ru": "от 20 т (1 × 20' FCL); FCA Ташкент, FOB Поти / Актау, DAP ЕС (Инкотермс 2020)",
+          "uz": "20 tonnadan (1 × 20' FCL); FCA Toshkent, FOB Poti / Aktau, DAP YeI (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/organic-millet.jpg",
+    "regions": {
+      "en": "Jizzakh, Syrdarya and Kashkadarya regions — rain-fed and lightly irrigated organic land",
+      "ru": "Джизакская, Сырдарьинская и Кашкадарьинская области — богарные и слабо орошаемые органические земли",
+      "uz": "Jizzax, Sirdaryo va Qashqadaryo viloyatlari — lalmikor va kam sug‘oriladigan organik yerlar"
+    },
+    "packaging": {
+      "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request; 25-26 MT per 40' FCL",
+      "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-26 т в 40' контейнере",
+      "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash; 40' konteynerda 25-26 tonna"
+    },
+    "hsCode": "1008.29"
+  },
+  {
+    "slug": "organic-chickpeas",
+    "category": "organic",
+    "name": {
+      "en": "Organic Chickpeas",
+      "ru": "Органический нут",
+      "uz": "Organik no‘xat"
+    },
+    "latinName": "Cicer arietinum",
+    "description": {
+      "en": "Kabuli-type organic chickpeas in 7-8 mm and 8-9 mm calibres, grown on certified organic land in the south of Uzbekistan. The hot, dry ripening season produces a light cream colour, thin skin and reliable cooking behaviour for hummus, canning and retail packing. Lots are gravity-separated, colour-sorted and shipped with organic certificates traceable to the field.",
+      "ru": "Органический нут типа «кабули» калибров 7-8 мм и 8-9 мм, выращенный на сертифицированных органических землях юга Узбекистана. Жаркий и сухой период созревания даёт светлый кремовый цвет, тонкую кожуру и предсказуемое поведение при варке — для хумуса, консервирования и фасовки. Партии проходят гравитационную очистку и фотосепарацию, отгружаются с органическими сертификатами, прослеживаемыми до поля.",
+      "uz": "O‘zbekiston janubidagi sertifikatlangan organik yerlarda yetishtirilgan «kabuli» turidagi organik no‘xat, kalibri 7-8 mm va 8-9 mm. Issiq va quruq pishish davri unga och krem rang, yupqa po‘st va pishirishda barqaror xususiyat beradi — xummus, konservalash va qadoqlash uchun. Partiyalar gravitatsion tozalash va foto-saralashdan o‘tadi, dalagacha kuzatiladigan organik sertifikatlar bilan jo‘natiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Kabuli type, calibre 7-8 mm / 8-9 mm; machine-cleaned and colour-sorted",
+          "ru": "тип «кабули», калибр 7-8 мм / 8-9 мм; машинная очистка и фотосепарация",
+          "uz": "«Kabuli» turi, kalibri 7-8 mm / 8-9 mm; mashinada tozalangan va foto-saralangan"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Purity 99% min. / Moisture 12% max. / Origin: Uzbekistan",
+          "ru": "Чистота 99% мин. / Влажность 12% макс. / Происхождение: Узбекистан",
+          "uz": "Tozaligi 99% dan kam emas / Namligi 12% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request",
+          "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу",
+          "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "24 months in dry, ventilated warehouses at up to +20 °C, RH 65% max.",
+          "ru": "24 месяца в сухом вентилируемом складе при температуре до +20 °C и влажности не выше 65%",
+          "uz": "Quruq, shamollatiladigan omborda +20 °C gacha va nisbiy namlik 65% dan oshmaganda 24 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 20 MT (1 × 20' FCL); FCA Tashkent, FOB Poti / Aktau, DAP EU (Incoterms 2020)",
+          "ru": "от 20 т (1 × 20' FCL); FCA Ташкент, FOB Поти / Актау, DAP ЕС (Инкотермс 2020)",
+          "uz": "20 tonnadan (1 × 20' FCL); FCA Toshkent, FOB Poti / Aktau, DAP YeI (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/organic-chickpeas.jpg",
+    "regions": {
+      "en": "Kashkadarya, Surkhandarya, Jizzakh and Samarkand regions — certified organic rain-fed and irrigated fields",
+      "ru": "Кашкадарьинская, Сурхандарьинская, Джизакская и Самаркандская области — сертифицированные органические богарные и орошаемые поля",
+      "uz": "Qashqadaryo, Surxondaryo, Jizzax va Samarqand viloyatlari — sertifikatlangan organik lalmikor va sug‘oriladigan dalalar"
+    },
+    "packaging": {
+      "en": "25 kg / 50 kg PP bags, big bags 1000 kg, retail packing on request; 25-27 MT per 40' FCL",
+      "ru": "мешки ПП 25 кг / 50 кг, биг-бэги 1000 кг, потребительская фасовка по запросу; 25-27 т в 40' контейнере",
+      "uz": "25 kg / 50 kg PP qoplar, 1000 kg big-bag, so‘rov bo‘yicha chakana qadoqlash; 40' konteynerda 25-27 tonna"
+    },
+    "hsCode": "0713.20"
+  },
+  {
+    "slug": "organic-dried-apricot",
+    "category": "organic",
+    "name": {
+      "en": "Organic Dried Apricot",
+      "ru": "Органическая курага",
+      "uz": "Organik o‘rik qoqi"
+    },
+    "latinName": "Prunus armeniaca",
+    "description": {
+      "en": "Sun-dried organic apricots from mountain and foothill orchards, processed without sulphur dioxide, so the fruit keeps its natural dark-amber colour and concentrated sweetness. High day-night temperature contrast in the growing zones gives a dense, meaty pulp that holds up in bakery fillings, snack mixes and infant-food lines. Supplied whole and pitted in A / AA / AAA sizes, each lot certified organic and traceable to the orchard.",
+      "ru": "Курага солнечной сушки с горных и предгорных садов, переработанная без диоксида серы — фрукт сохраняет натуральный тёмно-янтарный цвет и концентрированную сладость. Большой перепад дневных и ночных температур в зонах выращивания формирует плотную мясистую мякоть, которая держит форму в начинках, снековых миксах и линиях детского питания. Поставляется целой, без косточки, в размерах A / AA / AAA; каждая партия сертифицирована как органическая и прослеживается до сада.",
+      "uz": "Tog‘ va tog‘oldi bog‘laridan olingan quyoshda quritilgan organik o‘rik qoqi oltingugurt dioksidisiz tayyorlanadi — meva tabiiy to‘q qahrabo rangini va to‘yingan shirinligini saqlaydi. Yetishtirish hududlaridagi kunduzgi va tungi harorat farqi mevaga zich, etli mag‘iz beradi: u nonvoychilik to‘ldirmalari, snek aralashmalari va bolalar ovqati liniyalarida shaklini yo‘qotmaydi. Butun va danaksiz holda A / AA / AAA o‘lchamlarida yetkaziladi; har bir partiya organik sertifikatga ega va bog‘gacha kuzatiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Natural sun-dried, unsulphured, whole and pitted; sizes A / AA / AAA (60-100 and 100-140 pcs per kg)",
+          "ru": "натуральная солнечная сушка, без сульфитов, целая без косточки; размеры A / AA / AAA (60-100 и 100-140 шт. на кг)",
+          "uz": "Tabiiy quyoshda quritilgan, sulfitsiz, butun va danaksiz; o‘lchamlari A / AA / AAA (1 kg da 60-100 va 100-140 dona)"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Foreign matter 0.5% max. / Moisture 18-20% / Origin: Uzbekistan",
+          "ru": "Посторонние примеси 0,5% макс. / Влажность 18-20% / Происхождение: Узбекистан",
+          "uz": "Begona aralashmalar 0,5% dan ko‘p emas / Namligi 18-20% / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 kg / 12.5 kg carton boxes with food-grade PE liner, 20 kg cartons, retail packing on request",
+          "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, потребительская фасовка по запросу",
+          "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "12 months at +2…+8 °C, RH 65% max. (unsulphured fruit requires cool storage)",
+          "ru": "12 месяцев при +2…+8 °C, влажность не выше 65% (несульфитированный продукт требует холодного хранения)",
+          "uz": "+2…+8 °C da, nisbiy namlik 65% dan oshmaganda 12 oy (sulfitsiz mahsulot salqin saqlashni talab qiladi)"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 5 MT trial lot, 18-20 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
+          "ru": "от 5 т пробной партии, 18-20 т в контейнере; FCA Ташкент, DAP ЕС (Инкотермс 2020), образцы авиапочтой",
+          "uz": "5 tonnalik sinov partiyasidan, konteynerda 18-20 tonna; FCA Toshkent, DAP YeI (Inkoterms 2020), namunalar aviapochta orqali"
+        }
+      }
+    ],
+    "image": "/images/products/organic-dried-apricot.jpg",
+    "featured": true,
+    "regions": {
+      "en": "Fergana Valley (Namangan and Fergana regions), Urgut district of Samarkand region, Boysun in Surkhandarya — mountain and foothill organic orchards",
+      "ru": "Ферганская долина (Наманганская и Ферганская области), Ургутский район Самаркандской области, Байсун в Сурхандарьинской области — горные и предгорные органические сады",
+      "uz": "Farg‘ona vodiysi (Namangan va Farg‘ona viloyatlari), Samarqand viloyatining Urgut tumani, Surxondaryodagi Boysun — tog‘ va tog‘oldi organik bog‘lari"
+    },
+    "packaging": {
+      "en": "10 kg / 12.5 kg carton boxes with food-grade PE liner, 20 kg cartons, vacuum or retail packing on request",
+      "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, вакуум или потребительская фасовка по запросу",
+      "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, so‘rov bo‘yicha vakuum yoki chakana qadoqlash"
+    },
+    "hsCode": "0813.10"
+  },
+  {
+    "slug": "organic-walnuts",
+    "category": "organic",
+    "name": {
+      "en": "Organic Walnuts",
+      "ru": "Органический грецкий орех",
+      "uz": "Organik yong‘oq"
+    },
+    "latinName": "Juglans regia",
+    "description": {
+      "en": "Organic walnut kernels hand-sorted into light halves and quarters, cracked from nuts grown in mountain valleys where walnut has been cultivated for centuries. Cool nights and low humidity at harvest keep the oil fresh and the kernel colour light, with peroxide values well inside industrial specifications. In-shell nuts of 30-34 mm are available on request; all lots carry organic certification traceable to the orchard.",
+      "ru": "Органическое ядро грецкого ореха, отсортированное вручную на светлые половинки и четвертинки; орех выращен в горных долинах, где культура возделывается веками. Прохладные ночи и низкая влажность в период уборки сохраняют свежесть масла и светлый цвет ядра, перекисное число уверенно укладывается в промышленные требования. По запросу поставляем орех в скорлупе калибра 30-34 мм; все партии имеют органический сертификат с прослеживаемостью до сада.",
+      "uz": "Organik yong‘oq mag‘zi qo‘lda saralanadi — och rangli yarim va chorak mag‘izlar; yong‘oq asrlar davomida yetishtirilib kelinayotgan tog‘ vodiylaridan olinadi. Hosil davridagi salqin tunlar va past namlik moyning yangiligini va mag‘izning och rangini saqlaydi, peroksid ko‘rsatkichi sanoat talablari doirasida bo‘ladi. So‘rov bo‘yicha 30-34 mm kalibrli po‘stli yong‘oq ham yetkaziladi; barcha partiyalar bog‘gacha kuzatiladigan organik sertifikatga ega."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Kernels: light halves (LH) and light quarters (LQ), hand-sorted; in-shell 30-34 mm on request",
+          "ru": "ядро: светлые половинки (LH) и четвертинки (LQ), ручная сортировка; в скорлупе 30-34 мм по запросу",
+          "uz": "Mag‘iz: och rangli yarim (LH) va chorak (LQ) mag‘izlar, qo‘lda saralangan; so‘rov bo‘yicha po‘stli 30-34 mm"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Kernel purity 99.5% min. (shell fragments 0.5% max.) / Moisture 5% max. / Origin: Uzbekistan",
+          "ru": "Чистота ядра 99,5% мин. (частицы скорлупы 0,5% макс.) / Влажность 5% макс. / Происхождение: Узбекистан",
+          "uz": "Mag‘iz tozaligi 99,5% dan kam emas (po‘st bo‘lakchalari 0,5% dan ko‘p emas) / Namligi 5% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 kg carton boxes with food-grade PE liner, vacuum packing on request; 25 kg PP bags for in-shell",
+          "ru": "картонные короба 10 кг с пищевым ПЭ-вкладышем, вакуумная упаковка по запросу; для ореха в скорлупе — мешки ПП 25 кг",
+          "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg karton qutilar, so‘rov bo‘yicha vakuum qadoqlash; po‘stli yong‘oq uchun 25 kg PP qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "12 months for kernels at 0…+4 °C, RH 60% max.; 12 months for in-shell in dry ventilated storage",
+          "ru": "12 месяцев для ядра при 0…+4 °C и влажности не выше 60%; 12 месяцев для ореха в скорлупе в сухом вентилируемом складе",
+          "uz": "Mag‘iz uchun 0…+4 °C da, namlik 60% dan oshmaganda 12 oy; po‘stli yong‘oq uchun quruq, shamollatiladigan omborda 12 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 3 MT trial lot, 16-18 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
+          "ru": "от 3 т пробной партии, 16-18 т в контейнере; FCA Ташкент, DAP ЕС (Инкотермс 2020), образцы авиапочтой",
+          "uz": "3 tonnalik sinov partiyasidan, konteynerda 16-18 tonna; FCA Toshkent, DAP YeI (Inkoterms 2020), namunalar aviapochta orqali"
+        }
+      }
+    ],
+    "image": "/images/products/organic-walnuts.jpg",
+    "regions": {
+      "en": "Bostanlyk district of Tashkent region, Fergana Valley foothills, Boysun in Surkhandarya, mountain areas of Jizzakh — certified organic orchards and managed groves",
+      "ru": "Бостанлыкский район Ташкентской области, предгорья Ферганской долины, Байсун в Сурхандарье, горные районы Джизакской области — сертифицированные органические сады и ореховые рощи",
+      "uz": "Toshkent viloyatining Bo‘stonliq tumani, Farg‘ona vodiysi tog‘oldi hududlari, Surxondaryodagi Boysun, Jizzaxning tog‘li tumanlari — sertifikatlangan organik bog‘lar va yong‘oqzorlar"
+    },
+    "packaging": {
+      "en": "10 kg carton boxes with food-grade PE liner, vacuum blocks on request; in-shell in 25 kg PP or mesh bags",
+      "ru": "картонные короба 10 кг с пищевым ПЭ-вкладышем, вакуумные блоки по запросу; орех в скорлупе — мешки ПП или сетка 25 кг",
+      "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg karton qutilar, so‘rov bo‘yicha vakuum bloklar; po‘stli yong‘oq 25 kg PP yoki to‘r qoplarda"
+    },
+    "hsCode": "0802.32"
+  },
+  {
+    "slug": "organic-peanuts",
+    "category": "organic",
+    "name": {
+      "en": "Organic Peanuts",
+      "ru": "Органический арахис",
+      "uz": "Organik yeryong‘oq"
+    },
+    "latinName": "Arachis hypogaea",
+    "description": {
+      "en": "Raw organic peanut kernels of 50/60 and 60/70 counts, grown on irrigated organic plots and dried down to 8% moisture immediately after lifting to control aflatoxin risk. The kernels are uniform in size with tight red skins, suitable for roasting, peanut butter and confectionery coatings. Aflatoxin is tested per lot against EU limits, and in-shell peanuts can be supplied on request.",
+      "ru": "Сырое органическое ядро арахиса калибров 50/60 и 60/70, выращенное на орошаемых органических участках и высушенное до 8% влажности сразу после подкопки — это ключевой контроль риска афлатоксинов. Ядро выровнено по размеру, с плотной красной оболочкой: подходит для обжарки, арахисовой пасты и кондитерских глазурей. Афлатоксин контролируется по каждой партии по нормам ЕС; по запросу поставляется арахис в скорлупе.",
+      "uz": "Sug‘oriladigan organik maydonlarda yetishtirilgan xom organik yeryong‘oq mag‘zi, kalibri 50/60 va 60/70; kovlab olingandan so‘ng darhol 8% namlikkacha quritiladi — bu aflatoksin xavfini nazorat qilishning asosiy usuli. Mag‘izlar o‘lchami bir tekis, po‘sti qizil va zich: qovurish, yeryong‘oq pastasi va qandolat qoplamalari uchun mos. Aflatoksin har bir partiyada YeI me’yorlari bo‘yicha tekshiriladi; so‘rov bo‘yicha po‘stli yeryong‘oq ham yetkaziladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Raw shelled kernels, 50/60 and 60/70 counts per ounce; in-shell on request",
+          "ru": "сырое ядро, калибр 50/60 и 60/70 шт. на унцию; в скорлупе по запросу",
+          "uz": "Xom mag‘iz, kalibri untsiyada 50/60 va 60/70 dona; so‘rov bo‘yicha po‘stli"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Purity 99% min. / Moisture 8% max. / Aflatoxin within EU limits / Origin: Uzbekistan",
+          "ru": "Чистота 99% мин. / Влажность 8% макс. / Афлатоксин в пределах норм ЕС / Происхождение: Узбекистан",
+          "uz": "Tozaligi 99% dan kam emas / Namligi 8% dan ko‘p emas / Aflatoksin YeI me’yorlari doirasida / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "25 kg / 50 kg PP or jute bags, big bags 1000 kg, vacuum packing on request",
+          "ru": "мешки ПП или джут 25 кг / 50 кг, биг-бэги 1000 кг, вакуумная упаковка по запросу",
+          "uz": "25 kg / 50 kg PP yoki jut qoplar, 1000 kg big-bag, so‘rov bo‘yicha vakuum qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "12 months in dry, ventilated storage at up to +20 °C, RH 65% max.",
+          "ru": "12 месяцев в сухом вентилируемом складе при температуре до +20 °C и влажности не выше 65%",
+          "uz": "Quruq, shamollatiladigan omborda +20 °C gacha va nisbiy namlik 65% dan oshmaganda 12 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 5 MT trial lot, 20-22 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
+          "ru": "от 5 т пробной партии, 20-22 т в контейнере; FCA Ташкент, DAP ЕС (Инкотермс 2020), образцы авиапочтой",
+          "uz": "5 tonnalik sinov partiyasidan, konteynerda 20-22 tonna; FCA Toshkent, DAP YeI (Inkoterms 2020), namunalar aviapochta orqali"
+        }
+      }
+    ],
+    "image": "/images/products/organic-peanuts.jpg",
+    "regions": {
+      "en": "Fergana Valley (Andijan and Namangan regions), Tashkent region, Surkhandarya — certified organic irrigated plots",
+      "ru": "Ферганская долина (Андижанская и Наманганская области), Ташкентская область, Сурхандарья — сертифицированные органические орошаемые участки",
+      "uz": "Farg‘ona vodiysi (Andijon va Namangan viloyatlari), Toshkent viloyati, Surxondaryo — sertifikatlangan organik sug‘oriladigan maydonlar"
+    },
+    "packaging": {
+      "en": "25 kg / 50 kg PP or jute bags, big bags 1000 kg, vacuum or retail packing on request; 20-22 MT per 40' FCL",
+      "ru": "мешки ПП или джут 25 кг / 50 кг, биг-бэги 1000 кг, вакуум или потребительская фасовка по запросу; 20-22 т в 40' контейнере",
+      "uz": "25 kg / 50 kg PP yoki jut qoplar, 1000 kg big-bag, so‘rov bo‘yicha vakuum yoki chakana qadoqlash; 40' konteynerda 20-22 tonna"
+    },
+    "hsCode": "1202.42"
+  },
+  {
+    "slug": "organic-prunes",
+    "category": "organic",
+    "name": {
+      "en": "Organic Prunes",
+      "ru": "Органический чернослив",
+      "uz": "Organik quritilgan olxo‘ri"
+    },
+    "latinName": "Prunus domestica",
+    "description": {
+      "en": "Pitted organic prunes of the Hungarian and Spanish plum types, dried without preservatives, sorbates or glycerine coating. Careful drying keeps the flesh soft and elastic with a clean, deep flavour, so the fruit performs well in bakery fillings, purees and snack packing. Sizes 60-80 and 80-100 pieces per kilo are available, each lot certified organic and traceable to the orchard.",
+      "ru": "Органический чернослив без косточки из слив «Венгерка» и «Испанка», высушенный без консервантов, сорбатов и глицериновой обработки. Аккуратная сушка сохраняет мягкую эластичную мякоть и чистый глубокий вкус — фрукт хорошо ведёт себя в начинках, пюре и снековой фасовке. Доступны размеры 60-80 и 80-100 шт. на килограмм; каждая партия сертифицирована как органическая и прослеживается до сада.",
+      "uz": "«Vengerka» va «Ispanka» navli olxo‘rilardan tayyorlangan danaksiz organik olxo‘ri qoqisi konservantlar, sorbatlar va glitserin qoplamasisiz quritiladi. Ehtiyotkorona quritish mag‘izni yumshoq va elastik, ta’mini esa toza va to‘yingan saqlaydi — u nonvoychilik to‘ldirmalari, pyure va snek qadoqlashda yaxshi natija beradi. 1 kg da 60-80 va 80-100 dona o‘lchamlari mavjud; har bir partiya organik sertifikatga ega va bog‘gacha kuzatiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Pitted, Hungarian and Spanish types, 60-80 / 80-100 pcs per kg; without preservatives or glycerine",
+          "ru": "без косточки, «Венгерка» и «Испанка», 60-80 / 80-100 шт. на кг; без консервантов и глицерина",
+          "uz": "Danaksiz, «Vengerka» va «Ispanka» navlari, 1 kg da 60-80 / 80-100 dona; konservantlar va glitserinsiz"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Foreign matter 0.5% max., pit fragments 1% max. / Moisture 21-23% / Origin: Uzbekistan",
+          "ru": "Посторонние примеси 0,5% макс., фрагменты косточек 1% макс. / Влажность 21-23% / Происхождение: Узбекистан",
+          "uz": "Begona aralashmalar 0,5% dan ko‘p emas, danak bo‘lakchalari 1% dan ko‘p emas / Namligi 21-23% / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 kg / 12.5 kg carton boxes with food-grade PE liner, 20 kg cartons, retail packing on request",
+          "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, потребительская фасовка по запросу",
+          "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "12 months at +2…+8 °C, RH 65% max. (preservative-free fruit requires cool storage)",
+          "ru": "12 месяцев при +2…+8 °C, влажность не выше 65% (продукт без консервантов требует холодного хранения)",
+          "uz": "+2…+8 °C da, nisbiy namlik 65% dan oshmaganda 12 oy (konservantsiz mahsulot salqin saqlashni talab qiladi)"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 5 MT trial lot, 18-20 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
+          "ru": "от 5 т пробной партии, 18-20 т в контейнере; FCA Ташкент, DAP ЕС (Инкотермс 2020), образцы авиапочтой",
+          "uz": "5 tonnalik sinov partiyasidan, konteynerda 18-20 tonna; FCA Toshkent, DAP YeI (Inkoterms 2020), namunalar aviapochta orqali"
+        }
+      }
+    ],
+    "image": "/images/products/organic-prunes.jpg",
+    "regions": {
+      "en": "Samarkand region, Tashkent region (Bostanlyk, Parkent), Fergana Valley — certified organic plum orchards",
+      "ru": "Самаркандская область, Ташкентская область (Бостанлык, Паркент), Ферганская долина — сертифицированные органические сливовые сады",
+      "uz": "Samarqand viloyati, Toshkent viloyati (Bo‘stonliq, Parkent), Farg‘ona vodiysi — sertifikatlangan organik olxo‘ri bog‘lari"
+    },
+    "packaging": {
+      "en": "10 kg / 12.5 kg carton boxes with food-grade PE liner, 20 kg cartons, vacuum or retail packing on request",
+      "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, короба 20 кг, вакуум или потребительская фасовка по запросу",
+      "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, 20 kg qutilar, so‘rov bo‘yicha vakuum yoki chakana qadoqlash"
+    },
+    "hsCode": "0813.20"
+  },
+  {
+    "slug": "organic-apricot-kernels",
+    "category": "organic",
+    "name": {
+      "en": "Organic Apricot Kernels",
+      "ru": "Органические ядра абрикосовых косточек",
+      "uz": "Organik o‘rik mag‘zi"
+    },
+    "latinName": "Prunus armeniaca",
+    "description": {
+      "en": "Sweet organic apricot kernels recovered from the stones of the same certified orchards that supply our dried apricots, cracked and sorted to remove bitter and broken kernels. With an oil content around 45-50%, they are used for cold-pressed apricot kernel oil, confectionery marzipan substitutes and snack roasting. Sweet (non-bitter) selection is confirmed by taste and laboratory control on every lot.",
+      "ru": "Сладкие органические ядра абрикосовых косточек из тех же сертифицированных садов, что поставляют нашу курагу; косточки колются, ядра сортируются с удалением горьких и битых. Масличность около 45-50% позволяет использовать их для холодного отжима абрикосового масла, кондитерских аналогов марципана и обжарки в снеках. Отбор сладких (негорьких) ядер подтверждается органолептикой и лабораторным контролем по каждой партии.",
+      "uz": "Shirin organik o‘rik mag‘zi bizning o‘rik qoqimizni yetkazib beradigan sertifikatlangan bog‘larning danaklaridan olinadi; danaklar chaqiladi, mag‘izlar achchiq va singan donalardan tozalanadi. Moyliligi 45-50% atrofida bo‘lgani uchun undan sovuq presslangan o‘rik mag‘zi moyi, qandolatda marsipan o‘rnini bosuvchi massalar va qovurilgan sneklar tayyorlanadi. Shirin (achchiq bo‘lmagan) mag‘iz tanlovi har bir partiyada organoleptik va laboratoriya nazorati bilan tasdiqlanadi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Sweet (non-bitter) whole kernels, calibre 11-13 mm, oil content 45-50%; blanched kernels on request",
+          "ru": "сладкие (негорькие) целые ядра, калибр 11-13 мм, масличность 45-50%; бланшированные ядра по запросу",
+          "uz": "Shirin (achchiq bo‘lmagan) butun mag‘izlar, kalibri 11-13 mm, moyliligi 45-50%; so‘rov bo‘yicha blanshirlangan mag‘iz"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Purity 99% min. (shell fragments 0.5% max., broken 2% max.) / Moisture 6% max. / Origin: Uzbekistan",
+          "ru": "Чистота 99% мин. (частицы скорлупы 0,5% макс., бой 2% макс.) / Влажность 6% макс. / Происхождение: Узбекистан",
+          "uz": "Tozaligi 99% dan kam emas (po‘st bo‘lakchalari 0,5%, singan mag‘iz 2% dan ko‘p emas) / Namligi 6% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 kg / 12.5 kg carton boxes with food-grade PE liner, 25 kg PP bags on request",
+          "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, мешки ПП 25 кг по запросу",
+          "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, so‘rov bo‘yicha 25 kg PP qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "12 months at +5…+15 °C, RH 65% max., away from direct sunlight",
+          "ru": "12 месяцев при +5…+15 °C, влажность не выше 65%, без прямого солнечного света",
+          "uz": "+5…+15 °C da, nisbiy namlik 65% dan oshmaganda, to‘g‘ridan-to‘g‘ri quyosh nuridan uzoqda 12 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 3 MT trial lot, 16-18 MT per FCL; FCA Tashkent, DAP EU (Incoterms 2020), samples by air",
+          "ru": "от 3 т пробной партии, 16-18 т в контейнере; FCA Ташкент, DAP ЕС (Инкотермс 2020), образцы авиапочтой",
+          "uz": "3 tonnalik sinov partiyasidan, konteynerda 16-18 tonna; FCA Toshkent, DAP YeI (Inkoterms 2020), namunalar aviapochta orqali"
+        }
+      }
+    ],
+    "image": "/images/products/organic-apricot-kernels.jpg",
+    "regions": {
+      "en": "Fergana Valley (Namangan and Fergana regions), Urgut district of Samarkand region, Boysun in Surkhandarya — the same certified organic apricot orchards",
+      "ru": "Ферганская долина (Наманганская и Ферганская области), Ургутский район Самаркандской области, Байсун в Сурхандарье — те же сертифицированные органические абрикосовые сады",
+      "uz": "Farg‘ona vodiysi (Namangan va Farg‘ona viloyatlari), Samarqand viloyatining Urgut tumani, Surxondaryodagi Boysun — o‘sha sertifikatlangan organik o‘rik bog‘lari"
+    },
+    "packaging": {
+      "en": "10 kg / 12.5 kg carton boxes with food-grade PE liner, 25 kg PP bags or vacuum packing on request",
+      "ru": "картонные короба 10 кг / 12,5 кг с пищевым ПЭ-вкладышем, мешки ПП 25 кг или вакуумная упаковка по запросу",
+      "uz": "Oziq-ovqatga yaroqli PE ichlik bilan 10 kg / 12,5 kg karton qutilar, so‘rov bo‘yicha 25 kg PP qoplar yoki vakuum qadoqlash"
+    },
+    "hsCode": "1212.99"
+  },
+  {
+    "slug": "organic-rosehip",
+    "category": "organic",
+    "name": {
+      "en": "Organic Rosehip",
+      "ru": "Органический шиповник",
+      "uz": "Organik namatak"
+    },
+    "latinName": "Rosa canina",
+    "description": {
+      "en": "Dried organic rosehip collected from certified wild-harvest areas in the mountains and foothills of Uzbekistan, then air-dried at low temperature to preserve natural vitamin C. The fruit is cleaned of stalks and leaves and supplied whole, cut and sifted, or milled for tea blends, herbal infusions and food-supplement extraction. Wild-collection areas are mapped and audited, so every lot stays traceable to its harvest zone.",
+      "ru": "Сушёный органический шиповник с сертифицированных участков дикого сбора в горах и предгорьях Узбекистана; сушка воздушная, при низкой температуре — это сохраняет природный витамин C. Плоды очищаются от плодоножек и листьев и поставляются целыми, резаными (cut & sifted) или в помоле — для чайных смесей, травяных настоев и производства экстрактов для БАД. Участки дикого сбора картированы и проходят аудит, поэтому каждая партия прослеживается до зоны заготовки.",
+      "uz": "O‘zbekiston tog‘lari va tog‘oldi hududlaridagi sertifikatlangan yovvoyi yig‘im maydonlaridan terilgan quritilgan organik namatak past haroratda havoda quritiladi — bu tabiiy C vitaminini saqlaydi. Mevalar band va barglardan tozalanadi hamda butun, maydalangan (cut & sifted) yoki un holida yetkaziladi: choy aralashmalari, o‘simlik damlamalari va BFQ uchun ekstrakt ishlab chiqarishga mos. Yovvoyi yig‘im maydonlari xaritaga olingan va auditdan o‘tadi, shu bois har bir partiya yig‘im hududigacha kuzatiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Certification",
+          "ru": "Сертификация",
+          "uz": "Sertifikatsiya"
+        },
+        "value": {
+          "en": "Organic (EU) — organic status traceable to the field",
+          "ru": "Organic (EU) — органический статус прослеживается до поля",
+          "uz": "Organic (EU) — organik maqomi dalagacha kuzatiladi"
+        }
+      },
+      {
+        "label": {
+          "en": "Grade / calibration",
+          "ru": "Сорт и калибровка",
+          "uz": "Nav va kalibrlash"
+        },
+        "value": {
+          "en": "Whole dried fruits (wild harvest); cut and sifted 2-5 mm or milled on request",
+          "ru": "целые сушёные плоды (дикий сбор); резка 2-5 мм (cut & sifted) или помол по запросу",
+          "uz": "Butun quritilgan mevalar (yovvoyi yig‘im); so‘rov bo‘yicha 2-5 mm maydalangan (cut & sifted) yoki un holida"
+        }
+      },
+      {
+        "label": {
+          "en": "Purity / Moisture",
+          "ru": "Чистота / Влажность",
+          "uz": "Tozaligi / Namligi"
+        },
+        "value": {
+          "en": "Purity 99% min. (stalks and leaves 1% max.) / Moisture 10% max. / Origin: Uzbekistan",
+          "ru": "Чистота 99% мин. (плодоножки и листья 1% макс.) / Влажность 10% макс. / Происхождение: Узбекистан",
+          "uz": "Tozaligi 99% dan kam emas (band va barglar 1% dan ko‘p emas) / Namligi 10% dan ko‘p emas / Kelib chiqishi: O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 kg / 20 kg carton boxes with PE liner, 25 kg PP bags, retail packing on request",
+          "ru": "картонные короба 10 кг / 20 кг с ПЭ-вкладышем, мешки ПП 25 кг, потребительская фасовка по запросу",
+          "uz": "PE ichlik bilan 10 kg / 20 kg karton qutilar, 25 kg PP qoplar, so‘rov bo‘yicha chakana qadoqlash"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life & storage",
+          "ru": "Срок хранения и условия",
+          "uz": "Saqlash muddati va sharoiti"
+        },
+        "value": {
+          "en": "24 months in dry, dark, ventilated storage at up to +20 °C, RH 65% max.",
+          "ru": "24 месяца в сухом тёмном вентилируемом складе при температуре до +20 °C и влажности не выше 65%",
+          "uz": "Quruq, qorong‘i va shamollatiladigan omborda +20 °C gacha, namlik 65% dan oshmaganda 24 oy"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ & delivery terms",
+          "ru": "MOQ и условия поставки",
+          "uz": "MOQ va yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 3 MT trial lot, 10-12 MT per FCL (low density); FCA Tashkent, DAP EU (Incoterms 2020)",
+          "ru": "от 3 т пробной партии, 10-12 т в контейнере (низкая насыпная плотность); FCA Ташкент, DAP ЕС (Инкотермс 2020)",
+          "uz": "3 tonnalik sinov partiyasidan, konteynerda 10-12 tonna (zichligi past); FCA Toshkent, DAP YeI (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/organic-rosehip.jpg",
+    "regions": {
+      "en": "Certified wild-collection areas in Bostanlyk (Tashkent region), Zaamin in Jizzakh, Boysun in Surkhandarya and the mountains around the Fergana Valley",
+      "ru": "Сертифицированные участки дикого сбора в Бостанлыке (Ташкентская область), Зааминe (Джизакская область), Байсуне (Сурхандарья) и горах вокруг Ферганской долины",
+      "uz": "Bo‘stonliq (Toshkent viloyati), Zomin (Jizzax), Boysun (Surxondaryo) va Farg‘ona vodiysi atrofidagi tog‘lardagi sertifikatlangan yovvoyi yig‘im maydonlari"
+    },
+    "packaging": {
+      "en": "10 kg / 20 kg carton boxes with PE liner, 25 kg PP bags, big bags for cut and sifted material, retail packing on request",
+      "ru": "картонные короба 10 кг / 20 кг с ПЭ-вкладышем, мешки ПП 25 кг, биг-бэги для резаного сырья, потребительская фасовка по запросу",
+      "uz": "PE ichlik bilan 10 kg / 20 kg karton qutilar, 25 kg PP qoplar, maydalangan xomashyo uchun big-bag, so‘rov bo‘yicha chakana qadoqlash"
+    },
+    "hsCode": "1211.90"
+  },
+  {
+    "slug": "dried-bell-pepper",
+    "category": "dried-vegetables",
+    "name": {
+      "en": "Dried Bell Pepper",
+      "ru": "Сушёный сладкий перец",
+      "uz": "Quritilgan bulg‘or qalampiri"
+    },
+    "latinName": "Capsicum annuum L. var. grossum",
+    "description": {
+      "en": "Air-dried sweet bell pepper supplied as red and green slices in 6x6 and 10x10 mm calibres, processed within hours of harvest to hold colour and aroma. Uzbekistan's long sunny season builds a high dry-matter and pigment content in the raw fruit, so the slices rehydrate to a bright, firm piece rather than a pale one. Standard input for soup and sauce concentrates, seasoning and marinade blends, instant noodles, snack coatings and meat processing.",
+      "ru": "Сушёный сладкий перец поставляется красными и зелёными ломтиками калибра 6x6 и 10x10 мм; сырьё перерабатывается в течение нескольких часов после уборки, что сохраняет цвет и аромат. Длинный солнечный сезон Узбекистана даёт высокое содержание сухих веществ и красящих пигментов, поэтому после регидратации ломтик остаётся ярким и плотным, а не бледным. Стандартное сырьё для концентратов супов и соусов, приправочных и маринадных смесей, лапши быстрого приготовления, посыпок для снеков и мясопереработки.",
+      "uz": "Quritilgan bulg‘or qalampiri qizil va yashil tilimlar shaklida, 6x6 va 10x10 mm kalibrda yetkaziladi; xomashyo hosil yig‘ilgandan keyin bir necha soat ichida qayta ishlanadi va shu bois rangi hamda hidi saqlanadi. O‘zbekistonning uzoq quyoshli mavsumi mevada quruq modda va bo‘yovchi pigmentlar miqdorini oshiradi, shuning uchun tilim namlangach oqarib ketmaydi — yorqin va zich bo‘lib qoladi. Sho‘rva va sous konsentratlari, ziravor va marinad aralashmalari, tez tayyorlanadigan makaron, gazak sepmalari va go‘sht mahsulotlari ishlab chiqarish uchun standart xomashyo."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Form of supply / Calibration",
+          "ru": "Форма поставки / Калибр",
+          "uz": "Yetkazib berish shakli / Kalibr"
+        },
+        "value": {
+          "en": "Sliced / Red - Caliber: 6x6; 10x10 / Green - Caliber: 10x10 (mm); flakes and powder on request",
+          "ru": "Ломтики / красный — калибр: 6x6; 10x10 / зелёный — калибр: 10x10 (мм); хлопья и порошок по запросу",
+          "uz": "Tilim / qizil — kalibr: 6x6; 10x10 / yashil — kalibr: 10x10 (mm); talab bo‘yicha parcha (xlopya) va kukun"
+        }
+      },
+      {
+        "label": {
+          "en": "Moisture",
+          "ru": "Влажность",
+          "uz": "Namlik"
+        },
+        "value": {
+          "en": "7% max.",
+          "ru": "не более 7%",
+          "uz": "7% dan ko‘p emas"
+        }
+      },
+      {
+        "label": {
+          "en": "Origin",
+          "ru": "Происхождение",
+          "uz": "Kelib chiqishi"
+        },
+        "value": {
+          "en": "Uzbekistan",
+          "ru": "Узбекистан",
+          "uz": "O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 / 20 kg carton boxes with food-grade PE liner, 20 kg PP or kraft bags with PE liner",
+          "ru": "коробки 10 / 20 кг с пищевым ПЭ-вкладышем, мешки ПП или крафт 20 кг с ПЭ-вкладышем",
+          "uz": "oziq-ovqatbop PE ichlikli 10 / 20 kg karton qutilar, PE ichlikli 20 kg PP yoki kraft qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
+        },
+        "value": {
+          "en": "24 months at +5…+25 °C, RH 65% max., dry dark ventilated warehouse",
+          "ru": "24 месяцев при +5…+25 °C, отн. влажность не более 65%, сухой затемнённый проветриваемый склад",
+          "uz": "+5…+25 °C da 24 oy, nisbiy namlik 65% dan ko‘p emas, quruq, qorong‘i, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ / Delivery terms",
+          "ru": "Минимальная партия / Условия поставки",
+          "uz": "Minimal partiya / Yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 5–6 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
+          "ru": "От 1 000 кг по позиции; 1 x 20' FCL — ок. 5–6 т (допускается сборный контейнер). FCA Ташкент, DAP автотранспортом или по железной дороге, CIF Поти / Бендер-Аббас (Инкотермс 2020)",
+          "uz": "Har bir pozitsiya bo‘yicha 1 000 kg dan; 1 x 20' FCL — taxminan 5–6 t (aralash konteyner qabul qilinadi). FCA Toshkent, avtomobil yoki temir yo‘l orqali DAP, CIF Poti / Bandar Abbos (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/dried-bell-pepper.jpg",
+    "featured": true,
+    "regions": {
+      "en": "Surkhandarya and Kashkadarya regions, Samarkand region and the Fergana Valley — the warm southern and eastern districts where sweet pepper is grown for processing.",
+      "ru": "Сурхандарьинская и Кашкадарьинская области, Самаркандская область и Ферганская долина — тёплые южные и восточные районы, где сладкий перец выращивают на переработку.",
+      "uz": "Surxondaryo va Qashqadaryo viloyatlari, Samarqand viloyati hamda Farg‘ona vodiysi — bulg‘or qalampiri qayta ishlash uchun yetishtiriladigan issiq janubiy va sharqiy hududlar."
+    },
+    "packaging": {
+      "en": "10 kg and 20 kg carton boxes with food-grade PE liner, 20 kg PP or multi-wall kraft bags with PE liner. Retail packing and big bags 100–200 kg on request. Approx. 5–6 MT per 20' container.",
+      "ru": "Коробки 10 и 20 кг с пищевым ПЭ-вкладышем, мешки ПП или многослойные крафт-мешки 20 кг с ПЭ-вкладышем. Розничная фасовка и биг-бэги 100–200 кг по запросу. Около 5–6 т в 20-футовом контейнере.",
+      "uz": "Oziq-ovqatbop PE ichlikli 10 va 20 kg karton qutilar, PE ichlikli 20 kg PP yoki ko‘p qatlamli kraft qoplar. Talab bo‘yicha chakana qadoq va 100–200 kg big-beglar. 20 futlik konteynerda taxminan 5–6 t."
+    },
+    "hsCode": "0904.21"
+  },
+  {
+    "slug": "dried-tomato",
+    "category": "dried-vegetables",
+    "name": {
+      "en": "Dried Tomato",
+      "ru": "Сушёный томат",
+      "uz": "Quritilgan pomidor"
+    },
+    "latinName": "Solanum lycopersicum L.",
+    "description": {
+      "en": "Dried tomato slices made from ripe open-field fruit of Uzbekistan's irrigated valleys, where hot summers and a wide day-night temperature range push up dry matter, sugars and lycopene. The product delivers a deep red colour and concentrated taste at low dosage in ketchups and sauces, soup bases, dry seasoning mixes, bakery fillings and pizza toppings. Supplied sliced; flakes and powder are milled to order, with lot-by-lot moisture and colour control.",
+      "ru": "Сушёный томат из спелых плодов открытого грунта орошаемых долин Узбекистана: жаркое лето и большой перепад дневных и ночных температур дают высокое содержание сухих веществ, сахаров и ликопина. Продукт обеспечивает насыщенный красный цвет и концентрированный вкус при небольшой дозировке в кетчупах и соусах, суповых основах, сухих приправочных смесях, начинках для выпечки и посыпках для пиццы. Поставляется ломтиками; хлопья и порошок мелются под заказ, с контролем влажности и цвета по каждой партии.",
+      "uz": "Quritilgan pomidor O‘zbekistonning sug‘oriladigan vodiylarida ochiq maydonda yetishtirilgan pishgan mevalardan tayyorlanadi: issiq yoz va kunduzgi hamda tungi haroratning katta farqi quruq modda, shakar va likopin miqdorini oshiradi. Mahsulot ketchup va souslar, sho‘rva asoslari, quruq ziravor aralashmalari, non-qandolat to‘ldirmalari va pitsa sepmalarida oz miqdorda ham to‘q qizil rang va quyuq ta’m beradi. Tilim holida yetkaziladi; parcha (xlopya) va kukun buyurtma bo‘yicha tortiladi, har bir partiyada namlik va rang nazorat qilinadi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Form of supply / Calibration",
+          "ru": "Форма поставки / Калибр",
+          "uz": "Yetkazib berish shakli / Kalibr"
+        },
+        "value": {
+          "en": "Sliced (halves and slices); flakes and powder on request",
+          "ru": "Ломтики (половинки и слайсы); хлопья и порошок по запросу",
+          "uz": "Tilim (yarim va tilim); talab bo‘yicha parcha (xlopya) va kukun"
+        }
+      },
+      {
+        "label": {
+          "en": "Moisture",
+          "ru": "Влажность",
+          "uz": "Namlik"
+        },
+        "value": {
+          "en": "8% max.",
+          "ru": "не более 8%",
+          "uz": "8% dan ko‘p emas"
+        }
+      },
+      {
+        "label": {
+          "en": "Origin",
+          "ru": "Происхождение",
+          "uz": "Kelib chiqishi"
+        },
+        "value": {
+          "en": "Uzbekistan",
+          "ru": "Узбекистан",
+          "uz": "O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 / 20 kg carton boxes with food-grade PE liner, 20 kg PP or kraft bags with PE liner",
+          "ru": "коробки 10 / 20 кг с пищевым ПЭ-вкладышем, мешки ПП или крафт 20 кг с ПЭ-вкладышем",
+          "uz": "oziq-ovqatbop PE ichlikli 10 / 20 kg karton qutilar, PE ichlikli 20 kg PP yoki kraft qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
+        },
+        "value": {
+          "en": "24 months at +5…+25 °C, RH 65% max., dry dark ventilated warehouse",
+          "ru": "24 месяцев при +5…+25 °C, отн. влажность не более 65%, сухой затемнённый проветриваемый склад",
+          "uz": "+5…+25 °C da 24 oy, nisbiy namlik 65% dan ko‘p emas, quruq, qorong‘i, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ / Delivery terms",
+          "ru": "Минимальная партия / Условия поставки",
+          "uz": "Minimal partiya / Yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 6–7 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
+          "ru": "От 1 000 кг по позиции; 1 x 20' FCL — ок. 6–7 т (допускается сборный контейнер). FCA Ташкент, DAP автотранспортом или по железной дороге, CIF Поти / Бендер-Аббас (Инкотермс 2020)",
+          "uz": "Har bir pozitsiya bo‘yicha 1 000 kg dan; 1 x 20' FCL — taxminan 6–7 t (aralash konteyner qabul qilinadi). FCA Toshkent, avtomobil yoki temir yo‘l orqali DAP, CIF Poti / Bandar Abbos (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/dried-tomato.jpg",
+    "featured": true,
+    "regions": {
+      "en": "Syrdarya and Jizzakh regions, Tashkent region and Samarkand region — the irrigated field-tomato belt supplying the country's processing plants.",
+      "ru": "Сырдарьинская и Джизакская области, Ташкентская и Самаркандская области — орошаемый пояс полевого томата, снабжающий перерабатывающие заводы страны.",
+      "uz": "Sirdaryo va Jizzax viloyatlari, Toshkent hamda Samarqand viloyatlari — mamlakat qayta ishlash korxonalarini ta’minlaydigan sug‘oriladigan dala pomidori mintaqasi."
+    },
+    "packaging": {
+      "en": "10 kg and 20 kg carton boxes with food-grade PE liner, 20 kg PP or multi-wall kraft bags with PE liner. Retail packing and big bags 100–200 kg on request. Approx. 6–7 MT per 20' container.",
+      "ru": "Коробки 10 и 20 кг с пищевым ПЭ-вкладышем, мешки ПП или многослойные крафт-мешки 20 кг с ПЭ-вкладышем. Розничная фасовка и биг-бэги 100–200 кг по запросу. Около 6–7 т в 20-футовом контейнере.",
+      "uz": "Oziq-ovqatbop PE ichlikli 10 va 20 kg karton qutilar, PE ichlikli 20 kg PP yoki ko‘p qatlamli kraft qoplar. Talab bo‘yicha chakana qadoq va 100–200 kg big-beglar. 20 futlik konteynerda taxminan 6–7 t."
+    },
+    "hsCode": "0712.90"
+  },
+  {
+    "slug": "dried-carrot",
+    "category": "dried-vegetables",
+    "name": {
+      "en": "Dried Carrot",
+      "ru": "Сушёная морковь",
+      "uz": "Quritilgan sabzi"
+    },
+    "latinName": "Daucus carota L. subsp. sativus",
+    "description": {
+      "en": "Dehydrated carrot diced to 3x3, 5x5 and 10x10 mm from orange table varieties of Uzbekistan's irrigated valleys, blanched before drying to fix carotene and keep the cut edges clean. Rehydration is fast and even, which makes the dice a reliable filler in soup and bouillon concentrates, instant meals, sauces, ready-mix pilaf sets and extruded snacks. Cut size, screening and metal detection are agreed per contract.",
+      "ru": "Сушёная морковь кубиком 3x3, 5x5 и 10x10 мм из оранжевых столовых сортов орошаемых долин Узбекистана; перед сушкой сырьё бланшируется, что закрепляет каротин и сохраняет чистую линию реза. Регидратация быстрая и равномерная, поэтому кубик стабильно работает как наполнитель в супо-бульонных концентратах, блюдах быстрого приготовления, соусах, готовых наборах для плова и экструдированных снеках. Размер реза, просев и металлодетекция согласуются по контракту.",
+      "uz": "Quritilgan sabzi O‘zbekistonning sug‘oriladigan vodiylarida yetishtirilgan to‘q sariq oshxona navlaridan 3x3, 5x5 va 10x10 mm kubik shaklida tayyorlanadi; quritishdan oldin blanshirovka qilinishi karotinni mustahkamlaydi va kesim chetini toza saqlaydi. Namlanish tez va bir tekis kechadi, shu bois kubik sho‘rva-bulon konsentratlari, tez tayyor taomlar, souslar, palov uchun tayyor to‘plamlar va ekstruziya gazaklarida ishonchli to‘ldiruvchi bo‘lib xizmat qiladi. Kesim o‘lchami, elash va metall detektor shartnoma bo‘yicha kelishiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Form of supply / Calibration",
+          "ru": "Форма поставки / Калибр",
+          "uz": "Yetkazib berish shakli / Kalibr"
+        },
+        "value": {
+          "en": "Sliced (diced) / Caliber: 3x3; 5x5; 10x10 (mm); flakes and powder on request",
+          "ru": "Ломтики (кубик) / калибр: 3x3; 5x5; 10x10 (мм); хлопья и порошок по запросу",
+          "uz": "Tilim (kubik) / kalibr: 3x3; 5x5; 10x10 (mm); talab bo‘yicha parcha (xlopya) va kukun"
+        }
+      },
+      {
+        "label": {
+          "en": "Moisture",
+          "ru": "Влажность",
+          "uz": "Namlik"
+        },
+        "value": {
+          "en": "6% max.",
+          "ru": "не более 6%",
+          "uz": "6% dan ko‘p emas"
+        }
+      },
+      {
+        "label": {
+          "en": "Origin",
+          "ru": "Происхождение",
+          "uz": "Kelib chiqishi"
+        },
+        "value": {
+          "en": "Uzbekistan",
+          "ru": "Узбекистан",
+          "uz": "O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 / 20 kg carton boxes with food-grade PE liner, 20 kg PP or kraft bags with PE liner",
+          "ru": "коробки 10 / 20 кг с пищевым ПЭ-вкладышем, мешки ПП или крафт 20 кг с ПЭ-вкладышем",
+          "uz": "oziq-ovqatbop PE ichlikli 10 / 20 kg karton qutilar, PE ichlikli 20 kg PP yoki kraft qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
+        },
+        "value": {
+          "en": "24 months at +5…+25 °C, RH 65% max., dry dark ventilated warehouse",
+          "ru": "24 месяцев при +5…+25 °C, отн. влажность не более 65%, сухой затемнённый проветриваемый склад",
+          "uz": "+5…+25 °C da 24 oy, nisbiy namlik 65% dan ko‘p emas, quruq, qorong‘i, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ / Delivery terms",
+          "ru": "Минимальная партия / Условия поставки",
+          "uz": "Minimal partiya / Yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 7–8 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
+          "ru": "От 1 000 кг по позиции; 1 x 20' FCL — ок. 7–8 т (допускается сборный контейнер). FCA Ташкент, DAP автотранспортом или по железной дороге, CIF Поти / Бендер-Аббас (Инкотермс 2020)",
+          "uz": "Har bir pozitsiya bo‘yicha 1 000 kg dan; 1 x 20' FCL — taxminan 7–8 t (aralash konteyner qabul qilinadi). FCA Toshkent, avtomobil yoki temir yo‘l orqali DAP, CIF Poti / Bandar Abbos (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/dried-carrot.jpg",
+    "regions": {
+      "en": "Tashkent and Samarkand regions, Khorezm region and Kashkadarya — the main irrigated carrot-growing districts.",
+      "ru": "Ташкентская и Самаркандская области, Хорезмская область и Кашкадарья — основные районы орошаемого морковеводства.",
+      "uz": "Toshkent va Samarqand viloyatlari, Xorazm viloyati hamda Qashqadaryo — sabzi yetishtiriladigan asosiy sug‘oriladigan hududlar."
+    },
+    "packaging": {
+      "en": "10 kg and 20 kg carton boxes with food-grade PE liner, 20 kg PP or multi-wall kraft bags with PE liner. Retail packing and big bags 100–200 kg on request. Approx. 7–8 MT per 20' container.",
+      "ru": "Коробки 10 и 20 кг с пищевым ПЭ-вкладышем, мешки ПП или многослойные крафт-мешки 20 кг с ПЭ-вкладышем. Розничная фасовка и биг-бэги 100–200 кг по запросу. Около 7–8 т в 20-футовом контейнере.",
+      "uz": "Oziq-ovqatbop PE ichlikli 10 va 20 kg karton qutilar, PE ichlikli 20 kg PP yoki ko‘p qatlamli kraft qoplar. Talab bo‘yicha chakana qadoq va 100–200 kg big-beglar. 20 futlik konteynerda taxminan 7–8 t."
+    },
+    "hsCode": "0712.90"
+  },
+  {
+    "slug": "dried-pepper",
+    "category": "dried-vegetables",
+    "name": {
+      "en": "Dried Pepper",
+      "ru": "Сушёный перец",
+      "uz": "Quritilgan qalampir"
+    },
+    "latinName": "Capsicum annuum L.",
+    "description": {
+      "en": "Dried capsicum pepper offered whole, sliced in 3x3, 5x5 and 10x10 mm calibres or milled to powder, in sweet (paprika) and hot types. Grown in the hot southern regions of Uzbekistan, the pods reach full colour on the plant, so the ground product holds a strong red hue without added colourants. Used in spice and seasoning blends, sausage and meat production, sauces, instant products and snack coatings; ASTA colour value and pungency (SHU) are fixed in the contract specification.",
+      "ru": "Сушёный стручковый перец предлагается целым, ломтиком калибра 3x3, 5x5 и 10x10 мм или молотым в порошок, в сладком (паприка) и остром вариантах. Перец выращивается в жарких южных регионах Узбекистана и добирает цвет на кусте, поэтому молотый продукт даёт насыщенный красный тон без добавления красителей. Применяется в приправочных и пряных смесях, колбасном и мясном производстве, соусах, продуктах быстрого приготовления и посыпках для снеков; цветность по ASTA и острота (SHU) фиксируются в спецификации контракта.",
+      "uz": "Quritilgan qalampir butun holda, 3x3, 5x5 va 10x10 mm kalibrdagi tilim shaklida yoki kukun qilib tortilgan holda, shirin (paprika) va achchiq turlarida taklif etiladi. Qalampir O‘zbekistonning issiq janubiy hududlarida yetishtiriladi va rangni tup ustida to‘liq oladi, shuning uchun tortilgan mahsulot bo‘yoq qo‘shilmasdan ham to‘q qizil tusda bo‘ladi. Ziravor va aralashmalar, kolbasa va go‘sht ishlab chiqarish, souslar, tez tayyorlanadigan mahsulotlar hamda gazak sepmalarida qo‘llaniladi; ASTA bo‘yicha ranglilik va achchiqlik (SHU) shartnoma spetsifikatsiyasida belgilanadi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Form of supply / Calibration",
+          "ru": "Форма поставки / Калибр",
+          "uz": "Yetkazib berish shakli / Kalibr"
+        },
+        "value": {
+          "en": "Whole / Sliced / Powder / Caliber: 3x3; 5x5; 10x10 (mm)",
+          "ru": "Целый / ломтики / порошок / калибр: 3x3; 5x5; 10x10 (мм)",
+          "uz": "Butun / tilim / kukun / kalibr: 3x3; 5x5; 10x10 (mm)"
+        }
+      },
+      {
+        "label": {
+          "en": "Moisture",
+          "ru": "Влажность",
+          "uz": "Namlik"
+        },
+        "value": {
+          "en": "10% max.",
+          "ru": "не более 10%",
+          "uz": "10% dan ko‘p emas"
+        }
+      },
+      {
+        "label": {
+          "en": "Origin",
+          "ru": "Происхождение",
+          "uz": "Kelib chiqishi"
+        },
+        "value": {
+          "en": "Uzbekistan",
+          "ru": "Узбекистан",
+          "uz": "O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 / 20 kg carton boxes with food-grade PE liner, 20 kg PP or kraft bags with PE liner",
+          "ru": "коробки 10 / 20 кг с пищевым ПЭ-вкладышем, мешки ПП или крафт 20 кг с ПЭ-вкладышем",
+          "uz": "oziq-ovqatbop PE ichlikli 10 / 20 kg karton qutilar, PE ichlikli 20 kg PP yoki kraft qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
+        },
+        "value": {
+          "en": "24 months at +5…+25 °C, RH 65% max., dry dark ventilated warehouse",
+          "ru": "24 месяцев при +5…+25 °C, отн. влажность не более 65%, сухой затемнённый проветриваемый склад",
+          "uz": "+5…+25 °C da 24 oy, nisbiy namlik 65% dan ko‘p emas, quruq, qorong‘i, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ / Delivery terms",
+          "ru": "Минимальная партия / Условия поставки",
+          "uz": "Minimal partiya / Yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 5–6 MT whole and sliced, 12–14 MT powder (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
+          "ru": "От 1 000 кг по позиции; 1 x 20' FCL — ок. 5–6 т для целого и ломтика, 12–14 т для порошка (допускается сборный контейнер). FCA Ташкент, DAP автотранспортом или по железной дороге, CIF Поти / Бендер-Аббас (Инкотермс 2020)",
+          "uz": "Har bir pozitsiya bo‘yicha 1 000 kg dan; 1 x 20' FCL — taxminan butun va tilim uchun 5–6 t, kukun uchun 12–14 t (aralash konteyner qabul qilinadi). FCA Toshkent, avtomobil yoki temir yo‘l orqali DAP, CIF Poti / Bandar Abbos (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/dried-pepper.jpg",
+    "regions": {
+      "en": "Surkhandarya and Kashkadarya regions, Namangan and Fergana — southern and eastern districts with the heat units capsicum needs to ripen fully.",
+      "ru": "Сурхандарьинская и Кашкадарьинская области, Наманган и Фергана — южные и восточные районы с суммой активных температур, необходимой перцу для полного созревания.",
+      "uz": "Surxondaryo va Qashqadaryo viloyatlari, Namangan va Farg‘ona — qalampirning to‘liq pishishi uchun zarur issiqlik yig‘indisiga ega janubiy va sharqiy hududlar."
+    },
+    "packaging": {
+      "en": "10 kg and 20 kg carton boxes with food-grade PE liner, 20 kg PP or multi-wall kraft bags with PE liner. Retail packing and big bags 100–200 kg on request. Approx. 5–6 MT whole and sliced, 12–14 MT powder per 20' container.",
+      "ru": "Коробки 10 и 20 кг с пищевым ПЭ-вкладышем, мешки ПП или многослойные крафт-мешки 20 кг с ПЭ-вкладышем. Розничная фасовка и биг-бэги 100–200 кг по запросу. Около 5–6 т для целого и ломтика, 12–14 т для порошка в 20-футовом контейнере.",
+      "uz": "Oziq-ovqatbop PE ichlikli 10 va 20 kg karton qutilar, PE ichlikli 20 kg PP yoki ko‘p qatlamli kraft qoplar. Talab bo‘yicha chakana qadoq va 100–200 kg big-beglar. 20 futlik konteynerda taxminan butun va tilim uchun 5–6 t, kukun uchun 12–14 t."
+    },
+    "hsCode": "0904.21"
+  },
+  {
+    "slug": "dried-pumpkin",
+    "category": "dried-vegetables",
+    "name": {
+      "en": "Dried Pumpkin",
+      "ru": "Сушёная тыква",
+      "uz": "Quritilgan qovoq"
+    },
+    "latinName": "Cucurbita maxima Duchesne",
+    "description": {
+      "en": "Dried pumpkin in 10x10 mm slices from thick-fleshed varieties of the Khorezm and lower Amu Darya area, traditionally grown for storage and drying. High natural sugar and carotene give a sweet taste and a warm orange colour, which works in porridge and cereal mixes, soup and puree concentrates, bakery fillings, baby-food raw material and pet-food formulations. Powder and finer dice are produced to order.",
+      "ru": "Сушёная тыква ломтиком 10x10 мм из толстомясых сортов Хорезма и низовьев Амударьи, которые традиционно выращивают на хранение и сушку. Высокое содержание природных сахаров и каротина даёт сладкий вкус и тёплый оранжевый цвет — продукт хорошо работает в кашах и зерновых смесях, супо-пюреных концентратах, начинках для выпечки, как сырьё для детского питания и в кормовых рецептурах. Порошок и более мелкий кубик изготавливаются под заказ.",
+      "uz": "Quritilgan qovoq Xorazm va Amudaryoning quyi oqimidagi qalin etli navlardan 10x10 mm tilim shaklida tayyorlanadi; bu navlar an’anaviy ravishda saqlash va quritish uchun yetishtiriladi. Tabiiy shakar va karotinning yuqoriligi shirin ta’m hamda iliq to‘q sariq rang beradi — mahsulot bo‘tqa va don aralashmalari, sho‘rva-pyure konsentratlari, non-qandolat to‘ldirmalarida, bolalar ovqati xomashyosi va yem retseptlarida qo‘l keladi. Kukun va mayda kubik buyurtma bo‘yicha tayyorlanadi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Form of supply / Calibration",
+          "ru": "Форма поставки / Калибр",
+          "uz": "Yetkazib berish shakli / Kalibr"
+        },
+        "value": {
+          "en": "Sliced / Caliber: 10x10 (mm); flakes and powder on request",
+          "ru": "Ломтики / калибр: 10x10 (мм); хлопья и порошок по запросу",
+          "uz": "Tilim / kalibr: 10x10 (mm); talab bo‘yicha parcha (xlopya) va kukun"
+        }
+      },
+      {
+        "label": {
+          "en": "Moisture",
+          "ru": "Влажность",
+          "uz": "Namlik"
+        },
+        "value": {
+          "en": "8% max.",
+          "ru": "не более 8%",
+          "uz": "8% dan ko‘p emas"
+        }
+      },
+      {
+        "label": {
+          "en": "Origin",
+          "ru": "Происхождение",
+          "uz": "Kelib chiqishi"
+        },
+        "value": {
+          "en": "Uzbekistan",
+          "ru": "Узбекистан",
+          "uz": "O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 / 20 kg carton boxes with food-grade PE liner, 20 kg PP or kraft bags with PE liner",
+          "ru": "коробки 10 / 20 кг с пищевым ПЭ-вкладышем, мешки ПП или крафт 20 кг с ПЭ-вкладышем",
+          "uz": "oziq-ovqatbop PE ichlikli 10 / 20 kg karton qutilar, PE ichlikli 20 kg PP yoki kraft qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
+        },
+        "value": {
+          "en": "24 months at +5…+25 °C, RH 65% max., dry dark ventilated warehouse",
+          "ru": "24 месяцев при +5…+25 °C, отн. влажность не более 65%, сухой затемнённый проветриваемый склад",
+          "uz": "+5…+25 °C da 24 oy, nisbiy namlik 65% dan ko‘p emas, quruq, qorong‘i, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ / Delivery terms",
+          "ru": "Минимальная партия / Условия поставки",
+          "uz": "Minimal partiya / Yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 6–7 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
+          "ru": "От 1 000 кг по позиции; 1 x 20' FCL — ок. 6–7 т (допускается сборный контейнер). FCA Ташкент, DAP автотранспортом или по железной дороге, CIF Поти / Бендер-Аббас (Инкотермс 2020)",
+          "uz": "Har bir pozitsiya bo‘yicha 1 000 kg dan; 1 x 20' FCL — taxminan 6–7 t (aralash konteyner qabul qilinadi). FCA Toshkent, avtomobil yoki temir yo‘l orqali DAP, CIF Poti / Bandar Abbos (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/dried-pumpkin.jpg",
+    "regions": {
+      "en": "Khorezm region and the Republic of Karakalpakstan, Bukhara and Jizzakh regions — the traditional pumpkin-growing areas of the Amu Darya lowlands and the steppe belt.",
+      "ru": "Хорезмская область и Республика Каракалпакстан, Бухарская и Джизакская области — традиционные районы выращивания тыквы в низовьях Амударьи и степной зоне.",
+      "uz": "Xorazm viloyati va Qoraqalpog‘iston Respublikasi, Buxoro hamda Jizzax viloyatlari — Amudaryo quyi oqimi va dasht mintaqasidagi an’anaviy qovoqchilik hududlari."
+    },
+    "packaging": {
+      "en": "10 kg and 20 kg carton boxes with food-grade PE liner, 20 kg PP or multi-wall kraft bags with PE liner. Retail packing and big bags 100–200 kg on request. Approx. 6–7 MT per 20' container.",
+      "ru": "Коробки 10 и 20 кг с пищевым ПЭ-вкладышем, мешки ПП или многослойные крафт-мешки 20 кг с ПЭ-вкладышем. Розничная фасовка и биг-бэги 100–200 кг по запросу. Около 6–7 т в 20-футовом контейнере.",
+      "uz": "Oziq-ovqatbop PE ichlikli 10 va 20 kg karton qutilar, PE ichlikli 20 kg PP yoki ko‘p qatlamli kraft qoplar. Talab bo‘yicha chakana qadoq va 100–200 kg big-beglar. 20 futlik konteynerda taxminan 6–7 t."
+    },
+    "hsCode": "0712.90"
+  },
+  {
+    "slug": "dried-cabbage",
+    "category": "dried-vegetables",
+    "name": {
+      "en": "Dried Cabbage",
+      "ru": "Сушёная капуста",
+      "uz": "Quritilgan karam"
+    },
+    "latinName": "Brassica oleracea L. var. capitata",
+    "description": {
+      "en": "Dried white cabbage cut to 3x3, 5x5 and 10x10 mm from dense autumn heads grown in the cooler foothill districts of Uzbekistan. Blanching before drying keeps the leaf light in colour and free of the sulphurous note that poorly processed cabbage carries, and the cut rehydrates in minutes. Typical uses are dry soup and borscht concentrates, instant noodle sachets, vegetable mixes for catering and camping rations.",
+      "ru": "Сушёная белокочанная капуста резкой 3x3, 5x5 и 10x10 мм из плотных осенних кочанов, выращенных в более прохладных предгорных районах Узбекистана. Бланширование перед сушкой сохраняет светлый цвет листа и убирает сернистый оттенок, характерный для плохо переработанной капусты, а резка восстанавливается за считанные минуты. Типовое применение — сухие концентраты супов и борщей, саше для лапши быстрого приготовления, овощные смеси для кейтеринга и полевых рационов.",
+      "uz": "Quritilgan oq karam O‘zbekistonning salqinroq tog‘oldi hududlarida yetishtirilgan zich kuzgi boshlardan 3x3, 5x5 va 10x10 mm kesimda tayyorlanadi. Quritishdan oldingi blanshirovka barg rangini och saqlaydi va yomon qayta ishlangan karamga xos oltingugurt hidini yo‘qotadi, kesim esa bir necha daqiqada tiklanadi. Odatda quruq sho‘rva va borsh konsentratlari, tez tayyorlanadigan makaron paketchalari, keytering va dala ratsionlari uchun sabzavot aralashmalarida ishlatiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Form of supply / Calibration",
+          "ru": "Форма поставки / Калибр",
+          "uz": "Yetkazib berish shakli / Kalibr"
+        },
+        "value": {
+          "en": "Sliced (cut) / Caliber: 3x3; 5x5; 10x10 (mm); flakes on request",
+          "ru": "Ломтики (резка) / калибр: 3x3; 5x5; 10x10 (мм); хлопья по запросу",
+          "uz": "Tilim (kesim) / kalibr: 3x3; 5x5; 10x10 (mm); talab bo‘yicha parcha (xlopya)"
+        }
+      },
+      {
+        "label": {
+          "en": "Moisture",
+          "ru": "Влажность",
+          "uz": "Namlik"
+        },
+        "value": {
+          "en": "6% max.",
+          "ru": "не более 6%",
+          "uz": "6% dan ko‘p emas"
+        }
+      },
+      {
+        "label": {
+          "en": "Origin",
+          "ru": "Происхождение",
+          "uz": "Kelib chiqishi"
+        },
+        "value": {
+          "en": "Uzbekistan",
+          "ru": "Узбекистан",
+          "uz": "O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 / 20 kg carton boxes with food-grade PE liner, 20 kg PP or kraft bags with PE liner",
+          "ru": "коробки 10 / 20 кг с пищевым ПЭ-вкладышем, мешки ПП или крафт 20 кг с ПЭ-вкладышем",
+          "uz": "oziq-ovqatbop PE ichlikli 10 / 20 kg karton qutilar, PE ichlikli 20 kg PP yoki kraft qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
+        },
+        "value": {
+          "en": "24 months at +5…+25 °C, RH 65% max., dry dark ventilated warehouse",
+          "ru": "24 месяцев при +5…+25 °C, отн. влажность не более 65%, сухой затемнённый проветриваемый склад",
+          "uz": "+5…+25 °C da 24 oy, nisbiy namlik 65% dan ko‘p emas, quruq, qorong‘i, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ / Delivery terms",
+          "ru": "Минимальная партия / Условия поставки",
+          "uz": "Minimal partiya / Yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 4–5 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
+          "ru": "От 1 000 кг по позиции; 1 x 20' FCL — ок. 4–5 т (допускается сборный контейнер). FCA Ташкент, DAP автотранспортом или по железной дороге, CIF Поти / Бендер-Аббас (Инкотермс 2020)",
+          "uz": "Har bir pozitsiya bo‘yicha 1 000 kg dan; 1 x 20' FCL — taxminan 4–5 t (aralash konteyner qabul qilinadi). FCA Toshkent, avtomobil yoki temir yo‘l orqali DAP, CIF Poti / Bandar Abbos (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/dried-cabbage.jpg",
+    "regions": {
+      "en": "Tashkent region (Bostanlyk, Parkent), the Fergana Valley and the foothill districts of Samarkand region, where autumn cabbage is grown for storage and processing.",
+      "ru": "Ташкентская область (Бостанлык, Паркент), Ферганская долина и предгорные районы Самаркандской области, где осеннюю капусту выращивают на хранение и переработку.",
+      "uz": "Toshkent viloyati (Bo‘stonliq, Parkent), Farg‘ona vodiysi va Samarqand viloyatining tog‘oldi tumanlari — kuzgi karam saqlash va qayta ishlash uchun yetishtiriladigan hududlar."
+    },
+    "packaging": {
+      "en": "10 kg and 20 kg carton boxes with food-grade PE liner, 20 kg PP or multi-wall kraft bags with PE liner. Retail packing and big bags 100–200 kg on request. Approx. 4–5 MT per 20' container.",
+      "ru": "Коробки 10 и 20 кг с пищевым ПЭ-вкладышем, мешки ПП или многослойные крафт-мешки 20 кг с ПЭ-вкладышем. Розничная фасовка и биг-бэги 100–200 кг по запросу. Около 4–5 т в 20-футовом контейнере.",
+      "uz": "Oziq-ovqatbop PE ichlikli 10 va 20 kg karton qutilar, PE ichlikli 20 kg PP yoki ko‘p qatlamli kraft qoplar. Talab bo‘yicha chakana qadoq va 100–200 kg big-beglar. 20 futlik konteynerda taxminan 4–5 t."
+    },
+    "hsCode": "0712.90"
+  },
+  {
+    "slug": "dried-beetroot",
+    "category": "dried-vegetables",
+    "name": {
+      "en": "Dried Beetroot",
+      "ru": "Сушёная свёкла",
+      "uz": "Quritilgan lavlagi"
+    },
+    "latinName": "Beta vulgaris L. subsp. vulgaris",
+    "description": {
+      "en": "Dried table beetroot in 10x10 mm slices from dark-fleshed varieties with a high betanin content, dried at controlled temperature so the pigment is not degraded. It carries colour and an earthy-sweet taste into borscht and soup concentrates, dry sauce and seasoning mixes, bakery and snack products, and serves as raw material for natural colouring preparations. Powder and finer dice are milled on request.",
+      "ru": "Сушёная столовая свёкла ломтиком 10x10 мм из тёмномякотных сортов с высоким содержанием бетанина; сушка ведётся при контролируемой температуре, чтобы не разрушить пигмент. Продукт даёт цвет и характерный землисто-сладкий вкус в концентратах борщей и супов, сухих соусных и приправочных смесях, хлебобулочных и снековых изделиях, а также служит сырьём для натуральных красящих препаратов. Порошок и более мелкий кубик мелются по запросу.",
+      "uz": "Quritilgan oshxona lavlagisi betanin miqdori yuqori bo‘lgan to‘q etli navlardan 10x10 mm tilim shaklida tayyorlanadi; pigment buzilmasligi uchun quritish nazorat qilinadigan haroratda olib boriladi. Mahsulot borsh va sho‘rva konsentratlari, quruq sous va ziravor aralashmalari, non hamda gazak mahsulotlariga rang va o‘ziga xos shirin-tuproqsimon ta’m beradi, shuningdek tabiiy bo‘yovchi preparatlar uchun xomashyo bo‘lib xizmat qiladi. Kukun va mayda kubik talab bo‘yicha tortiladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Form of supply / Calibration",
+          "ru": "Форма поставки / Калибр",
+          "uz": "Yetkazib berish shakli / Kalibr"
+        },
+        "value": {
+          "en": "Sliced / Caliber: 10x10 (mm); flakes and powder on request",
+          "ru": "Ломтики / калибр: 10x10 (мм); хлопья и порошок по запросу",
+          "uz": "Tilim / kalibr: 10x10 (mm); talab bo‘yicha parcha (xlopya) va kukun"
+        }
+      },
+      {
+        "label": {
+          "en": "Moisture",
+          "ru": "Влажность",
+          "uz": "Namlik"
+        },
+        "value": {
+          "en": "8% max.",
+          "ru": "не более 8%",
+          "uz": "8% dan ko‘p emas"
+        }
+      },
+      {
+        "label": {
+          "en": "Origin",
+          "ru": "Происхождение",
+          "uz": "Kelib chiqishi"
+        },
+        "value": {
+          "en": "Uzbekistan",
+          "ru": "Узбекистан",
+          "uz": "O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 / 20 kg carton boxes with food-grade PE liner, 20 kg PP or kraft bags with PE liner",
+          "ru": "коробки 10 / 20 кг с пищевым ПЭ-вкладышем, мешки ПП или крафт 20 кг с ПЭ-вкладышем",
+          "uz": "oziq-ovqatbop PE ichlikli 10 / 20 kg karton qutilar, PE ichlikli 20 kg PP yoki kraft qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
+        },
+        "value": {
+          "en": "24 months at +5…+25 °C, RH 65% max., dry dark ventilated warehouse",
+          "ru": "24 месяцев при +5…+25 °C, отн. влажность не более 65%, сухой затемнённый проветриваемый склад",
+          "uz": "+5…+25 °C da 24 oy, nisbiy namlik 65% dan ko‘p emas, quruq, qorong‘i, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ / Delivery terms",
+          "ru": "Минимальная партия / Условия поставки",
+          "uz": "Minimal partiya / Yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 7–8 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
+          "ru": "От 1 000 кг по позиции; 1 x 20' FCL — ок. 7–8 т (допускается сборный контейнер). FCA Ташкент, DAP автотранспортом или по железной дороге, CIF Поти / Бендер-Аббас (Инкотермс 2020)",
+          "uz": "Har bir pozitsiya bo‘yicha 1 000 kg dan; 1 x 20' FCL — taxminan 7–8 t (aralash konteyner qabul qilinadi). FCA Toshkent, avtomobil yoki temir yo‘l orqali DAP, CIF Poti / Bandar Abbos (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/dried-beetroot.jpg",
+    "regions": {
+      "en": "Tashkent and Samarkand regions, the Fergana Valley and Jizzakh — irrigated districts where table beet is grown in the autumn rotation.",
+      "ru": "Ташкентская и Самаркандская области, Ферганская долина и Джизак — орошаемые районы, где столовую свёклу выращивают в осеннем обороте.",
+      "uz": "Toshkent va Samarqand viloyatlari, Farg‘ona vodiysi hamda Jizzax — oshxona lavlagisi kuzgi aylanmada yetishtiriladigan sug‘oriladigan hududlar."
+    },
+    "packaging": {
+      "en": "10 kg and 20 kg carton boxes with food-grade PE liner, 20 kg PP or multi-wall kraft bags with PE liner. Retail packing and big bags 100–200 kg on request. Approx. 7–8 MT per 20' container.",
+      "ru": "Коробки 10 и 20 кг с пищевым ПЭ-вкладышем, мешки ПП или многослойные крафт-мешки 20 кг с ПЭ-вкладышем. Розничная фасовка и биг-бэги 100–200 кг по запросу. Около 7–8 т в 20-футовом контейнере.",
+      "uz": "Oziq-ovqatbop PE ichlikli 10 va 20 kg karton qutilar, PE ichlikli 20 kg PP yoki ko‘p qatlamli kraft qoplar. Talab bo‘yicha chakana qadoq va 100–200 kg big-beglar. 20 futlik konteynerda taxminan 7–8 t."
+    },
+    "hsCode": "0712.90"
+  },
+  {
+    "slug": "dried-dill",
+    "category": "dried-vegetables",
+    "name": {
+      "en": "Dried Dill",
+      "ru": "Сушёный укроп",
+      "uz": "Quritilgan shivit"
+    },
+    "latinName": "Anethum graveolens L.",
+    "description": {
+      "en": "Dried dill weed cut to 3x3, 5x5 and 10x10 mm, dried in shade at low temperature so the green colour and the essential-oil profile survive the process. Uzbek open-field dill is cut young, before flowering, which keeps stalk content low and the aroma clean. Supplied to seasoning houses and producers of soup concentrates, dry sauces and dressings, brine and pickling mixes, and to retail packers of culinary herbs.",
+      "ru": "Сушёная зелень укропа резкой 3x3, 5x5 и 10x10 мм; сушка ведётся в тени при низкой температуре, что сохраняет зелёный цвет и профиль эфирных масел. Узбекский укроп открытого грунта срезают молодым, до цветения, поэтому доля стебля невысока, а аромат остаётся чистым. Поставляется производителям приправ и супов-концентратов, сухих соусов и заправок, рассольных и засолочных смесей, а также фасовщикам кулинарных трав.",
+      "uz": "Quritilgan shivit ko‘kati 3x3, 5x5 va 10x10 mm kesimda tayyorlanadi; quritish soyada, past haroratda olib boriladi va shu bois yashil rang hamda efir moylari tarkibi saqlanadi. O‘zbekistonda ochiq maydondagi shivit gullashdan oldin, yosh holida o‘riladi — bu poya ulushini kamaytiradi va hidni toza saqlaydi. Ziravor ishlab chiqaruvchilar, sho‘rva konsentratlari, quruq sous va zapravkalar, tuzlash hamda marinad aralashmalari ishlab chiqaruvchilarga, shuningdek oshxona ko‘katlarini chakana qadoqlovchilarga yetkaziladi."
+    },
+    "specs": [
+      {
+        "label": {
+          "en": "Form of supply / Calibration",
+          "ru": "Форма поставки / Калибр",
+          "uz": "Yetkazib berish shakli / Kalibr"
+        },
+        "value": {
+          "en": "Sliced (cut leaf) / Caliber: 3x3; 5x5; 10x10 (mm); rubbed and powder on request",
+          "ru": "Ломтики (резаная зелень) / калибр: 3x3; 5x5; 10x10 (мм); растёртая зелень и порошок по запросу",
+          "uz": "Tilim (kesilgan ko‘kat) / kalibr: 3x3; 5x5; 10x10 (mm); talab bo‘yicha ezilgan ko‘kat va kukun"
+        }
+      },
+      {
+        "label": {
+          "en": "Moisture",
+          "ru": "Влажность",
+          "uz": "Namlik"
+        },
+        "value": {
+          "en": "8% max.",
+          "ru": "не более 8%",
+          "uz": "8% dan ko‘p emas"
+        }
+      },
+      {
+        "label": {
+          "en": "Origin",
+          "ru": "Происхождение",
+          "uz": "Kelib chiqishi"
+        },
+        "value": {
+          "en": "Uzbekistan",
+          "ru": "Узбекистан",
+          "uz": "O‘zbekiston"
+        }
+      },
+      {
+        "label": {
+          "en": "Packaging",
+          "ru": "Упаковка",
+          "uz": "Qadoqlash"
+        },
+        "value": {
+          "en": "10 / 20 kg carton boxes with food-grade PE liner, 20 kg PP or kraft bags with PE liner",
+          "ru": "коробки 10 / 20 кг с пищевым ПЭ-вкладышем, мешки ПП или крафт 20 кг с ПЭ-вкладышем",
+          "uz": "oziq-ovqatbop PE ichlikli 10 / 20 kg karton qutilar, PE ichlikli 20 kg PP yoki kraft qoplar"
+        }
+      },
+      {
+        "label": {
+          "en": "Shelf life",
+          "ru": "Срок хранения",
+          "uz": "Saqlash muddati"
+        },
+        "value": {
+          "en": "18 months at +5…+25 °C, RH 65% max., dry dark ventilated warehouse",
+          "ru": "18 месяцев при +5…+25 °C, отн. влажность не более 65%, сухой затемнённый проветриваемый склад",
+          "uz": "+5…+25 °C da 18 oy, nisbiy namlik 65% dan ko‘p emas, quruq, qorong‘i, shamollatiladigan omborda"
+        }
+      },
+      {
+        "label": {
+          "en": "MOQ / Delivery terms",
+          "ru": "Минимальная партия / Условия поставки",
+          "uz": "Minimal partiya / Yetkazib berish shartlari"
+        },
+        "value": {
+          "en": "From 1 000 kg per item; 1 x 20' FCL — approx. 2.5–3 MT (mixed containers accepted). FCA Tashkent, DAP by truck or rail, CIF Poti / Bandar Abbas (Incoterms 2020)",
+          "ru": "От 1 000 кг по позиции; 1 x 20' FCL — ок. 2,5–3 т (допускается сборный контейнер). FCA Ташкент, DAP автотранспортом или по железной дороге, CIF Поти / Бендер-Аббас (Инкотермс 2020)",
+          "uz": "Har bir pozitsiya bo‘yicha 1 000 kg dan; 1 x 20' FCL — taxminan 2,5–3 t (aralash konteyner qabul qilinadi). FCA Toshkent, avtomobil yoki temir yo‘l orqali DAP, CIF Poti / Bandar Abbos (Inkoterms 2020)"
+        }
+      }
+    ],
+    "image": "/images/products/dried-dill.jpg",
+    "regions": {
+      "en": "Tashkent region, the Fergana Valley and Samarkand region — market-gardening districts around the large cities that supply fresh herbs for drying.",
+      "ru": "Ташкентская область, Ферганская долина и Самаркандская область — пригородные овощеводческие районы вокруг крупных городов, поставляющие свежую зелень на сушку.",
+      "uz": "Toshkent viloyati, Farg‘ona vodiysi va Samarqand viloyati — quritishga yangi ko‘kat yetkazib beradigan yirik shaharlar atrofidagi polizchilik hududlari."
+    },
+    "packaging": {
+      "en": "10 kg and 20 kg carton boxes with food-grade PE liner, 20 kg PP or multi-wall kraft bags with PE liner. Retail packing and big bags 100–200 kg on request. Approx. 2.5–3 MT per 20' container.",
+      "ru": "Коробки 10 и 20 кг с пищевым ПЭ-вкладышем, мешки ПП или многослойные крафт-мешки 20 кг с ПЭ-вкладышем. Розничная фасовка и биг-бэги 100–200 кг по запросу. Около 2,5–3 т в 20-футовом контейнере.",
+      "uz": "Oziq-ovqatbop PE ichlikli 10 va 20 kg karton qutilar, PE ichlikli 20 kg PP yoki ko‘p qatlamli kraft qoplar. Talab bo‘yicha chakana qadoq va 100–200 kg big-beglar. 20 futlik konteynerda taxminan 2,5–3 t."
+    },
+    "hsCode": "0712.90"
   }
 ];
 

@@ -1,36 +1,178 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Global Export Company — корпоративный сайт
 
-## Getting Started
+Новый сайт для узбекского производителя и экспортёра сельхозпродукции
+[Global Export Company](https://www.globalex.uz) — замена текущему сайту на Wix.
 
-First, run the development server:
+Каталог, новости, страницы компании и заявки на трёх языках (EN / RU / UZ),
+статическая генерация, реальный контент и фотографии перенесены с их
+действующего сайта.
+
+---
+
+## Быстрый старт
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # можно оставить пустым для локального запуска
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Сборка и локальный прод-запуск:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Стек
 
-## Learn More
+| Слой | Решение | Почему |
+|---|---|---|
+| Фреймворк | Next.js 16, App Router | Статическая генерация всех страниц, встроенный `next/image`, SEO-метаданные из коробки |
+| Стили | Tailwind CSS v4 | Токены темы прямо в CSS (`app/globals.css`), нет отдельного конфига |
+| Языки | Свой лёгкий i18n (`lib/i18n.ts`) | Три языка без внешней библиотеки и без рантайм-оверхеда |
+| Анимации | CSS-переходы + IntersectionObserver | Плавные появления при скролле без анимационных библиотек в бандле |
+| Контент | Типизированные TS-модули в `content/` | Готовы к переносу в CMS один-в-один, см. ниже |
+| Формы | Route Handler `app/api/lead/route.ts` | Отправка заявок в Telegram и (опционально) в Bitrix24 |
 
-To learn more about Next.js, take a look at the following resources:
+Внешних зависимостей во фронтенде нет вообще: только `next`, `react`,
+`react-dom`. Всё остальное — dev-зависимости.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Структура
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+  [locale]/            все страницы под префиксом языка (/en, /ru, /uz)
+    page.tsx           Главная
+    about/             О компании
+    quality/           Качество и сертификаты
+    team/              Команда
+    catalog/           Каталог + [slug] карточка товара
+    news/              Новости + [slug] статья
+    contacts/          Контакты
+  api/lead/            приём заявок
+  sitemap.ts           карта сайта с hreflang
+  robots.ts
+components/
+  layout/              шапка, подвал, логотип, переключатель языка
+  sections/            секции страниц (hero, статистика, категории, ...)
+  cards/               карточки товара и новости
+  catalog/             фильтр и поиск по каталогу
+  forms/               форма заявки
+  ui/                  примитивы: контейнер, кнопка, иконки, reveal
+content/
+  company.ts           описание, цифры, преимущества, процесс, площадки, контакты
+  categories.ts        4 категории продукции
+  products.ts          каталог товаров
+  news.ts              публикации
+  team.ts              руководство и отдел экспорта
+  certificates.ts      сертификаты, признание, этапы контроля качества
+  geography.ts         география экспорта
+  dictionaries/        строки интерфейса: en.ts / ru.ts / uz.ts
+lib/
+  i18n.ts, seo.ts, format.ts, cn.ts, content/types.ts
+middleware.ts          редирект / → /<язык> по Accept-Language
+```
 
-## Deploy on Vercel
+## Как редактировать контент
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Весь контент — обычные TypeScript-файлы в `content/`. Тексты хранятся
+объектами `{ en, ru, uz }`; если перевода нет, автоматически берётся
+английский.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Добавить товар — дописать объект в `content/products.ts`:
+
+```ts
+{
+  slug: "dried-apricot",           // адрес: /en/catalog/dried-apricot
+  category: "dried-fruits",
+  name: { en: "Dried Apricot", ru: "Курага", uz: "O‘rik qoqi" },
+  description: { en: "…", ru: "…", uz: "…" },
+  specs: [{ label: { en: "Moisture", ru: "Влажность", uz: "Namligi" },
+            value: { en: "18% max.", ru: "18% макс.", uz: "18% maks." } }],
+  image: "/images/products/dried-apricot.jpg",
+}
+```
+
+Страница товара, карточка в каталоге, фильтр, поиск, sitemap и JSON-LD
+подхватят его сами. То же с новостями в `content/news.ts`.
+
+Строки интерфейса (кнопки, подписи, заголовки секций) — в
+`content/dictionaries/`. Английский словарь задаёт тип: если в `ru.ts` или
+`uz.ts` забыть ключ, сборка упадёт с ошибкой типизации, а не покажет пустое
+место на сайте.
+
+### Переход на CMS
+
+Типы в `lib/content/types.ts` описывают коллекции один-в-один. Чтобы
+подключить Payload, Strapi или Sanity, достаточно заменить импорты в
+`content/*.ts` на запросы к API — компоненты не меняются.
+
+## Заявки с сайта
+
+`POST /api/lead` принимает форму, валидирует, отсеивает ботов (honeypot) и
+отправляет заявку:
+
+- **в Telegram** — задайте `TELEGRAM_BOT_TOKEN` и `TELEGRAM_CHAT_ID`;
+- **в Bitrix24** — задайте `BITRIX_WEBHOOK_URL` (входящий вебхук с правом
+  `crm.lead.add`), лид создаётся автоматически.
+
+Можно включить оба канала одновременно. Если ни один не настроен, в
+разработке заявка пишется в консоль, а в продакшене запрос возвращает ошибку —
+чтобы заявки не терялись молча.
+
+## Деплой
+
+Проект разворачивается на Vercel без настройки: подключить репозиторий,
+задать переменные окружения из `.env.example` — и всё. Бесплатного тарифа
+хватает с запасом: все страницы статические, динамических функций две
+(middleware и приём заявок).
+
+Свой сервер:
+
+```bash
+npm ci && npm run build && npm start   # слушает PORT, по умолчанию 3000
+```
+
+## SEO
+
+- Все страницы предрендерятся статически, включая карточки товаров и статьи.
+- `sitemap.xml` c hreflang-альтернативами для трёх языков, `robots.txt`.
+- Canonical и Open Graph на каждой странице, `x-default` на английскую версию.
+- JSON-LD: `Organization` на всех страницах, `Product` в карточке товара,
+  `NewsArticle` в статье.
+- Заголовки, alt-атрибуты, семантическая разметка, навигация по хлебным крошкам.
+
+## Доступность
+
+Пропуск к содержимому с клавиатуры, видимый фокус, ARIA-атрибуты в шапке,
+фильтрах и формах, контрастность текста по AA, полное уважение к
+`prefers-reduced-motion` — при включённой настройке анимации отключаются.
+
+---
+
+## Что нужно получить от клиента
+
+Всё, чего нет в открытом доступе на их текущем сайте, в код не выдумывалось.
+Перед запуском нужно запросить:
+
+1. **Телефоны и юридический адрес** — на сайте не опубликованы, сейчас в
+   контактах только email и «Ташкент, Узбекистан».
+2. **Точный адрес офиса** для карты (сейчас карта показывает город).
+3. **Фотографии сотрудников** — в карточках команды пока инициалы.
+4. **Сканы сертификатов** (FSSC 22000, SMETA, Halal, органика) — их номера и
+   даты нигде не публиковались.
+5. **Адреса и названия 4 производственных площадок** — компания указывает их
+   количество, но не расположение.
+6. **Полный список 55 стран экспорта** — сейчас показаны направления,
+   подтверждённые их же новостями.
+7. **Расхождение в цифрах**: на английской версии сайта мощность по
+   сухофруктам указана как 15 000 тонн, на русской — 50 000 тонн. В коде
+   стоит 15 000 (сумма по линиям сходится с заявленными 50 000 тонн в год).
+   Нужно подтвердить.
+8. **Фирменные материалы**: логотип в векторе, брендбук, если есть.
+   Текущий логотип на сайте — растровый, в макете нарисован свой знак.
+
+Технические характеристики товаров (упаковка, MOQ, сроки хранения, коды ТН
+ВЭД) проставлены типовыми для отрасли — их нужно сверить со спецификациями
+компании.

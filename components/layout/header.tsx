@@ -74,6 +74,14 @@ export function Header({ locale, dict }: HeaderProps) {
           : "border-b border-transparent bg-transparent",
       )}
     >
+      {/* Scrim so the white nav stays legible over bright hero photography. */}
+      <div
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-forest-950/75 via-forest-950/35 to-transparent transition-opacity duration-500",
+          solid ? "opacity-0" : "opacity-100",
+        )}
+      />
       <Container className="flex h-18 items-center justify-between gap-6 py-3">
         <Link
           href={localeHref(locale)}
