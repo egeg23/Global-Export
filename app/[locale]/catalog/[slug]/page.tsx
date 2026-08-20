@@ -137,6 +137,7 @@ export default async function ProductPage({ params }: Props) {
                   alt={t(product.name, locale)}
                   fill
                   priority
+                  fetchPriority="high"
                   sizes="(min-width: 1024px) 48vw, 100vw"
                   className="object-cover"
                 />

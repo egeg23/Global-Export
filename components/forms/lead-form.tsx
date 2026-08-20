@@ -36,12 +36,22 @@ export function LeadForm({
   // Borders are deliberately heavy enough to read as a control boundary
   // (3:1 against the field background), and the global focus ring is left
   // intact rather than cleared with `outline-none`.
-  const fieldClass = cn(
-    "h-12 w-full rounded-xl border px-4 text-[0.95rem] transition-colors duration-300",
-    dark
-      ? "border-sand-50/35 bg-sand-50/5 text-sand-50 placeholder:text-sand-300/65 focus:border-harvest-300"
-      : "border-forest-900/50 bg-white text-forest-950 placeholder:text-ink-subtle focus:border-forest-700",
-  );
+  const baseField =
+    "h-12 w-full rounded-xl border px-4 text-[0.95rem] transition-colors duration-300";
+
+  const fieldTone = dark
+    ? "border-sand-50/35 bg-sand-50/5 text-sand-50 placeholder:text-sand-300/65 focus:border-harvest-300"
+    : "border-forest-900/50 bg-white text-forest-950 placeholder:text-ink-subtle focus:border-forest-700";
+
+  const errorTone = dark
+    ? "border-red-400 bg-sand-50/5 text-sand-50 placeholder:text-sand-300/65"
+    : "border-red-600 bg-white text-forest-950 placeholder:text-ink-subtle";
+
+  // cn() is a plain joiner, not tailwind-merge: appending a second border
+  // class would leave both in the attribute and let stylesheet order decide.
+  // So the tone is swapped rather than overridden.
+  const field = (invalid = false) => cn(baseField, invalid ? errorTone : fieldTone);
+  const fieldClass = field();
 
   const labelClass = cn(
     "mb-2 block text-[0.7rem] font-semibold uppercase tracking-[0.14em]",
@@ -61,7 +71,13 @@ export function LeadForm({
     }
 
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
+    const firstInvalid = Object.keys(nextErrors)[0];
+    if (firstInvalid) {
+      // noValidate turns off the browser's own "jump to the bad field", and on
+      // a phone the error can be well off screen.
+      form.querySelector<HTMLElement>(`#lead-${firstInvalid}`)?.focus();
+      return;
+    }
 
     setStatus("submitting");
     try {
@@ -145,7 +161,7 @@ export function LeadForm({
             id="lead-name"
             name="name"
             autoComplete="name"
-            className={cn(fieldClass, errors.name && "border-red-500")}
+            className={field(Boolean(errors.name))}
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "lead-name-error" : undefined}
           />
@@ -181,7 +197,7 @@ export function LeadForm({
             type="email"
             inputMode="email"
             autoComplete="email"
-            className={cn(fieldClass, errors.email && "border-red-500")}
+            className={field(Boolean(errors.email))}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "lead-email-error" : undefined}
           />

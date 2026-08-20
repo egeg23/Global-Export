@@ -127,6 +127,7 @@ export default async function ArticlePage({ params }: Props) {
                 alt={t(item.title, locale)}
                 fill
                 priority
+                fetchPriority="high"
                 sizes="(min-width: 1024px) 60vw, 100vw"
                 className="object-cover"
               />

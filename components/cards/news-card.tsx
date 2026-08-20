@@ -10,10 +10,13 @@ export function NewsCard({
   item,
   locale,
   readLabel,
+  priority = false,
 }: {
   item: NewsItem;
   locale: Locale;
   readLabel: string;
+  /** Set on the cards above the fold so the list has an eager image. */
+  priority?: boolean;
 }) {
   return (
     <Link
@@ -26,6 +29,8 @@ export function NewsCard({
             src={item.image}
             alt=""
             fill
+            priority={priority}
+            fetchPriority={priority ? "high" : undefined}
             sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
             className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
           />

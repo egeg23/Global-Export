@@ -19,6 +19,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         alt=""
         fill
         priority
+        fetchPriority="high"
         sizes="100vw"
         className="-z-20 object-cover"
       />

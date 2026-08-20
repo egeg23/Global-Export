@@ -55,7 +55,12 @@ export default async function NewsPage({ params }: Props) {
             <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {news.map((item, index) => (
                 <Reveal as="li" key={item.slug} delay={(index % 3) * 80}>
-                  <NewsCard item={item} locale={locale} readLabel={dict.common.readMore} />
+                  <NewsCard
+                    item={item}
+                    locale={locale}
+                    readLabel={dict.common.readMore}
+                    priority={index < 3}
+                  />
                 </Reveal>
               ))}
             </ul>

@@ -17,10 +17,15 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+/**
+ * Only 400 and 500 are loaded: headings set weight 500 in globals.css and
+ * nothing on the site draws the display face bolder than that, so shipping a
+ * 600 file would preload bytes no page ever paints.
+ */
 const playfair = Playfair_Display({
   subsets: ["latin", "cyrillic"],
   display: "swap",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   variable: "--font-display",
 });
 
@@ -72,6 +77,13 @@ export default async function LocaleLayout({
 
   return (
     <html lang={localeTags[locale]} className={`${inter.variable} ${playfair.variable}`}>
+      <head>
+        {/* Scroll-reveal hides its blocks until an observer fires; if scripts
+            never run, this puts them back. */}
+        <noscript>
+          <style>{`.reveal { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
+      </head>
       <body className="min-h-screen antialiased">
         <a
           href="#main"

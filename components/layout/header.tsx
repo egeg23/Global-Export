@@ -116,7 +116,7 @@ export function Header({ locale, dict }: HeaderProps) {
           <Link
             href={localeHref(locale, "contacts")}
             className={cn(
-              "hidden h-10 items-center rounded-full px-5 text-sm font-medium transition-all duration-300 xl:inline-flex",
+              "hidden h-10 items-center rounded-full px-5 text-sm font-medium transition-all duration-300 lg:inline-flex",
               solid
                 ? "bg-forest-800 text-sand-50 hover:bg-forest-700"
                 : "bg-sand-50/95 text-forest-900 hover:bg-white",
@@ -164,8 +164,10 @@ export function Header({ locale, dict }: HeaderProps) {
       <div
         id="mobile-menu"
         className={cn(
-          "overflow-hidden border-t border-forest-900/10 bg-sand-50 transition-[max-height,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden",
-          menuOpen ? "max-h-[80vh] opacity-100" : "invisible max-h-0 opacity-0",
+          "border-t border-forest-900/10 bg-sand-50 transition-[max-height,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden",
+          menuOpen
+            ? "max-h-[80vh] overflow-y-auto opacity-100"
+            : "invisible max-h-0 overflow-hidden opacity-0",
         )}
       >
         <Container className="flex flex-col gap-1 py-6">

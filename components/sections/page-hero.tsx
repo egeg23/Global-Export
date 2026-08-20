@@ -43,7 +43,15 @@ export function PageHero({
     >
       {image ? (
         <>
-          <Image src={image} alt="" fill priority sizes="100vw" className="-z-20 object-cover" />
+          <Image
+            src={image}
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className="-z-20 object-cover"
+          />
           <div
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-gradient-to-t from-forest-950 via-forest-950/80 to-forest-950/50"

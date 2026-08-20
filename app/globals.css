@@ -118,10 +118,6 @@
     transform: translate3d(0, 0, 0);
   }
 
-  .marquee-track {
-    animation: marquee 42s linear infinite;
-  }
-
   .hover-lift {
     transition:
       transform 0.45s var(--ease-out-soft),
@@ -148,15 +144,6 @@
   }
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -166,10 +153,6 @@
     opacity: 1;
     transform: none;
     transition: none;
-  }
-
-  .marquee-track {
-    animation: none;
   }
 
   .hover-lift:hover {
