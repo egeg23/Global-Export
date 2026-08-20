@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { ProductCard } from "@/components/cards/product-card";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/cn";
+import { plural } from "@/lib/format";
 import { categories } from "@/content/categories";
 import type { Dictionary } from "@/content/dictionaries";
 import type { Product } from "@/lib/content/types";
@@ -60,8 +61,11 @@ export function CatalogBrowser({
     categories.map((item) => ({ slug: item.slug, label: t(item.name, locale) })),
   );
 
-  const countLabel =
-    filtered.length === 1 ? dict.catalog.resultsOne : dict.catalog.resultsMany;
+  const countLabel = plural(filtered.length, locale, {
+    one: dict.catalog.resultsOne,
+    few: dict.catalog.resultsFew,
+    many: dict.catalog.resultsMany,
+  });
 
   return (
     <div>

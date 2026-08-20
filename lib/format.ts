@@ -22,6 +22,29 @@ export function formatDate(iso: string, locale: Locale): string {
   }
 }
 
+/**
+ * Picks the right plural form for a count.
+ *
+ * Russian needs three: 1 товар, 2–4 товара, 5–20 товаров — and the teens all
+ * take the last form, which is why 11 and 111 are handled separately from 1
+ * and 21. English and Uzbek only ever use `one` and `many`.
+ */
+export function plural(
+  count: number,
+  locale: Locale,
+  forms: { one: string; few: string; many: string },
+): string {
+  if (locale !== "ru") return count === 1 ? forms.one : forms.many;
+
+  const mod100 = Math.abs(count) % 100;
+  const mod10 = mod100 % 10;
+
+  if (mod100 >= 11 && mod100 <= 14) return forms.many;
+  if (mod10 === 1) return forms.one;
+  if (mod10 >= 2 && mod10 <= 4) return forms.few;
+  return forms.many;
+}
+
 /** Splits an authored body into paragraphs. */
 export function paragraphs(body: string): string[] {
   return body

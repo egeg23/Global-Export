@@ -82,6 +82,7 @@ export const en = {
     allCategories: "All products",
     searchPlaceholder: "Search by product name…",
     resultsOne: "product",
+    resultsFew: "products",
     resultsMany: "products",
     empty: "Nothing matches this filter yet.",
     reset: "Reset filters",

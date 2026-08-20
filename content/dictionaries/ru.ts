@@ -84,6 +84,7 @@ export const ru: Dictionary = {
     allCategories: "Вся продукция",
     searchPlaceholder: "Поиск по названию…",
     resultsOne: "товар",
+    resultsFew: "товара",
     resultsMany: "товаров",
     empty: "По этому фильтру пока ничего нет.",
     reset: "Сбросить фильтры",

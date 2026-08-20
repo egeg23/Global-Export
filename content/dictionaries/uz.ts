@@ -84,6 +84,7 @@ export const uz: Dictionary = {
     allCategories: "Barcha mahsulotlar",
     searchPlaceholder: "Nomi bo‘yicha qidirish…",
     resultsOne: "mahsulot",
+    resultsFew: "mahsulot",
     resultsMany: "mahsulot",
     empty: "Ushbu filtr bo‘yicha hozircha hech narsa yo‘q.",
     reset: "Filtrlarni tozalash",
