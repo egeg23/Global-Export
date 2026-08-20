@@ -60,10 +60,12 @@ export type Certificate = {
   image?: string;
 };
 
+export type TeamGroup = "board" | "directors" | "export";
+
 export type TeamMember = {
   name: string;
   position: Localized;
-  group: "board" | "directors";
+  group: TeamGroup;
   photo?: string;
   email?: string;
 };
