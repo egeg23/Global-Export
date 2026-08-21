@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Полёт урожая</title>
-<meta name="description" content="Демонстрация прокруточной анимации для Global Export Company: сухофрукты и орехи летят через экран и раскладываются по корзинам.">
+<meta name="description" content="Демонстрация прокруточной анимации для Global Export Company: путь урожая от кадра до контракта — корзины, коробки, погрузка и маршруты экспорта.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,7 +145,7 @@ h1 {
 
 /* --- Сцена --------------------------------------------------------------- */
 
-.track { position: relative; height: 460vh; }
+.track { position: relative; height: 900vh; }
 
 .stage {
   position: sticky;
@@ -289,6 +289,289 @@ h1 {
   will-change: transform;
 }
 
+
+/* --- Мир и «камера» ------------------------------------------------------ */
+
+/* Всё содержимое сцены живёт в одном слое: отъезд камеры — это одно
+   преобразование на нём, а не пересчёт координат каждого объекта. */
+.world {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* --- Коробки ------------------------------------------------------------- */
+
+/* После погрузки сцена сознательно перестаёт быть фотографической: рисованный
+   грузовик рядом с вырезанной курагой смотрелся бы коллажем, а схема — нет. */
+.carton {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* Выше корзин и предметов: содержимое должно исчезать за передней стенкой,
+     а не просвечивать сквозь неё. */
+  z-index: 4;
+  will-change: transform, opacity;
+}
+
+.carton-body {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.82;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #c79a5e 0%, #b0824a 46%, #9a6f3d 100%);
+  box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.7);
+}
+
+/* Стык створок и лента поверх него. */
+.carton-seam {
+  position: absolute;
+  inset: 0 0 auto;
+  top: 30%;
+  height: 1px;
+  background: rgba(60, 38, 16, 0.45);
+}
+
+.carton-tape {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 42%;
+  width: 16%;
+  background: rgba(250, 246, 238, 0.82);
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+.carton-mark {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 44%;
+  text-align: center;
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: rgba(60, 38, 16, 0.72);
+}
+
+.carton-count {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 62%;
+  text-align: center;
+  font-size: 0.54rem;
+  color: rgba(60, 38, 16, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Грузовики ----------------------------------------------------------- */
+
+.truck {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  will-change: transform, opacity;
+}
+
+.truck-body { position: relative; width: 100%; aspect-ratio: 5 / 2.4; }
+
+/* Кузов заодно обрезает дверь: поднятая створка должна уезжать внутрь, а не
+   торчать над крышей. */
+.truck-cargo {
+  position: absolute;
+  left: 1%; top: 6%;
+  width: 60%; height: 62%;
+  overflow: hidden;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #f6f1e6 0%, #ddd0b8 100%);
+  box-shadow: 0 10px 22px -10px rgba(0, 0, 0, 0.7);
+}
+
+.truck-stripe {
+  position: absolute;
+  left: 0; right: 0; top: 46%;
+  height: 13%;
+  background: var(--accent);
+  opacity: 0.9;
+}
+
+.truck-door {
+  position: absolute;
+  left: 0; top: 0;
+  width: 17%; height: 100%;
+  background: linear-gradient(180deg, #cbb894 0%, #a68f68 100%);
+  border-right: 1px solid rgba(60, 38, 16, 0.4);
+  will-change: transform;
+}
+
+.truck-cab {
+  position: absolute;
+  right: 1%; top: 24%;
+  width: 30%; height: 44%;
+  border-radius: 3px 7px 2px 2px;
+  background: linear-gradient(180deg, #d8c6a8 0%, #ac9270 100%);
+}
+
+.truck-window {
+  position: absolute;
+  right: 3%; top: 29%;
+  width: 19%; height: 15%;
+  border-radius: 1px 4px 0 0;
+  background: rgba(15, 43, 35, 0.8);
+}
+
+.truck-wheel {
+  position: absolute;
+  bottom: 4%;
+  width: 11%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #0d1a14;
+  box-shadow: inset 0 0 0 2px rgba(243, 236, 223, 0.3);
+}
+
+.truck-wheel.w1 { left: 10%; }
+.truck-wheel.w2 { left: 24%; }
+.truck-wheel.w3 { right: 8%; }
+
+/* --- Маршруты ------------------------------------------------------------ */
+
+.routes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.route-path {
+  fill: none;
+  stroke: rgba(224, 170, 61, 0.62);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 5 7;
+}
+
+.route-origin { fill: var(--accent); }
+
+.dest {
+  position: absolute;
+  left: 0; top: 0;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.dest-dot {
+  width: 9px; height: 9px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 5px rgba(224, 170, 61, 0.16);
+}
+
+.dest-name {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--on-dark);
+  white-space: nowrap;
+}
+
+/* --- Прибытие ------------------------------------------------------------ */
+
+.arrival {
+  position: absolute;
+  left: 0; top: 0;
+  width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  will-change: transform, opacity;
+}
+
+.arrival-chip {
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  background: rgba(243, 236, 223, 0.95);
+  color: var(--ink);
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.75);
+}
+
+.arrival-chip.money { background: var(--accent); color: #2c1d06; }
+
+.coin {
+  position: absolute;
+  left: 0; top: 0;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #f6d68a, var(--accent) 62%, #a86f1f);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  will-change: transform, opacity;
+}
+
+/* --- Финал --------------------------------------------------------------- */
+
+/* Финал не в .world: камера к нему уже не применяется, он сам по себе. */
+.finale {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.nut { position: relative; }
+
+.nut-half {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: auto;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.6));
+}
+
+/* Половинки — одна и та же фотография, обрезанная по вертикали пополам. */
+.nut-half.left  { left: 0; clip-path: inset(0 50% 0 0); }
+.nut-half.right { left: 0; clip-path: inset(0 0 0 50%); }
+
+/* Сдвиг задаётся только через transform из скрипта: свойство translate рядом
+   с ним дало бы смещение дважды. */
+.wordmark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.wordmark-name {
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 6.5vw, 4.5rem);
+  line-height: 1;
+  color: var(--paper);
+  white-space: nowrap;
+}
+
+.wordmark-tag {
+  margin-top: 0.9rem;
+  font-size: clamp(0.6rem, 1.6vw, 0.78rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
 /* --- Разбор -------------------------------------------------------------- */
 
 .notes {
@@ -419,30 +702,29 @@ h1 {
   <p class="eyebrow">Global Export Company · демонстрация</p>
   <h1>Полёт урожая</h1>
   <p class="lede">
-    Страница-проба: как продукция может вести себя при прокрутке. Сначала летят
-    сухофрукты, следом подхватываются орехи, а в конце всё раскладывается по
-    корзинам. Ни одной анимационной библиотеки — только CSS и полсотни строк
-    скрипта.
+    Страница-проба: путь урожая от кадра до контракта. Сухофрукты и орехи
+    выходят в кадр, раскладываются по корзинам, уходят в коробки и грузовики и
+    разъезжаются по направлениям экспорта. Ни одной анимационной библиотеки —
+    только CSS и один обработчик прокрутки.
   </p>
     <p class="hint"><span class="hint-line" aria-hidden="true"></span> Прокрутите вниз</p>
   </div>
 
   <ol class="acts-ahead">
-    <li><span>01</span> Сухофрукты выходят в кадр</li>
-    <li><span>02</span> К ним подхватываются орехи</li>
-    <li><span>03</span> Всё раскладывается по корзинам</li>
+    <li><span>01</span> Урожай выходит в кадр</li>
+    <li><span>02</span> Раскладывается по корзинам и коробкам</li>
+    <li><span>03</span> Уезжает в Европу, Россию и Азию</li>
+    <li><span>04</span> Возвращается контрактами</li>
   </ol>
 </header>
 
 <div class="track" id="track">
   <div class="stage" id="stage">
+    <div class="world" id="world"></div>
+    <div class="finale" id="finale"></div>
     <div class="act" aria-hidden="true">
       <span class="act-num" id="act-num">01</span>
-      <span class="act-title act-slot">
-        <span data-on="true">Сухофрукты</span>
-        <span data-on="false">Орехи</span>
-        <span data-on="false">По корзинам</span>
-      </span>
+      <span class="act-title act-slot" id="act-slot"></span>
     </div>
     <div class="rail" aria-hidden="true"><span class="rail-fill" id="rail"></span></div>
   </div>
@@ -453,8 +735,8 @@ h1 {
     <p class="eyebrow reveal">Как это сделано</p>
     <h2 class="reveal">Ни одной библиотеки анимации, ни одного лишнего килобайта</h2>
     <p class="notes-lede reveal">
-      Всё, что происходит выше, собрано из четырёх приёмов, которые есть в любом
-      браузере с 2020 года. Именно поэтому «сложная анимация» не удваивает смету
+      Всё, что происходит выше — восемь актов от кадра до контракта — собрано из
+      приёмов, которые есть в любом браузере с 2020 года. Именно поэтому «сложная анимация» не удваивает смету
       и не замедляет сайт: браузер двигает уже готовые слои, а не перерисовывает
       страницу.
     </p>
@@ -475,6 +757,31 @@ h1 {
           кадр анимации. Прокрутка вперёд и назад работает одинаково.
         </p>
         <p class="cost">≈ 20 строк JS</p>
+      </li>
+      <li class="technique reveal">
+        <h3>Движение по кривой</h3>
+        <p>
+          Маршрут задаётся тремя точками — начало, изгиб, конец. Грузовик едет
+          по кривой Безье и сам разворачивается по направлению: ни одного
+          нарисованного кадра, только формула.
+        </p>
+        <p class="cost">≈ 12 строк JS</p>
+      </li>
+      <li class="technique reveal">
+        <h3>«Камера»</h3>
+        <p>
+          Отъезд на общий план — одно преобразование на слое, в котором лежит
+          вся сцена. Объекты о камере не знают и ничего не пересчитывают.
+        </p>
+        <p class="cost">1 строка</p>
+      </li>
+      <li class="technique reveal">
+        <h3>Раскрытие ореха</h3>
+        <p>
+          Половинки — одна и та же фотография, обрезанная <code>clip-path</code>
+          пополам и разведённая в стороны. Второго снимка не потребовалось.
+        </p>
+        <p class="cost">2 свойства CSS</p>
       </li>
       <li class="technique reveal">
         <h3>Параллакс по глубине</h3>
@@ -506,6 +813,12 @@ h1 {
 
     <div class="closing">
       <p class="reveal">
+        Коробки, грузовики и карта маршрутов нарисованы, а не сфотографированы,
+        и это осознанно: фотореалистичная фура рядом с вырезанной курагой
+        читалась бы коллажем. После погрузки сцена честно превращается в схему
+        логистики — и остаётся схемой до самого финала.
+      </p>
+      <p class="reveal">
         Отдельный вопрос — фотографии. Летящие ягоды и орехи вырезаны из
         собственных снимков компании с сайта globalex.uz: ничего не докупалось и
         не рисовалось. Для боевой версии те же кадры имеет смысл переснять на
@@ -514,15 +827,15 @@ h1 {
       <dl class="figures reveal">
         <div class="figure">
           <dt>Вес сцены</dt>
-          <dd>≈ 340 КБ</dd>
+          <dd>≈ 350 КБ</dd>
         </div>
         <div class="figure">
           <dt>Зависимостей</dt>
           <dd>0</dd>
         </div>
         <div class="figure">
-          <dt>Объектов в кадре</dt>
-          <dd id="fig-count">24</dd>
+          <dt>Актов</dt>
+          <dd>8</dd>
         </div>
       </dl>
     </div>
@@ -535,8 +848,7 @@ h1 {
 
   var BASE = "/images/motion/";
 
-  /* Каждый вид — отдельная вырезка из фотографий компании. `w` — ширина в долях
-     от ширины сцены, подобранная так, чтобы грецкий орех был крупнее миндаля. */
+  /* Виды вырезаны из фотографий компании; `w` — доля от ширины сцены. */
   var KINDS = [
     { file: "apricot-light",  family: 0, w: 0.105 },
     { file: "apricot-dark",   family: 0, w: 0.100 },
@@ -550,47 +862,89 @@ h1 {
     { file: "bean-purple",    family: 2, w: 0.062 }
   ];
 
-  /* Сколько экземпляров каждого вида и в каком акте он вступает. */
   var PLAN = [
     [0, 3], [1, 3], [2, 2], [3, 3],
     [4, 2], [5, 2], [6, 2], [7, 2], [8, 2],
     [9, 4]
   ];
 
-  var BASKETS = [
-    { file: "basket-fruit", name: "Сухофрукты", x: 0.20 },
-    { file: "basket-nut",   name: "Орехи",      x: 0.50 },
-    { file: "basket-bean",  name: "Бобовые",    x: 0.80 }
+  /* Одна группа = корзина + коробка + грузовик + направление. */
+  var GROUPS = [
+    { basket: "basket-fruit", name: "Сухофрукты", x: 0.20,
+      dest: "Европа",  dx: 0.13, dy: 0.22, cx: 0.02, cy: 0.52,
+      chip: "Контракт подписан", money: "Оплата получена" },
+    { basket: "basket-nut",   name: "Орехи",      x: 0.50,
+      dest: "Россия",  dx: 0.50, dy: 0.02, cx: 0.70, cy: 0.36,
+      chip: "Отгрузка принята", money: "Оплата получена" },
+    { basket: "basket-bean",  name: "Бобовые",    x: 0.80,
+      dest: "Азия",    dx: 0.88, dy: 0.26, cx: 0.99, cy: 0.54,
+      chip: "Повторный заказ" }
   ];
 
   /* Границы актов в долях прокрутки сцены. */
-  var NUTS_IN = 0.30;
-  var BEANS_IN = 0.44;
-  var SORT_AT = 0.60;
-  var SORT_SPAN = 0.26;
+  var A = {
+    NUTS: 0.13, SORT: 0.26, PACK: 0.39,
+    LOAD: 0.52, DEPART: 0.64, ARRIVE: 0.77, BRAND: 0.89
+  };
 
-  var stage = document.getElementById("stage");
-  var track = document.getElementById("track");
-  var rail = document.getElementById("rail");
+  var ACTS = [
+    [0,        "01", "Сухофрукты"],
+    [A.NUTS,   "02", "Орехи"],
+    [A.SORT,   "03", "По корзинам"],
+    [A.PACK,   "04", "В коробки"],
+    [A.LOAD,   "05", "Погрузка"],
+    [A.DEPART, "06", "В путь"],
+    [A.ARRIVE, "07", "Прибытие"],
+    [A.BRAND,  "08", "Бренд"]
+  ];
+
+  var SORT_SPAN = 0.11;
+  var ROW_Y = 0.74;          /* линия, на которой стоят коробки и грузовики */
+
+  var stage  = document.getElementById("stage");
+  var world  = document.getElementById("world");
+  var finale = document.getElementById("finale");
+  var track  = document.getElementById("track");
+  var rail   = document.getElementById("rail");
   var actNum = document.getElementById("act-num");
-  var actTitles = document.querySelectorAll(".act-slot > span");
+  var actSlot = document.getElementById("act-slot");
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* Псевдослучайность с фиксированным зерном: раскладка одинакова при каждой
-     загрузке, иначе демонстрация выглядела бы по-разному на двух экранах. */
-  function rand(seed) {
-    var s = seed * 9301 + 49297;
-    return (s % 233280) / 233280;
+  function rand(seed) { var s = seed * 9301 + 49297; return (s % 233280) / 233280; }
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function easeBack(t) { var c = 1.7; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); }
+
+  /* Квадратичная кривая Безье: и точка, и наклон — маршрут задаётся тремя
+     числами, а грузовик едет по нему без единого ключевого кадра. */
+  function bezier(p0, c, p1, t) {
+    var u = 1 - t;
+    return { x: u * u * p0.x + 2 * u * t * c.x + t * t * p1.x,
+             y: u * u * p0.y + 2 * u * t * c.y + t * t * p1.y };
+  }
+  function bezierTangent(p0, c, p1, t) {
+    var u = 1 - t;
+    var dx = 2 * u * (c.x - p0.x) + 2 * t * (p1.x - c.x);
+    var dy = 2 * u * (c.y - p0.y) + 2 * t * (p1.y - c.y);
+    return { dx: dx, angle: Math.atan2(dy, dx) * 180 / Math.PI };
   }
 
+  /* ---- подписи актов ---------------------------------------------------- */
+  ACTS.forEach(function (a, i) {
+    var span = document.createElement("span");
+    span.textContent = a[2];
+    span.setAttribute("data-on", i === 0 ? "true" : "false");
+    actSlot.appendChild(span);
+  });
+  var actTitles = actSlot.children;
+
+  /* ---- предметы --------------------------------------------------------- */
   var items = [];
   var perFamily = [0, 0, 0];
-
-  /* Стартовые точки раскладываются по сетке, а не случайно: случайные
-     координаты сбиваются в комки и оставляют половину экрана пустой. */
-  var COLS = 6, ROWS = 4;
-  var placed = 0;
+  var COLS = 6, ROWS = 4, placed = 0;
 
   PLAN.forEach(function (entry) {
     var kind = KINDS[entry[0]];
@@ -599,183 +953,430 @@ h1 {
       var r1 = rand(i * 7 + 1), r2 = rand(i * 13 + 5), r3 = rand(i * 29 + 11);
       var r4 = rand(i * 37 + 3), r5 = rand(i * 53 + 17);
       var depth = 0.22 + r1 * 0.78;
-
-      /* Шаг 7 по 24 клеткам перебирает всю сетку, не повторяясь, — соседние
-         по списку объекты одного вида оказываются в разных углах. */
       var cell = (placed * 7) % (COLS * ROWS);
       placed++;
 
       items.push({
-        kind: kind,
-        family: kind.family,
-        slot: perFamily[kind.family]++,
+        kind: kind, family: kind.family, slot: perFamily[kind.family]++,
         depth: depth,
         hx: ((cell % COLS) + 0.5) / COLS + (r2 - 0.5) * 0.13,
         hy: (Math.floor(cell / COLS) + 0.5) / ROWS + (r3 - 0.5) * 0.17,
-        /* Дрейф вверх и чуть в сторону; ближние идут заметнее дальних. */
         dx: (r4 - 0.5) * 0.16 * depth,
         dy: (-0.10 - r5 * 0.14) * depth,
         bob: 0.012 + r5 * 0.026,
         phase: r2 * Math.PI * 2,
         rot: (r3 - 0.5) * 110,
         spin: (r4 - 0.5) * 150,
-        enter: kind.family === 0 ? 0 : (kind.family === 1 ? NUTS_IN : BEANS_IN),
-        /* Разлёт появления внутри своего акта, чтобы объекты не возникали разом. */
-        stagger: r1 * 0.11,
-        delay: r5 * 0.09,
+        enter: kind.family === 0 ? 0 : (kind.family === 1 ? A.NUTS : A.NUTS + 0.06),
+        stagger: r1 * 0.10,
+        delay: r5 * 0.08,
+        /* Спираль в коробку: у каждого свой радиус, число оборотов и фаза —
+           отсюда «хаотично», без единого случайного числа во время отрисовки. */
+        spiralR: 0.05 + r2 * 0.11,
+        spiralTurns: 1.1 + r3 * 1.9,
+        spiralPhase: r4 * Math.PI * 2,
+        packDelay: r1 * 0.05,
         el: null
       });
     }
   });
 
-  document.getElementById("fig-count").textContent = String(items.length);
-
-  /* Ближние объекты рисуются поверх дальних. */
   items.sort(function (a, b) { return a.depth - b.depth; });
 
   var frag = document.createDocumentFragment();
 
-  var baskets = BASKETS.map(function (b, bi) {
-    var el = document.createElement("div");
-    el.className = "basket";
-    var img = document.createElement("img");
-    img.className = "basket-bowl";
-    img.src = BASE + b.file + ".webp";
-    img.alt = "";
-    img.decoding = "async";
-    var name = document.createElement("span");
-    name.className = "basket-name";
-    name.textContent = b.name;
-    var count = document.createElement("span");
-    count.className = "basket-count";
-    count.textContent = perFamily[bi] + " шт.";
-    el.appendChild(img);
-    el.appendChild(name);
-    el.appendChild(count);
-    frag.appendChild(el);
-    return { conf: b, el: el };
+  /* ---- маршруты (svg под всем остальным) -------------------------------- */
+  var svgNS = "http://www.w3.org/2000/svg";
+  var routesSvg = document.createElementNS(svgNS, "svg");
+  routesSvg.setAttribute("class", "routes");
+  routesSvg.setAttribute("preserveAspectRatio", "none");
+  var routePaths = GROUPS.map(function () {
+    var path = document.createElementNS(svgNS, "path");
+    path.setAttribute("class", "route-path");
+    routesSvg.appendChild(path);
+    return path;
+  });
+  var originDot = document.createElementNS(svgNS, "circle");
+  originDot.setAttribute("class", "route-origin");
+  originDot.setAttribute("r", "4");
+  routesSvg.appendChild(originDot);
+  frag.appendChild(routesSvg);
+
+  /* ---- корзины, коробки, грузовики, точки назначения -------------------- */
+  function el(tag, cls, parent) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (parent) parent.appendChild(node);
+    return node;
+  }
+
+  var groups = GROUPS.map(function (g, gi) {
+    var basket = el("div", "basket");
+    var bowl = document.createElement("img");
+    bowl.className = "basket-bowl";
+    bowl.src = BASE + g.basket + ".webp";
+    bowl.alt = "";
+    bowl.decoding = "async";
+    basket.appendChild(bowl);
+    var bname = el("span", "basket-name", basket);
+    bname.textContent = g.name;
+    var bcount = el("span", "basket-count", basket);
+    bcount.textContent = perFamily[gi] + " шт.";
+    frag.appendChild(basket);
+
+    var carton = el("div", "carton");
+    var body = el("div", "carton-body", carton);
+    el("div", "carton-seam", body);
+    var tape = el("div", "carton-tape", body);
+    var mark = el("div", "carton-mark", body);
+    mark.textContent = "GLOBAL EXPORT";
+    var count = el("div", "carton-count", body);
+    frag.appendChild(carton);
+
+    var truck = el("div", "truck");
+    var tbody = el("div", "truck-body", truck);
+    var cargo = el("div", "truck-cargo", tbody);
+    el("div", "truck-stripe", cargo);
+    var door = el("div", "truck-door", cargo);
+    el("div", "truck-cab", tbody);
+    el("div", "truck-window", tbody);
+    el("div", "truck-wheel w1", tbody);
+    el("div", "truck-wheel w2", tbody);
+    el("div", "truck-wheel w3", tbody);
+    frag.appendChild(truck);
+
+    var dest = el("div", "dest");
+    el("div", "dest-dot", dest);
+    var dname = el("span", "dest-name", dest);
+    dname.textContent = g.dest;
+    frag.appendChild(dest);
+
+    var arrival = el("div", "arrival");
+    var money = el("div", "arrival-chip money", arrival);
+    money.textContent = g.money;
+    var rep = el("div", "arrival-chip", arrival);
+    rep.textContent = "★ " + g.chip;
+    frag.appendChild(arrival);
+
+    var coins = [];
+    for (var c = 0; c < 7; c++) coins.push(el("div", "coin", null));
+    coins.forEach(function (coin) { frag.appendChild(coin); });
+
+    return {
+      conf: g, basket: basket, carton: carton, tape: tape, count: count,
+      truck: truck, tbody: tbody, door: door, dest: dest, arrival: arrival, money: money,
+      coins: coins, path: routePaths[gi]
+    };
   });
 
+  /* ---- предметы поверх --------------------------------------------------- */
   items.forEach(function (item, i) {
-    var el = document.createElement("div");
-    el.className = "piece";
+    var node = el("div", "piece");
     var img = document.createElement("img");
     img.src = BASE + item.kind.file + ".webp";
     img.alt = "";
     img.decoding = "async";
     img.loading = i < 8 ? "eager" : "lazy";
-    el.appendChild(img);
-    item.el = el;
-    frag.appendChild(el);
+    node.appendChild(img);
+    item.el = node;
+    frag.appendChild(node);
   });
 
-  stage.appendChild(frag);
+  world.appendChild(frag);
 
+  /* ---- финал ------------------------------------------------------------- */
+  var nut = el("div", "nut", finale);
+  var nutLeft = document.createElement("img");
+  nutLeft.className = "nut-half left";
+  nutLeft.src = BASE + "walnut.webp";
+  nutLeft.alt = "";
+  var nutRight = nutLeft.cloneNode();
+  nutRight.className = "nut-half right";
+  nut.appendChild(nutLeft);
+  nut.appendChild(nutRight);
+
+  var wordmark = el("div", "wordmark", finale);
+  var wname = el("div", "wordmark-name", wordmark);
+  wname.textContent = "Global Export";
+  var wtag = el("div", "wordmark-tag", wordmark);
+  wtag.textContent = "Узбекистан · 55 стран";
+
+  /* ---- размеры ----------------------------------------------------------- */
   var W = 0, H = 0;
 
   function measure() {
     W = stage.clientWidth;
     H = stage.clientHeight;
 
+    routesSvg.setAttribute("viewBox", "0 0 " + W + " " + H);
+
     items.forEach(function (item) {
       item.px = item.kind.w * W * (0.65 + item.depth * 0.55);
       item.el.style.width = item.px + "px";
     });
 
-    baskets.forEach(function (b) {
-      var size = Math.min(W * 0.2, H * 0.26, 210);
-      b.size = size;
-      b.el.style.width = size + "px";
-      b.cx = b.conf.x * W;
-      b.cy = H * 0.66;
-      b.el.style.transform =
-        "translate3d(" + (b.cx - size / 2) + "px," + (b.cy - size / 2) + "px,0)";
+    groups.forEach(function (g, gi) {
+      g.bowlSize = Math.min(W * 0.2, H * 0.26, 210);
+      g.basket.style.width = g.bowlSize + "px";
+      g.bx = GROUPS[gi].x * W;
+      g.by = H * 0.60;
+
+      g.cartonSize = Math.min(W * 0.15, H * 0.2, 130);
+      g.carton.style.width = g.cartonSize + "px";
+
+      g.truckSize = Math.min(W * 0.24, 220);
+      g.truck.style.width = g.truckSize + "px";
+
+      var nutW = Math.min(W * 0.42, H * 0.42, 300);
+      nut.style.width = nutW + "px";
+      nut.style.height = nutW * 0.874 + "px";
+      nutLeft.style.width = nutW + "px";
+      nutRight.style.width = nutW + "px";
     });
   }
 
-  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-  function easeInOut(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function place(node, x, y, extra) {
+    node.style.transform = "translate3d(" + x + "px," + y + "px,0)" + (extra || "");
   }
-  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
 
-  /* Куда объект ложится: тесная сетка над чашей, ряды идут вверх. */
+  function groupPoints(g, gi) {
+    var conf = GROUPS[gi];
+    return {
+      start: { x: conf.x * W, y: ROW_Y * H },
+      ctrl:  { x: conf.cx * W, y: conf.cy * H },
+      end:   { x: conf.dx * W, y: conf.dy * H }
+    };
+  }
+
+  /* Место в корзине: тесная сетка, первый ряд перекрывает край чаши. */
   function slotFor(item) {
-    var b = baskets[item.family];
+    var g = groups[item.family];
     var perRow = item.family === 2 ? 3 : 4;
     var row = Math.floor(item.slot / perRow);
     var col = item.slot % perRow;
     var count = perFamily[item.family];
     var inRow = Math.min(perRow, count - row * perRow);
-    var step = b.size * 0.30;
+    var step = g.bowlSize * 0.30;
     return {
-      x: b.cx + (col - (inRow - 1) / 2) * step,
-      y: b.cy - b.size * 0.40 - row * step * 0.85,
+      x: g.bx + (col - (inRow - 1) / 2) * step,
+      y: g.by - g.bowlSize * 0.40 - row * step * 0.85,
       scale: 0.44
     };
   }
 
   function render(p) {
-    /* Хвост прокрутки после раскладки — пауза, чтобы кадр можно было
-       рассмотреть, поэтому прогресс сцены сжимается к 0.92 от трека. */
-    var q = clamp01(p / 0.92);
-
+    var q = clamp01(p / 0.97);
     rail.style.transform = "scaleY(" + q + ")";
 
-    var act = q < NUTS_IN ? 0 : q < SORT_AT ? 1 : 2;
-    actNum.textContent = "0" + (act + 1);
-    for (var a = 0; a < actTitles.length; a++) {
-      actTitles[a].setAttribute("data-on", a === act ? "true" : "false");
+    /* --- подпись акта --------------------------------------------------- */
+    var act = 0;
+    for (var a = ACTS.length - 1; a >= 0; a--) {
+      if (q >= ACTS[a][0]) { act = a; break; }
+    }
+    actNum.textContent = ACTS[act][1];
+    for (var t = 0; t < actTitles.length; t++) {
+      actTitles[t].setAttribute("data-on", t === act ? "true" : "false");
     }
 
-    /* Корзины выходят из темноты ровно перед раскладкой. */
-    var appear = clamp01((q - SORT_AT + 0.04) / 0.12);
-    baskets.forEach(function (b) {
-      b.el.style.opacity = appear;
-      b.el.style.transform =
-        "translate3d(" + (b.cx - b.size / 2) + "px," +
-        (b.cy - b.size / 2 + (1 - easeOut(appear)) * 44) + "px,0)";
-    });
+    /* --- камера ---------------------------------------------------------- */
+    /* Отъезд камеры — одно преобразование на весь слой. Точка отправления
+       остаётся на месте, потому что вокруг неё и происходит масштабирование. */
+    var cam = easeInOut(clamp01((q - A.DEPART) / 0.09));
+    var camScale = 1 - 0.28 * cam;
+    world.style.transformOrigin = "50% " + (ROW_Y * 100).toFixed(0) + "%";
+    world.style.transform = "scale(" + camScale.toFixed(4) + ")";
 
-    items.forEach(function (item) {
-      var live = clamp01((q - item.enter - item.stagger) / 0.09);
-      if (live === 0) {
-        item.el.style.opacity = 0;
-        return;
+    /* Финал перекрывает мир целиком. */
+    var brand = clamp01((q - A.BRAND) / 0.06);
+    world.style.opacity = 1 - brand;
+
+    /* --- корзины --------------------------------------------------------- */
+    var bowlIn = clamp01((q - A.SORT + 0.04) / 0.12);
+
+    groups.forEach(function (g, gi) {
+      var pts = groupPoints(g, gi);
+
+      /* Корзина уходит в коробку по спирали вместе с содержимым. */
+      var gone = easeInOut(clamp01((q - A.PACK - 0.02) / 0.09));
+      var mouth = { x: pts.start.x, y: ROW_Y * H - g.cartonSize * 0.1 };
+      var ang = gi * 2.1 + gone * 2.4 * Math.PI * 2;
+      var rad = (1 - gone) * g.bowlSize * 0.5;
+      var bx = lerp(g.bx, mouth.x, gone) + Math.cos(ang) * rad * gone;
+      var by = lerp(g.by, mouth.y, gone) + Math.sin(ang) * rad * 0.55 * gone;
+      var bs = 1 - gone;
+
+      g.basket.style.opacity = bowlIn * (1 - gone);
+      g.basket.style.transform =
+        "translate3d(" + (bx - g.bowlSize / 2) + "px," +
+        (by - g.bowlSize / 2 + (1 - easeOut(bowlIn)) * 44) + "px,0)" +
+        " rotate(" + (gone * 220).toFixed(1) + "deg) scale(" + bs.toFixed(3) + ")";
+
+      /* --- коробка ------------------------------------------------------- */
+      var cartonIn = clamp01((q - A.PACK) / 0.06);
+      var packed = clamp01((q - A.PACK - 0.02) / 0.10);
+      var loaded = easeInOut(clamp01((q - A.LOAD - 0.02 - gi * 0.03) / 0.09));
+
+      g.count.textContent = Math.round(packed * perFamily[gi]) + " / " + perFamily[gi];
+      /* Лента ложится, когда коробка набралась. */
+      g.tape.style.transform = "scaleY(" + easeOut(clamp01((packed - 0.75) / 0.25)).toFixed(3) + ")";
+
+      /* Центр грузового отсека в координатах сцены: кузов занимает 60% ширины
+         машины от её левого края, отсюда и смещения. */
+      var bayX = pts.start.x - g.truckSize * 0.19;
+      var bayY = ROW_Y * H - g.truckSize * 0.06;
+
+      var cartonX = lerp(pts.start.x, bayX, loaded);
+      var cartonY = lerp(
+        ROW_Y * H + (1 - easeBack(clamp01(cartonIn))) * 60,
+        bayY,
+        loaded
+      );
+
+      /* К концу погрузки коробка полностью скрыта в кузове. */
+      g.carton.style.opacity = clamp01(cartonIn) * clamp01(1 - loaded * 1.25);
+      g.carton.style.transform =
+        "translate3d(" + (cartonX - g.cartonSize / 2) + "px," +
+        (cartonY - g.cartonSize * 0.41) + "px,0) scale(" + (1 - loaded * 0.62).toFixed(3) + ")";
+
+      /* --- грузовик ------------------------------------------------------ */
+      var truckIn = easeOut(clamp01((q - A.LOAD) / 0.07));
+      /* До 0.88 маршрута: у точки назначения должно остаться место под
+         название города и карточку результата. */
+      var travel = 0.88 * easeInOut(clamp01((q - A.DEPART - 0.04) / (A.ARRIVE - A.DEPART - 0.02)));
+
+      /* Дверь опускается после того, как коробка вошла внутрь. */
+      var doorClose = easeOut(clamp01((q - A.LOAD - 0.08) / 0.05));
+      g.door.style.transform = "translateY(" + ((1 - doorClose) * -102).toFixed(1) + "%)";
+
+      var pos = { x: pts.start.x, y: ROW_Y * H };
+      var tilt = 0, dir = 1;
+
+      if (travel > 0) {
+        pos = bezier(pts.start, pts.ctrl, pts.end, travel);
+        var tan = bezierTangent(pts.start, pts.ctrl, pts.end, travel);
+        /* Разворот берём по общему направлению маршрута, а не по мгновенной
+           касательной: иначе на изгибе дуги машина переворачивается на ходу. */
+        dir = pts.end.x < pts.start.x ? -1 : 1;
+        var raw = dir < 0 ? tan.angle - 180 : tan.angle;
+        if (raw > 180) raw -= 360;
+        if (raw < -180) raw += 360;
+        /* Наклон ограничен: под 60° машина выглядит падающей, а не едущей. */
+        tilt = Math.max(-13, Math.min(13, raw * 0.3));
       }
 
-      /* Полёт: подъём от места появления плюс лёгкое покачивание. Объект
-         остаётся в кадре весь акт — сцена не должна пустеть. */
-      var t = clamp01((q - item.enter) / Math.max(0.001, SORT_AT - item.enter));
-      var rise = (1 - easeOut(live)) * 0.14;
-      var fx = (item.hx + item.dx * t) * W;
-      var fy = (item.hy + item.dy * t + rise +
-                Math.sin(item.phase + t * 4.2) * item.bob) * H;
-      var fr = item.rot + item.spin * t;
+      var arrived = clamp01((q - A.ARRIVE) / 0.05);
+      /* Приехав, машина уходит на второй план — сцену забирает результат. */
+      g.truck.style.opacity = truckIn * (1 - brand) * (1 - arrived * 0.35);
+      g.truck.style.transform =
+        "translate3d(" + (pos.x - g.truckSize / 2 + (1 - truckIn) * 90) + "px," +
+        (pos.y - g.truckSize * 0.24) + "px,0)" +
+        " rotate(" + tilt.toFixed(1) + "deg) scale(" + (1 - arrived * 0.3).toFixed(3) + ")";
+      g.tbody.style.transform = "scaleX(" + dir + ")";
 
-      var k = easeInOut(clamp01((q - SORT_AT - item.delay) / SORT_SPAN));
-      var x = fx, y = fy, r = fr, s = 1;
+      /* --- маршрут и точка назначения ------------------------------------ */
+      var routeIn = clamp01((q - A.DEPART) / 0.08);
+      g.path.setAttribute("d",
+        "M " + pts.start.x + " " + pts.start.y +
+        " Q " + pts.ctrl.x + " " + pts.ctrl.y + " " + pts.end.x + " " + pts.end.y);
+      g.path.style.opacity = routeIn * (1 - brand);
+
+      g.dest.style.opacity = routeIn * (1 - brand);
+      g.dest.style.transform =
+        "translate3d(" + (pts.end.x - 60) + "px," + (pts.end.y - 22) + "px,0)";
+      g.dest.style.width = "120px";
+
+      /* --- прибытие ------------------------------------------------------- */
+      var pop = clamp01((q - A.ARRIVE - gi * 0.025) / 0.06);
+      var popEase = pop > 0 ? easeBack(pop) : 0;
+      g.arrival.style.opacity = pop * (1 - brand);
+      g.arrival.style.transform =
+        "translate3d(" + pts.end.x + "px," + (pts.end.y - 88) + "px,0)" +
+        " scale(" + popEase.toFixed(3) + ")";
+
+      g.coins.forEach(function (coin, ci) {
+        var cr = rand(gi * 31 + ci * 17 + 3);
+        var cp = clamp01((pop - ci * 0.05) / 0.5);
+        var rise = easeOut(cp);
+        coin.style.opacity = (cp > 0 ? 1 - cp : 0) * (1 - brand);
+        coin.style.transform =
+          "translate3d(" +
+          (pts.end.x + (cr - 0.5) * 110 * rise) + "px," +
+          (pts.end.y - 10 - rise * (70 + cr * 80)) + "px,0)" +
+          " scale(" + (0.6 + cr * 0.7) + ")";
+      });
+    });
+
+    originDot.setAttribute("cx", 0.5 * W);
+    originDot.setAttribute("cy", ROW_Y * H);
+    originDot.style.opacity = clamp01((q - A.DEPART) / 0.08) * (1 - brand);
+
+    /* --- предметы --------------------------------------------------------- */
+    items.forEach(function (item) {
+      var live = clamp01((q - item.enter - item.stagger) / 0.08);
+      if (live === 0) { item.el.style.opacity = 0; return; }
+
+      var tt = clamp01((q - item.enter) / Math.max(0.001, A.SORT - item.enter));
+      var rise = (1 - easeOut(live)) * 0.14;
+      var fx = (item.hx + item.dx * tt) * W;
+      var fy = (item.hy + item.dy * tt + rise + Math.sin(item.phase + tt * 4.2) * item.bob) * H;
+      var fr = item.rot + item.spin * tt;
+
+      var k = easeInOut(clamp01((q - A.SORT - item.delay) / SORT_SPAN));
+      var x = fx, y = fy, r = fr, sc = 1;
 
       if (k > 0) {
         var slot = slotFor(item);
-        x = fx + (slot.x - fx) * k;
-        y = fy + (slot.y - fy) * k;
-        /* Приземляясь, объекты почти выравниваются — «уложены», а не брошены. */
-        r = fr * (1 - k) + (item.rot * 0.12) * k;
-        s = 1 + (slot.scale - 1) * k;
+        x = lerp(fx, slot.x, k);
+        y = lerp(fy, slot.y, k);
+        r = fr * (1 - k) + item.rot * 0.12 * k;
+        sc = lerp(1, slot.scale, k);
       }
 
-      /* Дальние — мельче, бледнее и слегка размыты. */
-      var scale = s * (0.72 + item.depth * 0.42) * (0.86 + easeOut(live) * 0.14);
-      var opacity = live * (0.58 + item.depth * 0.42);
+      /* Спираль в коробку. */
+      var sp = easeInOut(clamp01((q - A.PACK - item.packDelay) / 0.09));
+      if (sp > 0) {
+        var g2 = groups[item.family];
+        var pts2 = groupPoints(g2, item.family);
+        var mx = pts2.start.x;
+        var my = ROW_Y * H - g2.cartonSize * 0.1;
+        var ang2 = item.spiralPhase + sp * item.spiralTurns * Math.PI * 2;
+        var rad2 = (1 - sp) * item.spiralR * W;
+        x = lerp(x, mx, sp) + Math.cos(ang2) * rad2 * sp;
+        y = lerp(y, my, sp) + Math.sin(ang2) * rad2 * 0.55 * sp;
+        r = r + sp * 420;
+        sc = sc * (1 - sp);
+      }
+
+      var scale = sc * (0.72 + item.depth * 0.42) * (0.86 + easeOut(live) * 0.14);
       var blur = (1 - item.depth) * 2.4 * (1 - k);
 
-      item.el.style.opacity = opacity;
+      item.el.style.opacity = live * (0.58 + item.depth * 0.42) * (1 - brand);
       item.el.style.filter = blur > 0.25 ? "blur(" + blur.toFixed(2) + "px)" : "none";
       item.el.style.transform =
         "translate3d(" + (x - item.px / 2) + "px," + (y - item.px / 2) + "px,0)" +
         " rotate(" + r.toFixed(2) + "deg) scale(" + scale.toFixed(3) + ")";
     });
+
+    /* --- финал: орех раскрывается, из него выходит название --------------- */
+    finale.style.opacity = brand;
+    if (brand > 0) {
+      var crack = easeInOut(clamp01((q - A.BRAND - 0.02) / 0.05));
+      var open = easeOut(clamp01((q - A.BRAND - 0.035) / 0.05));
+      var shake = crack < 1 ? Math.sin(q * 420) * (1 - crack) * 4 : 0;
+
+      nutLeft.style.transform =
+        "translate3d(" + (-open * 37 - 2 + shake) + "%,0,0) rotate(" + (-open * 9) + "deg)";
+      nutRight.style.transform =
+        "translate3d(" + (open * 37 + 2 - shake) + "%,0,0) rotate(" + (open * 9) + "deg)";
+      nutLeft.style.opacity = 1 - open * 0.35;
+      nutRight.style.opacity = 1 - open * 0.35;
+
+      var reveal = easeOut(clamp01((q - A.BRAND - 0.045) / 0.055));
+      wordmark.style.opacity = reveal;
+      wordmark.style.transform =
+        "translate(-50%,-50%) scale(" + (0.72 + reveal * 0.28).toFixed(3) + ")";
+      wname.style.letterSpacing = ((1 - reveal) * 0.4).toFixed(3) + "em";
+    }
   }
 
   function progress() {
@@ -786,34 +1387,28 @@ h1 {
   }
 
   var ticking = false;
-
   function onScroll() {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(function () {
-      render(progress());
-      ticking = false;
-    });
+    requestAnimationFrame(function () { render(progress()); ticking = false; });
   }
 
   measure();
 
   if (reduced) {
-    /* Финальный кадр без прокрутки: содержание видно, движения нет. */
-    render(0.92);
+    /* Кадр прибытия, а не финальный: он показывает маршруты, машины и
+       результат разом, тогда как на последнем остаётся только название. */
+    render(0.86);
   } else {
     render(progress());
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", function () {
-      measure();
-      render(progress());
-    });
+    window.addEventListener("resize", function () { measure(); render(progress()); });
   }
 
   /* Появление блоков разбора — тот же IntersectionObserver, что описан ниже. */
   var reveals = document.querySelectorAll(".reveal");
   if (reduced || !("IntersectionObserver" in window)) {
-    reveals.forEach(function (el) { el.setAttribute("data-shown", "true"); });
+    reveals.forEach(function (node) { node.setAttribute("data-shown", "true"); });
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -823,7 +1418,7 @@ h1 {
         }
       });
     }, { rootMargin: "0px 0px -12% 0px" });
-    reveals.forEach(function (el) { io.observe(el); });
+    reveals.forEach(function (node) { io.observe(node); });
   }
 })();
 </script>

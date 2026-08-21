@@ -24,7 +24,7 @@ const names = [
     [...html.matchAll(/"([a-z-]+)",\s*family/g)].map((m) => m[1]),
   ),
 ];
-const baskets = [...html.matchAll(/file: "(basket-[a-z]+)"/g)].map((m) => m[1]);
+const baskets = [...html.matchAll(/basket: "(basket-[a-z]+)"/g)].map((m) => m[1]);
 
 for (const name of [...names, ...baskets]) {
   const file = `public/images/motion/${name}.webp`;
@@ -40,7 +40,8 @@ html = html.replace(
   '  var BASE = "/images/motion/";\n',
   table + '  var BASE = "";\n  function asset(n) { return INLINE[n]; }\n',
 );
-html = html.replace(/BASE \+ b\.file \+ "\.webp"/g, "asset(b.file)");
+html = html.replace(/BASE \+ g\.basket \+ "\.webp"/g, "asset(g.basket)");
+html = html.replace(/BASE \+ "walnut\.webp"/g, 'asset("walnut")');
 html = html.replace(/BASE \+ item\.kind\.file \+ "\.webp"/g, "asset(item.kind.file)");
 
 const standalone = join(dir, "motion-standalone.html");
