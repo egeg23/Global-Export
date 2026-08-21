@@ -43,6 +43,14 @@ html = html.replace(
 html = html.replace(/BASE \+ g\.basket \+ "\.webp"/g, "asset(g.basket)");
 html = html.replace(/BASE \+ "walnut\.webp"/g, 'asset("walnut")');
 html = html.replace(/BASE \+ item\.kind\.file \+ "\.webp"/g, "asset(item.kind.file)");
+html = html.replace(/BASE \+ kind\.file \+ "\.webp"/g, "asset(kind.file)");
+
+// Ни одной несобранной ссылки остаться не должно: относительный путь в
+// самодостаточном файле молча отдаёт 404, а не падает с ошибкой.
+const leftovers = [...html.matchAll(/BASE \+ [^;\n]+/g)].map((m) => m[0].trim());
+if (leftovers.length > 0) {
+  throw new Error("Остались несобранные ссылки: " + leftovers.join(" | "));
+}
 
 const standalone = join(dir, "motion-standalone.html");
 writeFileSync(standalone, html);

@@ -145,7 +145,7 @@ h1 {
 
 /* --- Сцена --------------------------------------------------------------- */
 
-.track { position: relative; height: 900vh; }
+.track { position: relative; height: 1050vh; }
 
 .stage {
   position: sticky;
@@ -518,58 +518,57 @@ h1 {
   will-change: transform, opacity;
 }
 
-/* --- Финал --------------------------------------------------------------- */
+/* --- Россыпь и название --------------------------------------------------- */
 
-/* Финал не в .world: камера к нему уже не применяется, он сам по себе. */
-.finale {
+/* Отдельный слой поверх мира: к финалу сцена начинается заново, и камера,
+   маршруты и грузовики к ней уже не относятся. */
+.pour {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.grain {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform, opacity;
+}
+
+.grain img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55));
+}
+
+/* Буква закреплена на плоде с самого начала россыпи — она не появляется
+   в конце, а всё это время едет вместе с ним. */
+.grain-letter {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  pointer-events: none;
-  will-change: opacity;
-}
-
-.nut { position: relative; }
-
-.nut-half {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: auto;
-  will-change: transform, opacity;
-  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.6));
-}
-
-/* Половинки — одна и та же фотография, обрезанная по вертикали пополам. */
-.nut-half.left  { left: 0; clip-path: inset(0 50% 0 0); }
-.nut-half.right { left: 0; clip-path: inset(0 0 0 50%); }
-
-/* Сдвиг задаётся только через transform из скрипта: свойство translate рядом
-   с ним дало бы смещение дважды. */
-.wordmark {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  text-align: center;
-  will-change: transform, opacity;
-}
-
-.wordmark-name {
   font-family: var(--display);
-  font-size: clamp(1.9rem, 6.5vw, 4.5rem);
   line-height: 1;
   color: var(--paper);
-  white-space: nowrap;
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.9),
+    0 0 3px rgba(0, 0, 0, 0.75);
 }
 
-.wordmark-tag {
-  margin-top: 0.9rem;
+.tagline {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  text-align: center;
   font-size: clamp(0.6rem, 1.6vw, 0.78rem);
   letter-spacing: 0.34em;
   text-transform: uppercase;
   color: var(--accent);
-  white-space: nowrap;
+  will-change: transform, opacity;
 }
 
 /* --- Разбор -------------------------------------------------------------- */
@@ -703,9 +702,10 @@ h1 {
   <h1>Полёт урожая</h1>
   <p class="lede">
     Страница-проба: путь урожая от кадра до контракта. Сухофрукты и орехи
-    выходят в кадр, раскладываются по корзинам, уходят в коробки и грузовики и
-    разъезжаются по направлениям экспорта. Ни одной анимационной библиотеки —
-    только CSS и один обработчик прокрутки.
+    выходят в кадр, раскладываются по корзинам, уходят в коробки и грузовики,
+    разъезжаются по направлениям экспорта — и в финале засыпают экран, чтобы
+    сложиться в название. Ни одной анимационной библиотеки — только CSS и один
+    обработчик прокрутки.
   </p>
     <p class="hint"><span class="hint-line" aria-hidden="true"></span> Прокрутите вниз</p>
   </div>
@@ -715,13 +715,14 @@ h1 {
     <li><span>02</span> Раскладывается по корзинам и коробкам</li>
     <li><span>03</span> Уезжает в Европу, Россию и Азию</li>
     <li><span>04</span> Возвращается контрактами</li>
+    <li><span>05</span> И складывается в название</li>
   </ol>
 </header>
 
 <div class="track" id="track">
   <div class="stage" id="stage">
     <div class="world" id="world"></div>
-    <div class="finale" id="finale"></div>
+    <div class="pour" id="pour"></div>
     <div class="act" aria-hidden="true">
       <span class="act-num" id="act-num">01</span>
       <span class="act-title act-slot" id="act-slot"></span>
@@ -735,8 +736,8 @@ h1 {
     <p class="eyebrow reveal">Как это сделано</p>
     <h2 class="reveal">Ни одной библиотеки анимации, ни одного лишнего килобайта</h2>
     <p class="notes-lede reveal">
-      Всё, что происходит выше — восемь актов от кадра до контракта — собрано из
-      приёмов, которые есть в любом браузере с 2020 года. Именно поэтому «сложная анимация» не удваивает смету
+      Всё, что происходит выше — девять актов от первого кадра до названия —
+      собрано из приёмов, которые есть в любом браузере с 2020 года. Именно поэтому «сложная анимация» не удваивает смету
       и не замедляет сайт: браузер двигает уже готовые слои, а не перерисовывает
       страницу.
     </p>
@@ -776,12 +777,13 @@ h1 {
         <p class="cost">1 строка</p>
       </li>
       <li class="technique reveal">
-        <h3>Раскрытие ореха</h3>
+        <h3>Буквы на плодах</h3>
         <p>
-          Половинки — одна и та же фотография, обрезанная <code>clip-path</code>
-          пополам и разведённая в стороны. Второго снимка не потребовалось.
+          Буквы закреплены на орехах с самого начала россыпи и едут вместе с
+          ними. В конце двенадцать нужных поднимаются из общей массы и встают
+          в строку — каждая летит к своей позиции, а не проявляется на месте.
         </p>
-        <p class="cost">2 свойства CSS</p>
+        <p class="cost">≈ 15 строк JS</p>
       </li>
       <li class="technique reveal">
         <h3>Параллакс по глубине</h3>
@@ -813,6 +815,10 @@ h1 {
 
     <div class="closing">
       <p class="reveal">
+        Название в финале собрано из плодов с буквами — это те же вырезки, что
+        летали в первом акте, просто у двенадцати из них есть своя буква.
+      </p>
+      <p class="reveal">
         Коробки, грузовики и карта маршрутов нарисованы, а не сфотографированы,
         и это осознанно: фотореалистичная фура рядом с вырезанной курагой
         читалась бы коллажем. После погрузки сцена честно превращается в схему
@@ -835,7 +841,7 @@ h1 {
         </div>
         <div class="figure">
           <dt>Актов</dt>
-          <dd>8</dd>
+          <dd>9</dd>
         </div>
       </dl>
     </div>
@@ -849,17 +855,19 @@ h1 {
   var BASE = "/images/motion/";
 
   /* Виды вырезаны из фотографий компании; `w` — доля от ширины сцены. */
+  /* `h` — отношение высоты к ширине вырезки. Без него буквы, привязанные к
+     плодам разной формы, встают на разной высоте, и строка «пляшет». */
   var KINDS = [
-    { file: "apricot-light",  family: 0, w: 0.105 },
-    { file: "apricot-dark",   family: 0, w: 0.100 },
-    { file: "apricot-sun",    family: 0, w: 0.078 },
-    { file: "rosehip",        family: 0, w: 0.055 },
-    { file: "walnut",         family: 1, w: 0.098 },
-    { file: "walnut-kernel",  family: 1, w: 0.085 },
-    { file: "almond-pair",    family: 1, w: 0.090 },
-    { file: "almond",         family: 1, w: 0.058 },
-    { file: "apricot-kernel", family: 1, w: 0.080 },
-    { file: "bean-purple",    family: 2, w: 0.062 }
+    { file: "apricot-light",  family: 0, w: 0.105, h: 0.705 },
+    { file: "apricot-dark",   family: 0, w: 0.100, h: 0.624 },
+    { file: "apricot-sun",    family: 0, w: 0.078, h: 1.043 },
+    { file: "rosehip",        family: 0, w: 0.055, h: 1.311 },
+    { file: "walnut",         family: 1, w: 0.098, h: 0.874 },
+    { file: "walnut-kernel",  family: 1, w: 0.085, h: 0.889 },
+    { file: "almond-pair",    family: 1, w: 0.090, h: 0.505 },
+    { file: "almond",         family: 1, w: 0.058, h: 0.682 },
+    { file: "apricot-kernel", family: 1, w: 0.080, h: 0.8 },
+    { file: "bean-purple",    family: 2, w: 0.062, h: 0.673 }
   ];
 
   var PLAN = [
@@ -883,9 +891,12 @@ h1 {
 
   /* Границы актов в долях прокрутки сцены. */
   var A = {
-    NUTS: 0.13, SORT: 0.26, PACK: 0.39,
-    LOAD: 0.52, DEPART: 0.64, ARRIVE: 0.77, BRAND: 0.89
+    NUTS: 0.11, SORT: 0.22, PACK: 0.33,
+    LOAD: 0.44, DEPART: 0.55, ARRIVE: 0.66,
+    POUR: 0.72, BRAND: 0.84
   };
+
+  var BRAND_TEXT = "GLOBAL EXPORT";
 
   var ACTS = [
     [0,        "01", "Сухофрукты"],
@@ -895,7 +906,8 @@ h1 {
     [A.LOAD,   "05", "Погрузка"],
     [A.DEPART, "06", "В путь"],
     [A.ARRIVE, "07", "Прибытие"],
-    [A.BRAND,  "08", "Бренд"]
+    [A.POUR,   "08", "Россыпь"],
+    [A.BRAND,  "09", "Название"]
   ];
 
   var SORT_SPAN = 0.11;
@@ -903,7 +915,7 @@ h1 {
 
   var stage  = document.getElementById("stage");
   var world  = document.getElementById("world");
-  var finale = document.getElementById("finale");
+  var pourLayer = document.getElementById("pour");
   var track  = document.getElementById("track");
   var rail   = document.getElementById("rail");
   var actNum = document.getElementById("act-num");
@@ -1084,25 +1096,76 @@ h1 {
 
   world.appendChild(frag);
 
-  /* ---- финал ------------------------------------------------------------- */
-  var nut = el("div", "nut", finale);
-  var nutLeft = document.createElement("img");
-  nutLeft.className = "nut-half left";
-  nutLeft.src = BASE + "walnut.webp";
-  nutLeft.alt = "";
-  var nutRight = nutLeft.cloneNode();
-  nutRight.className = "nut-half right";
-  nut.appendChild(nutLeft);
-  nut.appendChild(nutRight);
+  /* ---- россыпь и буквы --------------------------------------------------- */
 
-  var wordmark = el("div", "wordmark", finale);
-  var wname = el("div", "wordmark-name", wordmark);
-  wname.textContent = "Global Export";
-  var wtag = el("div", "wordmark-tag", wordmark);
-  wtag.textContent = "Узбекистан · 55 стран";
+  /* Экран засыпается плодами целиком. Двенадцать из них несут буквы названия —
+     закреплённые с самого начала, а не проявляющиеся в конце. */
+  var letters = BRAND_TEXT.split("").filter(function (c) { return c !== " "; });
+
+  var grains = [];
+  var grainFrag = document.createDocumentFragment();
+
+  function buildGrains(cols, rows) {
+    grains.forEach(function (grain) { grain.el.remove(); });
+    grains = [];
+
+    var total = cols * rows;
+    /* Буквы раскладываются по всей россыпи, а не подряд: шаг по решётке даёт
+       равномерный разброс без случайных чисел. */
+    var step = Math.max(1, Math.floor(total / letters.length));
+    var letterCells = {};
+    letters.forEach(function (ch, li) {
+      letterCells[(li * step + Math.floor(step / 2)) % total] = li;
+    });
+
+    for (var cell = 0; cell < total; cell++) {
+      var r1 = rand(cell * 11 + 7), r2 = rand(cell * 23 + 13);
+      var r3 = rand(cell * 41 + 5), r4 = rand(cell * 59 + 29);
+      var li = letterCells[cell];
+      var isLetter = li !== undefined;
+
+      /* Буквы садятся на орехи — на них кружок читается лучше, чем на кураге. */
+      var kind = isLetter
+        ? KINDS[[4, 6, 8, 5][li % 4]]
+        : KINDS[Math.floor(r1 * KINDS.length) % KINDS.length];
+
+      var node = el("div", "grain");
+      var img = document.createElement("img");
+      img.src = BASE + kind.file + ".webp";
+      img.alt = "";
+      img.decoding = "async";
+      /* Сто с лишним плодов ссылаются на десяток файлов — браузер возьмёт их
+         из кеша. Ленивая загрузка не сэкономила бы ничего, зато плоды
+         подгружались бы на глазах у зрителя. */
+      node.appendChild(img);
+
+      var letterEl = null;
+      if (isLetter) {
+        letterEl = el("span", "grain-letter", node);
+        letterEl.textContent = letters[li];
+      }
+
+      grainFrag.appendChild(node);
+      grains.push({
+        el: node, letterEl: letterEl, kind: kind, letterIndex: isLetter ? li : -1,
+        col: cell % cols, row: Math.floor(cell / cols),
+        jx: (r2 - 0.5) * 0.9, jy: (r3 - 0.5) * 0.8,
+        fall: r1 * 0.55,          /* задержка падения */
+        drop: 0.35 + r4 * 0.8,    /* высота, с которой падает */
+        rot: (r2 - 0.5) * (isLetter ? 44 : 260),
+        spin: (r4 - 0.5) * (isLetter ? 90 : 320),
+        depth: 0.45 + r3 * 0.55
+      });
+    }
+    pourLayer.appendChild(grainFrag);
+  }
+
+  var tagline = el("div", "tagline", pourLayer);
+  tagline.textContent = "Узбекистан · 55 стран";
 
   /* ---- размеры ----------------------------------------------------------- */
   var W = 0, H = 0;
+  var grainCols = 0, grainRows = 0, grainSize = 0, word = [];
 
   function measure() {
     W = stage.clientWidth;
@@ -1127,12 +1190,64 @@ h1 {
       g.truckSize = Math.min(W * 0.24, 220);
       g.truck.style.width = g.truckSize + "px";
 
-      var nutW = Math.min(W * 0.42, H * 0.42, 300);
-      nut.style.width = nutW + "px";
-      nut.style.height = nutW * 0.874 + "px";
-      nutLeft.style.width = nutW + "px";
-      nutRight.style.width = nutW + "px";
     });
+
+    /* Россыпь пересобирается при смене ширины: на телефоне колонок меньше,
+       а название встаёт в две строки. */
+    var cols = W < 720 ? 7 : 13;
+    var rows = 9;
+    if (cols !== grainCols || rows !== grainRows) {
+      grainCols = cols;
+      grainRows = rows;
+      buildGrains(cols, rows);
+    }
+
+    grainSize = Math.min(W / cols, H / rows) * 1.45;
+    grains.forEach(function (grain) {
+      /* Плоды с буквами крупнее фона: иначе название тонет в текстуре. */
+      grain.px = grainSize * (grain.letterIndex >= 0 ? 1.3 : 0.72 + grain.depth * 0.46);
+      grain.el.style.width = grain.px + "px";
+      grain.ph = grain.px * grain.kind.h;
+      if (grain.letterEl) {
+        grain.letterEl.style.fontSize = (grain.px * 0.5).toFixed(1) + "px";
+      }
+      /* Место в россыпи: центр ячейки плюс сдвиг, чтобы решётка не читалась. */
+      grain.restX = (grain.col + 0.5) / cols * W + grain.jx * (W / cols);
+      grain.restY = (grain.row + 0.5) / rows * H + grain.jy * (H / rows);
+    });
+
+    word = wordLayout();
+  }
+
+  /* Слоты для букв: одна строка на широком экране, две — на узком. */
+  function wordLayout() {
+    var slots = [];
+    if (W >= 760) {
+      var size = Math.min(W * 0.068, H * 0.14, 112);
+      var gap = size * 0.14;
+      var span = BRAND_TEXT.length * size + (BRAND_TEXT.length - 1) * gap;
+      var x0 = (W - span) / 2 + size / 2;
+      var li = 0;
+      for (var i = 0; i < BRAND_TEXT.length; i++) {
+        if (BRAND_TEXT[i] === " ") continue;
+        slots[li++] = { x: x0 + i * (size + gap), y: H * 0.47, size: size };
+      }
+    } else {
+      var size2 = Math.min(W * 0.135, H * 0.10, 86);
+      var gap2 = size2 * 0.14;
+      var per = 6;
+      var span2 = per * size2 + (per - 1) * gap2;
+      var x2 = (W - span2) / 2 + size2 / 2;
+      for (var j = 0; j < letters.length; j++) {
+        var row = Math.floor(j / per);
+        slots[j] = {
+          x: x2 + (j % per) * (size2 + gap2),
+          y: H * 0.42 + row * size2 * 1.3,
+          size: size2
+        };
+      }
+    }
+    return slots;
   }
 
   function place(node, x, y, extra) {
@@ -1186,8 +1301,8 @@ h1 {
     world.style.transformOrigin = "50% " + (ROW_Y * 100).toFixed(0) + "%";
     world.style.transform = "scale(" + camScale.toFixed(4) + ")";
 
-    /* Финал перекрывает мир целиком. */
-    var brand = clamp01((q - A.BRAND) / 0.06);
+    /* Россыпь начинается с чистого экрана: мир к этому моменту уже погас. */
+    var brand = clamp01((q - A.POUR + 0.03) / 0.05);
     world.style.opacity = 1 - brand;
 
     /* --- корзины --------------------------------------------------------- */
@@ -1357,25 +1472,51 @@ h1 {
         " rotate(" + r.toFixed(2) + "deg) scale(" + scale.toFixed(3) + ")";
     });
 
-    /* --- финал: орех раскрывается, из него выходит название --------------- */
-    finale.style.opacity = brand;
-    if (brand > 0) {
-      var crack = easeInOut(clamp01((q - A.BRAND - 0.02) / 0.05));
-      var open = easeOut(clamp01((q - A.BRAND - 0.035) / 0.05));
-      var shake = crack < 1 ? Math.sin(q * 420) * (1 - crack) * 4 : 0;
+    /* --- россыпь и название ----------------------------------------------- */
+    var pourIn = clamp01((q - A.POUR) / 0.02);
+    pourLayer.style.opacity = pourIn;
 
-      nutLeft.style.transform =
-        "translate3d(" + (-open * 37 - 2 + shake) + "%,0,0) rotate(" + (-open * 9) + "deg)";
-      nutRight.style.transform =
-        "translate3d(" + (open * 37 + 2 - shake) + "%,0,0) rotate(" + (open * 9) + "deg)";
-      nutLeft.style.opacity = 1 - open * 0.35;
-      nutRight.style.opacity = 1 - open * 0.35;
+    if (pourIn > 0) {
+      grains.forEach(function (grain, i) {
+        /* Падение: каждый плод трогается со своей задержкой, поэтому экран
+           засыпается сверху вниз, а не появляется целиком. */
+        var drop = easeOut(clamp01((q - A.POUR - 0.01 - grain.fall * 0.09) / 0.10));
+        var x = grain.restX;
+        var y = lerp(grain.restY - grain.drop * H - H * 0.35, grain.restY, drop);
+        var rot = grain.rot + grain.spin * (1 - drop);
+        var scale = 1;
+        var opacity = drop;
 
-      var reveal = easeOut(clamp01((q - A.BRAND - 0.045) / 0.055));
-      wordmark.style.opacity = reveal;
-      wordmark.style.transform =
-        "translate(-50%,-50%) scale(" + (0.72 + reveal * 0.28).toFixed(3) + ")";
-      wname.style.letterSpacing = ((1 - reveal) * 0.4).toFixed(3) + "em";
+        /* Буквы поднимаются из россыпи и встают в строку. */
+        if (grain.letterIndex >= 0) {
+          var slot = word[grain.letterIndex];
+          var lift = easeInOut(clamp01((q - A.BRAND - grain.letterIndex * 0.005) / 0.06));
+          if (slot && lift > 0) {
+            x = lerp(x, slot.x, lift);
+            y = lerp(y, slot.y, lift);
+            rot = rot * (1 - lift);
+            scale = lerp(1, slot.size / grain.px, lift);
+          }
+        } else {
+          /* Фон остаётся на экране, но уходит вглубь — иначе название тонет. */
+          var recede = easeInOut(clamp01((q - A.BRAND) / 0.07));
+          opacity = drop * (1 - recede * 0.78);
+          scale = 1 - recede * 0.1;
+        }
+
+        grain.el.style.opacity = opacity;
+        /* Сдвиг на половину реальной высоты, а не ширины: только так буквы на
+           плодах разной формы садятся на общую линию. */
+        grain.el.style.transform =
+          "translate3d(" + (x - grain.px / 2) + "px," + (y - grain.ph / 2) + "px,0)" +
+          " rotate(" + rot.toFixed(1) + "deg) scale(" + scale.toFixed(3) + ")";
+      });
+
+      var tagIn = easeOut(clamp01((q - A.BRAND - 0.10) / 0.05));
+      var lastSlot = word[word.length - 1];
+      tagline.style.opacity = tagIn;
+      tagline.style.transform =
+        "translate3d(0," + ((lastSlot ? lastSlot.y : H * 0.5) + (lastSlot ? lastSlot.size : 60) * 0.85) + "px,0)";
     }
   }
 
@@ -1396,9 +1537,9 @@ h1 {
   measure();
 
   if (reduced) {
-    /* Кадр прибытия, а не финальный: он показывает маршруты, машины и
-       результат разом, тогда как на последнем остаётся только название. */
-    render(0.86);
+    /* Собранное название на фоне россыпи — кадр, который читается сам по
+       себе, без движения. */
+    render(0.99);
   } else {
     render(progress());
     window.addEventListener("scroll", onScroll, { passive: true });
