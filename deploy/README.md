@@ -20,7 +20,22 @@
 
 Проверить, что разошлось: `dig +short globalex.maximov-tech.ru`
 
-## 2. Код на сервер
+## 2. Свободный порт
+
+Приложение слушает петлевой интерфейс, наружу его отдаёт nginx. По умолчанию
+взят 3210, но на сервере с другими Node-проектами это надо проверить: заняты
+чаще всего 3000 и 3100, а Next.js при занятом порте не перескакивает на
+соседний — он падает с `EADDRINUSE` и уходит в цикл перезапусков.
+
+```bash
+ss -ltn | grep -q ':3210 ' && echo "занят — возьмите другой" || echo "3210 свободен"
+```
+
+Если занят, выберите свободный и подставьте его в двух местах: `Environment=PORT`
+в `deploy/globalex-demo.service` и `proxy_pass` в `deploy/globalex.nginx.conf`
+(там два вхождения).
+
+## 3. Код на сервер
 
 Репозиторий публичный, рабочая ветка стоит основной — токен и `git checkout`
 не нужны.
@@ -41,7 +56,7 @@ cd /srv/globalex
 node -v || (curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt install -y nodejs)
 ```
 
-## 3. Переменные окружения
+## 4. Переменные окружения
 
 Заполнить `/srv/globalex/.env.local` (файл читают и сборка, и служба):
 
@@ -67,7 +82,7 @@ chown globalex:globalex /srv/globalex/.env.local && chmod 600 /srv/globalex/.env
 **Файл должен существовать до сборки.** Переменные `NEXT_PUBLIC_*` вшиваются в
 бандл на этапе сборки, а не читаются при запуске.
 
-## 4. Служба
+## 5. Служба
 
 Сборка идёт от того же пользователя, что и служба, — иначе `.next` достанется
 root, и приложение не сможет писать туда кеш изображений.
@@ -85,11 +100,11 @@ systemctl enable --now globalex-demo
 systemctl status globalex-demo --no-pager
 ```
 
-Приложение слушает `127.0.0.1:3100` — наружу оно не смотрит, только через nginx.
+Приложение слушает `127.0.0.1:3210` — наружу оно не смотрит, только через nginx.
 Если порт занят, поменять его в двух местах: `PORT` в юните и `proxy_pass` в
 конфиге nginx.
 
-## 5. nginx
+## 6. nginx
 
 ```bash
 sudo cp deploy/globalex.nginx.conf /etc/nginx/sites-available/globalex-demo
@@ -97,7 +112,7 @@ sudo ln -s /etc/nginx/sites-available/globalex-demo /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-## 6. Сертификат
+## 7. Сертификат
 
 Только после того, как DNS разошёлся — certbot проверяет домен через него:
 
@@ -107,7 +122,7 @@ sudo certbot --nginx -d globalex.maximov-tech.ru
 
 certbot сам допишет ssl-блок и редирект с 80 порта в тот же файл.
 
-## 7. Наполнение базы
+## 8. Наполнение базы
 
 Один раз, чтобы в админке было что редактировать:
 
@@ -137,6 +152,8 @@ sudo bash /srv/globalex/deploy/deploy.sh
 | Симптом | Куда смотреть |
 |---|---|
 | 502 от nginx | `systemctl status globalex-demo`, `journalctl -u globalex-demo -n 60` |
+| `EADDRINUSE` в логе, служба в цикле перезапусков | Порт занят другим приложением. Сменить его в юните и в конфиге nginx, затем `systemctl reset-failed globalex-demo` |
+| Страницы отдают 404, хотя маршруты есть | Скорее всего отвечает чужое приложение на том же порту — проверьте `ss -ltnp \| grep <порт>` |
 | Сборка падает | Node ниже 20; либо `npm ci` был запущен с `--omit=dev` — tailwind и typescript нужны на сборке |
 | `EACCES` при сборке или пустые картинки | Каталог или `.next` принадлежат root: `chown -R globalex:globalex /srv/globalex` |
 | Пустой сайт, но страницы открываются | Не заполнена база: `node scripts/seed.mjs` |

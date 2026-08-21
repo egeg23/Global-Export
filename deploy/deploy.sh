@@ -11,7 +11,7 @@ APP_DIR="${APP_DIR:-/srv/globalex}"
 APP_USER="${APP_USER:-globalex}"
 BRANCH="${BRANCH:-claude/global-export-website-u6yg03}"
 SERVICE="${SERVICE:-globalex-demo}"
-PORT="${PORT:-3100}"
+PORT="${PORT:-3210}"
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "✗ Запускать от root: перезапуск службы требует прав, а сборка — наоборот, их сброса."
