@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { currentAdmin } from "@/lib/admin/auth";
+import { isShowcase } from "@/lib/showcase";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 import { LoginForm } from "./login-form";
@@ -20,7 +21,24 @@ export default async function LoginPage() {
         </p>
 
         {isSupabaseConfigured ? (
-          <LoginForm />
+          <>
+            <LoginForm />
+
+            {/* Общий доступ показывается только на демонстрационной площадке.
+                На сайте компании этого блока не существует. */}
+            {isShowcase ? (
+              <div className="mt-8 rounded-lg border border-forest-900/12 bg-white/70 p-4">
+                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-forest-600">
+                  Демонстрационный доступ
+                </p>
+                <p className="mt-2 text-sm text-ink-muted">
+                  Логин <code className="font-medium text-forest-900">demo</code>, пароль{" "}
+                  <code className="font-medium text-forest-900">demo</code>. Можно менять
+                  что угодно — это площадка для показа, содержимое восстанавливается.
+                </p>
+              </div>
+            ) : null}
+          </>
         ) : (
           <p className="mt-8 rounded-lg border border-harvest-300 bg-harvest-50 px-4 py-3 text-sm text-harvest-800">
             База данных не подключена: задайте <code>NEXT_PUBLIC_SUPABASE_URL</code> и{" "}

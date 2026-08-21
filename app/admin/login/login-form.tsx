@@ -12,10 +12,13 @@ export function LoginForm() {
   return (
     <form action={formAction} className="mt-8 space-y-4">
       <label className="block">
-        <span className="text-sm font-medium text-forest-900">Почта</span>
+        <span className="text-sm font-medium text-forest-900">Логин или почта</span>
         <input
           name="email"
-          type="email"
+          /* Именно text, а не email: браузер не пропустил бы короткий логин. */
+          type="text"
+          inputMode="email"
+          autoCapitalize="none"
           autoComplete="username"
           required
           className="mt-1.5 h-11 w-full rounded-lg border border-forest-900/20 bg-white px-3.5 text-sm text-forest-950 transition-colors focus:border-forest-700"

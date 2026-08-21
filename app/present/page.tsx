@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { getNews, getProducts } from "@/lib/content/source";
+import { isShowcase } from "@/lib/showcase";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 type Stop = {
@@ -56,7 +57,7 @@ export default async function PresentPage() {
       eyebrow: "Управление",
       title: "Панель управления",
       text: "Новости, товары, категории, сертификаты, команда и медиатека. Тексты в трёх языках, фотографии перетаскиванием, черновики. Изменения появляются на сайте сразу — отдельной публикации нет.",
-      note: "Доступ выдаётся отдельно",
+      note: isShowcase ? "Логин demo, пароль demo" : "Доступ выдаётся отдельно",
     },
   ];
 

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { loginDomain } from "@/lib/showcase";
 
 export type AuthState = { error?: string };
 
@@ -12,12 +13,18 @@ export async function signIn(_state: AuthState, formData: FormData): Promise<Aut
     return { error: "База данных не подключена. Заполните переменные окружения Supabase." };
   }
 
-  const email = String(formData.get("email") ?? "").trim();
+  const login = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
-  if (!email || !password) {
-    return { error: "Введите почту и пароль." };
+  if (!login || !password) {
+    return { error: "Введите логин и пароль." };
   }
+
+  // Supabase опознаёт пользователя по почте, но заставлять владельца сайта
+  // помнить домен незачем: короткое имя дополняется автоматически.
+  const email = login.includes("@")
+    ? login.toLowerCase()
+    : `${login.toLowerCase()}@${loginDomain}`;
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
