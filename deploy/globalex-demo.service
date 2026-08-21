@@ -5,8 +5,17 @@
 #   sudo systemctl enable --now globalex-demo
 #   systemctl status globalex-demo
 #
-# Переменные окружения лежат в /srv/globalex/.env.local — под ним же и
-# ключи Supabase. Файл не в репозитории и не должен туда попадать.
+# Пользователя подставляет команда установки — приложение должно работать от
+# того же, кто владеет каталогом, иначе сборка и служба будут драться за права:
+#
+#   sudo sed "s|^User=.*|User=$USER|" deploy/globalex-demo.service \
+#     | sudo tee /etc/systemd/system/globalex-demo.service >/dev/null
+#
+# Переменные окружения лежат в /srv/globalex/.env.local — там же ключи
+# Supabase. Файл не в репозитории и не должен туда попадать.
+#
+# NoNewPrivileges=true ниже снимает вопрос к тому, что пользователь с правом
+# sudo запускает службу: из самой службы повысить права уже нельзя.
 
 [Unit]
 Description=Global Export prototype (Next.js)
@@ -14,7 +23,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=www-data
+User=CHANGE-ME
 WorkingDirectory=/srv/globalex
 Environment=NODE_ENV=production
 Environment=PORT=3100

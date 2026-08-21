@@ -22,12 +22,14 @@
 
 ## 2. Код на сервер
 
+Репозиторий публичный, рабочая ветка стоит основной — токен и `git checkout`
+не нужны.
+
 ```bash
 sudo mkdir -p /srv/globalex
-sudo chown -R "$USER":www-data /srv/globalex
+sudo chown -R "$USER":"$USER" /srv/globalex
 git clone https://github.com/egeg23/Global-Export.git /srv/globalex
 cd /srv/globalex
-git checkout claude/global-export-website-u6yg03
 ```
 
 Нужен Node 20 или новее — Next.js 16 на более старом не соберётся:
@@ -65,8 +67,18 @@ sudo chown root:www-data .env.local && sudo chmod 640 .env.local
 
 ## 4. Служба
 
+Сначала собрать — служба стартует уже готовое приложение:
+
 ```bash
-sudo cp deploy/globalex-demo.service /etc/systemd/system/
+npm ci && npm run build
+```
+
+Пользователя в юните подставляем на лету: приложение должно работать от
+владельца каталога, иначе сборка и служба будут драться за права на `.next`.
+
+```bash
+sudo sed "s|^User=.*|User=$USER|" deploy/globalex-demo.service \
+  | sudo tee /etc/systemd/system/globalex-demo.service >/dev/null
 sudo systemctl daemon-reload
 sudo systemctl enable --now globalex-demo
 systemctl status globalex-demo
