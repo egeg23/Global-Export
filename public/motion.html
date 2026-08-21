@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Полёт урожая</title>
+<meta name="description" content="Демонстрация прокруточной анимации для Global Export Company: сухофрукты и орехи летят через экран и раскладываются по корзинам.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@500&display=swap">
+<style>
+/* ---------------------------------------------------------------------------
+   Полёт урожая — демонстрация прокруточной анимации.
+
+   Одна страница, ноль библиотек. Вся сцена держится на трёх вещах:
+   position: sticky, transform и одном обработчике скролла. Ничего из этого
+   не требует ни отдельного бюджета, ни жертв в скорости загрузки.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* Палитра сайта Global Export; сцена на тон темнее, чтобы вырезки читались. */
+  --stage:      #050d0a;
+  --deep:       #0f2b23;
+  --mid:        #2a6350;
+  --accent:     #e0aa3d;
+  --accent-dim: #85531c;
+  --sand:       #faf6ee;
+  --sand-edge:  #e8dcc7;
+  --paper:      #fdfbf7;
+  --ink:        #10201a;
+  --ink-muted:  #55665f;
+  --on-dark:    #f3ecdf;
+  --on-dark-dim:#93a49b;
+
+  --display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  /* Страница целиком тёмная в верхней половине и песочная в нижней; фон
+     задаётся явно, иначе артефакт возьмёт фон хоста. */
+  background: var(--stage);
+  color: var(--on-dark);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.wrap {
+  width: min(72rem, 100% - 2.5rem);
+  margin-inline: auto;
+}
+
+/* --- Заставка ------------------------------------------------------------ */
+
+.intro {
+  min-height: 74svh;
+  min-height: 74vh;
+  display: grid;
+  align-content: center;
+  gap: 3.5rem;
+  padding: 6rem 0 4rem;
+}
+
+@media (min-width: 60rem) {
+  .intro { grid-template-columns: minmax(0, 1fr) 15rem; align-items: end; gap: 4rem; }
+}
+
+/* Оглавление сцены: три акта в том порядке, в котором они произойдут. */
+.acts-ahead { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+
+.acts-ahead li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(243, 236, 223, 0.14);
+  font-size: 0.9rem;
+  color: var(--on-dark-dim);
+}
+
+.acts-ahead li:last-child { border-bottom: 1px solid rgba(243, 236, 223, 0.14); }
+
+.acts-ahead span {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+}
+
+h1 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(2.75rem, 9vw, 6.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  margin: 1.25rem 0 0;
+  color: var(--paper);
+}
+
+.lede {
+  max-width: 34rem;
+  margin: 1.75rem 0 0;
+  color: var(--on-dark-dim);
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 3rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-dim);
+}
+
+.hint-line {
+  display: block;
+  width: 3.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+/* --- Сцена --------------------------------------------------------------- */
+
+.track { position: relative; height: 460vh; }
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  height: 100vh;
+  overflow: hidden;
+  /* Собственный слой композитинга: браузер не перерисовывает сцену,
+     а только двигает готовые слои. */
+  isolation: isolate;
+}
+
+/* Мягкое свечение по центру — глубина без единой картинки. */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(58% 45% at 50% 46%, rgba(42, 99, 80, 0.5), transparent 70%),
+    radial-gradient(38% 30% at 78% 22%, rgba(224, 170, 61, 0.13), transparent 72%);
+  z-index: 0;
+}
+
+.piece {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  will-change: transform, opacity;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+}
+
+.piece img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Тень падает под ягодой, а не окружает её нимбом. */
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.55));
+}
+
+.basket {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 0;
+  text-align: center;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.basket-bowl {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow:
+    0 24px 60px -18px rgba(0, 0, 0, 0.85),
+    inset 0 0 0 1px rgba(243, 236, 223, 0.12);
+}
+
+.basket-name {
+  display: block;
+  margin-top: 0.9rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--on-dark);
+  white-space: nowrap;
+}
+
+.basket-count {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.68rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Подпись акта — единственный интерфейс поверх сцены. */
+.act {
+  position: absolute;
+  left: clamp(1.25rem, 4vw, 3.5rem);
+  bottom: clamp(1.5rem, 5vh, 3.5rem);
+  z-index: 6;
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+}
+
+.act-num {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.act-title {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  color: var(--paper);
+  line-height: 1;
+}
+
+/* Каждый акт лежит в потоке друг на друге; видимый переключается прозрачностью. */
+.act-slot { position: relative; }
+.act-slot > span {
+  display: block;
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+.act-slot > span[data-on="false"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.4em);
+}
+
+.rail {
+  position: absolute;
+  right: clamp(1.1rem, 3vw, 2.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  width: 2px;
+  height: min(38vh, 18rem);
+  background: rgba(243, 236, 223, 0.16);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.rail-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+/* --- Разбор -------------------------------------------------------------- */
+
+.notes {
+  position: relative;
+  z-index: 1;
+  background: var(--sand);
+  color: var(--ink);
+  padding: clamp(5rem, 12vh, 9rem) 0 clamp(4rem, 9vh, 7rem);
+}
+
+.notes h2 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  margin: 1rem 0 0;
+  max-width: 20ch;
+}
+
+.notes .eyebrow { color: var(--mid); }
+
+.notes-lede {
+  max-width: 44rem;
+  margin: 1.5rem 0 0;
+  color: var(--ink-muted);
+}
+
+.techniques {
+  list-style: none;
+  margin: 3.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--sand-edge);
+  border-block: 1px solid var(--sand-edge);
+}
+
+.technique {
+  background: var(--sand);
+  display: grid;
+  gap: 0.4rem 2.5rem;
+  padding: 1.75rem 0;
+}
+
+@media (min-width: 52rem) {
+  .technique {
+    grid-template-columns: 15rem 1fr 9rem;
+    align-items: baseline;
+  }
+}
+
+.technique h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 500;
+}
+
+.technique p { margin: 0; color: var(--ink-muted); font-size: 0.95rem; }
+
+.technique code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.86em;
+  background: var(--paper);
+  border: 1px solid var(--sand-edge);
+  border-radius: 4px;
+  padding: 0.08em 0.35em;
+}
+
+.technique .cost {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--mid);
+}
+
+.closing {
+  margin-top: 3.5rem;
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 52rem) {
+  .closing { grid-template-columns: 1fr 22rem; align-items: start; }
+}
+
+.closing p { margin: 0; max-width: 46rem; }
+
+.figures { display: grid; gap: 1.25rem; margin: 0; }
+
+.figure dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.figure dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--display);
+  font-size: 1.9rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Появление при прокрутке — та же техника, что описана в списке ниже,
+   продемонстрированная на самом списке. */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.1rem);
+  transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal[data-shown="true"] { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .act-slot > span { transition: none; }
+  .track { height: auto; }
+  .stage { position: relative; height: 100svh; height: 100vh; }
+}
+</style>
+</head>
+<body>
+
+<header class="intro wrap">
+  <div>
+  <p class="eyebrow">Global Export Company · демонстрация</p>
+  <h1>Полёт урожая</h1>
+  <p class="lede">
+    Страница-проба: как продукция может вести себя при прокрутке. Сначала летят
+    сухофрукты, следом подхватываются орехи, а в конце всё раскладывается по
+    корзинам. Ни одной анимационной библиотеки — только CSS и полсотни строк
+    скрипта.
+  </p>
+    <p class="hint"><span class="hint-line" aria-hidden="true"></span> Прокрутите вниз</p>
+  </div>
+
+  <ol class="acts-ahead">
+    <li><span>01</span> Сухофрукты выходят в кадр</li>
+    <li><span>02</span> К ним подхватываются орехи</li>
+    <li><span>03</span> Всё раскладывается по корзинам</li>
+  </ol>
+</header>
+
+<div class="track" id="track">
+  <div class="stage" id="stage">
+    <div class="act" aria-hidden="true">
+      <span class="act-num" id="act-num">01</span>
+      <span class="act-title act-slot">
+        <span data-on="true">Сухофрукты</span>
+        <span data-on="false">Орехи</span>
+        <span data-on="false">По корзинам</span>
+      </span>
+    </div>
+    <div class="rail" aria-hidden="true"><span class="rail-fill" id="rail"></span></div>
+  </div>
+</div>
+
+<section class="notes">
+  <div class="wrap">
+    <p class="eyebrow reveal">Как это сделано</p>
+    <h2 class="reveal">Ни одной библиотеки анимации, ни одного лишнего килобайта</h2>
+    <p class="notes-lede reveal">
+      Всё, что происходит выше, собрано из четырёх приёмов, которые есть в любом
+      браузере с 2020 года. Именно поэтому «сложная анимация» не удваивает смету
+      и не замедляет сайт: браузер двигает уже готовые слои, а не перерисовывает
+      страницу.
+    </p>
+
+    <ul class="techniques">
+      <li class="technique reveal">
+        <h3>Закрепление сцены</h3>
+        <p>
+          Экран удерживается на месте, пока страница прокручивается мимо, —
+          одно свойство <code>position: sticky</code> на блоке нужной высоты.
+        </p>
+        <p class="cost">3 строки CSS</p>
+      </li>
+      <li class="technique reveal">
+        <h3>Прокрутка как таймлайн</h3>
+        <p>
+          Положение страницы переводится в число от 0 до 1, и это число задаёт
+          кадр анимации. Прокрутка вперёд и назад работает одинаково.
+        </p>
+        <p class="cost">≈ 20 строк JS</p>
+      </li>
+      <li class="technique reveal">
+        <h3>Параллакс по глубине</h3>
+        <p>
+          У каждого объекта своя «дальность»: дальние мельче, размытее и
+          отстают. Двигаются только <code>transform</code> и
+          <code>opacity</code> — свойства, которые считает видеокарта.
+        </p>
+        <p class="cost">0 перерисовок</p>
+      </li>
+      <li class="technique reveal">
+        <h3>Появление при прокрутке</h3>
+        <p>
+          Блоки этого раздела проявились по мере приближения — это
+          <code>IntersectionObserver</code>, тот же приём, что и на макетах
+          концепций A и B.
+        </p>
+        <p class="cost">≈ 10 строк JS</p>
+      </li>
+      <li class="technique reveal">
+        <h3>Уважение к настройкам</h3>
+        <p>
+          Если в системе включено «уменьшать движение», сцена показывает сразу
+          финальный кадр. Это требование доступности, а не опция.
+        </p>
+        <p class="cost">1 медиазапрос</p>
+      </li>
+    </ul>
+
+    <div class="closing">
+      <p class="reveal">
+        Отдельный вопрос — фотографии. Летящие ягоды и орехи вырезаны из
+        собственных снимков компании с сайта globalex.uz: ничего не докупалось и
+        не рисовалось. Для боевой версии те же кадры имеет смысл переснять на
+        однородном фоне — вырезка станет чище, а файлы легче.
+      </p>
+      <dl class="figures reveal">
+        <div class="figure">
+          <dt>Вес сцены</dt>
+          <dd>≈ 340 КБ</dd>
+        </div>
+        <div class="figure">
+          <dt>Зависимостей</dt>
+          <dd>0</dd>
+        </div>
+        <div class="figure">
+          <dt>Объектов в кадре</dt>
+          <dd id="fig-count">24</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  var BASE = "/images/motion/";
+
+  /* Каждый вид — отдельная вырезка из фотографий компании. `w` — ширина в долях
+     от ширины сцены, подобранная так, чтобы грецкий орех был крупнее миндаля. */
+  var KINDS = [
+    { file: "apricot-light",  family: 0, w: 0.105 },
+    { file: "apricot-dark",   family: 0, w: 0.100 },
+    { file: "apricot-sun",    family: 0, w: 0.078 },
+    { file: "rosehip",        family: 0, w: 0.055 },
+    { file: "walnut",         family: 1, w: 0.098 },
+    { file: "walnut-kernel",  family: 1, w: 0.085 },
+    { file: "almond-pair",    family: 1, w: 0.090 },
+    { file: "almond",         family: 1, w: 0.058 },
+    { file: "apricot-kernel", family: 1, w: 0.080 },
+    { file: "bean-purple",    family: 2, w: 0.062 }
+  ];
+
+  /* Сколько экземпляров каждого вида и в каком акте он вступает. */
+  var PLAN = [
+    [0, 3], [1, 3], [2, 2], [3, 3],
+    [4, 2], [5, 2], [6, 2], [7, 2], [8, 2],
+    [9, 4]
+  ];
+
+  var BASKETS = [
+    { file: "basket-fruit", name: "Сухофрукты", x: 0.20 },
+    { file: "basket-nut",   name: "Орехи",      x: 0.50 },
+    { file: "basket-bean",  name: "Бобовые",    x: 0.80 }
+  ];
+
+  /* Границы актов в долях прокрутки сцены. */
+  var NUTS_IN = 0.30;
+  var BEANS_IN = 0.44;
+  var SORT_AT = 0.60;
+  var SORT_SPAN = 0.26;
+
+  var stage = document.getElementById("stage");
+  var track = document.getElementById("track");
+  var rail = document.getElementById("rail");
+  var actNum = document.getElementById("act-num");
+  var actTitles = document.querySelectorAll(".act-slot > span");
+
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Псевдослучайность с фиксированным зерном: раскладка одинакова при каждой
+     загрузке, иначе демонстрация выглядела бы по-разному на двух экранах. */
+  function rand(seed) {
+    var s = seed * 9301 + 49297;
+    return (s % 233280) / 233280;
+  }
+
+  var items = [];
+  var perFamily = [0, 0, 0];
+
+  /* Стартовые точки раскладываются по сетке, а не случайно: случайные
+     координаты сбиваются в комки и оставляют половину экрана пустой. */
+  var COLS = 6, ROWS = 4;
+  var placed = 0;
+
+  PLAN.forEach(function (entry) {
+    var kind = KINDS[entry[0]];
+    for (var n = 0; n < entry[1]; n++) {
+      var i = items.length;
+      var r1 = rand(i * 7 + 1), r2 = rand(i * 13 + 5), r3 = rand(i * 29 + 11);
+      var r4 = rand(i * 37 + 3), r5 = rand(i * 53 + 17);
+      var depth = 0.22 + r1 * 0.78;
+
+      /* Шаг 7 по 24 клеткам перебирает всю сетку, не повторяясь, — соседние
+         по списку объекты одного вида оказываются в разных углах. */
+      var cell = (placed * 7) % (COLS * ROWS);
+      placed++;
+
+      items.push({
+        kind: kind,
+        family: kind.family,
+        slot: perFamily[kind.family]++,
+        depth: depth,
+        hx: ((cell % COLS) + 0.5) / COLS + (r2 - 0.5) * 0.13,
+        hy: (Math.floor(cell / COLS) + 0.5) / ROWS + (r3 - 0.5) * 0.17,
+        /* Дрейф вверх и чуть в сторону; ближние идут заметнее дальних. */
+        dx: (r4 - 0.5) * 0.16 * depth,
+        dy: (-0.10 - r5 * 0.14) * depth,
+        bob: 0.012 + r5 * 0.026,
+        phase: r2 * Math.PI * 2,
+        rot: (r3 - 0.5) * 110,
+        spin: (r4 - 0.5) * 150,
+        enter: kind.family === 0 ? 0 : (kind.family === 1 ? NUTS_IN : BEANS_IN),
+        /* Разлёт появления внутри своего акта, чтобы объекты не возникали разом. */
+        stagger: r1 * 0.11,
+        delay: r5 * 0.09,
+        el: null
+      });
+    }
+  });
+
+  document.getElementById("fig-count").textContent = String(items.length);
+
+  /* Ближние объекты рисуются поверх дальних. */
+  items.sort(function (a, b) { return a.depth - b.depth; });
+
+  var frag = document.createDocumentFragment();
+
+  var baskets = BASKETS.map(function (b, bi) {
+    var el = document.createElement("div");
+    el.className = "basket";
+    var img = document.createElement("img");
+    img.className = "basket-bowl";
+    img.src = BASE + b.file + ".webp";
+    img.alt = "";
+    img.decoding = "async";
+    var name = document.createElement("span");
+    name.className = "basket-name";
+    name.textContent = b.name;
+    var count = document.createElement("span");
+    count.className = "basket-count";
+    count.textContent = perFamily[bi] + " шт.";
+    el.appendChild(img);
+    el.appendChild(name);
+    el.appendChild(count);
+    frag.appendChild(el);
+    return { conf: b, el: el };
+  });
+
+  items.forEach(function (item, i) {
+    var el = document.createElement("div");
+    el.className = "piece";
+    var img = document.createElement("img");
+    img.src = BASE + item.kind.file + ".webp";
+    img.alt = "";
+    img.decoding = "async";
+    img.loading = i < 8 ? "eager" : "lazy";
+    el.appendChild(img);
+    item.el = el;
+    frag.appendChild(el);
+  });
+
+  stage.appendChild(frag);
+
+  var W = 0, H = 0;
+
+  function measure() {
+    W = stage.clientWidth;
+    H = stage.clientHeight;
+
+    items.forEach(function (item) {
+      item.px = item.kind.w * W * (0.65 + item.depth * 0.55);
+      item.el.style.width = item.px + "px";
+    });
+
+    baskets.forEach(function (b) {
+      var size = Math.min(W * 0.2, H * 0.26, 210);
+      b.size = size;
+      b.el.style.width = size + "px";
+      b.cx = b.conf.x * W;
+      b.cy = H * 0.66;
+      b.el.style.transform =
+        "translate3d(" + (b.cx - size / 2) + "px," + (b.cy - size / 2) + "px,0)";
+    });
+  }
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function easeInOut(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+  /* Куда объект ложится: тесная сетка над чашей, ряды идут вверх. */
+  function slotFor(item) {
+    var b = baskets[item.family];
+    var perRow = item.family === 2 ? 3 : 4;
+    var row = Math.floor(item.slot / perRow);
+    var col = item.slot % perRow;
+    var count = perFamily[item.family];
+    var inRow = Math.min(perRow, count - row * perRow);
+    var step = b.size * 0.30;
+    return {
+      x: b.cx + (col - (inRow - 1) / 2) * step,
+      y: b.cy - b.size * 0.40 - row * step * 0.85,
+      scale: 0.44
+    };
+  }
+
+  function render(p) {
+    /* Хвост прокрутки после раскладки — пауза, чтобы кадр можно было
+       рассмотреть, поэтому прогресс сцены сжимается к 0.92 от трека. */
+    var q = clamp01(p / 0.92);
+
+    rail.style.transform = "scaleY(" + q + ")";
+
+    var act = q < NUTS_IN ? 0 : q < SORT_AT ? 1 : 2;
+    actNum.textContent = "0" + (act + 1);
+    for (var a = 0; a < actTitles.length; a++) {
+      actTitles[a].setAttribute("data-on", a === act ? "true" : "false");
+    }
+
+    /* Корзины выходят из темноты ровно перед раскладкой. */
+    var appear = clamp01((q - SORT_AT + 0.04) / 0.12);
+    baskets.forEach(function (b) {
+      b.el.style.opacity = appear;
+      b.el.style.transform =
+        "translate3d(" + (b.cx - b.size / 2) + "px," +
+        (b.cy - b.size / 2 + (1 - easeOut(appear)) * 44) + "px,0)";
+    });
+
+    items.forEach(function (item) {
+      var live = clamp01((q - item.enter - item.stagger) / 0.09);
+      if (live === 0) {
+        item.el.style.opacity = 0;
+        return;
+      }
+
+      /* Полёт: подъём от места появления плюс лёгкое покачивание. Объект
+         остаётся в кадре весь акт — сцена не должна пустеть. */
+      var t = clamp01((q - item.enter) / Math.max(0.001, SORT_AT - item.enter));
+      var rise = (1 - easeOut(live)) * 0.14;
+      var fx = (item.hx + item.dx * t) * W;
+      var fy = (item.hy + item.dy * t + rise +
+                Math.sin(item.phase + t * 4.2) * item.bob) * H;
+      var fr = item.rot + item.spin * t;
+
+      var k = easeInOut(clamp01((q - SORT_AT - item.delay) / SORT_SPAN));
+      var x = fx, y = fy, r = fr, s = 1;
+
+      if (k > 0) {
+        var slot = slotFor(item);
+        x = fx + (slot.x - fx) * k;
+        y = fy + (slot.y - fy) * k;
+        /* Приземляясь, объекты почти выравниваются — «уложены», а не брошены. */
+        r = fr * (1 - k) + (item.rot * 0.12) * k;
+        s = 1 + (slot.scale - 1) * k;
+      }
+
+      /* Дальние — мельче, бледнее и слегка размыты. */
+      var scale = s * (0.72 + item.depth * 0.42) * (0.86 + easeOut(live) * 0.14);
+      var opacity = live * (0.58 + item.depth * 0.42);
+      var blur = (1 - item.depth) * 2.4 * (1 - k);
+
+      item.el.style.opacity = opacity;
+      item.el.style.filter = blur > 0.25 ? "blur(" + blur.toFixed(2) + "px)" : "none";
+      item.el.style.transform =
+        "translate3d(" + (x - item.px / 2) + "px," + (y - item.px / 2) + "px,0)" +
+        " rotate(" + r.toFixed(2) + "deg) scale(" + scale.toFixed(3) + ")";
+    });
+  }
+
+  function progress() {
+    var rect = track.getBoundingClientRect();
+    var span = rect.height - window.innerHeight;
+    if (span <= 0) return 0;
+    return clamp01(-rect.top / span);
+  }
+
+  var ticking = false;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      render(progress());
+      ticking = false;
+    });
+  }
+
+  measure();
+
+  if (reduced) {
+    /* Финальный кадр без прокрутки: содержание видно, движения нет. */
+    render(0.92);
+  } else {
+    render(progress());
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", function () {
+      measure();
+      render(progress());
+    });
+  }
+
+  /* Появление блоков разбора — тот же IntersectionObserver, что описан ниже. */
+  var reveals = document.querySelectorAll(".reveal");
+  if (reduced || !("IntersectionObserver" in window)) {
+    reveals.forEach(function (el) { el.setAttribute("data-shown", "true"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.setAttribute("data-shown", "true");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -12% 0px" });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>
