@@ -1,0 +1,36 @@
+# Демонстрационная площадка прототипа Global Export.
+#
+#   sudo cp deploy/globalex-demo.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now globalex-demo
+#   systemctl status globalex-demo
+#
+# Переменные окружения лежат в /srv/globalex/.env.local — под ним же и
+# ключи Supabase. Файл не в репозитории и не должен туда попадать.
+
+[Unit]
+Description=Global Export prototype (Next.js)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/srv/globalex
+Environment=NODE_ENV=production
+Environment=PORT=3100
+Environment=HOSTNAME=127.0.0.1
+EnvironmentFile=/srv/globalex/.env.local
+ExecStart=/srv/globalex/node_modules/.bin/next start
+Restart=on-failure
+RestartSec=5
+KillMode=mixed
+TimeoutStopSec=20
+
+# Приложение читает только свой каталог и пишет только в .next.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

@@ -10,8 +10,9 @@ const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webman
  * the language the browser asks for, so `globalex.uz` still works as an entry
  * point and search engines land on a canonical URL.
  *
- * The admin panel is the exception: it is a single-language tool, sits outside
- * the prefix, and needs its Supabase session refreshed on the way through.
+ * Two routes sit outside that rule. The admin panel is a single-language tool
+ * and needs its Supabase session refreshed on the way through. The showcase at
+ * `/present` belongs to the pitch rather than to the company's site.
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -29,6 +30,18 @@ export async function proxy(request: NextRequest) {
   // It only refreshes — the layout is what decides whether access is allowed.
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
     return refreshSession(request);
+  }
+
+  if (pathname === "/present" || pathname.startsWith("/present/")) {
+    return NextResponse.next();
+  }
+
+  // On the demo deployment the root is the showcase; on the live site it stays
+  // the language redirect. One variable rather than two builds of the app.
+  if (pathname === "/" && process.env.SHOWCASE_ROOT === "true") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/present";
+    return NextResponse.redirect(url, 307);
   }
 
   const [, first = "", ...rest] = pathname.split("/");

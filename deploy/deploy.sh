@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Разворачивает прототип на сервере. Запускать на самом сервере.
+#
+#   cd /srv/globalex && bash deploy/deploy.sh
+#
+# Сборка идёт до перезапуска, так что площадка лежит ровно столько, сколько
+# занимает рестарт службы.
+set -euo pipefail
+
+APP_DIR="${APP_DIR:-/srv/globalex}"
+BRANCH="${BRANCH:-claude/global-export-website-u6yg03}"
+SERVICE="${SERVICE:-globalex-demo}"
+PORT="${PORT:-3100}"
+
+cd "$APP_DIR"
+
+need=20
+have="$(node -v 2>/dev/null | sed 's/^v//; s/\..*//')" || have=0
+if [ "${have:-0}" -lt "$need" ]; then
+  echo "✗ Нужен Node ${need}+ (сейчас: $(node -v 2>/dev/null || echo 'не установлен'))."
+  echo "  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt install -y nodejs"
+  exit 1
+fi
+
+if [ ! -f .env.local ]; then
+  echo "✗ Нет .env.local — без него не будет ни базы, ни админки."
+  echo "  Скопируйте .env.example и заполните."
+  exit 1
+fi
+
+echo "→ Забираем ${BRANCH}"
+git fetch origin "$BRANCH"
+git checkout "$BRANCH"
+git reset --hard "origin/${BRANCH}"
+
+# Полная установка, а не --omit=dev: tailwind, postcss и typescript лежат в
+# devDependencies и нужны именно на сборке. Без них `npm run build` падает.
+echo "→ Зависимости"
+npm ci
+
+echo "→ Сборка"
+npm run build
+
+echo "→ Перезапуск ${SERVICE}"
+sudo systemctl restart "$SERVICE"
+
+echo "→ Проверка"
+for attempt in 1 2 3 4 5 6 7 8 9 10; do
+  if curl -fsS -o /dev/null "http://127.0.0.1:${PORT}/present"; then
+    echo "✓ Площадка отвечает на порту ${PORT}"
+    exit 0
+  fi
+  sleep 2
+done
+
+echo "✗ Приложение не поднялось. Смотрите: journalctl -u ${SERVICE} -n 60 --no-pager"
+exit 1
