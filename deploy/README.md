@@ -25,10 +25,13 @@
 Репозиторий публичный, рабочая ветка стоит основной — токен и `git checkout`
 не нужны.
 
+Приложение получает собственного системного пользователя без оболочки. На
+сервере, где рядом работают другие проекты, публично доступное приложение не
+должно иметь доступа ни к чему за пределами своего каталога.
+
 ```bash
-sudo mkdir -p /srv/globalex
-sudo chown -R "$USER":"$USER" /srv/globalex
-git clone https://github.com/egeg23/Global-Export.git /srv/globalex
+adduser --system --group --home /srv/globalex --shell /usr/sbin/nologin globalex
+sudo -u globalex git clone https://github.com/egeg23/Global-Export.git /srv/globalex
 cd /srv/globalex
 ```
 
@@ -40,11 +43,7 @@ node -v || (curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - &&
 
 ## 3. Переменные окружения
 
-```bash
-cp .env.example .env.local
-```
-
-Заполнить в `/srv/globalex/.env.local`:
+Заполнить `/srv/globalex/.env.local` (файл читают и сборка, и служба):
 
 ```ini
 NEXT_PUBLIC_SITE_URL=https://globalex.maximov-tech.ru
@@ -59,29 +58,31 @@ SHOWCASE_ROOT=true
 LEAD_ALLOW_UNCONFIGURED=true
 ```
 
-Файл читает systemd, поэтому доступ к нему стоит закрыть:
+Права — только владельцу:
 
 ```bash
-sudo chown root:www-data .env.local && sudo chmod 640 .env.local
+chown globalex:globalex /srv/globalex/.env.local && chmod 600 /srv/globalex/.env.local
 ```
+
+**Файл должен существовать до сборки.** Переменные `NEXT_PUBLIC_*` вшиваются в
+бандл на этапе сборки, а не читаются при запуске.
 
 ## 4. Служба
 
-Сначала собрать — служба стартует уже готовое приложение:
+Сборка идёт от того же пользователя, что и служба, — иначе `.next` достанется
+root, и приложение не сможет писать туда кеш изображений.
 
 ```bash
-npm ci && npm run build
+cd /srv/globalex
+sudo -u globalex npm ci
+sudo -u globalex npm run build
 ```
 
-Пользователя в юните подставляем на лету: приложение должно работать от
-владельца каталога, иначе сборка и служба будут драться за права на `.next`.
-
 ```bash
-sudo sed "s|^User=.*|User=$USER|" deploy/globalex-demo.service \
-  | sudo tee /etc/systemd/system/globalex-demo.service >/dev/null
-sudo systemctl daemon-reload
-sudo systemctl enable --now globalex-demo
-systemctl status globalex-demo
+cp deploy/globalex-demo.service /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable --now globalex-demo
+systemctl status globalex-demo --no-pager
 ```
 
 Приложение слушает `127.0.0.1:3100` — наружу оно не смотрит, только через nginx.
@@ -112,10 +113,11 @@ certbot сам допишет ssl-блок и редирект с 80 порта 
 
 ```bash
 cd /srv/globalex
-SUPABASE_URL=https://<проект>.supabase.co \
-SUPABASE_KEY=<публичный ключ> \
-SEED_EMAIL=<почта админа> \
-SEED_PASSWORD=<пароль> \
+sudo -u globalex env \
+  SUPABASE_URL=https://<проект>.supabase.co \
+  SUPABASE_KEY=<публичный ключ> \
+  SEED_EMAIL=<почта админа> \
+  SEED_PASSWORD=<пароль> \
   node scripts/seed.mjs
 ```
 
@@ -124,7 +126,7 @@ SEED_PASSWORD=<пароль> \
 ## Обновление
 
 ```bash
-cd /srv/globalex && bash deploy/deploy.sh
+sudo bash /srv/globalex/deploy/deploy.sh
 ```
 
 Скрипт забирает ветку, ставит зависимости, собирает, перезапускает службу и
@@ -136,6 +138,7 @@ cd /srv/globalex && bash deploy/deploy.sh
 |---|---|
 | 502 от nginx | `systemctl status globalex-demo`, `journalctl -u globalex-demo -n 60` |
 | Сборка падает | Node ниже 20; либо `npm ci` был запущен с `--omit=dev` — tailwind и typescript нужны на сборке |
+| `EACCES` при сборке или пустые картинки | Каталог или `.next` принадлежат root: `chown -R globalex:globalex /srv/globalex` |
 | Пустой сайт, но страницы открываются | Не заполнена база: `node scripts/seed.mjs` |
 | Админка не пускает | Проверить, что пользователь есть в таблице `admins` |
 | Фотографии из админки не грузятся | `NEXT_PUBLIC_SUPABASE_URL` должен совпадать с тем, что в `next.config.ts` попадает в `remotePatterns` — он читается из этой же переменной на сборке |
