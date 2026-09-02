@@ -3,6 +3,7 @@ import type { User } from "@supabase/supabase-js";
 
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isShowcase } from "@/lib/showcase";
 
 /**
  * Returns the signed-in administrator, or sends the visitor to the login page.
@@ -12,16 +13,28 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
  * token with Supabase. The database enforces the same rule independently — the
  * write policies check an allowlist — so a forged cookie gets a visitor as far
  * as an empty panel and no further.
+ *
+ * На демонстрационной площадке возвращает `null` вместо редиректа: страницы
+ * входа там нет, а сеанс мог не завестись — например, пока спит база. Панель
+ * в этом случае открывается и показывает, что данных нет; отправлять человека
+ * на несуществующую страницу входа значило бы зациклить переходы.
  */
-export async function requireAdmin(): Promise<User> {
-  if (!isSupabaseConfigured) redirect("/admin/login");
+export async function requireAdmin(): Promise<User | null> {
+  if (!isSupabaseConfigured) {
+    if (isShowcase) return null;
+    redirect("/admin/login");
+  }
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/admin/login");
+  if (!user) {
+    if (isShowcase) return null;
+    redirect("/admin/login");
+  }
+
   return user;
 }
 

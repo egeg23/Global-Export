@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { SubmitButton } from "@/components/admin/submit-button";
 import { requireAdmin } from "@/lib/admin/auth";
+import { isShowcase } from "@/lib/showcase";
 
 import { signOut } from "../actions";
 
@@ -61,14 +62,29 @@ export default async function PanelLayout({ children }: { children: React.ReactN
         </nav>
 
         <div className="hidden border-t border-forest-900/10 px-6 py-5 lg:block">
-          <p className="truncate text-xs text-ink-subtle" title={user.email ?? ""}>
-            {user.email}
-          </p>
-          <form action={signOut} className="mt-3">
-            <SubmitButton variant="ghost" className="h-9 w-full px-3 text-xs">
-              Выйти
-            </SubmitButton>
-          </form>
+          {/* На площадке панель открыта без входа: выходить не из чего, а
+              кнопка «Выйти» обещала бы то, чего не произойдёт. */}
+          {isShowcase ? (
+            <>
+              <p className="text-xs font-medium text-forest-900">Демонстрация</p>
+              <p className="mt-1.5 text-xs leading-relaxed text-ink-subtle">
+                {user
+                  ? "Панель открыта без пароля. Меняйте что угодно — содержимое восстанавливается."
+                  : "База сейчас недоступна, поэтому разделы пустые. Сам сайт при этом работает."}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="truncate text-xs text-ink-subtle" title={user?.email ?? ""}>
+                {user?.email}
+              </p>
+              <form action={signOut} className="mt-3">
+                <SubmitButton variant="ghost" className="h-9 w-full px-3 text-xs">
+                  Выйти
+                </SubmitButton>
+              </form>
+            </>
+          )}
         </div>
       </header>
 
