@@ -3,6 +3,14 @@
 #
 #   sudo bash /srv/globalex/deploy/deploy.sh
 #
+# Ветка берётся из BRANCH — по умолчанию основная. Чтобы выкатить другую
+# (например, с концепциями для второго заказчика):
+#
+#   sudo BRANCH=claude/adar-uz-design-concepts-c6fbwj bash /srv/globalex/deploy/deploy.sh
+#
+# Сервер остаётся на той ветке, которую выкатили последней: следующий запуск
+# без BRANCH вернёт основную и уберёт всё, чего в ней нет.
+#
 # Сборка идёт до перезапуска, так что площадка лежит ровно столько, сколько
 # занимает рестарт службы.
 set -euo pipefail
@@ -58,10 +66,21 @@ echo "→ Проверка"
 for attempt in 1 2 3 4 5 6 7 8 9 10; do
   if curl -fsS -o /dev/null "http://127.0.0.1:${PORT}/present"; then
     echo "✓ Площадка отвечает на порту ${PORT}"
-    exit 0
+    break
+  fi
+  if [ "$attempt" = 10 ]; then
+    echo "✗ Приложение не поднялось. Смотрите: journalctl -u ${SERVICE} -n 60 --no-pager"
+    exit 1
   fi
   sleep 2
 done
 
-echo "✗ Приложение не поднялось. Смотрите: journalctl -u ${SERVICE} -n 60 --no-pager"
-exit 1
+# Второй проект живёт на своём корне и в витрину Global Export не входит.
+# Если ветка его не содержит, это не ошибка — просто нечего показывать.
+if curl -fsS -o /dev/null "http://127.0.0.1:${PORT}/adar"; then
+  echo "✓ Концепции ADAR отвечают: /adar"
+else
+  echo "· Концепций ADAR в этой ветке нет — пропускаем"
+fi
+
+echo "✓ Готово. Ветка на сервере: ${BRANCH}"
