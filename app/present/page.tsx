@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { ProjectSwitcher } from "@/components/adar/showcase/project-switcher";
 import { Container } from "@/components/ui/container";
 import { getNews, getProducts } from "@/lib/content/source";
 import { isShowcase } from "@/lib/showcase";
@@ -53,6 +54,13 @@ export default async function PresentPage() {
       text: "Светлый фон, мягкие скругления, счётчики и широкие строки категорий. Направление, на которое указывает hqdriedfruits.uz.",
     },
     {
+      href: "/adar",
+      eyebrow: "Второй проект",
+      title: "ADAR — три концепции",
+      text: "Подарочные наборы, adar.uz. Три варианта главной страницы со сметой по каждому: витрина, каталог с поиском по составу и премиальная версия. Отдельный проект — открывается в своём оформлении.",
+      note: "Переключатель проектов — вверху страницы",
+    },
+    {
       href: isShowcase ? "/admin" : "/admin/login",
       eyebrow: "Управление",
       title: "Панель управления",
@@ -78,7 +86,11 @@ export default async function PresentPage() {
           className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-950/70 via-forest-950/85 to-forest-950"
         />
 
-        <Container className="py-20 lg:pb-24 lg:pt-28">
+        <Container className="pt-10">
+          <ProjectSwitcher active="globalex" tone="dark" />
+        </Container>
+
+        <Container className="pb-20 pt-14 lg:pb-24 lg:pt-16">
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-harvest-300">
             Прототип · Global Export Company
           </p>

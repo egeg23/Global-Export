@@ -10,9 +10,10 @@ const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webman
  * the language the browser asks for, so `globalex.uz` still works as an entry
  * point and search engines land on a canonical URL.
  *
- * Two routes sit outside that rule. The admin panel is a single-language tool
+ * Three routes sit outside that rule. The admin panel is a single-language tool
  * and needs its Supabase session refreshed on the way through. The showcase at
- * `/present` belongs to the pitch rather than to the company's site.
+ * `/present` belongs to the pitch rather than to the company's site, and
+ * `/adar` is a second pitch altogether — design concepts for another company.
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -33,6 +34,12 @@ export async function proxy(request: NextRequest) {
   }
 
   if (pathname === "/present" || pathname.startsWith("/present/")) {
+    return NextResponse.next();
+  }
+
+  // Второй проект витрины — концепции сайта для другой компании. Языкового
+  // префикса у него нет: предложение одноязычное.
+  if (pathname === "/adar" || pathname.startsWith("/adar/")) {
     return NextResponse.next();
   }
 

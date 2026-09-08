@@ -1,0 +1,132 @@
+/* ------------------------------------------------------------------
+   ADAR — токены оформления второго проекта.
+
+   Отдельный файл, а не строчки в globals.css: у ADAR своя палитра
+   (тёмно-зелёный с золотом — цвета их фирменного пакета), свои шрифты и
+   свои утилиты, и всё это должно удаляться одним файлом вместе с папкой
+   /adar, когда концепция выбрана. Подключается из globals.css, чтобы
+   собираться в один проход со всем остальным.
+   ------------------------------------------------------------------ */
+
+@theme {
+  /* Зелёный снят с их фирменного пакета: тёмный, слегка холодный. */
+  --color-adar-green-50: #f2f7f4;
+  --color-adar-green-100: #dfece5;
+  --color-adar-green-200: #bcd6c8;
+  --color-adar-green-300: #8ab8a2;
+  --color-adar-green-500: #35735a;
+  --color-adar-green-700: #1d4535;
+  --color-adar-green-800: #163628;
+  --color-adar-green-900: #10261c;
+  --color-adar-green-950: #081710;
+
+  /* Золото — тиснение логотипа на пакете и подпись «SINCE 2011». */
+  --color-adar-gold-200: #f6e6bd;
+  --color-adar-gold-300: #eed497;
+  --color-adar-gold-400: #e0bb6d;
+  --color-adar-gold-500: #d0a03c;
+  --color-adar-gold-600: #ad7f26;
+  --color-adar-gold-700: #86611e;
+
+  /* Новогодний красный — колпаки, мешки, ленты на их же фотографиях. */
+  --color-adar-red-400: #e0554c;
+  --color-adar-red-500: #c33a30;
+  --color-adar-red-600: #a12a22;
+
+  --color-adar-cream-50: #fdfaf4;
+  --color-adar-cream-100: #f8f1e4;
+  --color-adar-cream-200: #efe3cd;
+  --color-adar-cream-300: #e0cfb2;
+
+  --color-adar-ink: #17140f;
+  --color-adar-ink-muted: #5b544a;
+  /* Затемнён относительно первого варианта (#8d8578 давал 3.1:1 на кремовом). */
+  --color-adar-ink-subtle: #6f675a;
+
+  --font-adar: var(--font-manrope), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-adar-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
+
+  --radius-adar: 1.25rem;
+  --radius-adar-lg: 2rem;
+
+  --ease-adar: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer utilities {
+  /* Золотая заливка заголовка: два стопа, а не один цвет, иначе на тёмном
+     фоне буквы читаются как жёлтые, а не как тиснение. */
+  .adar-gold-text {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-adar-gold-600) 0%,
+      var(--color-adar-gold-300) 38%,
+      var(--color-adar-gold-500) 62%,
+      var(--color-adar-gold-200) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Бесконечная строка. Дублируется в разметке дважды, поэтому сдвиг ровно
+     на половину — шва не видно. */
+  .adar-marquee {
+    animation: adar-marquee var(--adar-marquee-duration, 32s) linear infinite;
+  }
+
+  .adar-marquee-reverse {
+    animation-direction: reverse;
+  }
+
+  /* Мягкая радиальная подсветка за героем: обычный градиент даёт полосы на
+     тёмном, radial с прозрачностью — нет. */
+  .adar-glow {
+    background: radial-gradient(
+      60% 55% at 50% 40%,
+      rgb(208 160 60 / 0.22) 0%,
+      rgb(208 160 60 / 0.06) 45%,
+      transparent 72%
+    );
+  }
+
+  .adar-hairline {
+    border-color: rgb(239 227 205 / 0.14);
+  }
+
+  /* Появление снизу — используется там, где нет анимационной библиотеки. */
+  .adar-rise {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition:
+      opacity 0.8s var(--ease-adar),
+      transform 0.8s var(--ease-adar);
+    transition-delay: var(--adar-delay, 0ms);
+  }
+
+  .adar-rise-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes adar-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adar-marquee {
+    animation: none;
+  }
+
+  .adar-rise {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
