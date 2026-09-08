@@ -37,7 +37,10 @@ export const metadata: Metadata = {
 export default function AdarLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={`${manrope.variable} ${cormorant.variable}`}>
-      <body className="min-h-screen bg-adar-cream-50 font-adar text-adar-ink antialiased">
+      <body
+        data-adar=""
+        className="min-h-screen bg-adar-cream-50 font-adar text-adar-ink antialiased"
+      >
         {children}
       </body>
     </html>
