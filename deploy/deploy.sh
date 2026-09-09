@@ -15,113 +15,122 @@
 # занимает рестарт службы.
 set -euo pipefail
 
-APP_DIR="${APP_DIR:-/srv/globalex}"
-APP_USER="${APP_USER:-globalex}"
-BRANCH="${BRANCH:-claude/global-export-website-u6yg03}"
-SERVICE="${SERVICE:-globalex-demo}"
-# Пусто — возьмём порт из .env.local, потому что служба берёт его оттуда же.
-PORT="${PORT:-}"
+# Тело обёрнуто в функцию не для красоты: ниже `git reset --hard` перезаписывает
+# этот самый файл, а bash читает скрипт по мере выполнения и продолжил бы читать
+# уже новую версию с середины. Определение функции разбирается целиком до
+# первого запуска, поэтому меняться под собой файлу больше нечем.
+main() {
 
-if [ "$(id -u)" -ne 0 ]; then
-  echo "✗ Запускать от root: перезапуск службы требует прав, а сборка — наоборот, их сброса."
-  exit 1
-fi
+  APP_DIR="${APP_DIR:-/srv/globalex}"
+  APP_USER="${APP_USER:-globalex}"
+  BRANCH="${BRANCH:-claude/global-export-website-u6yg03}"
+  SERVICE="${SERVICE:-globalex-demo}"
+  # Пусто — возьмём порт из .env.local, потому что служба берёт его оттуда же.
+  PORT="${PORT:-}"
 
-cd "$APP_DIR"
-
-# Сборка идёт от владельца каталога, а не от root: иначе .next достанется root,
-# и служба под globalex не сможет писать туда кеш изображений.
-as_app() { runuser -u "$APP_USER" -- "$@"; }
-
-need=20
-have="$(node -v 2>/dev/null | sed 's/^v//; s/\..*//')" || have=0
-if [ "${have:-0}" -lt "$need" ]; then
-  echo "✗ Нужен Node ${need}+ (сейчас: $(node -v 2>/dev/null || echo 'не установлен'))."
-  echo "  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt install -y nodejs"
-  exit 1
-fi
-
-if [ ! -f .env.local ]; then
-  echo "✗ Нет .env.local — без него не будет ни базы, ни админки."
-  echo "  Скопируйте .env.example и заполните."
-  exit 1
-fi
-
-# Порт службы живёт в .env.local: в юните EnvironmentFile подключается после
-# Environment=PORT, поэтому значение из файла побеждает. Проверка обязана идти
-# в тот же порт — иначе удачный деплой выглядит как падение, а на площадке
-# при этом всё работает.
-if [ -z "$PORT" ]; then
-  PORT="$(sed -n 's/^[[:space:]]*PORT[[:space:]]*=[[:space:]]*\([0-9]\{1,5\}\).*/\1/p' .env.local | tail -n 1)"
-  PORT="${PORT:-3210}"
-fi
-
-# Порт службы и порт в конфиге nginx — два разных файла, и разъезжаются они
-# молча: локально всё отвечает, а снаружи 502. Сверяем до перезапуска.
-nginx_conf="/etc/nginx/sites-enabled/${SERVICE}"
-if [ -r "$nginx_conf" ]; then
-  nginx_port="$(sed -n 's|.*proxy_pass[[:space:]]*http://127\.0\.0\.1:\([0-9]\{1,5\}\).*|\1|p' "$nginx_conf" | head -n 1)"
-  if [ -n "$nginx_port" ] && [ "$nginx_port" != "$PORT" ]; then
-    echo "✗ Порты разошлись: служба на ${PORT}, nginx ждёт на ${nginx_port}."
-    echo "  Снаружи это 502, хотя локально всё отвечает. Привести к одному:"
-    echo "    sed -i '/^PORT=/d' ${APP_DIR}/.env.local"
-    echo "    echo PORT=${nginx_port} >> ${APP_DIR}/.env.local"
-    echo "  и запустить деплой заново."
+  if [ "$(id -u)" -ne 0 ]; then
+    echo "✗ Запускать от root: перезапуск службы требует прав, а сборка — наоборот, их сброса."
     exit 1
   fi
-fi
 
+  cd "$APP_DIR"
 
-# Рабочее дерево на сервере иногда правят руками. `reset --hard` ниже стирал
-# такие правки молча, и заметно это стало только когда `checkout` на другую
-# ветку отказался их перезаписывать. Поэтому сначала откладываем: патч в
-# /var/backups и запись в stash, откуда всё возвращается одной командой.
-if ! as_app git diff --quiet HEAD; then
-  stamp="$(date +%Y%m%d-%H%M%S)"
-  backup="/var/backups/globalex-local-${stamp}.patch"
-  mkdir -p /var/backups
-  as_app git diff HEAD > "$backup"
-  as_app git stash push -m "deploy ${stamp}"
-  echo "· Локальные правки отложены, деплой продолжается."
-  echo "  Копия: ${backup}"
-  echo "  Вернуть: sudo -u ${APP_USER} git -C ${APP_DIR} stash pop"
-fi
+  # Сборка идёт от владельца каталога, а не от root: иначе .next достанется root,
+  # и служба под globalex не сможет писать туда кеш изображений.
+  as_app() { runuser -u "$APP_USER" -- "$@"; }
 
-echo "→ Забираем ${BRANCH}"
-as_app git fetch origin "$BRANCH"
-as_app git checkout "$BRANCH"
-as_app git reset --hard "origin/${BRANCH}"
-
-# Полная установка, а не --omit=dev: tailwind, postcss и typescript лежат в
-# devDependencies и нужны именно на сборке. Без них `npm run build` падает.
-echo "→ Зависимости"
-as_app npm ci
-
-echo "→ Сборка"
-as_app npm run build
-
-echo "→ Перезапуск ${SERVICE} (порт ${PORT})"
-systemctl restart "$SERVICE"
-
-echo "→ Проверка"
-for attempt in 1 2 3 4 5 6 7 8 9 10; do
-  if curl -fsS -o /dev/null "http://127.0.0.1:${PORT}/present"; then
-    echo "✓ Площадка отвечает на порту ${PORT}"
-    break
-  fi
-  if [ "$attempt" = 10 ]; then
-    echo "✗ Приложение не поднялось. Смотрите: journalctl -u ${SERVICE} -n 60 --no-pager"
+  need=20
+  have="$(node -v 2>/dev/null | sed 's/^v//; s/\..*//')" || have=0
+  if [ "${have:-0}" -lt "$need" ]; then
+    echo "✗ Нужен Node ${need}+ (сейчас: $(node -v 2>/dev/null || echo 'не установлен'))."
+    echo "  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt install -y nodejs"
     exit 1
   fi
-  sleep 2
-done
 
-# Второй проект живёт на своём корне и в витрину Global Export не входит.
-# Если ветка его не содержит, это не ошибка — просто нечего показывать.
-if curl -fsS -o /dev/null "http://127.0.0.1:${PORT}/adar"; then
-  echo "✓ Концепции ADAR отвечают: /adar"
-else
-  echo "· Концепций ADAR в этой ветке нет — пропускаем"
-fi
+  if [ ! -f .env.local ]; then
+    echo "✗ Нет .env.local — без него не будет ни базы, ни админки."
+    echo "  Скопируйте .env.example и заполните."
+    exit 1
+  fi
 
-echo "✓ Готово. Ветка на сервере: ${BRANCH}"
+  # Порт службы живёт в .env.local: в юните EnvironmentFile подключается после
+  # Environment=PORT, поэтому значение из файла побеждает. Проверка обязана идти
+  # в тот же порт — иначе удачный деплой выглядит как падение, а на площадке
+  # при этом всё работает.
+  if [ -z "$PORT" ]; then
+    PORT="$(sed -n 's/^[[:space:]]*PORT[[:space:]]*=[[:space:]]*\([0-9]\{1,5\}\).*/\1/p' .env.local | tail -n 1)"
+    PORT="${PORT:-3210}"
+  fi
+
+  # Порт службы и порт в конфиге nginx — два разных файла, и разъезжаются они
+  # молча: локально всё отвечает, а снаружи 502. Сверяем до перезапуска.
+  nginx_conf="/etc/nginx/sites-enabled/${SERVICE}"
+  if [ -r "$nginx_conf" ]; then
+    nginx_port="$(sed -n 's|.*proxy_pass[[:space:]]*http://127\.0\.0\.1:\([0-9]\{1,5\}\).*|\1|p' "$nginx_conf" | head -n 1)"
+    if [ -n "$nginx_port" ] && [ "$nginx_port" != "$PORT" ]; then
+      echo "✗ Порты разошлись: служба на ${PORT}, nginx ждёт на ${nginx_port}."
+      echo "  Снаружи это 502, хотя локально всё отвечает. Привести к одному:"
+      echo "    sed -i '/^PORT=/d' ${APP_DIR}/.env.local"
+      echo "    echo PORT=${nginx_port} >> ${APP_DIR}/.env.local"
+      echo "  и запустить деплой заново."
+      exit 1
+    fi
+  fi
+
+
+  # Рабочее дерево на сервере иногда правят руками. `reset --hard` ниже стирал
+  # такие правки молча, и заметно это стало только когда `checkout` на другую
+  # ветку отказался их перезаписывать. Поэтому сначала откладываем: патч в
+  # /var/backups и запись в stash, откуда всё возвращается одной командой.
+  if ! as_app git diff --quiet HEAD; then
+    stamp="$(date +%Y%m%d-%H%M%S)"
+    backup="/var/backups/globalex-local-${stamp}.patch"
+    mkdir -p /var/backups
+    as_app git diff HEAD > "$backup"
+    as_app git stash push -m "deploy ${stamp}"
+    echo "· Локальные правки отложены, деплой продолжается."
+    echo "  Копия: ${backup}"
+    echo "  Вернуть: sudo -u ${APP_USER} git -C ${APP_DIR} stash pop"
+  fi
+
+  echo "→ Забираем ${BRANCH}"
+  as_app git fetch origin "$BRANCH"
+  as_app git checkout "$BRANCH"
+  as_app git reset --hard "origin/${BRANCH}"
+
+  # Полная установка, а не --omit=dev: tailwind, postcss и typescript лежат в
+  # devDependencies и нужны именно на сборке. Без них `npm run build` падает.
+  echo "→ Зависимости"
+  as_app npm ci
+
+  echo "→ Сборка"
+  as_app npm run build
+
+  echo "→ Перезапуск ${SERVICE} (порт ${PORT})"
+  systemctl restart "$SERVICE"
+
+  echo "→ Проверка"
+  for attempt in 1 2 3 4 5 6 7 8 9 10; do
+    if curl -fsS -o /dev/null "http://127.0.0.1:${PORT}/present"; then
+      echo "✓ Площадка отвечает на порту ${PORT}"
+      break
+    fi
+    if [ "$attempt" = 10 ]; then
+      echo "✗ Приложение не поднялось. Смотрите: journalctl -u ${SERVICE} -n 60 --no-pager"
+      exit 1
+    fi
+    sleep 2
+  done
+
+  # Второй проект живёт на своём корне и в витрину Global Export не входит.
+  # Если ветка его не содержит, это не ошибка — просто нечего показывать.
+  if curl -fsS -o /dev/null "http://127.0.0.1:${PORT}/adar"; then
+    echo "✓ Концепции ADAR отвечают: /adar"
+  else
+    echo "· Концепций ADAR в этой ветке нет — пропускаем"
+  fi
+
+  echo "✓ Готово. Ветка на сервере: ${BRANCH}"
+}
+
+main "$@"
