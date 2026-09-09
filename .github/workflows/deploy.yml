@@ -1,0 +1,76 @@
+# Выкатка демонстрационной площадки.
+#
+# Срабатывает на push в ту ветку, которую площадка показывает, и вручную —
+# кнопкой Run workflow. Всё, что нужно на сервере, делает deploy.sh; здесь
+# только доставка команды по ssh, чтобы был единый лог и кнопка «повторить».
+#
+# Настройка описана в deploy/README.md, раздел «Автоматическая выкатка».
+
+name: Деплой на демо-площадку
+
+on:
+  push:
+  workflow_dispatch:
+
+# Токен репозитория здесь не нужен вообще: код на сервер приезжает своим
+# `git fetch`, а не из этой задачи.
+permissions: {}
+
+# Две выкатки подряд не должны собираться одновременно в одном каталоге:
+# вторая ждёт первую, а не отменяет её — недособранная площадка хуже поздней.
+concurrency:
+  group: deploy-demo
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Ветку площадки задаёт переменная репозитория DEPLOY_BRANCH
+    # (Settings → Secrets and variables → Actions → Variables).
+    # Не задана — берётся основная ветка репозитория.
+    if: >-
+      github.ref_type == 'branch' &&
+      github.ref_name == (vars.DEPLOY_BRANCH || github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Ключ и отпечаток сервера
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_HOST_KEY: ${{ secrets.DEPLOY_HOST_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DEPLOY_KEY:-}" ] || [ -z "${DEPLOY_HOST_KEY:-}" ]; then
+            echo "✗ Не заданы секреты DEPLOY_KEY и DEPLOY_HOST_KEY."
+            echo "  Как их получить — deploy/README.md, «Автоматическая выкатка»."
+            exit 1
+          fi
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          # Отпечаток хранится в секрете, а не снимается ssh-keyscan на лету:
+          # иначе первое подключение доверяет кому угодно, кто ответит.
+          printf '%s\n' "$DEPLOY_HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Выкатка
+        env:
+          BRANCH: ${{ github.ref_name }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          set -euo pipefail
+          # Имя ветки уезжает в команду удалённой оболочки, поэтому проверяется
+          # здесь, а не только в обёртке на сервере.
+          case "$BRANCH" in
+            ''|*[!A-Za-z0-9._/-]*)
+              echo "✗ Недопустимое имя ветки: $BRANCH"
+              exit 1
+              ;;
+          esac
+          ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o BatchMode=yes \
+            "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            sudo /usr/local/sbin/globalex-deploy "$BRANCH"
+
+      - name: Проверка площадки
+        run: curl -fsS -o /dev/null https://globalex.maximov-tech.ru/present

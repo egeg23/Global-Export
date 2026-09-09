@@ -162,6 +162,78 @@ sudo bash /srv/globalex/deploy/deploy.sh
 Скрипт забирает ветку, ставит зависимости, собирает, перезапускает службу и
 проверяет, что площадка отвечает. Если нет — печатает, куда смотреть.
 
+### Автоматическая выкатка
+
+Push в ветку площадки — и она обновляется сама: GitHub Actions заходит по ssh
+и запускает тот же `deploy.sh`. Лог видно во вкладке **Actions**, там же кнопка
+повторить, если сеть моргнула.
+
+Настраивается один раз. Всё, что ниже, — на сервере от root.
+
+**1. Пользователь для выкатки.** Отдельный, не root: у него будет право
+запустить ровно один скрипт и ничего больше.
+
+```bash
+adduser --disabled-password --gecos "" deploy
+install -d -m 700 -o deploy -g deploy /home/deploy/.ssh
+```
+
+**2. Ключ.** Создаётся на сервере, чтобы закрытая половина никуда не ездила,
+кроме секретов GitHub.
+
+```bash
+sudo -u deploy ssh-keygen -t ed25519 -N "" -C "github-actions" -f /home/deploy/.ssh/github-actions
+```
+
+```bash
+sudo -u deploy bash -c "cat /home/deploy/.ssh/github-actions.pub >> /home/deploy/.ssh/authorized_keys && chmod 600 /home/deploy/.ssh/authorized_keys"
+```
+
+**3. Обёртка и право её запускать.** Sudoers разрешает не `bash`, а один файл
+с проверкой аргумента внутри.
+
+```bash
+install -m 755 /srv/globalex/deploy/globalex-deploy /usr/local/sbin/globalex-deploy
+```
+
+```bash
+echo "deploy ALL=(root) NOPASSWD: /usr/local/sbin/globalex-deploy" > /etc/sudoers.d/globalex-deploy
+chmod 440 /etc/sudoers.d/globalex-deploy
+visudo -c
+```
+
+**4. Отпечаток сервера.** Строку целиком — в секрет `DEPLOY_HOST_KEY`. Имя в
+начале строки должно совпадать с тем, что положите в `DEPLOY_HOST`.
+
+```bash
+echo "globalex.maximov-tech.ru $(cut -d' ' -f1,2 /etc/ssh/ssh_host_ed25519_key.pub)"
+```
+
+**5. Закрытый ключ.** Вывод целиком, вместе со строками `BEGIN`/`END`, — в
+секрет `DEPLOY_KEY`.
+
+```bash
+cat /home/deploy/.ssh/github-actions
+```
+
+**6. В GitHub**, Settings → Secrets and variables → Actions:
+
+| Что | Где | Значение |
+|---|---|---|
+| `DEPLOY_HOST` | Secrets | `globalex.maximov-tech.ru` |
+| `DEPLOY_USER` | Secrets | `deploy` |
+| `DEPLOY_KEY` | Secrets | закрытый ключ из шага 5 |
+| `DEPLOY_HOST_KEY` | Secrets | строка из шага 4 |
+| `DEPLOY_BRANCH` | **Variables** | ветка, которую показывает площадка |
+
+`DEPLOY_BRANCH` — единственное место, где написано, что сейчас на площадке.
+Не задана — берётся основная ветка репозитория. Push в любую другую ветку
+задачу не запускает: она пропускается сразу, не тратя время сборщика.
+
+Право у пользователя `deploy` ровно одно — выкатить ветку этого репозитория.
+Это то же самое, что и право писать в репозиторий: кто может запушить ветку,
+тот и так определяет, какой код там окажется.
+
 ### Другая ветка
 
 Ветка задаётся переменной `BRANCH`. Так на площадку выкатывается работа,
@@ -183,6 +255,9 @@ sudo BRANCH=claude/adar-uz-design-concepts-c6fbwj bash /srv/globalex/deploy/depl
 | `EADDRINUSE` в логе, служба в цикле перезапусков | Порт занят другим приложением. Сменить `PORT=` в `.env.local` и `proxy_pass` в конфиге nginx, затем `systemctl reset-failed globalex-demo` |
 | `deploy.sh` пишет «не поднялось», а площадка при этом открывается | Служба слушает не тот порт, который проверяет скрипт. Сверьте `PORT=` в `.env.local` с выводом `journalctl -u globalex-demo -n 20` |
 | Страницы отдают 404, хотя маршруты есть | Скорее всего отвечает чужое приложение на том же порту — проверьте `ss -ltnp \| grep <порт>` |
+| Actions падает на `Permission denied (publickey)` | Открытый ключ не попал в `/home/deploy/.ssh/authorized_keys`, либо `DEPLOY_USER` не тот |
+| Actions падает на `Host key verification failed` | Имя в `DEPLOY_HOST_KEY` не совпадает с `DEPLOY_HOST`, либо на сервере переставлен ssh |
+| Push прошёл, а задача не запустилась | Ветка не совпала с переменной `DEPLOY_BRANCH` |
 | Сборка падает | Node ниже 20; либо `npm ci` был запущен с `--omit=dev` — tailwind и typescript нужны на сборке |
 | `EACCES` при сборке или пустые картинки | Каталог или `.next` принадлежат root: `chown -R globalex:globalex /srv/globalex` |
 | Пустой сайт, но страницы открываются | Не заполнена база: `node scripts/seed.mjs` |
