@@ -1,7 +1,8 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
+import { ORDER_EVENT } from "@/components/adar/ui/set-dialog";
 import { cn } from "@/lib/cn";
 
 type Props = { tone?: "light" | "dark" };
@@ -18,6 +19,24 @@ export function OrderForm({ tone = "light" }: Props) {
   const dark = tone === "dark";
   const id = useId();
   const [sent, setSent] = useState(false);
+  const [note, setNote] = useState("");
+  const noteField = useRef<HTMLTextAreaElement>(null);
+
+  // «Заказать этот набор» в карточке товара приводит сюда: форма уже
+  // заполнена названием, и посетителю остаётся оставить телефон.
+  useEffect(() => {
+    function onOrder(event: Event) {
+      const name = (event as CustomEvent<string>).detail;
+      setSent(false);
+      setNote(`Интересует набор «${name}». Подскажите сроки и минимальный тираж.`);
+      document.getElementById("kontakty")?.scrollIntoView({ behavior: "smooth" });
+      // Фокус — после прокрутки, иначе браузер дёрнет страницу к полю сам.
+      window.setTimeout(() => noteField.current?.focus(), 600);
+    }
+
+    window.addEventListener(ORDER_EVENT, onOrder);
+    return () => window.removeEventListener(ORDER_EVENT, onOrder);
+  }, []);
 
   const field = cn(
     "w-full rounded-xl border px-4 py-3 text-sm outline-none transition-colors duration-200",
@@ -133,9 +152,12 @@ export function OrderForm({ tone = "light" }: Props) {
           Комментарий
         </label>
         <textarea
+          ref={noteField}
           id={`${id}-note`}
           name="note"
           rows={3}
+          value={note}
+          onChange={(event) => setNote(event.target.value)}
           className={cn(field, "resize-none")}
           placeholder="Логотип на коробке, отгрузка до 20 декабря"
         />

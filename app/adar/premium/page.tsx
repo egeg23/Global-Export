@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Advantages } from "@/components/adar/base/advantages";
 import { ThemesGrid } from "@/components/adar/base/themes-grid";
 import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
-import { VelocityRail } from "@/components/adar/plus/velocity-rail";
 import { BudgetPicker } from "@/components/adar/premium/budget-picker";
 import { CatalogFrame } from "@/components/adar/premium/catalog-frame";
 import { CinematicHero } from "@/components/adar/premium/cinematic-hero";
@@ -14,6 +13,7 @@ import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
 import { ContactSection } from "@/components/adar/ui/contact-section";
+import { SetShowcase } from "@/components/adar/ui/set-showcase";
 import { SiteFooter } from "@/components/adar/ui/site-footer";
 import { sets } from "@/content/adar/catalog";
 import { getConcept } from "@/content/adar/concepts";
@@ -45,7 +45,12 @@ export default function AdarPremiumConcept() {
           <CatalogFrame showcase={growthStages} />
           <BudgetPicker />
           <CatalogBrowser />
-          <VelocityRail rows={[sets.filter((_, index) => index % 6 === 2)]} />
+          <SetShowcase
+            tone="dark"
+            sets={sets.filter((_, index) => index % 6 === 2)}
+            title="Каталог целиком"
+            note="Крутите ленту и открывайте любой набор — состав, вес и упаковка внутри."
+          />
           <CorporateBlock />
           <ThemesGrid tone="dark" />
           <Advantages tone="dark" />

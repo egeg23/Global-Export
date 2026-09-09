@@ -1,8 +1,9 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { SetCard } from "@/components/adar/ui/set-card";
+import { useSetDialog } from "@/components/adar/ui/set-dialog";
 import { Shell } from "@/components/adar/ui/shell";
 import { items, lines, sets } from "@/content/adar/catalog";
 import { priceRange, searchIndex, translit } from "@/lib/adar/catalog";
@@ -35,14 +36,31 @@ const STEP = 12;
  * находит семнадцать наборов, а не ноль. Найденные наименования показываются
  * прямо в карточке — иначе непонятно, почему набор попал в выдачу.
  */
+/** Поиск в шапке передаёт запрос сюда — каталог живёт ниже по странице. */
+export const SEARCH_EVENT = "adar:search";
+
 export function CatalogBrowser() {
   const id = useId();
+  const field = useRef<HTMLInputElement>(null);
+  const { open, dialog } = useSetDialog();
   const [query, setQuery] = useState("");
   const [line, setLine] = useState<SetLine | "all">("all");
   const [budget, setBudget] = useState(priceRange.max);
   const [pack, setPack] = useState<GiftSet["pack"] | "all">("all");
   const [sort, setSort] = useState<Sort>("price-asc");
   const [shown, setShown] = useState(STEP);
+
+  useEffect(() => {
+    function onSearch(event: Event) {
+      setQuery((event as CustomEvent<string>).detail);
+      setShown(STEP);
+      document.getElementById("katalog")?.scrollIntoView({ behavior: "smooth" });
+      window.setTimeout(() => field.current?.focus(), 600);
+    }
+
+    window.addEventListener(SEARCH_EVENT, onSearch);
+    return () => window.removeEventListener(SEARCH_EVENT, onSearch);
+  }, []);
 
   const needle = query.trim().toLowerCase();
   // «киндер» и «kinder» должны находить одно и то же.
@@ -111,8 +129,8 @@ export function CatalogBrowser() {
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-adar-ink-muted">
             Наберите «киндер», «сок» или «мешок» — найдутся наборы, где это
-            действительно лежит внутри. Бюджет и линейка сужают выдачу до
-            нескольких вариантов.
+            действительно лежит внутри. Нажмите на набор — откроется состав
+            до последней конфеты.
           </p>
         </div>
 
@@ -128,6 +146,7 @@ export function CatalogBrowser() {
               </label>
               <div className="relative">
                 <input
+                  ref={field}
                   id={`${id}-q`}
                   type="search"
                   value={query}
@@ -289,7 +308,13 @@ export function CatalogBrowser() {
               return (
                 <li key={set.slug} className="flex">
                   <div className="flex w-full flex-col">
-                    <SetCard set={set} className="flex-1" />
+                    <button
+                      type="button"
+                      onClick={() => open(set)}
+                      className="flex flex-1 cursor-pointer text-left"
+                    >
+                      <SetCard set={set} className="flex-1" />
+                    </button>
                     {matched.length > 0 ? (
                       <p className="mt-2 px-1 text-xs leading-relaxed text-adar-green-700">
                         В составе: {matched.join(", ")}
@@ -314,6 +339,8 @@ export function CatalogBrowser() {
           </div>
         ) : null}
       </Shell>
+
+      {dialog}
     </section>
   );
 }
