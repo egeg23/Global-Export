@@ -46,6 +46,21 @@ if [ ! -f .env.local ]; then
   exit 1
 fi
 
+# Рабочее дерево на сервере иногда правят руками. `reset --hard` ниже стирал
+# такие правки молча, и заметно это стало только когда `checkout` на другую
+# ветку отказался их перезаписывать. Поэтому сначала откладываем: патч в
+# /var/backups и запись в stash, откуда всё возвращается одной командой.
+if ! as_app git diff --quiet HEAD; then
+  stamp="$(date +%Y%m%d-%H%M%S)"
+  backup="/var/backups/globalex-local-${stamp}.patch"
+  mkdir -p /var/backups
+  as_app git diff HEAD > "$backup"
+  as_app git stash push -m "deploy ${stamp}"
+  echo "· Локальные правки отложены, деплой продолжается."
+  echo "  Копия: ${backup}"
+  echo "  Вернуть: sudo -u ${APP_USER} git -C ${APP_DIR} stash pop"
+fi
+
 echo "→ Забираем ${BRANCH}"
 as_app git fetch origin "$BRANCH"
 as_app git checkout "$BRANCH"
