@@ -19,7 +19,8 @@ APP_DIR="${APP_DIR:-/srv/globalex}"
 APP_USER="${APP_USER:-globalex}"
 BRANCH="${BRANCH:-claude/global-export-website-u6yg03}"
 SERVICE="${SERVICE:-globalex-demo}"
-PORT="${PORT:-3210}"
+# Пусто — возьмём порт из .env.local, потому что служба берёт его оттуда же.
+PORT="${PORT:-}"
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "✗ Запускать от root: перезапуск службы требует прав, а сборка — наоборот, их сброса."
@@ -74,7 +75,16 @@ as_app npm ci
 echo "→ Сборка"
 as_app npm run build
 
-echo "→ Перезапуск ${SERVICE}"
+# Порт службы живёт в .env.local: в юните EnvironmentFile подключается после
+# Environment=PORT, поэтому значение из файла побеждает. Проверка обязана идти
+# в тот же порт — иначе удачный деплой выглядит как падение, а на площадке
+# при этом всё работает.
+if [ -z "$PORT" ]; then
+  PORT="$(sed -n 's/^[[:space:]]*PORT[[:space:]]*=[[:space:]]*\([0-9]\{1,5\}\).*/\1/p' .env.local | tail -n 1)"
+  PORT="${PORT:-3210}"
+fi
+
+echo "→ Перезапуск ${SERVICE} (порт ${PORT})"
 systemctl restart "$SERVICE"
 
 echo "→ Проверка"

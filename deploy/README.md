@@ -31,9 +31,10 @@
 ss -ltn | grep -q ':3210 ' && echo "занят — возьмите другой" || echo "3210 свободен"
 ```
 
-Если занят, выберите свободный и подставьте его в двух местах: `Environment=PORT`
-в `deploy/globalex-demo.service` и `proxy_pass` в `deploy/globalex.nginx.conf`
-(там два вхождения).
+Если занят, выберите свободный. Задаётся он в `.env.local` строкой `PORT=`:
+юнит подключает этот файл после собственного `Environment=PORT`, поэтому
+значение оттуда побеждает, и `deploy.sh` читает его же для проверки. Второе
+место — `proxy_pass` в `deploy/globalex.nginx.conf` (там два вхождения).
 
 ## 3. Код на сервер
 
@@ -179,7 +180,8 @@ sudo BRANCH=claude/adar-uz-design-concepts-c6fbwj bash /srv/globalex/deploy/depl
 | Симптом | Куда смотреть |
 |---|---|
 | 502 от nginx | `systemctl status globalex-demo`, `journalctl -u globalex-demo -n 60` |
-| `EADDRINUSE` в логе, служба в цикле перезапусков | Порт занят другим приложением. Сменить его в юните и в конфиге nginx, затем `systemctl reset-failed globalex-demo` |
+| `EADDRINUSE` в логе, служба в цикле перезапусков | Порт занят другим приложением. Сменить `PORT=` в `.env.local` и `proxy_pass` в конфиге nginx, затем `systemctl reset-failed globalex-demo` |
+| `deploy.sh` пишет «не поднялось», а площадка при этом открывается | Служба слушает не тот порт, который проверяет скрипт. Сверьте `PORT=` в `.env.local` с выводом `journalctl -u globalex-demo -n 20` |
 | Страницы отдают 404, хотя маршруты есть | Скорее всего отвечает чужое приложение на том же порту — проверьте `ss -ltnp \| grep <порт>` |
 | Сборка падает | Node ниже 20; либо `npm ci` был запущен с `--omit=dev` — tailwind и typescript нужны на сборке |
 | `EACCES` при сборке или пустые картинки | Каталог или `.next` принадлежат root: `chown -R globalex:globalex /srv/globalex` |
