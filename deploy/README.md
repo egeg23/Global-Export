@@ -235,6 +235,7 @@ sudo BRANCH=claude/adar-uz-design-concepts-c6fbwj bash /srv/globalex/deploy/depl
 | `EADDRINUSE` в логе, служба в цикле перезапусков | Порт занят другим приложением. Сменить `PORT=` в `.env.local` и `proxy_pass` в конфиге nginx, затем `systemctl reset-failed globalex-demo` |
 | `deploy.sh` пишет «не поднялось», а площадка при этом открывается | Служба слушает не тот порт, который проверяет скрипт. Сверьте `PORT=` в `.env.local` с выводом `journalctl -u globalex-demo -n 20` |
 | Страницы отдают 404, хотя маршруты есть | Скорее всего отвечает чужое приложение на том же порту — проверьте `ss -ltnp \| grep <порт>` |
+| 502 сразу после деплоя, локально порт отвечает | Порт службы и `proxy_pass` в nginx разошлись. `deploy.sh` теперь это ловит и печатает, что вписать в `.env.local` |
 | Push прошёл, а площадка не обновилась | `journalctl -u globalex-autodeploy -n 30`; сверьте `/etc/globalex-branch` с тем, куда пушили |
 | Таймера нет в `list-timers` | Не включён: `systemctl enable --now globalex-autodeploy.timer` |
 | Сборка падает | Node ниже 20; либо `npm ci` был запущен с `--omit=dev` — tailwind и typescript нужны на сборке |

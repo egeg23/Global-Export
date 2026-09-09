@@ -84,6 +84,21 @@ if [ -z "$PORT" ]; then
   PORT="${PORT:-3210}"
 fi
 
+# Порт службы и порт в конфиге nginx — два разных файла, и разъезжаются они
+# молча: локально всё отвечает, а снаружи 502. Сверяем до перезапуска.
+nginx_conf="/etc/nginx/sites-enabled/${SERVICE}"
+if [ -r "$nginx_conf" ]; then
+  nginx_port="$(sed -n 's|.*proxy_pass[[:space:]]*http://127\.0\.0\.1:\([0-9]\{1,5\}\).*|\1|p' "$nginx_conf" | head -n 1)"
+  if [ -n "$nginx_port" ] && [ "$nginx_port" != "$PORT" ]; then
+    echo "✗ Порты разошлись: служба на ${PORT}, nginx ждёт на ${nginx_port}."
+    echo "  Снаружи это 502, хотя локально всё отвечает. Привести к одному:"
+    echo "    sed -i '/^PORT=/d' ${APP_DIR}/.env.local"
+    echo "    echo PORT=${nginx_port} >> ${APP_DIR}/.env.local"
+    echo "  и запустить деплой заново."
+    exit 1
+  fi
+fi
+
 echo "→ Перезапуск ${SERVICE} (порт ${PORT})"
 systemctl restart "$SERVICE"
 
