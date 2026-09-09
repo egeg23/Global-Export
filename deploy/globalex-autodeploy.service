@@ -1,0 +1,19 @@
+# Одна проверка обновлений. Запускается таймером globalex-autodeploy.timer.
+#
+#   sudo cp deploy/globalex-autodeploy.{service,timer} /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now globalex-autodeploy.timer
+#
+# Смотреть, что делает:  journalctl -u globalex-autodeploy -f
+
+[Unit]
+Description=Проверка обновлений демо-площадки Global Export
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/env bash /srv/globalex/deploy/autodeploy.sh
+# Сборка занимает около минуты; если она затянулась, следующий запуск ждёт,
+# а не запускается вторым — systemd не даёт одному юниту идти дважды.
+TimeoutStartSec=20min

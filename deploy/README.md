@@ -164,75 +164,55 @@ sudo bash /srv/globalex/deploy/deploy.sh
 
 ### Автоматическая выкатка
 
-Push в ветку площадки — и она обновляется сама: GitHub Actions заходит по ssh
-и запускает тот же `deploy.sh`. Лог видно во вкладке **Actions**, там же кнопка
-повторить, если сеть моргнула.
+Push в ветку площадки — и через минуту она обновлена. Сервер сам раз в минуту
+спрашивает GitHub, не уехала ли ветка вперёд, и если уехала — запускает тот же
+`deploy.sh`.
 
-Настраивается один раз. Всё, что ниже, — на сервере от root.
+Забирает, а не ждёт, пока постучатся: ни секретов на стороне GitHub, ни ключа,
+который надо где-то хранить, ни открытого наружу порта. Настройка — три
+команды на сервере и ни одной страницы настроек.
 
-**1. Пользователь для выкатки.** Отдельный, не root: у него будет право
-запустить ровно один скрипт и ничего больше.
-
-```bash
-adduser --disabled-password --gecos "" deploy
-install -d -m 700 -o deploy -g deploy /home/deploy/.ssh
-```
-
-**2. Ключ.** Создаётся на сервере, чтобы закрытая половина никуда не ездила,
-кроме секретов GitHub.
+**1. Какую ветку показывает площадка**
 
 ```bash
-sudo -u deploy ssh-keygen -t ed25519 -N "" -C "github-actions" -f /home/deploy/.ssh/github-actions
+echo claude/adar-uz-design-concepts-c6fbwj > /etc/globalex-branch
 ```
+
+**2. Таймер**
 
 ```bash
-sudo -u deploy bash -c "cat /home/deploy/.ssh/github-actions.pub >> /home/deploy/.ssh/authorized_keys && chmod 600 /home/deploy/.ssh/authorized_keys"
+cp /srv/globalex/deploy/globalex-autodeploy.service /srv/globalex/deploy/globalex-autodeploy.timer /etc/systemd/system/
 ```
 
-**3. Обёртка и право её запускать.** Sudoers разрешает не `bash`, а один файл
-с проверкой аргумента внутри.
+**3. Включить**
 
 ```bash
-install -m 755 /srv/globalex/deploy/globalex-deploy /usr/local/sbin/globalex-deploy
+systemctl daemon-reload && systemctl enable --now globalex-autodeploy.timer
 ```
+
+Дальше ничего делать не нужно. Проверить, что живёт:
 
 ```bash
-echo "deploy ALL=(root) NOPASSWD: /usr/local/sbin/globalex-deploy" > /etc/sudoers.d/globalex-deploy
-chmod 440 /etc/sudoers.d/globalex-deploy
-visudo -c
+systemctl list-timers globalex-autodeploy --no-pager
 ```
 
-**4. Отпечаток сервера.** Строку целиком — в секрет `DEPLOY_HOST_KEY`. Имя в
-начале строки должно совпадать с тем, что положите в `DEPLOY_HOST`.
+Посмотреть, как выкатывается:
 
 ```bash
-echo "globalex.maximov-tech.ru $(cut -d' ' -f1,2 /etc/ssh/ssh_host_ed25519_key.pub)"
+journalctl -u globalex-autodeploy -f
 ```
 
-**5. Закрытый ключ.** Вывод целиком, вместе со строками `BEGIN`/`END`, — в
-секрет `DEPLOY_KEY`.
+Когда ничего не изменилось, скрипт молчит — иначе журнал забивался бы
+шестьюдесятью строками в час. В журнал он пишет только при настоящей выкатке.
+
+Переключить площадку на другую ветку — переписать `/etc/globalex-branch`,
+больше ничего. Через минуту она приедет сама.
+
+Выключить автоматику:
 
 ```bash
-cat /home/deploy/.ssh/github-actions
+systemctl disable --now globalex-autodeploy.timer
 ```
-
-**6. В GitHub**, Settings → Secrets and variables → Actions:
-
-| Что | Где | Значение |
-|---|---|---|
-| `DEPLOY_HOST` | Secrets | `globalex.maximov-tech.ru` |
-| `DEPLOY_USER` | Secrets | `deploy` |
-| `DEPLOY_KEY` | Secrets | закрытый ключ из шага 5 |
-| `DEPLOY_HOST_KEY` | Secrets | строка из шага 4 |
-| `DEPLOY_BRANCH` | **Variables** | ветка, которую показывает площадка |
-
-`DEPLOY_BRANCH` — единственное место, где написано, что сейчас на площадке.
-Не задана — берётся основная ветка репозитория. Push в любую другую ветку
-задачу не запускает: она пропускается сразу, не тратя время сборщика.
-
-Право у пользователя `deploy` ровно одно — выкатить ветку этого репозитория.
-Это то же самое, что и право писать в репозиторий: кто может запушить ветку,
-тот и так определяет, какой код там окажется.
 
 ### Другая ветка
 
@@ -255,9 +235,8 @@ sudo BRANCH=claude/adar-uz-design-concepts-c6fbwj bash /srv/globalex/deploy/depl
 | `EADDRINUSE` в логе, служба в цикле перезапусков | Порт занят другим приложением. Сменить `PORT=` в `.env.local` и `proxy_pass` в конфиге nginx, затем `systemctl reset-failed globalex-demo` |
 | `deploy.sh` пишет «не поднялось», а площадка при этом открывается | Служба слушает не тот порт, который проверяет скрипт. Сверьте `PORT=` в `.env.local` с выводом `journalctl -u globalex-demo -n 20` |
 | Страницы отдают 404, хотя маршруты есть | Скорее всего отвечает чужое приложение на том же порту — проверьте `ss -ltnp \| grep <порт>` |
-| Actions падает на `Permission denied (publickey)` | Открытый ключ не попал в `/home/deploy/.ssh/authorized_keys`, либо `DEPLOY_USER` не тот |
-| Actions падает на `Host key verification failed` | Имя в `DEPLOY_HOST_KEY` не совпадает с `DEPLOY_HOST`, либо на сервере переставлен ssh |
-| Push прошёл, а задача не запустилась | Ветка не совпала с переменной `DEPLOY_BRANCH` |
+| Push прошёл, а площадка не обновилась | `journalctl -u globalex-autodeploy -n 30`; сверьте `/etc/globalex-branch` с тем, куда пушили |
+| Таймера нет в `list-timers` | Не включён: `systemctl enable --now globalex-autodeploy.timer` |
 | Сборка падает | Node ниже 20; либо `npm ci` был запущен с `--omit=dev` — tailwind и typescript нужны на сборке |
 | `EACCES` при сборке или пустые картинки | Каталог или `.next` принадлежат root: `chown -R globalex:globalex /srv/globalex` |
 | Пустой сайт, но страницы открываются | Не заполнена база: `node scripts/seed.mjs` |

@@ -1,0 +1,13 @@
+# Раз в минуту. Push в GitHub — и через минуту площадка обновлена.
+
+[Unit]
+Description=Раз в минуту проверять обновления демо-площадки
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1min
+AccuracySec=10s
+Unit=globalex-autodeploy.service
+
+[Install]
+WantedBy=timers.target
