@@ -200,6 +200,32 @@ export default function AdarShowcase() {
         </div>
       </Shell>
 
+      {/* Версия для встречи */}
+      <Shell size="wide" className="pt-10">
+        <Link
+          href="/adar/print"
+          prefetch={false}
+          className="group flex flex-wrap items-center justify-between gap-4 rounded-adar border border-adar-green-900/12 bg-white/70 px-6 py-5 transition-colors hover:border-adar-green-900/30"
+        >
+          <span>
+            <span className="block font-adar-display text-xl text-adar-green-950">
+              Версия для печати
+            </span>
+            <span className="mt-1 block text-sm text-adar-ink-muted">
+              Четыре листа A4 в чёрно-белом: варианты, построчное сравнение с
+              колонкой для отметок заказчика и сметы. Печатается из браузера
+              или сохраняется в PDF.
+            </span>
+          </span>
+          <span className="inline-flex items-center gap-2 text-sm font-medium text-adar-green-900">
+            Открыть
+            <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
+          </span>
+        </Link>
+      </Shell>
+
       {/* Честный статус */}
       <Shell size="wide" className="pt-20 lg:pt-28">
         <div className="grid gap-10 border-t border-adar-green-900/12 pt-12 lg:grid-cols-12 lg:gap-16">
