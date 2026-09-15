@@ -50,7 +50,11 @@ function useScrollShift(depth: number) {
  * обгоняет оба и растворяется — глубина берётся не из тени, а из разной
  * скорости. Световые пятна дышат сами по себе, независимо от прокрутки.
  */
-export function CinemaHero() {
+export function CinemaHero({
+  hero,
+}: {
+  hero: { eyebrow: string; titleTop: string; titleBottom: string; lead: string; primary: string; secondary: string };
+}) {
   const ref = useScrollShift(160);
 
   return (
@@ -94,25 +98,21 @@ export function CinemaHero() {
           }}
         >
           <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">
-            Девелопер полного цикла
+            {hero.eyebrow}
           </p>
           <h1 className="mt-7 max-w-4xl text-[clamp(2.6rem,7vw,6rem)] leading-[0.98]">
-            От генплана
+            {hero.titleTop}
             <br />
-            до ключей
+            {hero.titleBottom}
           </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-[var(--w-muted)]">
-            Выберите корпус на генплане, квартиру — на шахматке, забронируйте
-            онлайн и следите за стройкой по фотоотчёту. Ни одного звонка, пока
-            он вам не нужен.
-          </p>
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-[var(--w-muted)]">{hero.lead}</p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <span className="w-glow rounded-full bg-[var(--w-accent)] px-8 py-4 text-sm font-medium text-white">
-              Подобрать квартиру
+              {hero.primary}
             </span>
             <span className="rounded-full border border-[var(--w-line)] px-8 py-4 text-sm text-[var(--w-ink)] backdrop-blur-sm">
-              Смотреть генплан
+              {hero.secondary}
             </span>
           </div>
         </div>
@@ -196,7 +196,7 @@ export function Counters({ items }: { items: { value: string; suffix?: string; l
  * Кинолента проектов: карточки едут горизонтально, снимок внутри каждой —
  * с собственной скоростью, поэтому лента читается как проезд камеры.
  */
-export function FilmRail() {
+export function FilmRail({ claims }: { claims: Record<string, string> }) {
   const [active, setActive] = useState(0);
 
   return (
@@ -232,7 +232,7 @@ export function FilmRail() {
                 <h3 className="text-2xl">ЖК «{project.name}»</h3>
                 <span className="text-sm text-[var(--w-muted)]">{project.segment}</span>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--w-muted)]">{project.claim}</p>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--w-muted)]">{claims[project.slug]}</p>
               <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-[var(--w-line)] pt-4">
                 <span className="text-lg font-medium tabular-nums">
                   от {money(project.priceUsd, "uzs")}

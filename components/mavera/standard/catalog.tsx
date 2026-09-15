@@ -26,7 +26,7 @@ const sorters: Record<Sort, (a: Project, b: Project) => number> = {
  * ожидания сервера. Оформление швейцарское — сетка, волосяные линии,
  * нулевой радиус, единственный акцент на выбранном фильтре.
  */
-export function StandardCatalog() {
+export function StandardCatalog({ claims }: { claims: Record<string, string> }) {
   const [segment, setSegment] = useState<(typeof segments)[number]>("Все");
   const [state, setState] = useState<(typeof states)[number]>("Все");
   const [sort, setSort] = useState<Sort>("price");
@@ -120,6 +120,9 @@ export function StandardCatalog() {
                   </span>
                 </div>
                 <p className="mt-1 text-sm text-[var(--w-muted)]">{project.district}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--w-muted)]">
+                  {claims[project.slug]}
+                </p>
 
                 <dl className="mt-5 grid grid-cols-3 gap-4 border-t border-[var(--w-line)] pt-4 text-sm">
                   {[

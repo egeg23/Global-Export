@@ -6,6 +6,7 @@ import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scen
 import { Rise } from "@/components/mavera/reveal";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { stats, terms } from "@/content/mavera/data";
+import { faq, investment, voices } from "@/content/mavera/voice";
 
 export const metadata: Metadata = { title: "Вариант 03 — «Премиум»" };
 
@@ -18,6 +19,8 @@ export const metadata: Metadata = { title: "Вариант 03 — «Премиу
  * по-настоящему работают — генплан с кликабельными корпусами и шахматка
  * квартир. Именно они превращают сайт-визитку в инструмент продаж.
  */
+const voice = voices.premium;
+
 export default function MaveraPremium() {
   return (
     <div data-world="premium">
@@ -35,12 +38,12 @@ export default function MaveraPremium() {
             ))}
           </nav>
           <span className="w-glow rounded-full bg-[var(--w-accent)] px-5 py-2.5 text-sm font-medium text-white">
-            Забронировать
+            {voice.closing.primary}
           </span>
         </div>
       </header>
 
-      <CinemaHero />
+      <CinemaHero hero={voice.hero} />
 
       {/* Условия покупки — стеклянной лентой сразу под кадром. */}
       <section className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
@@ -57,10 +60,10 @@ export default function MaveraPremium() {
       {/* Цифры, которые досчитываются. */}
       <section className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
         <Rise className="max-w-2xl">
-          <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">Масштаб</p>
-          <h2 className="mt-5 text-[clamp(1.9rem,3.6vw,3rem)] leading-[1.05]">
-            Четырнадцать лет, которые можно посчитать
-          </h2>
+          <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">
+            {voice.stats.eyebrow}
+          </p>
+          <h2 className="mt-5 text-[clamp(1.9rem,3.6vw,3rem)] leading-[1.05]">{voice.stats.title}</h2>
         </Rise>
         <Rise delay={120} className="mt-12">
           <Counters items={stats} />
@@ -71,12 +74,12 @@ export default function MaveraPremium() {
       <section className="py-4">
         <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
           <Rise className="flex flex-wrap items-end justify-between gap-6">
-            <h2 className="text-[clamp(1.9rem,3.6vw,3rem)]">Портфель</h2>
-            <p className="text-sm text-[var(--w-muted)]">Наведите на карточку · листайте вбок</p>
+            <h2 className="text-[clamp(1.9rem,3.6vw,3rem)]">{voice.portfolio.title}</h2>
+            <p className="max-w-xs text-sm text-[var(--w-muted)]">{voice.portfolio.note}</p>
           </Rise>
         </div>
         <Rise delay={80} className="mx-auto mt-10 w-full max-w-[1500px] px-5 sm:px-8">
-          <FilmRail />
+          <FilmRail claims={voice.claims} />
         </Rise>
       </section>
 
@@ -157,6 +160,75 @@ export default function MaveraPremium() {
         </div>
       </section>
 
+      {/* Только в «Премиуме»: как росла цена по стадиям. */}
+      <section className="border-t border-[var(--w-line)]">
+        <div className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
+          <Rise className="max-w-2xl">
+            <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">
+              Инвестору
+            </p>
+            <h2 className="mt-5 text-[clamp(1.9rem,3.6vw,3rem)] leading-[1.05]">{investment.title}</h2>
+            <p className="mt-5 text-lg leading-relaxed text-[var(--w-muted)]">{investment.note}</p>
+          </Rise>
+
+          <Rise delay={120} className="mt-14">
+            <div className="flex h-56 items-end gap-3 sm:gap-6">
+              {investment.stages.map((stage) => (
+                <div key={stage.stage} className="flex flex-1 flex-col items-center gap-3">
+                  <span className="text-sm tabular-nums text-[var(--w-accent)]">{stage.label}</span>
+                  <span
+                    className="w-full rounded-t-[var(--w-radius)] bg-gradient-to-t from-[var(--w-accent-soft)] to-[var(--w-accent)] transition-all duration-700 ease-[var(--w-ease)]"
+                    style={{ height: `${((stage.value - 90) / 60) * 100}%` }}
+                  />
+                  <span className="text-center text-xs text-[var(--w-muted)]">{stage.stage}</span>
+                </div>
+              ))}
+            </div>
+          </Rise>
+        </div>
+      </section>
+
+      {/* Только в «Премиуме»: порядок онлайн-сделки и вопросы к нему. */}
+      <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+        <div className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
+          <Rise className="max-w-2xl">
+            <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">
+              Сделка
+            </p>
+            <h2 className="mt-5 text-[clamp(1.9rem,3.6vw,3rem)] leading-[1.05]">{voice.steps.title}</h2>
+            <p className="mt-5 text-lg leading-relaxed text-[var(--w-muted)]">{voice.steps.note}</p>
+          </Rise>
+
+          <ol className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {voice.steps.items.map((step, index) => (
+              <Rise
+                as="li"
+                key={step.title}
+                delay={index * 80}
+                className="rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-bg)] p-6"
+              >
+                <span className="text-sm tabular-nums text-[var(--w-accent)]">0{index + 1}</span>
+                <h3 className="mt-4 text-xl">{step.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--w-muted)]">{step.text}</p>
+              </Rise>
+            ))}
+          </ol>
+
+          <div className="mt-14 grid gap-4 lg:grid-cols-2">
+            {faq.map((item, index) => (
+              <Rise
+                key={item.q}
+                delay={index * 70}
+                className="rounded-[var(--w-radius-lg)] border border-[var(--w-line)] p-6"
+              >
+                <h3 className="text-lg">{item.q}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--w-muted)]">{item.a}</p>
+              </Rise>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Финальный кадр. */}
       <section className="relative isolate overflow-hidden border-t border-[var(--w-line)]">
         <Image
@@ -171,18 +243,17 @@ export default function MaveraPremium() {
         <div className="mx-auto w-full max-w-[1500px] px-5 py-28 text-center sm:px-8">
           <Rise>
             <h2 className="mx-auto max-w-3xl text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.05]">
-              Забронируйте квартиру онлайн
+              {voice.closing.title}
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-[var(--w-muted)]">
-              Пять дней брони, ноль звонков до вашего решения. Договор и оплата —
-              в личном кабинете.
+              {voice.closing.text}
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <span className="w-glow rounded-full bg-[var(--w-accent)] px-9 py-4 text-sm font-medium text-white">
-                Забронировать
+                {voice.closing.primary}
               </span>
               <span className="rounded-full border border-[var(--w-line)] px-9 py-4 text-sm">
-                Рассчитать рассрочку
+                {voice.closing.secondary}
               </span>
             </div>
           </Rise>

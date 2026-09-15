@@ -5,7 +5,8 @@ import { Rise } from "@/components/mavera/reveal";
 import { StandardCatalog } from "@/components/mavera/standard/catalog";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
-import { commercial, stats, steps, terms } from "@/content/mavera/data";
+import { commercial, stats, terms } from "@/content/mavera/data";
+import { expenses, finishes, voices } from "@/content/mavera/voice";
 
 export const metadata: Metadata = { title: "Вариант 01 — «Стандарт»" };
 
@@ -17,6 +18,8 @@ export const metadata: Metadata = { title: "Вариант 01 — «Станда
  * при наведении: вариант обещает быстрый понятный каталог, и оформление не
  * должно обещать больше, чем входит в смету.
  */
+const voice = voices.standard;
+
 export default function MaveraStandard() {
   return (
     <div data-world="standard">
@@ -48,14 +51,13 @@ export default function MaveraStandard() {
           <div className="flex flex-col justify-center px-5 py-16 sm:px-8 lg:py-24">
             <Rise>
               <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
-                Застройщик · Ташкент
+                {voice.hero.eyebrow}
               </p>
               <h1 className="mt-6 max-w-xl text-[clamp(2.4rem,5vw,4rem)] leading-[1.04]">
-                Квартира за три клика
+                {voice.hero.titleTop} {voice.hero.titleBottom}
               </h1>
               <p className="mt-6 max-w-lg text-lg leading-relaxed text-[var(--w-muted)]">
-                Шесть жилых комплексов, 12 400 переданных квартир и честный фильтр:
-                бюджет, комнатность, срок сдачи. Без «цена по запросу».
+                {voice.hero.lead}
               </p>
             </Rise>
 
@@ -76,10 +78,10 @@ export default function MaveraStandard() {
 
               <div className="mt-4 flex flex-wrap gap-3">
                 <span className="bg-[var(--w-accent)] px-7 py-3.5 text-sm font-medium text-[var(--w-accent-ink)]">
-                  Показать 86 квартир
+                  {voice.hero.primary}
                 </span>
                 <span className="border border-[var(--w-line)] px-7 py-3.5 text-sm">
-                  Скачать прайс
+                  {voice.hero.secondary}
                 </span>
               </div>
             </Rise>
@@ -100,6 +102,14 @@ export default function MaveraStandard() {
 
       {/* Цифры — таблицей, без украшений. */}
       <section className="border-b border-[var(--w-line)]">
+        <div className="mx-auto w-full max-w-[1400px] px-5 pt-14 sm:px-8">
+          <Rise>
+            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+              {voice.stats.eyebrow}
+            </p>
+            <h2 className="mt-4 text-[clamp(1.6rem,2.6vw,2.2rem)]">{voice.stats.title}</h2>
+          </Rise>
+        </div>
         <dl className="mx-auto grid w-full max-w-[1400px] sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <Rise
@@ -124,16 +134,15 @@ export default function MaveraStandard() {
         <Rise className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">Каталог</p>
-            <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">Шесть жилых комплексов</h2>
+            <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">{voice.portfolio.title}</h2>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-[var(--w-muted)]">
-            Фильтр работает без перезагрузки, выбранное состояние попадает в адрес
-            страницы — ссылку на «только бизнес-класс» можно отправить клиенту.
+            {voice.portfolio.note}
           </p>
         </Rise>
 
         <Rise delay={100} className="mt-10">
-          <StandardCatalog />
+          <StandardCatalog claims={voice.claims} />
         </Rise>
       </section>
 
@@ -157,11 +166,14 @@ export default function MaveraStandard() {
       <section className="mx-auto w-full max-w-[1400px] px-5 py-20 sm:px-8">
         <Rise>
           <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">Как купить</p>
-          <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">Четыре шага до ключей</h2>
+          <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">{voice.steps.title}</h2>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--w-muted)]">
+            {voice.steps.note}
+          </p>
         </Rise>
 
         <ol className="mt-12 grid gap-px bg-[var(--w-line)] md:grid-cols-4">
-          {steps.map((step, index) => (
+          {voice.steps.items.map((step, index) => (
             <Rise as="li" key={step.title} delay={index * 80} className="bg-[var(--w-bg)] p-6">
               <span className="text-sm tabular-nums text-[var(--w-accent)]">0{index + 1}</span>
               <h3 className="mt-4 text-lg">{step.title}</h3>
@@ -169,6 +181,56 @@ export default function MaveraStandard() {
             </Rise>
           ))}
         </ol>
+      </section>
+
+      {/* Только в «Стандарте»: что входит в цену и во что обходится дом потом. */}
+      <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+        <div className="mx-auto w-full max-w-[1400px] px-5 py-20 sm:px-8">
+          <Rise>
+            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+              Отделка
+            </p>
+            <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">Что входит в цену</h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--w-muted)]">
+              Три варианта на выбор. Разница в цене указана сразу — считать её у
+              менеджера не придётся.
+            </p>
+          </Rise>
+
+          <div className="mt-10 grid gap-px bg-[var(--w-line)] md:grid-cols-3">
+            {finishes.map((finish, index) => (
+              <Rise key={finish.name} delay={index * 70} className="bg-[var(--w-surface)] p-6">
+                <div className="flex items-baseline justify-between gap-4 border-b border-[var(--w-line)] pb-4">
+                  <h3 className="text-lg">{finish.name}</h3>
+                  <span className="text-sm text-[var(--w-accent)]">{finish.price}</span>
+                </div>
+                <ul className="mt-5 space-y-2.5">
+                  {finish.items.map((item) => (
+                    <li key={item} className="flex gap-3 text-sm text-[var(--w-muted)]">
+                      <span aria-hidden="true" className="text-[var(--w-accent)]">—</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </Rise>
+            ))}
+          </div>
+
+          <Rise delay={120} className="mt-12">
+            <h3 className="text-lg">Расходы после покупки</h3>
+            <dl className="mt-6 grid gap-px bg-[var(--w-line)] sm:grid-cols-2 lg:grid-cols-4">
+              {expenses.map((item) => (
+                <div key={item.label} className="bg-[var(--w-surface)] p-5">
+                  <dt className="text-[0.65rem] uppercase tracking-[0.12em] text-[var(--w-muted)]">
+                    {item.label}
+                  </dt>
+                  <dd className="mt-2 text-xl tabular-nums">{item.value}</dd>
+                  <p className="mt-1 text-xs text-[var(--w-muted)]">{item.note}</p>
+                </div>
+              ))}
+            </dl>
+          </Rise>
+        </div>
       </section>
 
       {/* Коммерция — компактной таблицей. */}
@@ -179,10 +241,10 @@ export default function MaveraStandard() {
               <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
                 Коммерческая недвижимость
               </p>
-              <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">Продажа и аренда</h2>
+              <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">{voice.commercial.title}</h2>
             </div>
-            <p className="text-sm text-[var(--w-muted)]">
-              Заявки из раздела идут отдельной линией — в свой отдел.
+            <p className="max-w-sm text-sm leading-relaxed text-[var(--w-muted)]">
+              {voice.commercial.note}
             </p>
           </Rise>
 
@@ -221,7 +283,13 @@ export default function MaveraStandard() {
       <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto grid w-full max-w-[1400px] gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2">
           <Rise>
-            <h2 className="text-[clamp(1.8rem,3vw,2.6rem)]">Приезжайте в офис продаж</h2>
+            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+              {voice.closing.eyebrow}
+            </p>
+            <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">{voice.closing.title}</h2>
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-[var(--w-muted)]">
+              {voice.closing.text}
+            </p>
             <dl className="mt-10 border-t border-[var(--w-line)]">
               {[
                 ["Телефон", "+998 (__) ___-__-__"],
@@ -264,7 +332,7 @@ export default function MaveraStandard() {
                 type="button"
                 className="mt-6 w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90"
               >
-                Отправить
+                {voice.closing.primary}
               </button>
               <p className="mt-4 text-xs text-[var(--w-muted)]">
                 Заявка уходит на почту и в Telegram отдела продаж. Демонстрация — ничего

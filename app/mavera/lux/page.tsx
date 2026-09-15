@@ -6,10 +6,12 @@ import { Rise } from "@/components/mavera/reveal";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
 import { projects, stats } from "@/content/mavera/data";
+import { district, materials, voices } from "@/content/mavera/voice";
 
 export const metadata: Metadata = { title: "Вариант 02 — «Люкс»" };
 
 const featured = projects[1];
+const voice = voices.lux;
 
 /**
  * Вариант 02 — «Люкс», журнальный разворот.
@@ -64,13 +66,16 @@ export default function MaveraLux() {
         <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
           <Rise className="-mt-24 max-w-3xl bg-[var(--w-surface)] p-8 shadow-[var(--w-shadow)] sm:p-12">
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
-              Главная тема выпуска
+              {voice.hero.eyebrow}
             </p>
             <h1 className="mt-6 text-[clamp(2.2rem,5vw,4.2rem)] leading-[1.02]">
-              Город, в который
+              {voice.hero.titleTop}
               <br />
-              возвращаются
+              {voice.hero.titleBottom}
             </h1>
+            <p className="mt-7 max-w-xl text-lg leading-relaxed text-[var(--w-muted)]">
+              {voice.hero.lead}
+            </p>
             <p className="mt-6 text-sm text-[var(--w-muted)]">
               Текст: редакция MAVERA · Фотографии: архив компании
             </p>
@@ -128,7 +133,7 @@ export default function MaveraLux() {
             <h2 className="mt-5 text-[clamp(1.9rem,3.4vw,3rem)] leading-[1.06]">
               ЖК «{featured.name}»
             </h2>
-            <p className="mt-5 text-lg leading-[1.7] text-[var(--w-muted)]">{featured.claim}</p>
+            <p className="mt-5 text-lg leading-[1.7] text-[var(--w-muted)]">{voice.claims[featured.slug]}</p>
 
             <dl className="mt-10 border-t border-[var(--w-line)]">
               {[
@@ -148,7 +153,7 @@ export default function MaveraLux() {
 
             <p className="mt-8">
               <span className="inline-block border border-[var(--w-ink)] px-8 py-3.5 text-sm transition-colors duration-300 hover:bg-[var(--w-ink)] hover:text-[var(--w-surface)]">
-                Записаться на показ
+                {voice.hero.primary}
               </span>
             </p>
           </Rise>
@@ -159,8 +164,8 @@ export default function MaveraLux() {
       <section className="py-20">
         <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
           <Rise className="flex flex-wrap items-end justify-between gap-6">
-            <h2 className="text-[clamp(1.8rem,3vw,2.8rem)]">Портфолио</h2>
-            <p className="text-sm italic text-[var(--w-muted)]">Листайте вбок →</p>
+            <h2 className="text-[clamp(1.8rem,3vw,2.8rem)]">{voice.portfolio.title}</h2>
+            <p className="max-w-xs text-sm italic text-[var(--w-muted)]">{voice.portfolio.note}</p>
           </Rise>
         </div>
 
@@ -180,7 +185,7 @@ export default function MaveraLux() {
                 {project.segment} · {project.status}
               </p>
               <h3 className="mt-2 text-2xl">ЖК «{project.name}»</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--w-muted)]">{project.claim}</p>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--w-muted)]">{voice.claims[project.slug]}</p>
               <p className="mt-3 font-[family-name:var(--w-display)] text-lg">
                 от {money(project.priceUsd, "uzs")}
                 <span className="ml-1 text-sm text-[var(--w-muted)]">за м²</span>
@@ -227,9 +232,93 @@ export default function MaveraLux() {
         </div>
       </section>
 
+      {/* Только в «Люксе»: район как часть предложения. */}
+      <section className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
+        <div className="grid gap-12 lg:grid-cols-12">
+          <Rise className="lg:col-span-4">
+            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">Район</p>
+            <h2 className="mt-5 text-[clamp(1.8rem,3vw,2.8rem)] leading-[1.08]">{district.title}</h2>
+            <p className="mt-5 text-lg leading-[1.7] text-[var(--w-muted)]">{district.lead}</p>
+          </Rise>
+
+          <div className="lg:col-span-7 lg:col-start-6">
+            <dl className="grid gap-x-10 sm:grid-cols-2">
+              {district.points.map((point, index) => (
+                <Rise key={point.title} delay={index * 70} className="border-t border-[var(--w-line)] py-6">
+                  <dt className="font-[family-name:var(--w-display)] text-2xl">{point.title}</dt>
+                  <dd className="mt-2 text-sm leading-relaxed text-[var(--w-muted)]">{point.text}</dd>
+                </Rise>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      {/* Только в «Люксе»: из чего сделан дом. */}
+      <section className="border-y border-[var(--w-line)] bg-[var(--w-paper)]">
+        <div className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
+          <Rise className="max-w-2xl">
+            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+              Материалы
+            </p>
+            <h2 className="mt-5 text-[clamp(1.8rem,3vw,2.8rem)] leading-[1.08]">
+              Из чего сделан дом
+            </h2>
+          </Rise>
+
+          <div className="mt-12 grid gap-10 md:grid-cols-3">
+            {materials.map((item, index) => (
+              <Rise as="figure" key={item.title} delay={index * 90}>
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <Image
+                    src={item.photo}
+                    alt=""
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-transform duration-700 ease-[var(--w-ease)] hover:scale-[1.04] motion-reduce:transform-none"
+                  />
+                </div>
+                <figcaption className="mt-5">
+                  <h3 className="font-[family-name:var(--w-display)] text-2xl">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--w-muted)]">{item.text}</p>
+                </figcaption>
+              </Rise>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Только в «Люксе»: как проходит показ. */}
+      <section className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
+        <Rise className="max-w-2xl">
+          <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">Показ</p>
+          <h2 className="mt-5 text-[clamp(1.8rem,3vw,2.8rem)] leading-[1.08]">{voice.steps.title}</h2>
+          <p className="mt-5 text-lg leading-[1.7] text-[var(--w-muted)]">{voice.steps.note}</p>
+        </Rise>
+
+        <ol className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+          {voice.steps.items.map((step, index) => (
+            <Rise as="li" key={step.title} delay={index * 80} className="border-t border-[var(--w-line)] pt-6">
+              <span className="font-[family-name:var(--w-display)] text-sm text-[var(--w-accent)]">
+                {index + 1}
+              </span>
+              <h3 className="mt-3 font-[family-name:var(--w-display)] text-2xl">{step.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--w-muted)]">{step.text}</p>
+            </Rise>
+          ))}
+        </ol>
+      </section>
+
       {/* Цифры — редакционно, засечными. */}
       <section className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
-        <dl className="grid gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <Rise className="max-w-2xl">
+          <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+            {voice.stats.eyebrow}
+          </p>
+          <h2 className="mt-5 text-[clamp(1.8rem,3vw,2.8rem)] leading-[1.08]">{voice.stats.title}</h2>
+        </Rise>
+
+        <dl className="mt-12 grid gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <Rise key={stat.label} delay={index * 70} className="border-t border-[var(--w-line)] pt-6">
               <dd className="font-[family-name:var(--w-display)] text-[clamp(2.4rem,4vw,3.4rem)] leading-none">
@@ -249,14 +338,13 @@ export default function MaveraLux() {
         <div className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
           <Rise className="mx-auto max-w-3xl border-2 border-dashed border-[var(--w-accent)] bg-[var(--w-surface)] p-8 text-center sm:p-12">
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
-              Личная встреча
+              {voice.closing.eyebrow}
             </p>
             <h2 className="mt-5 text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.1]">
-              Покажем квартал ногами
+              {voice.closing.title}
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[var(--w-muted)]">
-              Полтора часа с архитектором проекта: двор, планировки, ход работ и честный
-              разговор о сроках. Без обязательств купить.
+              {voice.closing.text}
             </p>
             <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
               <input
@@ -268,7 +356,7 @@ export default function MaveraLux() {
                 type="button"
                 className="bg-[var(--w-accent)] px-7 py-3 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90"
               >
-                Записаться
+                {voice.closing.primary}
               </button>
             </div>
           </Rise>
