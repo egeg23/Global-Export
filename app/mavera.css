@@ -268,6 +268,58 @@
     }
   }
 
+  /* «Живой первый экран»: заголовок собирается по словам, кадр наезжает. */
+  .w-word {
+    display: inline-block;
+    opacity: 0;
+    animation: w-word-in 0.8s var(--w-ease) forwards;
+    animation-delay: var(--w-delay, 0ms);
+  }
+
+  @keyframes w-word-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 0.5em, 0) rotate(1.5deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .w-kenburns {
+    animation: w-kenburns 18s ease-out forwards;
+  }
+
+  @keyframes w-kenburns {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.08);
+    }
+  }
+
+  /* «Магнитные кнопки»: подсветка под кнопкой, сдвиг пишет скрипт. */
+  .w-magnet > * {
+    transition:
+      box-shadow 0.35s var(--w-ease),
+      transform 0.35s var(--w-ease);
+  }
+
+  .w-magnet:hover > * {
+    box-shadow:
+      0 0 0 4px var(--w-accent-soft),
+      0 16px 34px -14px var(--w-accent);
+  }
+
+  [data-motion="off"] .w-word,
+  [data-motion="off"] .w-kenburns {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
   /* Панорама 360°: кадр медленно панорамирует, как в просмотрщике тура. */
   .w-pan {
     animation: w-pan 16s ease-in-out infinite alternate;
@@ -310,7 +362,13 @@
   .w-row,
   .w-pan,
   .w-dock-in,
+  .w-kenburns,
   .w-tag-pulse::after {
     animation: none;
+  }
+
+  .w-word {
+    animation: none;
+    opacity: 1;
   }
 }

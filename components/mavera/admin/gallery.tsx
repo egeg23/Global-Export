@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { AdminScreen, adminSections, type AdminScreenId } from "@/components/mavera/admin/screens";
+import { useConfigurator } from "@/components/mavera/configurator/context";
 import { BrowserFrame } from "@/components/present/mavera/frames";
 import { cn } from "@/lib/cn";
+import type { AddonId } from "@/content/mavera/addons";
 
 /**
  * Витрина панели управления.
@@ -32,10 +34,29 @@ const captions: Record<AdminScreenId, string> = {
     "Поведение посетителей: источники и заявки по каждому, цели Метрики, вебвизор и карта скроллов. Видно, где бросают калькулятор и до какого блока дочитывают карточку.",
   media:
     "Общая библиотека файлов: загрузка перетаскиванием, переиспользование во всех разделах, JPG, PNG, WebP, AVIF и PDF.",
+  audit:
+    "Журнал действий: кто, когда и что поменял — с прежним и новым значением. Спорная цена или статус откатываются одной кнопкой.",
+};
+
+/** На каком экране живёт допник панели — туда переключаемся, когда его включают. */
+const screenOf: Partial<Record<AddonId, AdminScreenId>> = {
+  roles: "users",
+  crm: "leads",
+  import: "flats",
+  metrika: "analytics",
+  audit: "audit",
 };
 
 export function AdminGallery() {
-  const [activeId, setActiveId] = useState<AdminScreenId>("project-form");
+  const ctx = useConfigurator();
+  // Свежий допник конструктора открывает свой экран, но более поздний клик по
+  // вкладке важнее. Клик запоминает, какой допник был свежим в тот момент:
+  // пока он тот же — выбор за кликом, появился новый — за допником.
+  const [choice, setChoice] = useState<{ id: AdminScreenId; after: number }>({ id: "project-form", after: 0 });
+  const freshAt = ctx?.fresh?.at ?? 0;
+  const target = ctx?.fresh ? screenOf[ctx.fresh.id] : undefined;
+  const activeId = target && freshAt > choice.after ? target : choice.id;
+  const setActiveId = (id: AdminScreenId) => setChoice({ id, after: freshAt });
   const groups = [...new Set(adminSections.map((s) => s.group))];
   const active = adminSections.find((s) => s.id === activeId) ?? adminSections[0];
 
@@ -95,7 +116,7 @@ export function AdminGallery() {
           path="mavera.uz/admin"
           bodyClassName="max-h-[36rem] overflow-y-auto overscroll-contain"
         >
-          <div key={activeId} className="mv-fade" role="img" aria-label={`Экран панели: ${active.label}`}>
+          <div key={activeId} className="mv-fade" role="group" aria-label={`Экран панели: ${active.label}`}>
             <AdminScreen id={activeId} />
           </div>
         </BrowserFrame>

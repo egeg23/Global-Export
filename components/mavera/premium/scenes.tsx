@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { useAddon } from "@/components/mavera/configurator/context";
+import { Addon, useAddon } from "@/components/mavera/configurator/context";
+import { Magnetic, Words } from "@/components/mavera/configurator/live";
 import { money } from "@/components/present/mavera/theme";
 import { projects } from "@/content/mavera/data";
 import { cn } from "@/lib/cn";
@@ -58,6 +59,8 @@ export function CinemaHero({
   hero: { eyebrow: string; titleTop: string; titleBottom: string; lead: string; primary: string; secondary: string };
 }) {
   const ref = useScrollShift(160);
+  // «Живой первый экран»: кадр наезжает поверх параллакса, слова всплывают по очереди.
+  const live = useAddon("hero");
 
   return (
     <section
@@ -74,7 +77,7 @@ export function CinemaHero({
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className={cn("object-cover", live && "w-kenburns")}
         />
       </div>
 
@@ -100,24 +103,32 @@ export function CinemaHero({
             opacity: "calc(1 - var(--p, 0) * 1.1)",
           }}
         >
-          <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">
-            {hero.eyebrow}
-          </p>
-          <h1 className="mt-7 max-w-4xl text-[clamp(2.6rem,7vw,6rem)] leading-[0.98]">
-            {hero.titleTop}
-            <br />
-            {hero.titleBottom}
-          </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-[var(--w-muted)]">{hero.lead}</p>
+          <Addon id="hero" flag>
+            <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">
+              {hero.eyebrow}
+            </p>
+            <h1 className="mt-7 max-w-4xl text-[clamp(2.6rem,7vw,6rem)] leading-[0.98]">
+              <Words text={hero.titleTop} />
+              <br />
+              <Words text={hero.titleBottom} offset={300} />
+            </h1>
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-[var(--w-muted)]">{hero.lead}</p>
+          </Addon>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <span className="w-glow rounded-full bg-[var(--w-accent)] px-8 py-4 text-sm font-medium text-white">
-              {hero.primary}
-            </span>
-            <span className="rounded-full border border-[var(--w-line)] px-8 py-4 text-sm text-[var(--w-ink)] backdrop-blur-sm">
-              {hero.secondary}
-            </span>
-          </div>
+          <Addon id="magnetic" flag className="mt-10">
+            <div className="flex flex-wrap items-center gap-4">
+              <Magnetic>
+                <span className="w-glow inline-block rounded-full bg-[var(--w-accent)] px-8 py-4 text-sm font-medium text-white">
+                  {hero.primary}
+                </span>
+              </Magnetic>
+              <Magnetic>
+                <span className="inline-block rounded-full border border-[var(--w-line)] px-8 py-4 text-sm text-[var(--w-ink)] backdrop-blur-sm">
+                  {hero.secondary}
+                </span>
+              </Magnetic>
+            </div>
+          </Addon>
         </div>
       </div>
 

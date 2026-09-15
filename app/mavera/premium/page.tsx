@@ -5,6 +5,7 @@ import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/co
 import { Genplan, Picker } from "@/components/present/mavera/interactive";
 import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scenes";
 import { Rise } from "@/components/mavera/reveal";
+import { News, Reviews } from "@/components/mavera/sections";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { stats, terms } from "@/content/mavera/data";
 import { faq, investment, voices } from "@/content/mavera/voice";
@@ -236,6 +237,14 @@ export default function MaveraPremium() {
           </div>
         </div>
       </section>
+
+      {/* Допники «Отзывы» и «Новости» — перед финальным кадром. */}
+      <Addon id="reviews" as="section" className="border-t border-[var(--w-line)]">
+        <Reviews variant="premium" />
+      </Addon>
+      <Addon id="news" as="section" className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+        <News variant="premium" />
+      </Addon>
 
       {/* Финальный кадр. */}
       <section className="relative isolate overflow-hidden border-t border-[var(--w-line)]">

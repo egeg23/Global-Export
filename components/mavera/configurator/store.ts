@@ -108,3 +108,37 @@ export function shareUrl(enabled: Iterable<AddonId>): string {
   url.searchParams.set(PARAM, encode(enabled));
   return url.toString();
 }
+
+/* ------------------------------------------------------------------ */
+/* Сеанс: что включили последним, смотрим ли «было», открыт ли док     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Живёт в памяти модуля, а не в состоянии компонента: конструктор сам
+ * переводит на другую страницу, и там блок должен подъехать и подсветиться,
+ * а док — остаться открытым. Перезагрузка страницы это стирает, и правильно:
+ * подсветка отвечает на действие, а не на состояние.
+ */
+export type Session = {
+  /** Что включили последним — его блок подъезжает, пульсирует и умеет «было / стало». */
+  fresh: { id: AddonId; at: number } | null;
+  /** Смотрим «было»: свежий допник временно считается выключенным, цена не меняется. */
+  peek: boolean;
+  open: boolean;
+};
+
+const serverSession: Session = { fresh: null, peek: false, open: false };
+let session: Session = serverSession;
+
+export function readSession(): Session {
+  return session;
+}
+
+export function readSessionOnServer(): Session {
+  return serverSession;
+}
+
+export function patchSession(patch: Partial<Session>) {
+  session = { ...session, ...patch };
+  emit();
+}

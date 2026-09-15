@@ -1,6 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { ProjectSwitcher } from "@/components/adar/showcase/project-switcher";
+import { tiers } from "@/components/present/mavera/theme";
 import { VariantCards } from "@/components/mavera/hub/variants";
 import { AdminGallery } from "@/components/mavera/admin/gallery";
 import { photos } from "@/content/mavera/photos";
@@ -107,6 +109,24 @@ export default function MaveraHub() {
           <div className="mt-10">
             <AdminGallery />
           </div>
+
+          <p className="mt-8 text-sm leading-relaxed text-sand-300/60">
+            Здесь панель показана целиком. Что из неё входит в пакет, а что —
+            допник, видно в конструкторе на странице панели:{" "}
+            {tiers.map((tier, index) => (
+              <span key={tier.id}>
+                {index ? " · " : null}
+                <Link
+                  href={`/mavera/${tier.id}/admin`}
+                  prefetch={false}
+                  className="text-harvest-300 underline decoration-dotted underline-offset-2 transition-colors hover:text-harvest-200"
+                >
+                  {tier.label}
+                </Link>
+              </span>
+            ))}
+            .
+          </p>
         </section>
       </Container>
 

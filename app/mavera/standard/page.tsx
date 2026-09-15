@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
 import { Rise } from "@/components/mavera/reveal";
+import { News, Reviews } from "@/components/mavera/sections";
 import { StandardCatalog } from "@/components/mavera/standard/catalog";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
@@ -52,17 +54,20 @@ export default function MaveraStandard() {
       <section className="border-b border-[var(--w-line)]">
         <div className="mx-auto grid w-full max-w-[1400px] lg:grid-cols-2">
           <div className="flex flex-col justify-center px-5 py-16 sm:px-8 lg:py-24">
-            <Rise>
-              <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
-                {voice.hero.eyebrow}
-              </p>
-              <h1 className="mt-6 max-w-xl text-[clamp(2.4rem,5vw,4rem)] leading-[1.04]">
-                {voice.hero.titleTop} {voice.hero.titleBottom}
-              </h1>
-              <p className="mt-6 max-w-lg text-lg leading-relaxed text-[var(--w-muted)]">
-                {voice.hero.lead}
-              </p>
-            </Rise>
+            {/* Допник «Живой первый экран»: заголовок собирается по словам, кадр справа наезжает. */}
+            <Addon id="hero" flag>
+              <Rise>
+                <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+                  {voice.hero.eyebrow}
+                </p>
+                <h1 className="mt-6 max-w-xl text-[clamp(2.4rem,5vw,4rem)] leading-[1.04]">
+                  <Words text={`${voice.hero.titleTop} ${voice.hero.titleBottom}`} />
+                </h1>
+                <p className="mt-6 max-w-lg text-lg leading-relaxed text-[var(--w-muted)]">
+                  {voice.hero.lead}
+                </p>
+              </Rise>
+            </Addon>
 
             <Rise delay={120}>
               {/* Форма подбора прямо на первом экране — швейцарская прямота. */}
@@ -79,26 +84,35 @@ export default function MaveraStandard() {
                 ))}
               </div>
 
-              <div className="mt-4 flex flex-wrap gap-3">
-                <span className="bg-[var(--w-accent)] px-7 py-3.5 text-sm font-medium text-[var(--w-accent-ink)]">
-                  {voice.hero.primary}
-                </span>
-                <span className="border border-[var(--w-line)] px-7 py-3.5 text-sm">
-                  {voice.hero.secondary}
-                </span>
-              </div>
+              {/* Допник «Магнитные кнопки»: тянутся к курсору и подсвечиваются. */}
+              <Addon id="magnetic" flag className="mt-4">
+                <div className="flex flex-wrap gap-3">
+                  <Magnetic>
+                    <span className="inline-block bg-[var(--w-accent)] px-7 py-3.5 text-sm font-medium text-[var(--w-accent-ink)]">
+                      {voice.hero.primary}
+                    </span>
+                  </Magnetic>
+                  <Magnetic>
+                    <span className="inline-block border border-[var(--w-line)] px-7 py-3.5 text-sm">
+                      {voice.hero.secondary}
+                    </span>
+                  </Magnetic>
+                </div>
+              </Addon>
             </Rise>
           </div>
 
-          <div className="relative min-h-[320px] border-t border-[var(--w-line)] lg:min-h-0 lg:border-l lg:border-t-0">
-            <Image
-              src="/images/mavera/hero-catalog.jpg"
-              alt="Жилой дом MAVERA"
-              fill
-              priority
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
-            />
+          <div className="relative min-h-[320px] overflow-hidden border-t border-[var(--w-line)] lg:min-h-0 lg:border-l lg:border-t-0">
+            <Live id="hero" base="absolute inset-0" className="w-kenburns">
+              <Image
+                src="/images/mavera/hero-catalog.jpg"
+                alt="Жилой дом MAVERA"
+                fill
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </Live>
           </div>
         </div>
       </section>
@@ -281,6 +295,14 @@ export default function MaveraStandard() {
           </Rise>
         </div>
       </section>
+
+      {/* Допники «Отзывы» и «Новости» — перед формой заявки. */}
+      <Addon id="reviews" as="section" className="border-t border-[var(--w-line)]">
+        <Reviews variant="standard" />
+      </Addon>
+      <Addon id="news" as="section" className="border-t border-[var(--w-line)]">
+        <News variant="standard" />
+      </Addon>
 
       {/* Контакты и форма — плоские, как всё остальное. */}
       <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">

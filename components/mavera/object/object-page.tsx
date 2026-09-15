@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { Magnetic } from "@/components/mavera/configurator/live";
 import { Progress, Tour } from "@/components/mavera/object/extras";
 import { ObjectInteractive } from "@/components/mavera/object/interactive";
 import { Rise } from "@/components/mavera/reveal";
@@ -294,15 +295,20 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
                   />
                 ))}
               </div>
-              <button
-                type="button"
-                className={cn(
-                  "mt-5 w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
-                  variant === "premium" ? "w-glow rounded-full" : rounded,
-                )}
-              >
-                {voice.closing.primary}
-              </button>
+              {/* Допник «Магнитные кнопки» — здесь тоже, чтобы было видно в карточке. */}
+              <Addon id="magnetic" flag className="mt-5">
+                <Magnetic className="block">
+                  <button
+                    type="button"
+                    className={cn(
+                      "w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
+                      variant === "premium" ? "w-glow rounded-full" : rounded,
+                    )}
+                  >
+                    {voice.closing.primary}
+                  </button>
+                </Magnetic>
+              </Addon>
               <p className="mt-4 text-xs text-[var(--w-muted)]">
                 Демонстрация: заявка никуда не уходит.
               </p>

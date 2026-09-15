@@ -14,7 +14,7 @@ const hrefs: Record<TierId, string> = {
  * соседнему. Не прилипает к верху — уезжает при первой прокрутке и оставляет
  * первый экран таким, каким его увидит посетитель сайта.
  */
-export function VariantBar({ current }: { current: TierId }) {
+export function VariantBar({ current, admin = false }: { current: TierId; admin?: boolean }) {
   const tier = tiers.find((entry) => entry.id === current) ?? tiers[0];
 
   return (
@@ -34,6 +34,18 @@ export function VariantBar({ current }: { current: TierId }) {
         <p className="hidden text-sm text-[#f2efe9]/45 sm:block">
           {tier.label} · {tier.mood} · {tier.duration}
         </p>
+
+        {/* Панель управления в составе пакета: одна на всех, различается допниками. */}
+        <Link
+          href={admin ? hrefs[current] : `${hrefs[current]}/admin`}
+          prefetch={false}
+          className={cn(
+            "text-sm transition-colors",
+            admin ? "text-[#f2efe9]" : "text-[#f2efe9]/60 hover:text-[#f2efe9]",
+          )}
+        >
+          {admin ? "← К сайту" : "Панель управления"}
+        </Link>
 
         <div
           role="tablist"

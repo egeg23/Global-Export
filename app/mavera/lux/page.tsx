@@ -3,8 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
 import { ParallaxFigure } from "@/components/mavera/lux/parallax-figure";
 import { Rise } from "@/components/mavera/reveal";
+import { News, Reviews } from "@/components/mavera/sections";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
 import { projects, stats, terms } from "@/content/mavera/data";
@@ -75,28 +77,32 @@ export default function MaveraLux() {
           а позиционированный элемент по правилам отрисовки всегда выше. Тут
           порядок задан явно: кадр и затемнение уходят за содержимое. */}
       <section className="relative isolate flex min-h-[86svh] items-end overflow-hidden">
-        <Image
-          src="/images/mavera/hero-editorial.jpg"
-          alt="Фасад жилого дома"
-          fill
-          priority
-          sizes="100vw"
-          className="-z-20 object-cover"
-        />
+        <Live id="hero" base="absolute inset-0 -z-20" className="w-kenburns">
+          <Image
+            src="/images/mavera/hero-editorial.jpg"
+            alt="Фасад жилого дома"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </Live>
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-gradient-to-t from-[var(--w-bg)] via-[var(--w-bg)]/45 to-[var(--w-bg)]/5"
         />
 
         <div className="mx-auto w-full max-w-[1500px] px-5 pb-10 sm:px-8 lg:pb-16">
-          <Rise className="max-w-2xl bg-[var(--w-surface)]/92 p-7 shadow-[var(--w-shadow)] backdrop-blur-sm sm:p-10 lg:p-12">
+          {/* Допник «Живой первый экран»: слова заголовка всплывают по очереди, кадр наезжает. */}
+          <Addon id="hero" flag className="max-w-2xl">
+          <Rise className="bg-[var(--w-surface)]/92 p-7 shadow-[var(--w-shadow)] backdrop-blur-sm sm:p-10 lg:p-12">
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
               {voice.hero.eyebrow}
             </p>
             <h1 className="mt-5 text-[clamp(1.9rem,5vw,4.2rem)] leading-[1.04]">
-              {voice.hero.titleTop}
+              <Words text={voice.hero.titleTop} />
               <br />
-              {voice.hero.titleBottom}
+              <Words text={voice.hero.titleBottom} offset={360} />
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-[var(--w-muted)] sm:text-lg">
               {voice.hero.lead}
@@ -105,6 +111,7 @@ export default function MaveraLux() {
               Текст: редакция MAVERA · Фотографии: архив компании
             </p>
           </Rise>
+          </Addon>
         </div>
       </section>
 
@@ -176,15 +183,18 @@ export default function MaveraLux() {
               ))}
             </dl>
 
-            <p className="mt-8">
-              <Link
-                href={`/mavera/lux/${featured.slug}`}
-                prefetch={false}
-                className="inline-block border border-[var(--w-ink)] px-8 py-3.5 text-sm transition-colors duration-300 hover:bg-[var(--w-ink)] hover:text-[var(--w-surface)]"
-              >
-                Выбрать квартиру в проекте
-              </Link>
-            </p>
+            {/* Допник «Магнитные кнопки». */}
+            <Addon id="magnetic" flag inline className="mt-8">
+              <Magnetic>
+                <Link
+                  href={`/mavera/lux/${featured.slug}`}
+                  prefetch={false}
+                  className="inline-block border border-[var(--w-ink)] px-8 py-3.5 text-sm transition-colors duration-300 hover:bg-[var(--w-ink)] hover:text-[var(--w-surface)]"
+                >
+                  Выбрать квартиру в проекте
+                </Link>
+              </Magnetic>
+            </Addon>
           </Rise>
         </div>
       </section>
@@ -372,6 +382,14 @@ export default function MaveraLux() {
           ))}
         </dl>
       </section>
+
+      {/* Допники «Отзывы» и «Новости» — перед купоном. */}
+      <Addon id="reviews" as="section" className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+        <Reviews variant="lux" />
+      </Addon>
+      <Addon id="news" as="section" className="border-t border-[var(--w-line)]">
+        <News variant="lux" />
+      </Addon>
 
       {/* Запись на показ — купон в конце выпуска. */}
       <section className="bg-[var(--w-paper)]">

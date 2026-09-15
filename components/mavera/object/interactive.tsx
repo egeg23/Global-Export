@@ -51,6 +51,11 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
   // Допники карточки: шахматка вместо списка, калькулятор, бронь вместо заявки.
   const chess = useAddon("chess");
   const booking = useAddon("booking");
+  // Допник «Избранное»: подборка живёт здесь же, в состоянии подбора.
+  const favorites = useAddon("favorites");
+  const [saved, setSaved] = useState<string[]>([]);
+  const toggleSaved = (id: string) =>
+    setSaved((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
 
   const found = useMemo(
     () =>
@@ -192,6 +197,7 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
                   )}
                 >
                   <p className="font-[family-name:var(--w-display)] text-xl">
+                    {favorites && saved.includes(flat.id) ? <span className="mr-1.5 text-[var(--w-accent)]">♥</span> : null}
                     {flatTypeName(flat.rooms, flat.area)}, {area(flat.area)} м²
                   </p>
                   <p className="mt-1.5 text-sm text-[var(--w-muted)]">
@@ -229,7 +235,10 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
                       flat.id === selected?.id ? "bg-[var(--w-accent-soft)]" : "hover:bg-[var(--w-paper)]",
                     )}
                   >
-                    <td className="py-3 pr-4 tabular-nums">{flat.corpus}</td>
+                    <td className="py-3 pr-4 tabular-nums">
+                      {favorites && saved.includes(flat.id) ? <span className="mr-1.5 text-[var(--w-accent)]">♥</span> : null}
+                      {flat.corpus}
+                    </td>
                     <td className="py-3 pr-4 tabular-nums">{flat.floor}</td>
                     <td className="py-3 pr-4 tabular-nums">{flat.rooms}</td>
                     <td className="py-3 pr-4 tabular-nums">{area(flat.area)} м²</td>
@@ -279,6 +288,36 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
               <p className="mt-1 text-sm text-[var(--w-muted)]">
                 {money(Math.round(selected.priceUsd / selected.area), "uzs")} за м²
               </p>
+
+              {/* Допник «Избранное и подборка»: сердечко и подборка, которая уходит ссылкой. */}
+              <Addon id="favorites" compact className="mt-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    aria-pressed={saved.includes(selected.id)}
+                    onClick={() => toggleSaved(selected.id)}
+                    className={cn(
+                      "inline-flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-200",
+                      variant === "premium" ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
+                      saved.includes(selected.id)
+                        ? "bg-[var(--w-accent)] text-[var(--w-accent-ink)]"
+                        : "border border-[var(--w-line)] text-[var(--w-muted)] hover:text-[var(--w-ink)]",
+                    )}
+                  >
+                    <span aria-hidden="true">♥</span>
+                    {saved.includes(selected.id) ? "В подборке" : "В подборку"}
+                  </button>
+                  <span className="text-xs text-[var(--w-muted)]">
+                    Сохранено: <span className="font-medium text-[var(--w-ink)] tabular-nums">{saved.length}</span>
+                    {saved.length ? (
+                      <>
+                        {" · "}
+                        <span className="underline decoration-dotted underline-offset-2">Отправить подборку в Telegram</span>
+                      </>
+                    ) : null}
+                  </span>
+                </div>
+              </Addon>
             </>
           ) : null}
 

@@ -1,7 +1,10 @@
+"use client";
+
+import { Addon, useAddon } from "@/components/mavera/configurator/context";
 import { cn } from "@/lib/cn";
 
 /**
- * Панель управления MAVERA — восемь экранов.
+ * Панель управления MAVERA — девять экранов.
  *
  * За основу взята админка Global Export: те же приёмы, которые уже работают у
  * действующего клиента — язык переключается прямо в поле, точка на вкладке
@@ -22,7 +25,8 @@ export type AdminScreenId =
   | "leads"
   | "users"
   | "analytics"
-  | "media";
+  | "media"
+  | "audit";
 
 export const adminSections: { id: AdminScreenId; label: string; group: string }[] = [
   { id: "overview", label: "Обзор", group: "Работа" },
@@ -33,6 +37,7 @@ export const adminSections: { id: AdminScreenId; label: string; group: string }[
   { id: "leads", label: "Заявки", group: "Продажи" },
   { id: "analytics", label: "Аналитика", group: "Продажи" },
   { id: "users", label: "Пользователи и роли", group: "Настройки" },
+  { id: "audit", label: "Журнал действий", group: "Настройки" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -459,7 +464,25 @@ function Flats() {
 
   return (
     <Chrome active="flats">
-      <Title eyebrow="ЖК «Чинор» / Корпус 3" title="Корпуса и квартиры" action="Импорт из Excel" />
+      <Title eyebrow="ЖК «Чинор» / Корпус 3" title="Корпуса и квартиры" action={useAddon("import") ? "Импорт из Excel" : "+ Квартира"} />
+
+      {/* Допник «Импорт из Excel»: прайс загружается файлом, изменения видны до применения. */}
+      <Addon id="import" compact className="mt-[0.9em]">
+        <Card className="flex flex-wrap items-center gap-[0.8em] border-forest-700/30 bg-forest-700/5">
+          <span className="flex h-[2em] w-[2em] shrink-0 items-center justify-center rounded-[0.4em] bg-forest-700 text-[0.5em] font-semibold text-sand-50">
+            XLSX
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[0.55em] font-medium">chinor-korpus-3.xlsx · 96 строк</span>
+            <span className="block text-[0.46em] text-ink-subtle">
+              12 изменений цены · 3 новых статуса · 1 квартира не найдена в корпусе
+            </span>
+          </span>
+          <span className="rounded-full bg-forest-800 px-[0.9em] py-[0.4em] text-[0.48em] font-medium text-sand-50">
+            Проверить и применить
+          </span>
+        </Card>
+      </Addon>
 
       <div className="mt-[0.9em] flex flex-wrap items-center gap-[0.4em]">
         {["Корпус 1", "Корпус 2", "Корпус 3", "Корпус 4", "Корпус 5"].map((chip, index) => (
@@ -548,9 +571,28 @@ function Leads() {
     { date: "13.09, 16:12", name: "Тимур Х.", source: "ЖК «Чинор» · бронь", owner: "Нодира", state: "Сделка" },
   ];
 
+  const crm = useAddon("crm");
+  const synced = ["✓ amoCRM", "✓ amoCRM", "ждёт", "✓ amoCRM", "✓ amoCRM"];
+
   return (
     <Chrome active="leads">
-      <Title eyebrow="Продажи" title="Заявки" action="Выгрузить в CRM" />
+      <Title eyebrow="Продажи" title="Заявки" action={crm ? "Настройки amoCRM" : "Выгрузить в CSV"} />
+
+      {/* Допник «Интеграция с CRM»: заявки уходят сами, статус синхронизации — в списке. */}
+      <Addon id="crm" compact className="mt-[0.9em]">
+        <Card className="flex flex-wrap items-center gap-[0.8em] border-forest-700/30 bg-forest-700/5">
+          <span className="h-[0.6em] w-[0.6em] shrink-0 rounded-full bg-forest-600" />
+          <span className="min-w-0 flex-1">
+            <span className="block text-[0.55em] font-medium">amoCRM подключена · воронка «Продажи квартир»</span>
+            <span className="block text-[0.46em] text-ink-subtle">
+              Синхронизация 2 минуты назад · 43 сделки · менеджер назначается по очереди
+            </span>
+          </span>
+          <span className="rounded-full border border-forest-900/15 px-[0.8em] py-[0.35em] text-[0.46em] text-ink-subtle">
+            Bitrix24 — не подключена
+          </span>
+        </Card>
+      </Addon>
 
       <div className="mt-[0.9em] grid grid-cols-4 gap-[0.5em]">
         {[
@@ -567,17 +609,26 @@ function Leads() {
       </div>
 
       <div className="mt-[0.7em] overflow-hidden rounded-[0.5em] border border-forest-900/10 bg-white">
-        <div className="grid grid-cols-[1fr_1fr_1.6fr_0.8fr_0.9fr] gap-[0.5em] border-b border-forest-900/10 px-[0.9em] py-[0.45em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
+        <div
+          className={cn(
+            "grid gap-[0.5em] border-b border-forest-900/10 px-[0.9em] py-[0.45em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle",
+            crm ? "grid-cols-[1fr_1fr_1.6fr_0.8fr_0.9fr_0.8fr]" : "grid-cols-[1fr_1fr_1.6fr_0.8fr_0.9fr]",
+          )}
+        >
           <span>Дата</span>
           <span>Имя</span>
           <span>Источник</span>
           <span>Менеджер</span>
           <span>Статус</span>
+          {crm ? <span>CRM</span> : null}
         </div>
-        {leads.map((lead) => (
+        {leads.map((lead, index) => (
           <div
             key={lead.date}
-            className="grid grid-cols-[1fr_1fr_1.6fr_0.8fr_0.9fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.5em] text-[0.5em] last:border-b-0"
+            className={cn(
+              "grid items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.5em] text-[0.5em] last:border-b-0",
+              crm ? "grid-cols-[1fr_1fr_1.6fr_0.8fr_0.9fr_0.8fr]" : "grid-cols-[1fr_1fr_1.6fr_0.8fr_0.9fr]",
+            )}
           >
             <span className="text-ink-subtle tabular-nums">{lead.date}</span>
             <span>{lead.name}</span>
@@ -597,13 +648,19 @@ function Leads() {
             >
               {lead.state}
             </span>
+            {crm ? (
+              <span className={cn("text-[0.85em]", synced[index].startsWith("✓") ? "text-forest-700" : "text-harvest-800")}>
+                {synced[index]}
+              </span>
+            ) : null}
           </div>
         ))}
       </div>
 
       <p className="mt-[0.6em] text-[0.46em] leading-[1.6] text-ink-subtle">
         Источник сохраняется автоматически: страница, проект, квартира и UTM-метка.
-        Заявка одновременно уходит на почту, в Telegram отдела продаж и в CRM.
+        Заявка одновременно уходит на почту и в Telegram отдела продаж
+        {crm ? " и в CRM — без ручной выгрузки" : "; в CRM — выгрузкой CSV"}.
       </p>
     </Chrome>
   );
@@ -657,7 +714,9 @@ function Users() {
         ))}
       </div>
 
-      <Card className="mt-[0.7em]">
+      {/* Допник «Роли и права»: без него роль — только подпись, с ним — матрица прав. */}
+      <Addon id="roles" className="mt-[0.7em]">
+      <Card>
         <p className="text-[0.55em] font-medium">Что может каждая роль</p>
         <div className="mt-[0.6em] overflow-hidden rounded-[0.4em] border border-forest-900/10">
           <div className="grid grid-cols-[1.6fr_1fr_1fr_1fr_1fr] gap-[0.4em] border-b border-forest-900/10 bg-forest-900/4 px-[0.7em] py-[0.35em] text-[0.42em] uppercase tracking-[0.08em] text-ink-subtle">
@@ -681,10 +740,73 @@ function Users() {
           ))}
         </div>
         <p className="mt-[0.5em] text-[0.44em] leading-[1.6] text-ink-subtle">
-          Журнал действий пишет, кто и когда поменял цену или статус квартиры —
-          спорные правки разбираются по записи, а не по памяти.
+          Права назначаются ролью, а не по одному: новый менеджер получает всё
+          нужное одним переключателем.
         </p>
       </Card>
+      </Addon>
+    </Chrome>
+  );
+}
+
+/** Журнал действий — допник «Журнал»: кто, когда и что поменял. */
+function Audit() {
+  const rows = [
+    { when: "15.09, 14:40", who: "Нодира Юсупова", what: "Квартира 3-7-42 · статус", from: "Свободна", to: "Бронь" },
+    { when: "15.09, 12:15", who: "Азиз Каримов", what: "Корпус 3 · цена за м²", from: "11 080 000", to: "11 412 050" },
+    { when: "15.09, 09:02", who: "Камола Эргашева", what: "ЖК «Дарё» · текст EN", from: "черновик", to: "опубликован" },
+    { when: "14.09, 18:31", who: "Бекзод Раимов", what: "Заявка #1042 · менеджер", from: "—", to: "Бекзод" },
+    { when: "14.09, 10:07", who: "Азиз Каримов", what: "Пользователь agency@partner.uz", from: "—", to: "Наблюдатель" },
+    { when: "13.09, 16:12", who: "Нодира Юсупова", what: "Квартира 1-12-08 · статус", from: "Бронь", to: "Продана" },
+  ];
+
+  return (
+    <Chrome active="audit">
+      <Title eyebrow="Настройки" title="Журнал действий" action="Выгрузить за месяц" />
+
+      <Addon id="audit" className="mt-[0.9em]">
+        <div className="flex flex-wrap items-center gap-[0.4em]">
+          {["Все", "Цены", "Статусы", "Тексты", "Пользователи"].map((chip, index) => (
+            <span
+              key={chip}
+              className={cn(
+                "rounded-full px-[0.8em] py-[0.32em] text-[0.48em]",
+                index === 0 ? "bg-forest-800 text-sand-50" : "border border-forest-900/15 text-ink-subtle",
+              )}
+            >
+              {chip}
+            </span>
+          ))}
+          <span className="ml-auto text-[0.48em] text-ink-subtle">Хранится 12 месяцев</span>
+        </div>
+
+        <div className="mt-[0.7em] overflow-hidden rounded-[0.5em] border border-forest-900/10 bg-white">
+          <div className="grid grid-cols-[1fr_1.3fr_1.8fr_1fr_1fr] gap-[0.5em] border-b border-forest-900/10 px-[0.9em] py-[0.45em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
+            <span>Когда</span>
+            <span>Кто</span>
+            <span>Что</span>
+            <span>Было</span>
+            <span>Стало</span>
+          </div>
+          {rows.map((row) => (
+            <div
+              key={row.when + row.what}
+              className="grid grid-cols-[1fr_1.3fr_1.8fr_1fr_1fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.5em] text-[0.5em] last:border-b-0"
+            >
+              <span className="text-ink-subtle tabular-nums">{row.when}</span>
+              <span>{row.who}</span>
+              <span className="truncate text-ink-subtle">{row.what}</span>
+              <span className="truncate text-ink-subtle line-through decoration-forest-900/30">{row.from}</span>
+              <span className="truncate font-medium">{row.to}</span>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-[0.6em] text-[0.46em] leading-[1.6] text-ink-subtle">
+          Спорные правки разбираются по записи, а не по памяти: любое изменение
+          цены, статуса или текста можно откатить одной кнопкой.
+        </p>
+      </Addon>
     </Chrome>
   );
 }
@@ -698,9 +820,11 @@ function Analytics() {
     { name: "Google · поиск", visits: "520", leads: "4", share: 6 },
   ];
 
+  const metrika = useAddon("metrika");
+
   return (
     <Chrome active="analytics">
-      <Title eyebrow="Продажи" title="Аналитика поведения" action="Открыть Метрику" />
+      <Title eyebrow="Продажи" title="Аналитика поведения" action={metrika ? "Открыть Метрику" : "Подключить Метрику"} />
 
       <div className="mt-[0.9em] grid grid-cols-2 gap-[0.5em] @min-[40rem]:grid-cols-4">
         {[
@@ -716,7 +840,9 @@ function Analytics() {
         ))}
       </div>
 
-      <div className="mt-[0.7em] grid gap-[0.6em] @min-[40rem]:grid-cols-[1.4fr_1fr]">
+      {/* Допник «Метрика в панели»: источники, цели и вебвизор — здесь, а не в отдельном сервисе. */}
+      <Addon id="metrika" className="mt-[0.7em]">
+      <div className="grid gap-[0.6em] @min-[40rem]:grid-cols-[1.4fr_1fr]">
         <Card>
           <p className="text-[0.55em] font-medium">Источники и заявки</p>
           <div className="mt-[0.7em] space-y-[0.45em]">
@@ -758,6 +884,13 @@ function Analytics() {
           </p>
         </Card>
       </div>
+      </Addon>
+      {metrika ? null : (
+        <p className="mt-[0.7em] text-[0.46em] leading-[1.6] text-ink-subtle">
+          Счётчик на сайте стоит, отчёты — в интерфейсе Яндекс.Метрики. Источники,
+          цели и вебвизор внутри панели — допник.
+        </p>
+      )}
     </Chrome>
   );
 }
@@ -797,6 +930,7 @@ const registry: Record<AdminScreenId, () => React.ReactNode> = {
   users: Users,
   analytics: Analytics,
   media: Media,
+  audit: Audit,
 };
 
 export function AdminScreen({ id }: { id: AdminScreenId }) {

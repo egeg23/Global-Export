@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { useConfigurator } from "@/components/mavera/configurator/context";
+import { Compare, useConfigurator } from "@/components/mavera/configurator/context";
 import { shareUrl, write } from "@/components/mavera/configurator/store";
 import { useCountUp, useMotionPreferred } from "@/components/mavera/motion";
 import { currencies, money, rateNote, tiers } from "@/components/present/mavera/theme";
-import { addons, type Addon } from "@/content/mavera/addons";
+import { addons, type Addon, type AddonWhere } from "@/content/mavera/addons";
 import { cn } from "@/lib/cn";
 
 /**
@@ -16,7 +16,18 @@ import { cn } from "@/lib/cn";
  * Оформление намеренно не из мира сайта: тёмная плашка с жёлтой ценой одна и
  * та же на белом «Стандарте», бумажном «Люксе» и тёмном «Премиуме». Это наш
  * инструмент, а не часть сайта, и выглядеть он должен как инструмент.
+ *
+ * Допники сгруппированы по месту: сначала то, что живёт на этой странице,
+ * потом остальное. Тумблер из другой группы сам переводит на нужную страницу.
  */
+
+const placeLabel: Record<AddonWhere, string> = {
+  main: "Главная",
+  object: "Карточка ЖК",
+  both: "Главная и карточка",
+  admin: "Панель управления",
+};
+
 export function Dock() {
   const ctx = useConfigurator();
   const motion = useMotionPreferred();
@@ -41,9 +52,7 @@ export function Dock() {
   if (!ctx) return null;
 
   const tier = tiers.find((entry) => entry.id === ctx.tier) ?? tiers[0];
-  const inPackage = addons.filter((addon) => ctx.isIncluded(addon.id) || addon.priceUsd === 0);
-  const extras = addons.filter((addon) => !inPackage.includes(addon));
-  const extrasOn = extras.filter((addon) => ctx.enabled.has(addon.id)).length;
+  const extrasOn = addons.filter((addon) => ctx.enabled.has(addon.id) && !ctx.isIncluded(addon.id)).length;
 
   if (!ctx.open) {
     return (
@@ -64,6 +73,13 @@ export function Dock() {
       </button>
     );
   }
+
+  const order: AddonWhere[] =
+    ctx.page === "main"
+      ? ["main", "both", "object", "admin"]
+      : ctx.page === "object"
+        ? ["object", "both", "main", "admin"]
+        : ["admin", "main", "both", "object"];
 
   const copy = async () => {
     // Ссылка несёт набор всегда — даже если его читали из хранилища.
@@ -87,8 +103,9 @@ export function Dock() {
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#ffd166]">Конструктор</p>
           <h2 className="mt-1 text-base font-medium">Что войдёт в сайт «{tier.label}»</h2>
           <p className="mt-1 hidden text-xs leading-relaxed text-[#f2efe9]/55 sm:block">
-            Включите — блок появится на странице, а цена пересчитается. Пока
-            панель открыта, блоки подписаны ценой.
+            Включите — блок появится на странице, а цена пересчитается. Если
+            блок живёт на другой странице, откроется она. У свежего блока есть
+            «было / стало».
           </p>
         </div>
         <button
@@ -123,8 +140,9 @@ export function Dock() {
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-5 py-3">
-        <Group title="Допники" hint="плюс к пакету" items={extras} />
-        <Group title={`В пакете «${tier.label}»`} hint="можно выключить и посмотреть без них" items={inPackage} />
+        {order.map((where) => (
+          <Group key={where} where={where} />
+        ))}
       </div>
 
       <footer className="border-t border-white/10 px-5 py-4">
@@ -158,34 +176,39 @@ export function Dock() {
   );
 }
 
-function Group({ title, hint, items }: { title: string; hint: string; items: Addon[] }) {
+function Group({ where }: { where: AddonWhere }) {
+  const ctx = useConfigurator();
+  if (!ctx) return null;
+
+  const items = addons
+    .filter((addon) => addon.where === where)
+    .sort((a, b) => Number(ctx.isIncluded(a.id)) - Number(ctx.isIncluded(b.id)));
   if (items.length === 0) return null;
+
+  const target = ctx.destination(where);
+
   return (
     <section className="py-2">
       <h3 className="flex items-baseline justify-between gap-3 text-[0.65rem] uppercase tracking-[0.16em] text-[#f2efe9]/45">
-        <span>{title}</span>
-        <span className="normal-case tracking-normal">{hint}</span>
+        <span>{placeLabel[where]}</span>
+        <span className="normal-case tracking-normal">{target ? "тумблер переведёт туда" : "на этой странице"}</span>
       </h3>
       <ul className="mt-1 divide-y divide-white/5">
         {items.map((addon) => (
-          <Row key={addon.id} addon={addon} />
+          <Row key={addon.id} addon={addon} target={target} />
         ))}
       </ul>
     </section>
   );
 }
 
-function Row({ addon }: { addon: Addon }) {
+function Row({ addon, target }: { addon: Addon; target: string | null }) {
   const ctx = useConfigurator();
   if (!ctx) return null;
 
   const on = ctx.enabled.has(addon.id);
-  const elsewhere =
-    addon.where === "object" && ctx.page === "main"
-      ? { href: ctx.objectHref, label: "смотреть в карточке ЖК" }
-      : addon.where === "main" && ctx.page === "object"
-        ? { href: ctx.homeHref, label: "смотреть на главной" }
-        : null;
+  const isFresh = ctx.fresh?.id === addon.id;
+  const free = ctx.isIncluded(addon.id) || addon.priceUsd === 0;
 
   return (
     <li className="flex items-start gap-3 py-2.5">
@@ -212,26 +235,24 @@ function Row({ addon }: { addon: Addon }) {
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-3">
           <span className={cn("text-sm", on ? "text-[#f2efe9]" : "text-[#f2efe9]/75")}>{addon.label}</span>
-          <span
-            className={cn(
-              "shrink-0 text-xs tabular-nums",
-              ctx.isIncluded(addon.id) || addon.priceUsd === 0 ? "text-[#f2efe9]/40" : "text-[#ffd166]",
-            )}
-          >
+          <span className={cn("shrink-0 text-xs tabular-nums", free ? "text-[#f2efe9]/40" : "text-[#ffd166]")}>
             {ctx.priceLabel(addon.id)}
           </span>
         </div>
         <p className="mt-0.5 text-xs leading-relaxed text-[#f2efe9]/50">{addon.effect}</p>
-        {elsewhere ? (
+        {on && isFresh ? (
+          <div className="mt-1.5 flex items-center gap-2 text-xs text-[#f2efe9]/50">
+            <span>Сравнить:</span>
+            <Compare />
+          </div>
+        ) : null}
+        {target && on ? (
           <Link
-            href={elsewhere.href}
+            href={target}
             prefetch={false}
-            className={cn(
-              "mt-1 inline-block text-xs underline decoration-dotted underline-offset-2 transition-colors",
-              on ? "text-[#ffd166]/85 hover:text-[#ffd166]" : "text-[#f2efe9]/35 hover:text-[#f2efe9]/70",
-            )}
+            className="mt-1 inline-block text-xs text-[#ffd166]/85 underline decoration-dotted underline-offset-2 transition-colors hover:text-[#ffd166]"
           >
-            {elsewhere.label} →
+            открыть {placeLabel[addon.where === "both" ? "main" : addon.where].toLowerCase()} →
           </Link>
         ) : null}
       </div>
