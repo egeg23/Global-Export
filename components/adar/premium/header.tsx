@@ -10,6 +10,7 @@ import { cn } from "@/lib/cn";
 
 const nav = [
   { label: "Каталог", href: "#katalog" },
+  { label: "О компании", href: "#o-kompanii" },
   { label: "Линейки", href: "#podbor" },
   { label: "Корпоративным", href: "#korporativnym" },
   { label: "Контакты", href: "#kontakty" },
@@ -46,7 +47,7 @@ export function PremiumHeader() {
           <Wordmark size="small" withMark />
         </Link>
 
-        <nav aria-label="Основное меню" className="ml-4 hidden gap-8 lg:flex">
+        <nav aria-label="Основное меню" className="ml-2 hidden gap-6 lg:flex xl:ml-4 xl:gap-8">
           {nav.map((item) => (
             <a
               key={item.href}
@@ -61,7 +62,7 @@ export function PremiumHeader() {
         <div className="ml-auto flex items-center gap-3 sm:gap-4">
           <a
             href={`tel:${company.contacts.phones[2].replace(/\s/g, "")}`}
-            className="hidden text-sm text-adar-cream-50/80 transition-colors hover:text-adar-gold-400 sm:block"
+            className="hidden text-sm text-adar-cream-50/80 transition-colors hover:text-adar-gold-400 sm:block lg:hidden xl:block"
           >
             {company.contacts.phones[2]}
           </a>
