@@ -10,6 +10,7 @@ import { ArchiveDrum } from "@/components/adar/premium/archive-drum";
 import { HeroStage } from "@/components/adar/premium/hero-stage";
 import { CorporateBlock } from "@/components/adar/premium/corporate-block";
 import { PremiumHeader } from "@/components/adar/premium/header";
+import { CartPanel } from "@/components/adar/ui/cart-panel";
 import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
@@ -19,6 +20,7 @@ import { SetShowcase } from "@/components/adar/ui/set-showcase";
 import { SiteFooter } from "@/components/adar/ui/site-footer";
 import { sets } from "@/content/adar/catalog";
 import { getConcept } from "@/content/adar/concepts";
+import { CartProvider } from "@/lib/adar/cart";
 import { growthStages } from "@/lib/adar/catalog";
 
 export const metadata: Metadata = {
@@ -42,7 +44,7 @@ export default function AdarPremiumConcept() {
   const concept = getConcept("premium");
 
   return (
-    <>
+    <CartProvider>
       <SkipLink />
       <ConceptBar current="premium" />
       <div className="bg-adar-green-950">
@@ -68,7 +70,8 @@ export default function AdarPremiumConcept() {
         </main>
         <SiteFooter />
       </div>
+      <CartPanel />
       <EstimatePanel concept={concept} />
-    </>
+    </CartProvider>
   );
 }

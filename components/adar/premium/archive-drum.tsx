@@ -76,18 +76,31 @@ export function ArchiveDrum() {
     return () => window.clearTimeout(id);
   }, [goTo, held, index, reduced, running]);
 
-  // Перетаскивание: пока палец на барабане, угол идёт за ним, на отпускании
-  // барабан встаёт на ближайшую грань.
-  const drag = useRef<{ y: number; from: number } | null>(null);
+  /**
+   * Перетаскивание.
+   *
+   * Мышью барабан тянут вверх-вниз — так, как он и крутится. Пальцем —
+   * вбок: вертикаль на телефоне принадлежит странице, и если забрать её
+   * себе, барабан во весь экран просто перестанет пропускать прокрутку
+   * дальше по сайту.
+   */
+  const drag = useRef<{ x: number; y: number; from: number; touch: boolean } | null>(null);
 
   const onDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    drag.current = { y: event.clientY, from: raw.get() };
+    drag.current = {
+      x: event.clientX,
+      y: event.clientY,
+      from: raw.get(),
+      touch: event.pointerType === "touch",
+    };
     setHeld(true);
   };
   const onMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const start = drag.current;
     if (!start) return;
-    const shift = (start.y - event.clientY) * 0.22;
+    const shift = start.touch
+      ? (start.x - event.clientX) * 0.3
+      : (start.y - event.clientY) * 0.22;
     raw.set(Math.min((seasons.length - 1) * STEP, Math.max(0, start.from + shift)));
   };
   const onUp = () => {
@@ -156,9 +169,23 @@ export function ArchiveDrum() {
               onPointerUp={onUp}
               onPointerCancel={onUp}
               onTouchStart={() => setHeld(true)}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+                  event.preventDefault();
+                  goTo(index - 1);
+                }
+                if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+                  event.preventDefault();
+                  goTo(index + 1);
+                }
+              }}
+              role="group"
+              aria-label={`Сезон ${season.year}. Стрелками — соседние сезоны`}
+              tabIndex={0}
               // Окно чуть выше грани: соседние сезоны видно, но за края они
-              // не вылезают.
-              className="relative mx-auto h-[calc(var(--adar-card)*1.62)] w-[min(88vw,32rem)] cursor-grab overflow-hidden touch-pan-y active:cursor-grabbing"
+              // не вылезают. touch-pan-y оставляет вертикальную прокрутку
+              // странице — пальцем барабан листают вбок.
+              className="relative mx-auto h-[calc(var(--adar-card)*1.62)] w-[min(88vw,32rem)] cursor-grab touch-pan-y overflow-hidden outline-none ring-adar-gold-500/60 focus-visible:ring-2 active:cursor-grabbing"
               style={{ perspective: "1500px" }}
             >
               <div
@@ -236,6 +263,13 @@ export function ArchiveDrum() {
               <span aria-hidden="true">↓</span>
             </button>
           </div>
+
+          <p className="mt-3 text-center text-xs text-adar-cream-50/55">
+            <span className="lg:hidden">Листайте вбок или выберите год</span>
+            <span className="hidden lg:inline">
+              Тяните барабан, листайте стрелками или выберите год
+            </span>
+          </p>
 
           <p aria-live="polite" className="sr-only">
             Сезон {season.year}, год {season.zodiac}. {season.note ?? ""}

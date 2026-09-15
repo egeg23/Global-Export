@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
+import { useCart } from "@/lib/adar/cart";
 import { contentsOf } from "@/lib/adar/catalog";
 import { formatPrice, formatWeight } from "@/lib/adar/format";
 import { cn } from "@/lib/cn";
@@ -24,6 +25,9 @@ export const ORDER_EVENT = "adar:order";
  */
 export function SetDialog({ set, onClose }: { set: GiftSet | null; onClose: () => void }) {
   const node = useRef<HTMLDialogElement>(null);
+  // Корзина есть только в премиальном варианте: где её нет, хук отдаёт null
+  // и кнопка не рисуется.
+  const cart = useCart();
 
   useEffect(() => {
     const dialog = node.current;
@@ -50,14 +54,14 @@ export function SetDialog({ set, onClose }: { set: GiftSet | null; onClose: () =
       )}
     >
       {set ? (
-        <article className="grid max-h-[85vh] gap-0 overflow-hidden sm:grid-cols-2">
-          <div className="relative bg-adar-cream-100 p-6">
+        <article className="flex max-h-[85vh] flex-col overflow-y-auto sm:grid sm:grid-cols-2 sm:overflow-hidden">
+          <div className="relative shrink-0 bg-adar-cream-100 p-6">
             <Image
               src={set.image}
               alt={set.name}
               width={720}
               height={720}
-              className="mx-auto h-full max-h-[26rem] w-auto object-contain"
+              className="mx-auto h-full max-h-[30vh] w-auto object-contain sm:max-h-[26rem]"
             />
           </div>
 
@@ -107,7 +111,7 @@ export function SetDialog({ set, onClose }: { set: GiftSet | null; onClose: () =
               Что внутри
             </p>
 
-            <ul className="mt-3 min-h-0 flex-1 overflow-y-auto pr-2 text-sm">
+            <ul className="mt-3 text-sm sm:min-h-0 sm:flex-1 sm:overflow-y-auto sm:pr-2">
               {contents.map((item, index) => (
                 <li
                   key={`${item.name}-${index}`}
@@ -120,22 +124,41 @@ export function SetDialog({ set, onClose }: { set: GiftSet | null; onClose: () =
                     ) : null}
                   </span>
                   <span className="shrink-0 tabular-nums text-adar-ink-subtle">
-                    {item.grams} г
+                    {String(item.grams).replace(".", ",")} г
                   </span>
                 </li>
               ))}
             </ul>
 
-            <button
-              type="button"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent(ORDER_EVENT, { detail: set.name }));
-                onClose();
-              }}
-              className="mt-6 cursor-pointer rounded-full bg-adar-green-900 px-7 py-3.5 text-sm font-medium text-adar-cream-50 transition-colors duration-300 hover:bg-adar-green-800"
-            >
-              Заказать этот набор
-            </button>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {cart ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    cart.add(set.slug);
+                    onClose();
+                  }}
+                  className="flex-1 cursor-pointer rounded-full bg-adar-green-900 px-7 py-3.5 text-sm font-medium text-adar-cream-50 transition-colors duration-300 hover:bg-adar-green-800"
+                >
+                  В корзину
+                </button>
+              ) : null}
+              <button
+                type="button"
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent(ORDER_EVENT, { detail: set.name }));
+                  onClose();
+                }}
+                className={cn(
+                  "cursor-pointer rounded-full px-7 py-3.5 text-sm font-medium transition-colors duration-300",
+                  cart
+                    ? "border border-adar-green-900/20 text-adar-ink hover:border-adar-green-700"
+                    : "flex-1 bg-adar-green-900 text-adar-cream-50 hover:bg-adar-green-800",
+                )}
+              >
+                {cart ? "Рассчитать партию" : "Заказать этот набор"}
+              </button>
+            </div>
           </div>
         </article>
       ) : null}

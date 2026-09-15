@@ -10,17 +10,59 @@ type Props = { tone?: "light" | "dark" };
 /**
  * Заявка на подарки.
  *
- * В прототипе форма ничего никуда не отправляет: проверяет заполнение и
- * показывает состояние «принято». На рабочем сайте те же поля уходят
- * менеджеру письмом и мгновенным сообщением — отправка настраивается при
- * запуске, вместе с почтой компании.
+ * Уходит менеджеру в Telegram: обработчик /api/adar/order собирает
+ * сообщение и отправляет ботом. Пока бот не подключён, сервер отвечает
+ * честной ошибкой, а не делает вид, что заявка ушла.
  */
 export function OrderForm({ tone = "light" }: Props) {
   const dark = tone === "dark";
   const id = useId();
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [note, setNote] = useState("");
   const noteField = useRef<HTMLTextAreaElement>(null);
+
+  async function send(form: HTMLFormElement) {
+    const data = new FormData(form);
+    setSending(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/adar/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          phone: data.get("phone"),
+          count: data.get("count"),
+          budget: data.get("budget"),
+          note: data.get("note"),
+          website: data.get("website"),
+          page: window.location.pathname,
+        }),
+      });
+
+      const result: { ok?: boolean } = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) {
+        setError(
+          response.status === 422
+            ? "Проверьте имя и телефон."
+            : response.status === 429
+              ? "Слишком много попыток. Попробуйте через минуту."
+              : "Не удалось отправить. Позвоните нам — ответим сразу.",
+        );
+        return;
+      }
+
+      setNote("");
+      setSent(true);
+    } catch {
+      setError("Нет связи с сервером. Позвоните нам — ответим сразу.");
+    } finally {
+      setSending(false);
+    }
+  }
 
   // «Заказать этот набор» в карточке товара приводит сюда: форма уже
   // заполнена названием, и посетителю остаётся оставить телефон.
@@ -88,7 +130,7 @@ export function OrderForm({ tone = "light" }: Props) {
       noValidate={false}
       onSubmit={(event) => {
         event.preventDefault();
-        setSent(true);
+        void send(event.currentTarget);
       }}
       className={cn(
         "grid gap-5 rounded-adar border p-6 sm:p-8",
@@ -163,16 +205,33 @@ export function OrderForm({ tone = "light" }: Props) {
         />
       </div>
 
+      {/* Ловушка для роботов: человек её не видит и не заполняет */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-px w-px opacity-0"
+      />
+
+      {error ? (
+        <p role="alert" className={cn("text-sm", dark ? "text-adar-red-400" : "text-adar-red-600")}>
+          {error}
+        </p>
+      ) : null}
+
       <button
         type="submit"
+        disabled={sending}
         className={cn(
-          "mt-1 rounded-full px-7 py-3.5 text-sm font-medium transition-colors duration-300",
+          "mt-1 cursor-pointer rounded-full px-7 py-3.5 text-sm font-medium transition-colors duration-300 disabled:cursor-wait disabled:opacity-70",
           dark
             ? "bg-adar-gold-500 text-adar-green-950 hover:bg-adar-gold-400"
             : "bg-adar-green-900 text-adar-cream-50 hover:bg-adar-green-800",
         )}
       >
-        Отправить заявку
+        {sending ? "Отправляем…" : "Отправить заявку"}
       </button>
 
       <p
