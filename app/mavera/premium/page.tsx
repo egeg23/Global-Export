@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Genplan, Picker } from "@/components/present/mavera/interactive";
 import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scenes";
 import { Rise } from "@/components/mavera/reveal";
@@ -272,12 +273,14 @@ export default function MaveraPremium() {
               {voice.closing.text}
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <span className="w-glow rounded-full bg-[var(--w-accent)] px-9 py-4 text-sm font-medium text-white">
-                {voice.closing.primary}
-              </span>
-              <span className="rounded-full border border-[var(--w-line)] px-9 py-4 text-sm">
+              <DemoSubmit
+                label={voice.closing.primary}
+                done="Заявка принята. Менеджер свяжется в течение 15 минут."
+                className="w-glow rounded-full bg-[var(--w-accent)] px-9 py-4 text-sm font-medium text-white"
+              />
+              <a href="#picker" className="rounded-full border border-[var(--w-line)] px-9 py-4 text-sm">
                 {voice.closing.secondary}
-              </span>
+              </a>
             </div>
           </Rise>
         </div>

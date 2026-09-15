@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
 import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
+import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { ParallaxFigure } from "@/components/mavera/lux/parallax-figure";
 import { Rise } from "@/components/mavera/reveal";
 import { News, Reviews } from "@/components/mavera/sections";
@@ -421,12 +422,11 @@ export default function MaveraLux() {
                 placeholder="Телефон"
                 className="flex-1 border border-[var(--w-line)] bg-[var(--w-bg)] px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--w-accent)]"
               />
-              <button
-                type="button"
+              <DemoSubmit
+                label={voice.closing.primary}
+                done="Записали. Менеджер подтвердит время показа."
                 className="bg-[var(--w-accent)] px-7 py-3 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90"
-              >
-                {voice.closing.primary}
-              </button>
+              />
             </div>
           </Rise>
         </div>
