@@ -2,7 +2,7 @@ import { cn } from "@/lib/cn";
 
 import { Genplan, Picker } from "./interactive";
 import { Skyline } from "./skyline";
-import type { ScreenId, TierId } from "./theme";
+import { money, type CurrencyId, type ScreenId, type TierId } from "./theme";
 
 /**
  * Макеты страниц MAVERA.
@@ -25,17 +25,20 @@ type ScreenProps = {
   tier: TierId;
   /** В превью интерактив выключен: макет лежит внутри кнопки «Развернуть». */
   live: boolean;
+  /** Валюта витрины: цены хранятся в долларах и пересчитываются на показ. */
+  currency: CurrencyId;
 };
 
 const nav = ["Главная", "О компании", "Проекты", "Коммерция", "Контакты"];
 
+/** Цена за квадратный метр — в долларах; на показ пересчитывается в сум и рубль. */
 const projects = [
-  { name: "Чинор", district: "Мирзо-Улугбекский", segment: "Комфорт", status: "Строится", price: "11,4" },
-  { name: "Дарё", district: "Яшнабадский", segment: "Бизнес", status: "Продаётся", price: "14,8" },
-  { name: "Бахор", district: "Сергелийский", segment: "Эконом", status: "Сдан", price: "9,2" },
-  { name: "Олтин Водий", district: "Юнусабадский", segment: "Комфорт", status: "Строится", price: "11,9" },
-  { name: "Нур", district: "Чиланзарский", segment: "Эконом", status: "Сдан", price: "9,6" },
-  { name: "Зарафшон", district: "Мирабадский", segment: "Бизнес", status: "Продаётся", price: "15,3" },
+  { name: "Чинор", district: "Мирзо-Улугбекский", segment: "Комфорт", status: "Строится", priceUsd: 970 },
+  { name: "Дарё", district: "Яшнабадский", segment: "Бизнес", status: "Продаётся", priceUsd: 1260 },
+  { name: "Бахор", district: "Сергелийский", segment: "Эконом", status: "Сдан", priceUsd: 780 },
+  { name: "Олтин Водий", district: "Юнусабадский", segment: "Комфорт", status: "Строится", priceUsd: 1010 },
+  { name: "Нур", district: "Чиланзарский", segment: "Эконом", status: "Сдан", priceUsd: 820 },
+  { name: "Зарафшон", district: "Мирабадский", segment: "Бизнес", status: "Продаётся", priceUsd: 1300 },
 ];
 
 const segments = [
@@ -164,9 +167,11 @@ function Header({ device, tier }: Pick<ScreenProps, "device" | "tier">) {
 function ProjectCard({
   project,
   tier,
+  currency,
 }: {
   project: (typeof projects)[number];
   tier: TierId;
+  currency: CurrencyId;
 }) {
   return (
     <div className="overflow-hidden rounded-[0.7em] border border-[var(--mv-line)] bg-[var(--mv-surface)] transition-colors duration-500">
@@ -182,8 +187,8 @@ function ProjectCard({
 
         {tier === "premium" ? (
           <p className="mt-[0.6em] text-[0.7em] font-medium text-[var(--mv-text)]">
-            от {project.price}{" "}
-            <span className="text-[0.75em] font-normal text-[var(--mv-muted)]">млн сум/м²</span>
+            от {money(project.priceUsd, currency)}{" "}
+            <span className="text-[0.75em] font-normal text-[var(--mv-muted)]">за м²</span>
           </p>
         ) : null}
 
@@ -220,7 +225,7 @@ function Footer() {
 /* Экраны                                                              */
 /* ------------------------------------------------------------------ */
 
-function Home({ device, tier }: ScreenProps) {
+function Home({ device, tier, currency }: ScreenProps) {
   const mobile = device === "mobile";
 
   return (
@@ -328,7 +333,7 @@ function Home({ device, tier }: ScreenProps) {
         </div>
         <div className={cn("grid gap-[0.9em]", mobile ? "grid-cols-1" : "grid-cols-3")}>
           {projects.slice(0, 3).map((project) => (
-            <ProjectCard key={project.name} project={project} tier={tier} />
+            <ProjectCard key={project.name} project={project} tier={tier} currency={currency} />
           ))}
         </div>
       </section>
@@ -338,7 +343,7 @@ function Home({ device, tier }: ScreenProps) {
   );
 }
 
-function Projects({ device, tier }: ScreenProps) {
+function Projects({ device, tier, currency }: ScreenProps) {
   const mobile = device === "mobile";
 
   return (
@@ -367,7 +372,7 @@ function Projects({ device, tier }: ScreenProps) {
       <section className="px-[2em] pb-[2em]">
         <div className={cn("grid gap-[0.9em]", mobile ? "grid-cols-1" : "grid-cols-3")}>
           {projects.map((project) => (
-            <ProjectCard key={project.name} project={project} tier={tier} />
+            <ProjectCard key={project.name} project={project} tier={tier} currency={currency} />
           ))}
         </div>
       </section>
@@ -377,7 +382,7 @@ function Projects({ device, tier }: ScreenProps) {
   );
 }
 
-function Project({ device, tier }: ScreenProps) {
+function Project({ device, tier, currency }: ScreenProps) {
   const mobile = device === "mobile";
   const specs = [
     { label: "Площадь", value: "84 600 м²" },
@@ -386,6 +391,9 @@ function Project({ device, tier }: ScreenProps) {
     { label: "Квартир", value: "1 248" },
     { label: "Сегмент", value: "Комфорт" },
     { label: "Сдача", value: "IV кв. 2027" },
+    ...(tier === "premium"
+      ? [{ label: "Цена от", value: `${money(970, currency)} за м²` }]
+      : []),
   ];
 
   return (
@@ -804,7 +812,7 @@ function Contacts({ device, tier }: ScreenProps) {
   );
 }
 
-function GenplanScreen({ device, tier, live }: ScreenProps) {
+function GenplanScreen({ device, tier, live, currency }: ScreenProps) {
   const mobile = device === "mobile";
 
   return (
@@ -826,7 +834,7 @@ function GenplanScreen({ device, tier, live }: ScreenProps) {
       </section>
 
       <section className="px-[2em] pb-[2em]">
-        <Genplan compact={mobile} live={live} />
+        <Genplan compact={mobile} live={live} currency={currency} />
       </section>
 
       <Footer />
@@ -834,7 +842,7 @@ function GenplanScreen({ device, tier, live }: ScreenProps) {
   );
 }
 
-function PickerScreen({ device, tier, live }: ScreenProps) {
+function PickerScreen({ device, tier, live, currency }: ScreenProps) {
   const mobile = device === "mobile";
 
   return (
@@ -852,7 +860,7 @@ function PickerScreen({ device, tier, live }: ScreenProps) {
       </section>
 
       <section className="px-[2em] pb-[2em]">
-        <Picker compact={mobile} live={live} />
+        <Picker compact={mobile} live={live} currency={currency} />
       </section>
 
       <Footer />
@@ -880,11 +888,13 @@ export function Screen({
   id,
   device,
   tier,
+  currency,
   live = false,
 }: {
   id: ScreenId;
   device: Device;
   tier: TierId;
+  currency: CurrencyId;
   live?: boolean;
 }) {
   const Body = registry[id];
@@ -894,7 +904,7 @@ export function Screen({
       className="flex min-h-full flex-col bg-[var(--mv-bg)] text-[var(--mv-text)] transition-colors duration-500"
       style={{ fontSize: device === "mobile" ? "3.4cqw" : "1.15cqw" }}
     >
-      <Body device={device} tier={tier} live={live} />
+      <Body device={device} tier={tier} live={live} currency={currency} />
     </div>
   );
 }

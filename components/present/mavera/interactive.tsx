@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { cn } from "@/lib/cn";
 
+import { money, type CurrencyId } from "./theme";
+
 /**
  * Два экрана, ради которых и берут «Премиум»: генплан и подбор квартиры.
  *
@@ -26,17 +28,18 @@ type Corpus = {
   flats: string;
   status: "Сдан" | "Строится" | "Продаётся";
   due: string;
-  price: string;
+  /** Стартовая цена за квадратный метр, в долларах. */
+  priceUsd: number;
 };
 
 const corpuses: Corpus[] = [
-  { id: "1", points: "40,150 150,150 150,215 40,215", label: [95, 187], floors: "9", flats: "108", status: "Сдан", due: "Сдан в 2024", price: "10,2" },
-  { id: "2", points: "40,230 150,230 150,300 40,300", label: [95, 269], floors: "12", flats: "144", status: "Сдан", due: "Сдан в 2025", price: "10,8" },
-  { id: "3", points: "175,120 270,120 270,215 175,215", label: [222, 171], floors: "16", flats: "192", status: "Продаётся", due: "IV кв. 2026", price: "11,4" },
-  { id: "4", points: "295,120 390,120 390,215 295,215", label: [342, 171], floors: "16", flats: "192", status: "Продаётся", due: "IV кв. 2026", price: "11,6" },
-  { id: "5", points: "175,240 390,240 390,300 175,300", label: [282, 274], floors: "9", flats: "120", status: "Строится", due: "II кв. 2027", price: "12,1" },
-  { id: "6", points: "415,120 520,120 520,200 415,200", label: [467, 163], floors: "14", flats: "168", status: "Строится", due: "IV кв. 2027", price: "12,4" },
-  { id: "7", points: "415,225 520,225 520,300 415,300", label: [467, 266], floors: "14", flats: "156", status: "Строится", due: "II кв. 2028", price: "12,4" },
+  { id: "1", points: "40,150 150,150 150,215 40,215", label: [95, 187], floors: "9", flats: "108", status: "Сдан", due: "Сдан в 2024", priceUsd: 870 },
+  { id: "2", points: "40,230 150,230 150,300 40,300", label: [95, 269], floors: "12", flats: "144", status: "Сдан", due: "Сдан в 2025", priceUsd: 920 },
+  { id: "3", points: "175,120 270,120 270,215 175,215", label: [222, 171], floors: "16", flats: "192", status: "Продаётся", due: "IV кв. 2026", priceUsd: 970 },
+  { id: "4", points: "295,120 390,120 390,215 295,215", label: [342, 171], floors: "16", flats: "192", status: "Продаётся", due: "IV кв. 2026", priceUsd: 990 },
+  { id: "5", points: "175,240 390,240 390,300 175,300", label: [282, 274], floors: "9", flats: "120", status: "Строится", due: "II кв. 2027", priceUsd: 1030 },
+  { id: "6", points: "415,120 520,120 520,200 415,200", label: [467, 163], floors: "14", flats: "168", status: "Строится", due: "IV кв. 2027", priceUsd: 1050 },
+  { id: "7", points: "415,225 520,225 520,300 415,300", label: [467, 266], floors: "14", flats: "156", status: "Строится", due: "II кв. 2028", priceUsd: 1050 },
 ];
 
 const statusTone: Record<Corpus["status"], string> = {
@@ -45,7 +48,15 @@ const statusTone: Record<Corpus["status"], string> = {
   Строится: "0.58",
 };
 
-export function Genplan({ compact = false, live = false }: { compact?: boolean; live?: boolean }) {
+export function Genplan({
+  compact = false,
+  live = false,
+  currency,
+}: {
+  compact?: boolean;
+  live?: boolean;
+  currency: CurrencyId;
+}) {
   const [activeId, setActiveId] = useState("3");
   const active = corpuses.find((corpus) => corpus.id === activeId) ?? corpuses[0];
 
@@ -130,7 +141,7 @@ export function Genplan({ compact = false, live = false }: { compact?: boolean; 
           {[
             { label: "Этажность", value: active.floors },
             { label: "Квартир", value: active.flats },
-            { label: "Цена от", value: `${active.price} млн сум/м²` },
+            { label: "Цена от", value: `${money(active.priceUsd, currency)} за м²` },
           ].map((row) => (
             <div key={row.label} className="flex items-baseline justify-between gap-[0.6em]">
               <dt className="text-[0.58em] text-[var(--mv-muted)]">{row.label}</dt>
@@ -194,7 +205,18 @@ const tone: Record<FlatState, string> = {
   sold: "bg-[var(--mv-faint)]",
 };
 
-export function Picker({ compact = false, live = false }: { compact?: boolean; live?: boolean }) {
+/** Стартовая цена корпуса 3 за квадратный метр, в долларах. */
+const pickerPriceUsd = 970;
+
+export function Picker({
+  compact = false,
+  live = false,
+  currency,
+}: {
+  compact?: boolean;
+  live?: boolean;
+  currency: CurrencyId;
+}) {
   const [selected, setSelected] = useState<[number, number]>([11, 2]);
   const [floor, index] = selected;
   const state = flatState(floor, index);
@@ -313,8 +335,7 @@ export function Picker({ compact = false, live = false }: { compact?: boolean; l
           </div>
 
           <p className="mt-[0.9em] text-[1.1em] font-semibold leading-none text-[var(--mv-text)]">
-            {(Number(area(floor, index).replace(",", ".")) * 11.4).toFixed(0)}{" "}
-            <span className="text-[0.5em] font-normal text-[var(--mv-muted)]">млн сум</span>
+            {money(Number(area(floor, index).replace(",", ".")) * pickerPriceUsd, currency)}
           </p>
           <p className="mt-[0.35em] text-[0.55em] text-[var(--mv-muted)]">
             Рассрочка 0% на 18 месяцев

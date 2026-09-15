@@ -7,7 +7,17 @@ import { cn } from "@/lib/cn";
 
 import { BrowserFrame, PhoneFrame, useMotionAllowed, usePointerParallax } from "./frames";
 import { Screen } from "./screens";
-import { lockedIn, screensFor, tiers, type ScreenId, type TierId } from "./theme";
+import {
+  currencies,
+  lockedIn,
+  moneyParts,
+  rateNote,
+  screensFor,
+  tiers,
+  type CurrencyId,
+  type ScreenId,
+  type TierId,
+} from "./theme";
 
 type Device = "desktop" | "mobile";
 
@@ -23,6 +33,7 @@ export function MaveraGallery() {
   const [tierId, setTierId] = useState<TierId>("premium");
   const [openId, setOpenId] = useState<ScreenId | null>(null);
   const [device, setDevice] = useState<Device>("desktop");
+  const [currency, setCurrency] = useState<CurrencyId>("usd");
   const motion = useMotionAllowed();
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -86,7 +97,8 @@ export function MaveraGallery() {
 
   return (
     <div style={paletteOf(tierId)}>
-      {/* Тумблер пакетов */}
+      {/* Тумблер пакетов и валюта */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div
         role="group"
         aria-label="Вариант сайта"
@@ -115,6 +127,32 @@ export function MaveraGallery() {
         ))}
       </div>
 
+        {/* Валюта: цены хранятся в долларах, остальное — пересчёт по курсу. */}
+        <div
+          role="group"
+          aria-label="Валюта"
+          className="flex shrink-0 self-start rounded-full border border-sand-50/12 p-1"
+        >
+          {currencies.map((entry) => (
+            <button
+              key={entry.id}
+              type="button"
+              aria-pressed={currency === entry.id}
+              aria-label={entry.name}
+              onClick={() => setCurrency(entry.id)}
+              className={cn(
+                "rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-300",
+                currency === entry.id
+                  ? "bg-sand-50 text-forest-950"
+                  : "text-sand-200/70 hover:text-sand-50",
+              )}
+            >
+              {entry.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Смета выбранного варианта */}
       <div
         key={tier.id}
@@ -124,7 +162,16 @@ export function MaveraGallery() {
           <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--mv-accent)]">
             {tier.mood}
           </p>
-          <p className="mt-4 font-display text-4xl leading-none text-sand-50">{tier.price}</p>
+          {/* Цифра — акцидентным шрифтом, единица — обычным: «175 МЛН СУМ»
+              в Playfair читается хуже, чем цифра с подписью рядом. */}
+          <p className="mt-4 flex items-baseline gap-2">
+            <span className="font-display text-4xl leading-none text-sand-50">
+              {moneyParts(tier.priceUsd, currency).value}
+            </span>
+            <span className="text-base text-sand-200/70">
+              {moneyParts(tier.priceUsd, currency).unit}
+            </span>
+          </p>
           <p className="mt-3 text-sm text-sand-300/60">
             {tier.duration} · {tier.hours}
           </p>
@@ -138,9 +185,10 @@ export function MaveraGallery() {
               {item}
             </li>
           ))}
-          <li className="pt-2 text-xs text-sand-300/45">
+          <li className="pt-2 text-xs leading-relaxed text-sand-300/45">
             Цены без допников: перевод носителями, CRM, 3D-тур и поддержка считаются
             отдельно.
+            {currency === "usd" ? null : <> Договор всё равно считается в долларах. {rateNote}.</>}
           </li>
         </ul>
       </div>
@@ -172,7 +220,7 @@ export function MaveraGallery() {
                 }
               >
                 <span aria-hidden="true">
-                  <Screen id={screen.id} device="desktop" tier={tierId} />
+                  <Screen id={screen.id} device="desktop" tier={tierId} currency={currency} />
                 </span>
 
                 <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center bg-gradient-to-t from-forest-950/90 to-transparent pb-4 pt-10 text-xs font-medium text-sand-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
@@ -309,7 +357,7 @@ export function MaveraGallery() {
                     : { role: "img", "aria-label": `Макет страницы «${openScreen.title}»` })}
                   className="max-h-[62svh] overflow-y-auto overscroll-contain sm:max-h-[70svh]"
                 >
-                  <Screen id={openScreen.id} device="desktop" tier={tierId} live={live} />
+                  <Screen id={openScreen.id} device="desktop" tier={tierId} currency={currency} live={live} />
                 </div>
               </BrowserFrame>
             ) : (
@@ -325,7 +373,7 @@ export function MaveraGallery() {
                       : { role: "img", "aria-label": `Мобильный макет: ${openScreen.title}` })}
                     className="h-full overflow-y-auto overscroll-contain"
                   >
-                    <Screen id={openScreen.id} device="mobile" tier={tierId} live={live} />
+                    <Screen id={openScreen.id} device="mobile" tier={tierId} currency={currency} live={live} />
                   </div>
                 </PhoneFrame>
               </div>

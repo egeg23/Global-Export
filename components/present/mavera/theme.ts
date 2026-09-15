@@ -21,7 +21,8 @@ export type Tier = {
   mood: string;
   /** Одна строка о том, кому и зачем этот вариант. */
   note: string;
-  price: string;
+  /** Цена пакета в долларах — из неё считаются сум и рубль. */
+  priceUsd: number;
   duration: string;
   hours: string;
   /** Что входит именно в этот пакет — по смете. */
@@ -35,7 +36,7 @@ export const tiers: Tier[] = [
     label: "Стандарт",
     mood: "Дневной каталог",
     note: "Бриф ровно как написан: тёплый камень, воздух, читается как каталог недвижимости. Движение — только появление блоков.",
-    price: "$5 900",
+    priceUsd: 5900,
     duration: "5–6 недель",
     hours: "≈ 240 часов",
     includes: [
@@ -70,7 +71,7 @@ export const tiers: Tier[] = [
     label: "Люкс",
     mood: "Ночная витрина",
     note: "Тёмный кадр, крупная типографика, рендеры светятся. Фильтры, статусы объектов, анимации при прокрутке — премиальный образ, о котором говорит бриф.",
-    price: "$8 900",
+    priceUsd: 8900,
     duration: "8–9 недель",
     hours: "≈ 395 часов",
     includes: [
@@ -105,7 +106,7 @@ export const tiers: Tier[] = [
     label: "Премиум",
     mood: "Полный фарш",
     note: "Инструмент продаж по меркам московских девелоперов: интерактивный генплан, подбор квартиры по параметрам, ход строительства, промо-условия покупки и глубокий параллакс.",
-    price: "$14 900",
+    priceUsd: 14900,
     duration: "12–14 недель",
     hours: "≈ 594 часа",
     includes: [
@@ -136,6 +137,71 @@ export const tiers: Tier[] = [
     },
   },
 ];
+
+
+/* ------------------------------------------------------------------ */
+/* Валюты                                                              */
+/* ------------------------------------------------------------------ */
+
+export type CurrencyId = "usd" | "uzs" | "rub";
+
+/**
+ * Курсы на 15.09.2026: ЦБ Узбекистана (cbu.uz) и ЦБ России (cbr.ru).
+ *
+ * Зашиты числом, а не тянутся из внешнего сервиса: витрина должна открываться
+ * и через полгода, и без сети, а презентационная страница, которая падает
+ * из-за чужого API, — худшее, что может случиться на встрече. Курс правится
+ * здесь, в одном месте, и подписан датой прямо на странице.
+ */
+export const currencies: { id: CurrencyId; label: string; name: string; rate: number }[] = [
+  { id: "usd", label: "$", name: "доллар", rate: 1 },
+  { id: "uzs", label: "сум", name: "сум", rate: 11765.21 },
+  { id: "rub", label: "₽", name: "рубль", rate: 84.34 },
+];
+
+export const rateNote = "Курс ЦБ на 15.09.2026: 1 $ = 11 765 сум = 84,34 ₽";
+
+/** Разряды неразрывными пробелами, без Intl: сервер и клиент обязаны совпасть. */
+function group(value: number): string {
+  return Math.round(value)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+}
+
+/**
+ * Три значащие цифры в миллионах: «1,26 млн ₽», «11,4 млн сум», «175 млн сум».
+ * Одного знака после запятой мало — цена договора в рублях округлялась бы до
+ * «1,3 млн», то есть с ошибкой в полсотни тысяч.
+ */
+function millions(value: number): string {
+  const units = value / 1_000_000;
+  const digits = units < 10 ? 2 : units < 100 ? 1 : 0;
+  const factor = 10 ** digits;
+  return (Math.round(units * factor) / factor).toString().replace(".", ",");
+}
+
+/**
+ * Сумма в выбранной валюте. Хранится всё в долларах — это единственная цена,
+ * которую мы называем клиенту; остальное пересчитывается.
+ *
+ * Миллионы сжимаются в «12,4 млн»: полная запись цены квартиры в сумах — это
+ * девять цифр, читать её в карточке невозможно.
+ */
+export function moneyParts(usd: number, currency: CurrencyId): { value: string; unit: string } {
+  const entry = currencies.find((item) => item.id === currency) ?? currencies[0];
+  const value = usd * entry.rate;
+
+  if (currency === "usd") return { value: `$${group(value)}`, unit: "" };
+
+  const suffix = currency === "uzs" ? "сум" : "₽";
+  if (value >= 1_000_000) return { value: millions(value), unit: `млн\u00a0${suffix}` };
+  return { value: group(value), unit: suffix };
+}
+
+export function money(usd: number, currency: CurrencyId): string {
+  const { value, unit } = moneyParts(usd, currency);
+  return unit ? `${value}\u00a0${unit}` : value;
+}
 
 export type ScreenId =
   | "home"

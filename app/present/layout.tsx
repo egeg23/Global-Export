@@ -26,6 +26,9 @@ export const metadata: Metadata = {
   description:
     "Рабочий прототип: каталог на трёх языках, две концепции дизайна, демонстрация анимации и панель управления.",
   robots: { index: false, follow: false, nocache: true },
+  // Без этого браузер просит /favicon.ico и получает 404 — мелочь, но она
+  // видна в консоли на странице, которую открывают при заказчике.
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function PresentLayout({ children }: { children: React.ReactNode }) {
