@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 
 import { Shell } from "@/components/adar/ui/shell";
+import { ZodiacMark } from "@/components/adar/ui/zodiac-mark";
 import { archiveSeasonsList, seasons } from "@/content/adar/archive";
 import { cn } from "@/lib/cn";
 
@@ -306,20 +307,24 @@ function Face({
           className="pointer-events-none absolute inset-3 rounded-adar border border-adar-gold-500/20 sm:inset-4"
         />
 
-        <span
-          aria-hidden="true"
-          className="adar-logo-mark relative w-12 opacity-80 sm:w-14"
-        />
+        {/* Знак года — то, подо что и делалась упаковка сезона */}
+        <ZodiacMark sign={item.sign} className="relative w-16 text-adar-gold-300 sm:w-20" />
 
-        <p className="relative mt-4 text-[0.6rem] uppercase tracking-[0.35em] text-adar-gold-300">
+        <p className="relative mt-3 text-[0.6rem] uppercase tracking-[0.35em] text-adar-gold-300">
           Каталог сезона
         </p>
-        <p className="relative mt-2 font-adar-display text-[3.4rem] leading-none text-adar-cream-50 tabular-nums sm:text-7xl">
+        <p className="relative mt-1 font-adar-display text-[3.2rem] leading-none text-adar-cream-50 tabular-nums sm:text-6xl">
           {item.year}
         </p>
-        <p className="relative mt-2 text-xs uppercase tracking-[0.25em] text-adar-cream-50/70">
+        <p className="relative mt-1 text-xs uppercase tracking-[0.25em] text-adar-cream-50/70">
           год {item.zodiac}
         </p>
+
+        {/* Знак компании — едва заметным тиснением в углу обложки */}
+        <span
+          aria-hidden="true"
+          className="adar-logo-mark pointer-events-none absolute -bottom-[10%] -right-[6%] w-[26%] opacity-[0.05]"
+        />
 
         {item.note ? (
           <p className="relative mt-5 max-w-sm border-t border-adar-gold-500/25 pt-4 text-sm leading-relaxed text-adar-cream-50/80">
