@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
+import { AssemblingSet } from "@/components/adar/premium/assembling-set";
 import { Shell } from "@/components/adar/ui/shell";
 import { sets } from "@/content/adar/catalog";
 import { bannerSlides } from "@/content/adar/banner";
@@ -112,7 +113,7 @@ export function Banner() {
       <motion.span
         aria-hidden="true"
         style={reduced ? undefined : { y: markY, rotate: markSpin }}
-        className="adar-logo-mark pointer-events-none absolute -right-[18%] top-[6%] -z-10 w-[80vw] opacity-[0.12] sm:-right-[12%] sm:w-[58vw] lg:right-[3%] lg:top-[16%] lg:w-[34vw]"
+        className="adar-logo-mark pointer-events-none absolute -right-[18%] top-[6%] -z-10 w-[80vw] opacity-[0.12] sm:-right-[12%] lg:opacity-[0.08] sm:w-[58vw] lg:right-[3%] lg:top-[16%] lg:w-[34vw]"
       />
 
       <Shell size="wide" className="relative grid items-end gap-8 lg:grid-cols-12">
@@ -224,24 +225,16 @@ export function Banner() {
           <AnimatePresence mode="wait">
             <motion.div
               key={product.slug}
-              initial={reduced ? false : { opacity: 0, y: 40, scale: 0.94 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={reduced ? undefined : { opacity: 0, y: -30, scale: 1.04 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              initial={reduced ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={reduced ? undefined : { opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             >
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={640}
-                height={640}
-                priority={index === 0}
-                // Высота ограничена долей экрана: без этого набор на широком
-                // мониторе вылезал за нижний край кадра.
-                className="mx-auto max-h-[48vh] w-auto max-w-md object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.6)]"
-              />
+              <AssemblingSet src={product.image} alt={product.name} />
             </motion.div>
           </AnimatePresence>
         </motion.div>
+
       </Shell>
     </section>
   );

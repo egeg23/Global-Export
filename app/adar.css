@@ -211,6 +211,36 @@
     );
   }
 
+  /* Ореол за набором на первом экране и его тень на «полу». Оба нужны для
+     одного: фотография набора вырезана из фона, и без них она читается
+     наклейкой, наклеенной поверх кадра. */
+  .adar-set-ground {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgb(4 12 8 / 0.78) 0%,
+      rgb(4 12 8 / 0.42) 48%,
+      transparent 74%
+    );
+  }
+
+  .adar-set-halo {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgb(208 160 60 / 0.36) 0%,
+      rgb(208 160 60 / 0.12) 45%,
+      transparent 72%
+    );
+  }
+
+  .adar-set-floor {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgb(3 10 6 / 0.7) 0%,
+      rgb(3 10 6 / 0.32) 45%,
+      transparent 75%
+    );
+  }
+
   .adar-hairline {
     border-color: rgb(239 227 205 / 0.14);
   }
