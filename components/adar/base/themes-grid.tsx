@@ -81,12 +81,18 @@ export function ThemesGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
                   // не видел, поэтому плитка честно остаётся без кадра.
                   <div aria-hidden="true" className="absolute inset-0 bg-adar-green-800" />
                 )}
+                {/*
+                  Затемнение держит непрозрачность до середины плитки, а не
+                  тает сразу от низа: подпись невысокой плитки заканчивается
+                  примерно на её середине, и над светлым кадром — снимком с
+                  конфетами — белые буквы там просто пропадали.
+                */}
                 <div
                   aria-hidden="true"
                   className={cn(
                     "absolute inset-0",
                     theme.image
-                      ? "bg-gradient-to-t from-adar-green-950/95 via-adar-green-950/55 to-adar-green-950/15"
+                      ? "bg-gradient-to-t from-adar-green-950/96 via-adar-green-950/82 via-48% to-adar-green-950/20"
                       : "bg-gradient-to-t from-adar-green-950/85 to-adar-green-950/35",
                   )}
                 />
@@ -100,7 +106,7 @@ export function ThemesGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
                   >
                     {theme.title}
                   </h3>
-                  <p className="mt-2 text-sm text-adar-cream-100/70">
+                  <p className="mt-2 text-sm text-adar-cream-100/85">
                     {theme.count > 0
                       ? pluralize(theme.count, ["набор", "набора", "наборов"]) + " в каталоге"
                       : theme.note}
@@ -110,7 +116,7 @@ export function ThemesGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
                       "mt-4 inline-flex items-center gap-2 rounded-full px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.16em]",
                       theme.count > 0
                         ? "bg-adar-gold-500 text-adar-green-950"
-                        : "border border-adar-cream-50/25 text-adar-cream-50/75",
+                        : "border border-adar-cream-50/45 text-adar-cream-50/90",
                     )}
                   >
                     {theme.count > 0 ? "В наличии" : "Под заказ"}

@@ -273,3 +273,45 @@
     transform: translateY(240%);
   }
 }
+
+/*
+ * Линейка годов в барабане архива.
+ *
+ * Она длиннее своего места и прокручивается вбок. Без растворения по краям
+ * крайний год обрезан ровно посередине цифры — выглядит как ошибка вёрстки,
+ * а не как «дальше есть ещё».
+ */
+.adar-rail {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 1.5rem,
+    #000 calc(100% - 1.5rem),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 1.5rem,
+    #000 calc(100% - 1.5rem),
+    transparent
+  );
+}
+
+/*
+ * Окно барабана.
+ *
+ * Дальние грани растворяются по краям окна маской, а не полосой цвета сверху:
+ * полоса закрашивала бы и подсветку секции под барабаном — на её фоне было
+ * видно прямоугольник размером с окно.
+ */
+.adar-drum-window {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 18%,
+    #000 82%,
+    transparent
+  );
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+}

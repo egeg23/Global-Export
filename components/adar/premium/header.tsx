@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { CartButton } from "@/components/adar/ui/cart-button";
@@ -44,9 +43,9 @@ export function PremiumHeader() {
       )}
     >
       <Shell size="wide" className="flex items-center gap-4 py-5 lg:gap-8">
-        <Link href="#" aria-label="ADAR — на главную">
+        <a href="#content" aria-label="ADAR — к началу страницы">
           <Wordmark size="small" withMark />
-        </Link>
+        </a>
 
         <nav aria-label="Основное меню" className="ml-2 hidden gap-6 lg:flex xl:ml-4 xl:gap-8">
           {nav.map((item) => (

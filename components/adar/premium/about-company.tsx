@@ -31,7 +31,10 @@ export function AboutCompany() {
   // Фотографии едут навстречу друг другу — именно расхождение планов, а не
   // общий сдвиг, читается как глубина.
   const photoBig = useTransform(scrollYProgress, [0, 1], ["9%", "-9%"]);
-  const photoSmall = useTransform(scrollYProgress, [0, 1], ["-16%", "16%"]);
+  // Ход маленькой карточки короткий и почти весь вниз: на большой
+  // фотографии по центру набит слоган компании, и при широком ходе карточка
+  // наезжала на него — «ВСЁ» пропадало, оставалось «Ё БУДЕТ В ШОКОЛАДЕ».
+  const photoSmall = useTransform(scrollYProgress, [0, 1], ["-7%", "11%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
   const markY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
   const markSpin = useTransform(scrollYProgress, [0, 1], [-14, 14]);
@@ -101,7 +104,7 @@ export function AboutCompany() {
             // Размеры заданы долями большой фотографии, а не пикселями: иначе
             // на одних экранах карточка наезжала на строку слогана, а на
             // других висела в воздухе.
-            className="absolute -bottom-[16%] left-2 top-[56%] aspect-[3/4] overflow-hidden rounded-adar border border-white/15 shadow-[0_30px_60px_rgba(0,0,0,0.55)] lg:-left-10"
+            className="absolute -bottom-[16%] left-2 top-[61%] aspect-[3/4] overflow-hidden rounded-adar border border-white/15 shadow-[0_30px_60px_rgba(0,0,0,0.55)] lg:-left-10"
           >
             <Image
               src="/adar/photos/kids-box.webp"
@@ -127,7 +130,12 @@ export function AboutCompany() {
               </p>
               <p className="mt-5 font-adar-display text-4xl leading-none text-adar-gold-400 tabular-nums xl:text-5xl">
                 {step.prefix}
-                <CountUp to={step.value} plain={step.plain} />
+                {/*
+                  Год стоит на месте, а не добегает от нуля: цифра, которая
+                  пробегает 0 → 2011, читается как счётчик посещений, а не
+                  как дата основания.
+                */}
+                {step.plain ? step.value : <CountUp to={step.value} />}
               </p>
               <p className="mt-3 max-w-[15rem] text-sm text-adar-cream-50">{step.caption}</p>
               <p className="mt-4 max-w-sm text-sm leading-relaxed text-adar-cream-50/70">

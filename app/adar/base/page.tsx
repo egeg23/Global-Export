@@ -13,6 +13,7 @@ import { ClientsWall } from "@/components/adar/ui/clients-wall";
 import { ContactSection } from "@/components/adar/ui/contact-section";
 import { SiteFooter } from "@/components/adar/ui/site-footer";
 import { getConcept } from "@/content/adar/concepts";
+import { showcaseChrome } from "@/lib/adar/showcase";
 
 export const metadata: Metadata = {
   title: "Вариант 01 — «Витрина»",
@@ -31,7 +32,7 @@ export default function AdarBaseConcept() {
   return (
     <>
       <SkipLink />
-      <ConceptBar current="base" />
+      {showcaseChrome ? <ConceptBar current="base" /> : null}
       <SiteHeader />
       <main id="content">
         <Hero />
@@ -43,7 +44,7 @@ export default function AdarBaseConcept() {
         <ContactSection />
       </main>
       <SiteFooter />
-      <EstimatePanel concept={concept} />
+      {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
     </>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
 import { Shell } from "@/components/adar/ui/shell";
@@ -28,9 +27,9 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-adar-green-900/8 bg-adar-cream-50/85 backdrop-blur-md">
       <Shell size="wide" className="flex items-center gap-4 py-4 sm:gap-6">
-        <Link href="#" className="shrink-0" aria-label="ADAR — на главную">
+        <a href="#content" className="shrink-0" aria-label="ADAR — к началу страницы">
           <Wordmark size="small" withMark />
-        </Link>
+        </a>
 
         <nav aria-label="Основное меню" className="ml-6 hidden gap-8 lg:flex">
           {nav.map((item) => (
