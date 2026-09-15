@@ -63,7 +63,7 @@ export function GrowthScene({ stages }: Props) {
     <section
       ref={container}
       aria-label="Как растёт набор"
-      className="relative bg-adar-cream-100/60"
+      className="relative bg-adar-cream-100"
       style={{ height: `${stages.length * 58}vh` }}
     >
       <div className="sticky top-0 flex h-svh items-center overflow-hidden">
@@ -230,7 +230,7 @@ function StageLabel({
 /** Версия сцены для тех, кто отключил анимации в системе. */
 function StaticStages({ stages }: Props) {
   return (
-    <section aria-label="Как растёт набор" className="bg-adar-cream-100/60 py-20 lg:py-28">
+    <section aria-label="Как растёт набор" className="bg-adar-cream-100 py-20 lg:py-28">
       <Shell size="wide">
         <h2 className="font-adar-display text-4xl leading-tight text-adar-green-950 sm:text-5xl">
           Один набор, восемь ступеней

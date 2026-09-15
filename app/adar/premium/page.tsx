@@ -9,6 +9,7 @@ import { CinematicHero } from "@/components/adar/premium/cinematic-hero";
 import { CorporateBlock } from "@/components/adar/premium/corporate-block";
 import { PremiumHeader } from "@/components/adar/premium/header";
 import { NumbersBand } from "@/components/adar/premium/numbers-band";
+import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
@@ -21,6 +22,11 @@ import { growthStages } from "@/lib/adar/catalog";
 
 export const metadata: Metadata = {
   title: "Вариант 03 — «Премиум»",
+  // Своё описание, а не унаследованное от витрины: оно говорит про выбор из
+  // трёх вариантов, а эта страница — будущий сайт компании, и в выдаче должна
+  // описывать её, а не наше предложение.
+  description:
+    "Подарочные наборы ADAR: 80 готовых вариантов от 50 000 до 1 500 000 сум, состав и вес каждого, подбор по бюджету и расчёт партии для организаций. Ташкент, с 2011 года.",
 };
 
 /**
@@ -36,10 +42,11 @@ export default function AdarPremiumConcept() {
 
   return (
     <>
+      <SkipLink />
       <ConceptBar current="premium" />
       <div className="bg-adar-green-950">
         <PremiumHeader />
-        <main>
+        <main id="content">
           <CinematicHero />
           <NumbersBand />
           <CatalogFrame showcase={growthStages} />

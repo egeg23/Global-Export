@@ -46,7 +46,7 @@ export function Advantages({ tone = "light" }: { tone?: "light" | "dark" }) {
           <p
             className={cn(
               "mt-8 max-w-md text-sm leading-relaxed",
-              dark ? "text-adar-cream-50/55" : "text-adar-ink-muted",
+              dark ? "text-adar-cream-50/65" : "text-adar-ink-muted",
             )}
           >
             {company.story}
@@ -85,7 +85,7 @@ export function Advantages({ tone = "light" }: { tone?: "light" | "dark" }) {
               <p
                 className={cn(
                   "mt-3 text-sm leading-relaxed",
-                  dark ? "text-adar-cream-50/60" : "text-adar-ink-muted",
+                  dark ? "text-adar-cream-50/70" : "text-adar-ink-muted",
                 )}
               >
                 {item.text}

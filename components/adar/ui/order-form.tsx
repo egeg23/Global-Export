@@ -41,13 +41,13 @@ export function OrderForm({ tone = "light" }: Props) {
   const field = cn(
     "w-full rounded-xl border px-4 py-3 text-sm outline-none transition-colors duration-200",
     dark
-      ? "border-white/12 bg-white/5 text-adar-cream-50 placeholder:text-adar-cream-50/35 focus-visible:border-adar-gold-500"
+      ? "border-white/12 bg-white/5 text-adar-cream-50 placeholder:text-adar-cream-50/55 focus-visible:border-adar-gold-500"
       : "border-adar-green-900/12 bg-white text-adar-ink placeholder:text-adar-ink-subtle/70 focus-visible:border-adar-green-700",
   );
 
   const label = cn(
     "mb-2 block text-xs font-medium uppercase tracking-[0.14em]",
-    dark ? "text-adar-cream-50/50" : "text-adar-ink-subtle",
+    dark ? "text-adar-cream-50/65" : "text-adar-ink-subtle",
   );
 
   if (sent) {
@@ -63,7 +63,7 @@ export function OrderForm({ tone = "light" }: Props) {
         <p
           className={cn(
             "mt-4 max-w-sm text-sm leading-relaxed",
-            dark ? "text-adar-cream-50/65" : "text-adar-ink-muted",
+            dark ? "text-adar-cream-50/70" : "text-adar-ink-muted",
           )}
         >
           Заявка принята. Менеджер перезвонит и уточнит количество, бюджет
@@ -74,7 +74,7 @@ export function OrderForm({ tone = "light" }: Props) {
           onClick={() => setSent(false)}
           className={cn(
             "mt-8 text-sm underline underline-offset-4",
-            dark ? "text-adar-cream-50/50" : "text-adar-ink-subtle",
+            dark ? "text-adar-cream-50/65" : "text-adar-ink-subtle",
           )}
         >
           Отправить ещё одну
@@ -178,7 +178,7 @@ export function OrderForm({ tone = "light" }: Props) {
       <p
         className={cn(
           "text-xs leading-relaxed",
-          dark ? "text-adar-cream-50/40" : "text-adar-ink-subtle",
+          dark ? "text-adar-cream-50/55" : "text-adar-ink-subtle",
         )}
       >
         Перезваниваем в тот же день. Работаем ежедневно с 8:00 до 23:00.

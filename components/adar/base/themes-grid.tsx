@@ -44,7 +44,7 @@ export function ThemesGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
           <p
             className={cn(
               "max-w-sm text-sm leading-relaxed",
-              dark ? "text-adar-cream-50/55" : "text-adar-ink-muted",
+              dark ? "text-adar-cream-50/65" : "text-adar-ink-muted",
             )}
           >
             Новогодний каталог собран и выложен целиком. Остальные направления

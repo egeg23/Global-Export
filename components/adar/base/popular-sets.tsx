@@ -17,7 +17,7 @@ export function PopularSets() {
   const showcase = featuredSets(8);
 
   return (
-    <section id="katalog" className="bg-adar-cream-100/70 py-20 lg:py-28">
+    <section id="katalog" className="bg-adar-cream-100 py-20 lg:py-28">
       <Shell size="wide">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>

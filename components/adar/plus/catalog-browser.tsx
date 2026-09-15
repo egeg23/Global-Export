@@ -116,7 +116,7 @@ export function CatalogBrowser() {
   const chipOn = "border-adar-green-900 bg-adar-green-900 text-adar-cream-50";
 
   return (
-    <section id="katalog" className="bg-adar-cream-100/70 py-20 lg:py-28">
+    <section id="katalog" className="bg-adar-cream-100 py-20 lg:py-28">
       <Shell size="wide">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>

@@ -71,7 +71,7 @@ export function SetCard({ set, tone = "light", priority = false, className }: Pr
         <dl
           className={cn(
             "mt-auto flex flex-wrap gap-x-4 gap-y-1 text-xs",
-            dark ? "text-adar-cream-50/50" : "text-adar-ink-subtle",
+            dark ? "text-adar-cream-50/65" : "text-adar-ink-subtle",
           )}
         >
           <div className="flex gap-1.5">

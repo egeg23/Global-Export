@@ -23,16 +23,17 @@ export function NumbersBand() {
       <Shell size="wide">
         <dl className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {figures.map((figure) => (
-            <div key={figure.label}>
-              <dt className="sr-only">{figure.label}</dt>
-              <dd>
-                <span className="block font-adar-display text-5xl leading-none text-adar-gold-400 tabular-nums xl:text-6xl">
-                  {figure.suffix}
-                  <CountUp to={figure.value} plain={figure.plain} />
-                </span>
-                <span className="mt-4 block max-w-[13rem] text-sm leading-relaxed text-adar-cream-50/55">
-                  {figure.label}
-                </span>
+            // Подпись — это и есть <dt>: раньше она стояла дважды, скрытой
+            // для экранного диктора и видимой рядом, и он читал её дважды.
+            // Порядок в разметке обязан быть dt→dd, поэтому визуально их
+            // меняет местами колонка с обратным направлением.
+            <div key={figure.label} className="flex flex-col-reverse">
+              <dt className="mt-4 max-w-[13rem] text-sm leading-relaxed text-adar-cream-50/65">
+                {figure.label}
+              </dt>
+              <dd className="font-adar-display text-5xl leading-none text-adar-gold-400 tabular-nums xl:text-6xl">
+                {figure.suffix}
+                <CountUp to={figure.value} plain={figure.plain} />
               </dd>
             </div>
           ))}

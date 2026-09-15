@@ -31,13 +31,13 @@ export function EstimatePanel({ concept }: { concept: Concept }) {
             >
               «{concept.name}»
             </h2>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-adar-cream-50/65">
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-adar-cream-50/70">
               {concept.tagline}. Срок — {estimate.days}.
             </p>
           </div>
 
           <p className="text-right">
-            <span className="block text-[0.7rem] uppercase tracking-[0.2em] text-adar-cream-50/45">
+            <span className="block text-[0.7rem] uppercase tracking-[0.2em] text-adar-cream-50/65">
               Итого
             </span>
             <span className="mt-1 block font-adar-display text-6xl leading-none text-adar-gold-400 tabular-nums sm:text-7xl">
@@ -51,7 +51,7 @@ export function EstimatePanel({ concept }: { concept: Concept }) {
             Состав работ и стоимость по варианту «{concept.name}»
           </caption>
           <thead>
-            <tr className="text-[0.7rem] uppercase tracking-[0.18em] text-adar-cream-50/40">
+            <tr className="text-[0.7rem] uppercase tracking-[0.18em] text-adar-cream-50/55">
               <th scope="col" className="pb-4 font-medium">
                 Работа
               </th>
@@ -65,7 +65,7 @@ export function EstimatePanel({ concept }: { concept: Concept }) {
               <tr key={line.title} className="border-t border-white/10 align-top">
                 <th scope="row" className="py-6 pr-8 text-left font-normal">
                   <span className="block text-lg text-adar-cream-50">{line.title}</span>
-                  <span className="mt-2 block max-w-2xl text-sm leading-relaxed text-adar-cream-50/55">
+                  <span className="mt-2 block max-w-2xl text-sm leading-relaxed text-adar-cream-50/65">
                     {line.detail}
                   </span>
                 </th>
@@ -88,7 +88,7 @@ export function EstimatePanel({ concept }: { concept: Concept }) {
         <div className="mt-14 grid gap-10 border-t border-white/12 pt-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <h3 className="text-sm font-medium text-adar-cream-50">В сумму не входит</h3>
-            <p className="mt-3 text-sm leading-relaxed text-adar-cream-50/50">
+            <p className="mt-3 text-sm leading-relaxed text-adar-cream-50/65">
               Чтобы вопрос не всплыл в середине работы. Любой пункт добавляется
               отдельной строкой, если он нужен.
             </p>
@@ -96,7 +96,7 @@ export function EstimatePanel({ concept }: { concept: Concept }) {
           <ul className="grid gap-3 text-sm text-adar-cream-50/70 sm:grid-cols-2 lg:col-span-7">
             {estimate.excluded.map((item) => (
               <li key={item} className="flex gap-3">
-                <span aria-hidden="true" className="text-adar-cream-50/30">
+                <span aria-hidden="true" className="text-adar-cream-50/55">
                   —
                 </span>
                 {item}
@@ -117,7 +117,7 @@ export function EstimatePanel({ concept }: { concept: Concept }) {
           >
             Сравнить с другими вариантами
           </Link>
-          <p className="text-sm text-adar-cream-50/45">
+          <p className="text-sm text-adar-cream-50/65">
             Выбранный вариант дорабатывается до конца — остальные снимаются.
           </p>
         </div>

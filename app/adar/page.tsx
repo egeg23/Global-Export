@@ -54,7 +54,7 @@ export default function AdarShowcase() {
             до последней конфеты.
           </p>
 
-          <p className="mt-9 inline-flex flex-wrap items-center gap-x-3 gap-y-1 border-l-2 border-adar-gold-500 pl-5 text-sm text-adar-cream-50/60">
+          <p className="mt-9 inline-flex flex-wrap items-center gap-x-3 gap-y-1 border-l-2 border-adar-gold-500 pl-5 text-sm text-adar-cream-50/70">
             <span className="font-medium text-adar-cream-50">Что нужно от вас:</span>
             выбрать один вариант — его доводим до конца.
           </p>
