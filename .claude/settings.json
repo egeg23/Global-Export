@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-reminder.sh 2>/dev/null || bash .claude/hooks/session-reminder.sh",
+            "timeout": 10,
+            "statusMessage": "Напоминание о витрине MAVERA"
+          }
+        ]
+      }
+    ]
+  }
+}

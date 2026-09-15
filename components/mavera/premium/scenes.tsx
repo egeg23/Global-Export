@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Addon, useAddon } from "@/components/mavera/configurator/context";
 import { Magnetic, Words } from "@/components/mavera/configurator/live";
 import { money } from "@/components/present/mavera/theme";
-import { projects } from "@/content/mavera/data";
+import type { Project } from "@/content/mavera/data";
 import { cn } from "@/lib/cn";
 
 /** Прокрутка страницы, записанная в переменную узла: 0 — верх кадра, 1 — ушёл. */
@@ -118,14 +118,14 @@ export function CinemaHero({
           <Addon id="magnetic" flag className="mt-10">
             <div className="flex flex-wrap items-center gap-4">
               <Magnetic>
-                <span className="w-glow inline-block rounded-full bg-[var(--w-accent)] px-8 py-4 text-sm font-medium text-white">
+                <a href="#picker" className="w-glow inline-block rounded-full bg-[var(--w-accent)] px-8 py-4 text-sm font-medium text-white">
                   {hero.primary}
-                </span>
+                </a>
               </Magnetic>
               <Magnetic>
-                <span className="inline-block rounded-full border border-[var(--w-line)] px-8 py-4 text-sm text-[var(--w-ink)] backdrop-blur-sm">
+                <a href="#genplan" className="inline-block rounded-full border border-[var(--w-line)] px-8 py-4 text-sm text-[var(--w-ink)] backdrop-blur-sm">
                   {hero.secondary}
-                </span>
+                </a>
               </Magnetic>
             </div>
           </Addon>
@@ -212,7 +212,7 @@ export function Counters({ items }: { items: { value: string; suffix?: string; l
  * Кинолента проектов: карточки едут горизонтально, снимок внутри каждой —
  * с собственной скоростью, поэтому лента читается как проезд камеры.
  */
-export function FilmRail({ claims }: { claims: Record<string, string> }) {
+export function FilmRail({ claims, projects }: { claims: Record<string, string>; projects: Project[] }) {
   const [active, setActive] = useState(0);
 
   return (
@@ -250,12 +250,12 @@ export function FilmRail({ claims }: { claims: Record<string, string> }) {
                 <span className="text-sm text-[var(--w-muted)]">{project.segment}</span>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-[var(--w-muted)]">{claims[project.slug]}</p>
-              <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-[var(--w-line)] pt-4">
-                <span className="text-lg font-medium tabular-nums">
+              <div className="mt-6 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 border-t border-[var(--w-line)] pt-4">
+                <span className="whitespace-nowrap text-lg font-medium tabular-nums">
                   от {money(project.priceUsd, "uzs")}
                   <span className="ml-1 text-sm font-normal text-[var(--w-muted)]">за м²</span>
                 </span>
-                <span className="text-sm text-[var(--w-accent)]">Выбрать квартиру →</span>
+                <span className="whitespace-nowrap text-sm text-[var(--w-accent)]">Выбрать квартиру →</span>
               </div>
             </div>
           </Link>

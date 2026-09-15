@@ -7,7 +7,7 @@ import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scen
 import { Rise } from "@/components/mavera/reveal";
 import { News, Reviews } from "@/components/mavera/sections";
 import { VariantBar } from "@/components/mavera/variant-bar";
-import { stats, terms } from "@/content/mavera/data";
+import { projects, stats, terms } from "@/content/mavera/data";
 import { faq, investment, voices } from "@/content/mavera/voice";
 
 export const metadata: Metadata = { title: "Вариант 03 — «Премиум»" };
@@ -25,7 +25,7 @@ const voice = voices.premium;
 
 export default function MaveraPremium() {
   return (
-    <ConfiguratorProvider tier="premium" page="main">
+    <ConfiguratorProvider tier="premium" page="main" objectHref={`/mavera/premium/${projects[0].slug}`}>
       <VariantBar current="premium" />
 
       {/* Стеклянная шапка поверх кадра. */}
@@ -33,10 +33,16 @@ export default function MaveraPremium() {
         <div className="mx-auto flex w-full max-w-[1500px] items-center justify-between gap-6 px-5 py-4 sm:px-8">
           <span className="text-lg font-semibold tracking-[0.3em]">MAVERA</span>
           <nav className="hidden gap-8 text-sm text-[var(--w-muted)] md:flex">
-            {["Проекты", "Генплан", "Подбор", "Ход работ", "Контакты"].map((item) => (
-              <span key={item} className="transition-colors hover:text-[var(--w-ink)]">
+            {[
+              ["Проекты", "#projects"],
+              ["Генплан", "#genplan"],
+              ["Подбор", "#picker"],
+              ["Ход работ", "#progress"],
+              ["Контакты", "#contacts"],
+            ].map(([item, href]) => (
+              <a key={item} href={href} className="transition-colors hover:text-[var(--w-ink)]">
                 {item}
-              </span>
+              </a>
             ))}
           </nav>
           <div className="flex items-center gap-3">
@@ -45,9 +51,9 @@ export default function MaveraPremium() {
                 RU <span className="opacity-40">EN UZ</span>
               </span>
             </Addon>
-            <span className="w-glow rounded-full bg-[var(--w-accent)] px-5 py-2.5 text-sm font-medium text-white">
+            <a href="#picker" className="w-glow rounded-full bg-[var(--w-accent)] px-5 py-2.5 text-sm font-medium text-white">
               {voice.closing.primary}
-            </span>
+            </a>
           </div>
         </div>
       </header>
@@ -80,7 +86,7 @@ export default function MaveraPremium() {
       </section>
 
       {/* Кинолента проектов. */}
-      <section className="py-4">
+      <section id="projects" className="scroll-mt-20 py-4">
         <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
           <Rise className="flex flex-wrap items-end justify-between gap-6">
             <h2 className="text-[clamp(1.9rem,3.6vw,3rem)]">{voice.portfolio.title}</h2>
@@ -88,12 +94,12 @@ export default function MaveraPremium() {
           </Rise>
         </div>
         <Rise delay={80} className="mx-auto mt-10 w-full max-w-[1500px] px-5 sm:px-8">
-          <FilmRail claims={voice.claims} />
+          <FilmRail claims={voice.claims} projects={projects} />
         </Rise>
       </section>
 
       {/* Генплан — работает по-настоящему. */}
-      <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+      <section id="genplan" className="scroll-mt-20 border-t border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
           <Rise className="max-w-2xl">
             <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">Шаг 1</p>
@@ -111,7 +117,7 @@ export default function MaveraPremium() {
       </section>
 
       {/* Шахматка. */}
-      <section className="border-t border-[var(--w-line)]">
+      <section id="picker" className="scroll-mt-20 border-t border-[var(--w-line)]">
         <div className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
           <Rise className="max-w-2xl">
             <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">Шаг 2</p>
@@ -131,7 +137,7 @@ export default function MaveraPremium() {
       </section>
 
       {/* Ход строительства — допник, в «Премиуме» входит в пакет. */}
-      <Addon id="progress" as="section" className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+      <Addon id="progress" as="section" anchor="progress" className="scroll-mt-20 border-t border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
           <Rise className="flex flex-wrap items-end justify-between gap-6">
             <div>
@@ -180,8 +186,8 @@ export default function MaveraPremium() {
             <p className="mt-5 text-lg leading-relaxed text-[var(--w-muted)]">{investment.note}</p>
           </Rise>
 
-          <Rise delay={120} className="mt-14">
-            <div className="flex h-56 items-end gap-3 sm:gap-6">
+          <Rise delay={120} className="mt-14 overflow-x-auto">
+            <div className="flex h-56 min-w-[22rem] items-end gap-3 sm:gap-6">
               {investment.stages.map((stage) => (
                 <div key={stage.stage} className="flex flex-1 flex-col items-center gap-3">
                   <span className="text-sm tabular-nums text-[var(--w-accent)]">{stage.label}</span>
@@ -247,7 +253,7 @@ export default function MaveraPremium() {
       </Addon>
 
       {/* Финальный кадр. */}
-      <section className="relative isolate overflow-hidden border-t border-[var(--w-line)]">
+      <section id="contacts" className="relative isolate scroll-mt-20 overflow-hidden border-t border-[var(--w-line)]">
         <Image
           src="/images/mavera/park.jpg"
           alt=""

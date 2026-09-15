@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { money } from "@/components/present/mavera/theme";
-import { projects, type Project } from "@/content/mavera/data";
+import type { Project } from "@/content/mavera/data";
 import { cn } from "@/lib/cn";
 
 const segments = ["Все", "Эконом", "Комфорт", "Бизнес"] as const;
@@ -27,7 +27,7 @@ const sorters: Record<Sort, (a: Project, b: Project) => number> = {
  * ожидания сервера. Оформление швейцарское — сетка, волосяные линии,
  * нулевой радиус, единственный акцент на выбранном фильтре.
  */
-export function StandardCatalog({ claims }: { claims: Record<string, string> }) {
+export function StandardCatalog({ claims, projects }: { claims: Record<string, string>; projects: Project[] }) {
   const [segment, setSegment] = useState<(typeof segments)[number]>("Все");
   const [state, setState] = useState<(typeof states)[number]>("Все");
   const [sort, setSort] = useState<Sort>("price");

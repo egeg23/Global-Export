@@ -11,6 +11,7 @@ import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
 import { projects, stats, terms } from "@/content/mavera/data";
 import { district, materials, voices } from "@/content/mavera/voice";
+import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = { title: "Вариант 02 — «Люкс»" };
 
@@ -27,7 +28,7 @@ const voice = voices.lux;
  */
 export default function MaveraLux() {
   return (
-    <ConfiguratorProvider tier="lux" page="main">
+    <ConfiguratorProvider tier="lux" page="main" objectHref={`/mavera/lux/${projects[0].slug}`}>
       <VariantBar current="lux" />
 
       {/* Шапка-масthead: тонкие линейки, засечный логотип по центру. */}
@@ -46,10 +47,20 @@ export default function MaveraLux() {
             </p>
           </div>
           <nav className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 border-t border-[var(--w-line)] py-3 text-[0.72rem] uppercase tracking-[0.18em] text-[var(--w-muted)]">
-            {["Проекты", "Архитектура", "Район", "Коммерция", "Запись на показ"].map((item, index) => (
-              <span key={item} className={index === 0 ? "text-[var(--w-ink)]" : undefined}>
+            {[
+              ["Проекты", "#projects"],
+              ["Архитектура", "#interior"],
+              ["Район", "#district"],
+              ["Материалы", "#materials"],
+              ["Запись на показ", "#coupon"],
+            ].map(([item, href], index) => (
+              <a
+                key={item}
+                href={href}
+                className={cn("transition-colors hover:text-[var(--w-ink)]", index === 0 && "text-[var(--w-ink)]")}
+              >
                 {item}
-              </span>
+              </a>
             ))}
           </nav>
         </div>
@@ -200,7 +211,7 @@ export default function MaveraLux() {
       </section>
 
       {/* Лента объектов — листается, как страницы журнала. */}
-      <section className="py-20">
+      <section id="projects" className="scroll-mt-6 py-20">
         <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
           <Rise className="flex flex-wrap items-end justify-between gap-6">
             <h2 className="text-[clamp(1.8rem,3vw,2.8rem)]">{voice.portfolio.title}</h2>
@@ -246,7 +257,7 @@ export default function MaveraLux() {
       </section>
 
       {/* Разворот: интерьер и текст в две колонки. */}
-      <section className="border-y border-[var(--w-line)]">
+      <section id="interior" className="scroll-mt-6 border-y border-[var(--w-line)]">
         <div className="mx-auto grid w-full max-w-[1500px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:gap-16">
           <Rise delay={80} className="lg:col-span-5 lg:order-2">
             <ParallaxFigure
@@ -283,7 +294,7 @@ export default function MaveraLux() {
       </section>
 
       {/* Только в «Люксе»: район как часть предложения. */}
-      <section className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
+      <section id="district" className="mx-auto w-full max-w-[1500px] scroll-mt-6 px-5 py-20 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-12">
           <Rise className="lg:col-span-4">
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">Район</p>
@@ -305,7 +316,7 @@ export default function MaveraLux() {
       </section>
 
       {/* Только в «Люксе»: из чего сделан дом. */}
-      <section className="border-y border-[var(--w-line)] bg-[var(--w-paper)]">
+      <section id="materials" className="scroll-mt-6 border-y border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
           <Rise className="max-w-2xl">
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
@@ -392,7 +403,7 @@ export default function MaveraLux() {
       </Addon>
 
       {/* Запись на показ — купон в конце выпуска. */}
-      <section className="bg-[var(--w-paper)]">
+      <section id="coupon" className="scroll-mt-6 bg-[var(--w-paper)]">
         <div className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
           <Rise className="mx-auto max-w-3xl border-2 border-dashed border-[var(--w-accent)] bg-[var(--w-surface)] p-8 text-center sm:p-12">
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">

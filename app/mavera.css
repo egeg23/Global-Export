@@ -101,6 +101,14 @@
     font-weight: var(--w-display-weight);
     letter-spacing: var(--w-display-tracking);
   }
+
+  /* Снимки не перетаскиваются на рабочий стол и не выделяются — сдерживание,
+     не защита: см. components/mavera/guard.tsx. */
+  [data-world] img,
+  [data-world] svg {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
 }
 
 @layer utilities {
