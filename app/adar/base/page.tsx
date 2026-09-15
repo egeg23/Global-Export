@@ -6,6 +6,7 @@ import { PopularSets } from "@/components/adar/base/popular-sets";
 import { SiteHeader } from "@/components/adar/base/site-header";
 import { ThemesGrid } from "@/components/adar/base/themes-grid";
 import { Ticker } from "@/components/adar/base/ticker";
+import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
@@ -29,9 +30,10 @@ export default function AdarBaseConcept() {
 
   return (
     <>
+      <SkipLink />
       <ConceptBar current="base" />
       <SiteHeader />
-      <main>
+      <main id="content">
         <Hero />
         <Ticker />
         <ThemesGrid />

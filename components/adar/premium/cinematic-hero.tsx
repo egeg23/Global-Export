@@ -120,7 +120,7 @@ export function CinematicHero() {
 
             <dl className="flex gap-10 text-adar-cream-50">
               <div>
-                <dt className="text-xs uppercase tracking-[0.16em] text-adar-cream-50/40">
+                <dt className="text-xs uppercase tracking-[0.16em] text-adar-cream-50/55">
                   Наборов
                 </dt>
                 <dd className="mt-2 font-adar-display text-4xl text-adar-gold-400">
@@ -128,13 +128,13 @@ export function CinematicHero() {
                 </dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-[0.16em] text-adar-cream-50/40">
+                <dt className="text-xs uppercase tracking-[0.16em] text-adar-cream-50/55">
                   Линеек
                 </dt>
                 <dd className="mt-2 font-adar-display text-4xl text-adar-gold-400">8</dd>
               </div>
               <div className="hidden sm:block">
-                <dt className="text-xs uppercase tracking-[0.16em] text-adar-cream-50/40">
+                <dt className="text-xs uppercase tracking-[0.16em] text-adar-cream-50/55">
                   Сезонов
                 </dt>
                 <dd className="mt-2 font-adar-display text-4xl text-adar-gold-400">15</dd>

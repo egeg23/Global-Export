@@ -43,7 +43,7 @@ export function PremiumHeader() {
     >
       <Shell size="wide" className="flex items-center gap-8 py-5">
         <Link href="#" aria-label="ADAR — на главную">
-          <Wordmark />
+          <Wordmark onDark />
         </Link>
 
         <nav aria-label="Основное меню" className="ml-4 hidden gap-8 lg:flex">
@@ -51,7 +51,7 @@ export function PremiumHeader() {
             <a
               key={item.href}
               href={item.href}
-              className="link-underline text-sm text-adar-cream-50/65 transition-colors hover:text-adar-cream-50"
+              className="link-underline text-sm text-adar-cream-50/70 transition-colors hover:text-adar-cream-50"
             >
               {item.label}
             </a>

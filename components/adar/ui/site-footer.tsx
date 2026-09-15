@@ -21,14 +21,14 @@ export function SiteFooter() {
       <Shell size="wide" className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Wordmark tone="cream" />
-          <p className="mt-6 max-w-xs text-sm leading-relaxed text-adar-cream-50/50">
+          <p className="mt-6 max-w-xs text-sm leading-relaxed text-adar-cream-50/65">
             Подарочные наборы для мероприятий и праздников. Ташкент, с{" "}
             {company.since} года.
           </p>
         </div>
 
         <nav aria-label="Меню в подвале">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-adar-cream-50/40">Меню</h2>
+          <h2 className="text-xs uppercase tracking-[0.18em] text-adar-cream-50/55">Меню</h2>
           <ul className="mt-4 grid gap-2.5 text-sm">
             {menu.map((item) => (
               <li key={item.label}>
@@ -44,7 +44,7 @@ export function SiteFooter() {
         </nav>
 
         <div>
-          <h2 className="text-xs uppercase tracking-[0.18em] text-adar-cream-50/40">Для связи</h2>
+          <h2 className="text-xs uppercase tracking-[0.18em] text-adar-cream-50/55">Для связи</h2>
           <ul className="mt-4 grid gap-2.5 text-sm">
             {company.contacts.phones.slice(0, 2).map((phone) => (
               <li key={phone}>
@@ -68,18 +68,18 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h2 className="text-xs uppercase tracking-[0.18em] text-adar-cream-50/40">Адрес</h2>
+          <h2 className="text-xs uppercase tracking-[0.18em] text-adar-cream-50/55">Адрес</h2>
           <p className="mt-4 text-sm leading-relaxed text-adar-cream-50/75">
             {company.contacts.address}
           </p>
-          <p className="mt-4 text-sm leading-relaxed text-adar-cream-50/50">
+          <p className="mt-4 text-sm leading-relaxed text-adar-cream-50/65">
             {company.contacts.hours}
           </p>
         </div>
       </Shell>
 
       <Shell size="wide" className="mt-14 border-t border-white/10 pt-8">
-        <p className="text-xs text-adar-cream-50/35">
+        <p className="text-xs text-adar-cream-50/55">
           © <CurrentYear fallback={buildYear} /> ADAR
         </p>
       </Shell>

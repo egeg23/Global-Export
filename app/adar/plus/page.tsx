@@ -6,6 +6,7 @@ import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
 import { GrowthScene } from "@/components/adar/plus/growth-scene";
 import { PlusHero } from "@/components/adar/plus/hero";
 import { ShopHeader } from "@/components/adar/plus/shop-header";
+import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
@@ -45,10 +46,11 @@ export default function AdarPlusConcept() {
 
   return (
     <>
+      <SkipLink />
       <ConceptBar current="plus" />
       <div data-concept="shop">
         <ShopHeader />
-        <main>
+        <main id="content">
           <PlusHero showcase={featuredSets(3)} />
           <SetShowcase
             sets={railRow(0)}

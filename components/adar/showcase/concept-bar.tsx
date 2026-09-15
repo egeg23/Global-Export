@@ -44,7 +44,7 @@ export function ConceptBar({ current }: { current: Concept["id"] }) {
                   "rounded-full px-3.5 py-1.5 text-sm transition-colors duration-300",
                   active
                     ? "bg-adar-gold-500 font-medium text-adar-green-950"
-                    : "text-adar-cream-50/55 hover:bg-white/8 hover:text-adar-cream-50",
+                    : "text-adar-cream-50/65 hover:bg-white/8 hover:text-adar-cream-50",
                 )}
               >
                 <span className="mr-1.5 text-[0.7rem] opacity-60">{concept.index}</span>

@@ -44,7 +44,7 @@ export function ThemesGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
           <p
             className={cn(
               "max-w-sm text-sm leading-relaxed",
-              dark ? "text-adar-cream-50/55" : "text-adar-ink-muted",
+              dark ? "text-adar-cream-50/65" : "text-adar-ink-muted",
             )}
           >
             Новогодний каталог собран и выложен целиком. Остальные направления
@@ -67,16 +67,28 @@ export function ThemesGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
                   index === 0 && "min-h-[15rem] lg:min-h-[32rem]",
                 )}
               >
-                <Image
-                  src={theme.image}
-                  alt=""
-                  fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-                />
+                {theme.image ? (
+                  <Image
+                    src={theme.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                  />
+                ) : (
+                  // Направление заявлено, снимков ещё нет. Заполнять чужой
+                  // фотографией нельзя — она обещает товар, которого никто
+                  // не видел, поэтому плитка честно остаётся без кадра.
+                  <div aria-hidden="true" className="absolute inset-0 bg-adar-green-800" />
+                )}
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 bg-gradient-to-t from-adar-green-950/95 via-adar-green-950/55 to-adar-green-950/15"
+                  className={cn(
+                    "absolute inset-0",
+                    theme.image
+                      ? "bg-gradient-to-t from-adar-green-950/95 via-adar-green-950/55 to-adar-green-950/15"
+                      : "bg-gradient-to-t from-adar-green-950/85 to-adar-green-950/35",
+                  )}
                 />
 
                 <div className="relative">

@@ -39,7 +39,7 @@ export function ContactSection({ tone = "light" }: { tone?: "light" | "dark" }) 
           <p
             className={cn(
               "mt-6 max-w-md text-sm leading-relaxed",
-              dark ? "text-adar-cream-50/60" : "text-adar-ink-muted",
+              dark ? "text-adar-cream-50/70" : "text-adar-ink-muted",
             )}
           >
             Количество, бюджет на человека и дату отгрузки достаточно назвать
@@ -51,7 +51,7 @@ export function ContactSection({ tone = "light" }: { tone?: "light" | "dark" }) 
               <dt
                 className={cn(
                   "text-xs uppercase tracking-[0.16em]",
-                  dark ? "text-adar-cream-50/40" : "text-adar-ink-subtle",
+                  dark ? "text-adar-cream-50/55" : "text-adar-ink-subtle",
                 )}
               >
                 Телефоны
@@ -78,7 +78,7 @@ export function ContactSection({ tone = "light" }: { tone?: "light" | "dark" }) 
               <dt
                 className={cn(
                   "text-xs uppercase tracking-[0.16em]",
-                  dark ? "text-adar-cream-50/40" : "text-adar-ink-subtle",
+                  dark ? "text-adar-cream-50/55" : "text-adar-ink-subtle",
                 )}
               >
                 Почта
@@ -97,7 +97,7 @@ export function ContactSection({ tone = "light" }: { tone?: "light" | "dark" }) 
               <dt
                 className={cn(
                   "text-xs uppercase tracking-[0.16em]",
-                  dark ? "text-adar-cream-50/40" : "text-adar-ink-subtle",
+                  dark ? "text-adar-cream-50/55" : "text-adar-ink-subtle",
                 )}
               >
                 Адрес и время работы

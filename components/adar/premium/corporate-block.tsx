@@ -36,7 +36,7 @@ export function CorporateBlock() {
           <h2 className="mt-6 font-adar-display text-4xl leading-tight text-adar-cream-50 sm:text-5xl">
             Партия на весь коллектив
           </h2>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-adar-cream-50/60">
+          <p className="mt-6 max-w-md text-base leading-relaxed text-adar-cream-50/70">
             От {formatNumber(LOGO_THRESHOLD)} штук дизайн коробки меняется
             под заказчика, а на каждый комплект наносится логотип организации.
             Первый контракт компании — 24 000 подарков для Алмалыкского ГМК.
@@ -46,7 +46,7 @@ export function CorporateBlock() {
             <div>
               <label
                 htmlFor={`${id}-set`}
-                className="mb-2 block text-xs uppercase tracking-[0.16em] text-adar-cream-50/45"
+                className="mb-2 block text-xs uppercase tracking-[0.16em] text-adar-cream-50/65"
               >
                 Набор
               </label>
@@ -67,7 +67,7 @@ export function CorporateBlock() {
             <div>
               <label
                 htmlFor={`${id}-count`}
-                className="mb-2 flex items-baseline justify-between text-xs uppercase tracking-[0.16em] text-adar-cream-50/45"
+                className="mb-2 flex items-baseline justify-between text-xs uppercase tracking-[0.16em] text-adar-cream-50/65"
               >
                 Количество
                 <span className="text-sm normal-case tracking-normal text-adar-cream-50 tabular-nums">
@@ -103,13 +103,13 @@ export function CorporateBlock() {
                   {chosen.lineLabel}
                 </p>
                 <p className="mt-1 truncate text-lg text-adar-cream-50">{chosen.name}</p>
-                <p className="mt-1 text-sm text-adar-cream-50/50 tabular-nums">
+                <p className="mt-1 text-sm text-adar-cream-50/65 tabular-nums">
                   {formatPrice(chosen.price)} за штуку
                 </p>
               </div>
             </div>
 
-            <p className="mt-8 text-xs uppercase tracking-[0.18em] text-adar-cream-50/40">
+            <p className="mt-8 text-xs uppercase tracking-[0.18em] text-adar-cream-50/55">
               Сумма партии
             </p>
             <p className="mt-3 font-adar-display text-5xl leading-none text-adar-gold-400 tabular-nums sm:text-6xl">

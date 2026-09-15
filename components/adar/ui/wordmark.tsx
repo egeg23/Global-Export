@@ -6,15 +6,22 @@ import { cn } from "@/lib/cn";
  * На фирменном пакете это золотое тиснение с разрядкой и подписью
  * «SINCE 2011» под ним — так и набрано, шрифтом, а не картинкой: логотип в
  * векторе у компании не запрашивался, а растровый на их сайте мутный.
+ *
+ * Цвет подписи задаётся не начертанием знака, а поверхностью под ним:
+ * золотой знак стоит и на кремовой шапке, и на тёмной, а тёмно-серая подпись
+ * читается только на первой.
  */
 export function Wordmark({
   className,
   tone = "gold",
   withYear = true,
+  onDark = false,
 }: {
   className?: string;
   tone?: "gold" | "ink" | "cream";
   withYear?: boolean;
+  /** Знак стоит на тёмной подложке — подпись под ним должна быть светлой. */
+  onDark?: boolean;
 }) {
   return (
     <span className={cn("inline-flex flex-col leading-none", className)}>
@@ -32,7 +39,7 @@ export function Wordmark({
         <span
           className={cn(
             "mt-1 text-[0.55rem] tracking-[0.4em]",
-            tone === "cream" ? "text-adar-cream-50/50" : "text-adar-ink-subtle",
+            onDark || tone === "cream" ? "text-adar-cream-50/65" : "text-adar-ink-subtle",
           )}
         >
           SINCE 2011

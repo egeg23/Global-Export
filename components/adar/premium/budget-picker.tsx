@@ -47,7 +47,7 @@ export function BudgetPicker() {
           <h2 className="mt-6 font-adar-display text-4xl leading-tight text-adar-cream-50 sm:text-5xl">
             Назовите бюджет — покажем набор
           </h2>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-adar-cream-50/60">
+          <p className="mt-6 max-w-md text-base leading-relaxed text-adar-cream-50/70">
             Столько обычно закладывают на одного сотрудника. Двигайте — состав,
             вес и упаковка меняются на глазах.
           </p>
@@ -55,7 +55,7 @@ export function BudgetPicker() {
           <div className="mt-10">
             <label
               htmlFor={`${id}-budget`}
-              className="flex items-baseline justify-between text-xs uppercase tracking-[0.16em] text-adar-cream-50/45"
+              className="flex items-baseline justify-between text-xs uppercase tracking-[0.16em] text-adar-cream-50/65"
             >
               Бюджет на человека
               <span className="font-adar-display text-3xl normal-case tracking-normal text-adar-gold-400 tabular-nums">
@@ -72,13 +72,13 @@ export function BudgetPicker() {
               onChange={(event) => setBudget(Number(event.target.value))}
               className="mt-4 h-10 w-full cursor-pointer accent-adar-gold-500"
             />
-            <div className="flex justify-between text-xs text-adar-cream-50/35">
+            <div className="flex justify-between text-xs text-adar-cream-50/55">
               <span>{formatPrice(priceRange.min)}</span>
               <span>{formatPrice(priceRange.max)}</span>
             </div>
           </div>
 
-          <p className="mt-8 text-sm leading-relaxed text-adar-cream-50/55">
+          <p className="mt-8 text-sm leading-relaxed text-adar-cream-50/65">
             {change > 0 ? (
               <>
                 Подходит{" "}
@@ -95,7 +95,7 @@ export function BudgetPicker() {
 
           {nearby.length > 0 ? (
             <div className="mt-8">
-              <p className="text-xs uppercase tracking-[0.16em] text-adar-cream-50/35">
+              <p className="text-xs uppercase tracking-[0.16em] text-adar-cream-50/55">
                 Рядом по цене
               </p>
               <ul className="mt-3 flex flex-wrap gap-2">
@@ -148,45 +148,45 @@ export function BudgetPicker() {
 
               <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-white/10 py-5 text-sm">
                 <div>
-                  <dt className="text-xs text-adar-cream-50/40">Вес</dt>
+                  <dt className="text-xs text-adar-cream-50/55">Вес</dt>
                   <dd className="mt-1 text-adar-cream-50 tabular-nums">
                     {formatWeight(match.weight)}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-adar-cream-50/40">Состав</dt>
+                  <dt className="text-xs text-adar-cream-50/55">Состав</dt>
                   <dd className="mt-1 text-adar-cream-50 tabular-nums">
                     {pluralize(match.count, ["позиция", "позиции", "позиций"])}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-adar-cream-50/40">Упаковка</dt>
+                  <dt className="text-xs text-adar-cream-50/55">Упаковка</dt>
                   <dd className="mt-1 text-adar-cream-50">
                     {match.pack === "bag" ? "мешок" : "коробка"}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-adar-cream-50/40">Цена</dt>
+                  <dt className="text-xs text-adar-cream-50/55">Цена</dt>
                   <dd className="mt-1 text-adar-gold-300 tabular-nums">
                     {formatPrice(match.price)}
                   </dd>
                 </div>
               </dl>
 
-              <p className="mt-5 text-xs uppercase tracking-[0.16em] text-adar-cream-50/35">
+              <p className="mt-5 text-xs uppercase tracking-[0.16em] text-adar-cream-50/55">
                 Внутри
               </p>
               <ul className="mt-3 flex flex-wrap gap-1.5">
                 {contents.slice(0, 7).map((item, index) => (
                   <li
                     key={`${item.name}-${index}`}
-                    className="rounded-full border border-white/10 px-3 py-1 text-[0.7rem] text-adar-cream-50/65"
+                    className="rounded-full border border-white/10 px-3 py-1 text-[0.7rem] text-adar-cream-50/70"
                   >
                     {item.name}
                   </li>
                 ))}
                 {contents.length > 7 ? (
-                  <li className="rounded-full px-3 py-1 text-[0.7rem] text-adar-cream-50/40">
+                  <li className="rounded-full px-3 py-1 text-[0.7rem] text-adar-cream-50/55">
                     и ещё {contents.length - 7}
                   </li>
                 ) : null}

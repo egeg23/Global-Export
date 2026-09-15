@@ -75,16 +75,9 @@ export const themes: Theme[] = [
     image: "/adar/photos/tree-ornaments.webp",
   },
   {
-    slug: "korporativnye",
-    title: "Корпоративные",
-    note: "партии от 5 000 штук с вашим логотипом",
-    count: 0,
-    image: "/adar/photos/gifts-under-tree.webp",
-  },
-  {
     slug: "dlya-detej",
-    title: "Для детей",
-    note: "сладкие наборы к утренникам",
+    title: "Детские наборы",
+    note: "к утренникам и школьным праздникам",
     count: 0,
     image: "/adar/photos/kids-box.webp",
   },
@@ -97,17 +90,23 @@ export const themes: Theme[] = [
   },
   {
     slug: "den-zashchitnikov",
-    title: "День защитников Родины",
+    title: "День защитника",
     note: "14 января, мужскому составу",
     count: 0,
     image: "/adar/photos/honour-guard.webp",
   },
   {
-    slug: "fruktovye-nabory",
-    title: "Фруктовые наборы",
-    note: "сезонные корзины",
+    slug: "igrushki",
+    title: "Игрушки",
+    note: "новое направление — ждём фотографии",
     count: 0,
-    image: "/adar/photos/fruit-flatlay.webp",
+  },
+  {
+    slug: "upakovka",
+    title: "Упаковка отдельно",
+    note: "коробки и мешки без наполнения",
+    count: 0,
+    image: "/adar/photos/gifts-under-tree.webp",
   },
 ];
 

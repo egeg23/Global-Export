@@ -21,7 +21,7 @@ export function ClientsWall({ tone = "light" }: { tone?: "light" | "dark" }) {
   const remainder = (columns - (clients.length % columns)) % columns;
 
   return (
-    <section className={cn("py-20 lg:py-24", dark ? "bg-adar-green-950" : "bg-adar-cream-100/70")}>
+    <section className={cn("py-20 lg:py-24", dark ? "bg-adar-green-950" : "bg-adar-cream-100")}>
       <Shell size="wide">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <h2
@@ -35,7 +35,7 @@ export function ClientsWall({ tone = "light" }: { tone?: "light" | "dark" }) {
           <p
             className={cn(
               "max-w-sm text-sm leading-relaxed",
-              dark ? "text-adar-cream-50/55" : "text-adar-ink-muted",
+              dark ? "text-adar-cream-50/65" : "text-adar-ink-muted",
             )}
           >
             Первая крупная отгрузка — 24 000 подарков для Алмалыкского ГМК.

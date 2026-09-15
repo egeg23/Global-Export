@@ -65,7 +65,7 @@ export function SetCarousel({ sets, title, note, tone = "light", onPick }: Props
   return (
     <section
       aria-label={title}
-      className={cn("py-16 lg:py-20", dark ? "bg-adar-green-950" : "bg-adar-cream-100/70")}
+      className={cn("py-16 lg:py-20", dark ? "bg-adar-green-950" : "bg-adar-cream-100")}
     >
       <Shell size="wide" className="flex flex-wrap items-end justify-between gap-6">
         <div>
@@ -81,7 +81,7 @@ export function SetCarousel({ sets, title, note, tone = "light", onPick }: Props
             <p
               className={cn(
                 "mt-3 max-w-xl text-sm leading-relaxed",
-                dark ? "text-adar-cream-50/55" : "text-adar-ink-muted",
+                dark ? "text-adar-cream-50/65" : "text-adar-ink-muted",
               )}
             >
               {note}
@@ -198,7 +198,7 @@ export function SetCarousel({ sets, title, note, tone = "light", onPick }: Props
                 <span
                   className={cn(
                     "mt-auto flex items-baseline justify-between gap-2 text-sm",
-                    dark ? "text-adar-cream-50/50" : "text-adar-ink-subtle",
+                    dark ? "text-adar-cream-50/65" : "text-adar-ink-subtle",
                   )}
                 >
                   <span
@@ -221,7 +221,7 @@ export function SetCarousel({ sets, title, note, tone = "light", onPick }: Props
         <p
           className={cn(
             "mt-2 text-xs",
-            dark ? "text-adar-cream-50/35" : "text-adar-ink-subtle",
+            dark ? "text-adar-cream-50/55" : "text-adar-ink-subtle",
           )}
         >
           Листайте мышью, пальцем или стрелками — нажмите на набор, чтобы

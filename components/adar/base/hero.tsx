@@ -63,15 +63,14 @@ export function Hero() {
 
           <dl className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-adar-green-900/10 pt-8">
             {figures.map((figure) => (
-              <div key={figure.label}>
-                <dt className="sr-only">{figure.label}</dt>
-                <dd>
-                  <span className="block font-adar-display text-3xl text-adar-green-800">
-                    {figure.value}
-                  </span>
-                  <span className="mt-1.5 block text-xs leading-snug text-adar-ink-subtle">
-                    {figure.label}
-                  </span>
+              // Подпись стоит один раз и является <dt>; визуально цифра над
+              // ней — за счёт обратного направления колонки.
+              <div key={figure.label} className="flex flex-col-reverse">
+                <dt className="mt-1.5 text-xs leading-snug text-adar-ink-subtle">
+                  {figure.label}
+                </dt>
+                <dd className="font-adar-display text-3xl text-adar-green-800">
+                  {figure.value}
                 </dd>
               </div>
             ))}

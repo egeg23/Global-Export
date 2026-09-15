@@ -48,7 +48,8 @@ export type Theme = {
   note: string;
   /** Пусто, если направление на сайте заявлено, но товаров в нём ещё нет. */
   count: number;
-  image: string;
+  /** Без снимка — направление объявлено, а фотографий от заказчика ещё нет. */
+  image?: string;
 };
 
 export type Client = {
