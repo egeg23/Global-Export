@@ -1,0 +1,294 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+
+import { ParallaxFigure } from "@/components/mavera/lux/parallax-figure";
+import { Rise } from "@/components/mavera/reveal";
+import { VariantBar } from "@/components/mavera/variant-bar";
+import { money } from "@/components/present/mavera/theme";
+import { projects, stats } from "@/content/mavera/data";
+
+export const metadata: Metadata = { title: "Вариант 02 — «Люкс»" };
+
+const featured = projects[1];
+
+/**
+ * Вариант 02 — «Люкс», журнальный разворот.
+ *
+ * Тёплая бумага, засечные заголовки, асимметричная сетка, буквица и вынос в
+ * поле. Проект продаётся не таблицей характеристик, а рассказом: кадр во весь
+ * разворот, текст в две колонки, лента объектов, которую листают, как страницы.
+ * Снимки едут медленнее текста — разворот перестаёт быть плоским.
+ */
+export default function MaveraLux() {
+  return (
+    <div data-world="lux">
+      <VariantBar current="lux" />
+
+      {/* Шапка-масthead: тонкие линейки, засечный логотип по центру. */}
+      <header className="border-b border-[var(--w-line)]">
+        <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
+          <div className="flex items-center justify-between gap-6 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-[var(--w-muted)]">
+            <span>Ташкент</span>
+            <span className="hidden sm:inline">Выпуск 01 · 2026</span>
+            <span>RU / EN / UZ</span>
+          </div>
+          <div className="border-t border-[var(--w-line)] py-6 text-center">
+            <p className="font-[family-name:var(--w-display)] text-[clamp(2rem,6vw,3.6rem)] tracking-[0.3em]">
+              MAVERA
+            </p>
+          </div>
+          <nav className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 border-t border-[var(--w-line)] py-3 text-[0.72rem] uppercase tracking-[0.18em] text-[var(--w-muted)]">
+            {["Проекты", "Архитектура", "Район", "Коммерция", "Запись на показ"].map((item, index) => (
+              <span key={item} className={index === 0 ? "text-[var(--w-ink)]" : undefined}>
+                {item}
+              </span>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      {/* Обложка выпуска. */}
+      <section className="relative">
+        <div className="relative h-[72svh] min-h-[420px] overflow-hidden">
+          <Image
+            src="/images/mavera/hero-editorial.jpg"
+            alt="Фасад жилого дома"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-bg)] via-[var(--w-bg)]/20 to-transparent" />
+        </div>
+
+        <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
+          <Rise className="-mt-24 max-w-3xl bg-[var(--w-surface)] p-8 shadow-[var(--w-shadow)] sm:p-12">
+            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+              Главная тема выпуска
+            </p>
+            <h1 className="mt-6 text-[clamp(2.2rem,5vw,4.2rem)] leading-[1.02]">
+              Город, в который
+              <br />
+              возвращаются
+            </h1>
+            <p className="mt-6 text-sm text-[var(--w-muted)]">
+              Текст: редакция MAVERA · Фотографии: архив компании
+            </p>
+          </Rise>
+        </div>
+      </section>
+
+      {/* Лид с буквицей и выносом в поле — асимметрия 7 / 4. */}
+      <section className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
+        <div className="grid gap-12 lg:grid-cols-12">
+          <Rise className="lg:col-span-7">
+            <p className="w-dropcap text-lg leading-[1.75]">
+              Четырнадцать лет назад мы построили первый дом на окраине Чиланзара — и
+              через десять лет вернулись туда достраивать вторую очередь, потому что
+              половина покупателей привела соседей. С тех пор у нас правило: квартал
+              проектируется так, чтобы через двадцать лет он не выглядел компромиссом.
+            </p>
+            <p className="mt-6 text-lg leading-[1.75] text-[var(--w-muted)]">
+              Это значит закрытый двор без машин, школу и садик внутри периметра,
+              первые этажи под аренду, а не под квартиры, и материалы фасада, которые
+              переживут два цикла ремонта. Дороже на старте — дешевле в эксплуатации.
+            </p>
+          </Rise>
+
+          <Rise delay={140} className="lg:col-span-4 lg:col-start-9">
+            <blockquote className="border-t-2 border-[var(--w-accent)] pt-6">
+              <p className="font-[family-name:var(--w-display)] text-[clamp(1.4rem,2.4vw,2rem)] leading-[1.3]">
+                «Мы продаём не квадратные метры, а двадцать лет жизни в этом дворе».
+              </p>
+              <footer className="mt-4 text-sm text-[var(--w-muted)]">
+                Главный архитектор MAVERA
+              </footer>
+            </blockquote>
+          </Rise>
+        </div>
+      </section>
+
+      {/* Проект выпуска: кадр слева едет медленнее, характеристики справа. */}
+      <section className="border-y border-[var(--w-line)] bg-[var(--w-paper)]">
+        <div className="mx-auto grid w-full max-w-[1500px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:gap-16">
+          <Rise className="lg:col-span-7">
+            <ParallaxFigure
+              src={featured.photo}
+              alt={`ЖК «${featured.name}»`}
+              caption={`ЖК «${featured.name}», ${featured.district} — съёмка заказчика заменит этот кадр`}
+              className="aspect-[4/3]"
+              sizes="(min-width: 1024px) 58vw, 100vw"
+            />
+          </Rise>
+
+          <Rise delay={120} className="lg:col-span-5 lg:pt-6">
+            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+              Проект выпуска
+            </p>
+            <h2 className="mt-5 text-[clamp(1.9rem,3.4vw,3rem)] leading-[1.06]">
+              ЖК «{featured.name}»
+            </h2>
+            <p className="mt-5 text-lg leading-[1.7] text-[var(--w-muted)]">{featured.claim}</p>
+
+            <dl className="mt-10 border-t border-[var(--w-line)]">
+              {[
+                ["Сегмент", featured.segment],
+                ["Этажность", featured.floors],
+                ["Квартир", featured.flats],
+                ["Площадь", featured.area],
+                ["Сдача", featured.due],
+                ["Цена от", `${money(featured.priceUsd, "uzs")} за м²`],
+              ].map(([label, value]) => (
+                <div key={label} className="flex items-baseline justify-between gap-6 border-b border-[var(--w-line)] py-3.5">
+                  <dt className="text-[0.7rem] uppercase tracking-[0.16em] text-[var(--w-muted)]">{label}</dt>
+                  <dd className="font-[family-name:var(--w-display)] text-lg">{value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <p className="mt-8">
+              <span className="inline-block border border-[var(--w-ink)] px-8 py-3.5 text-sm transition-colors duration-300 hover:bg-[var(--w-ink)] hover:text-[var(--w-surface)]">
+                Записаться на показ
+              </span>
+            </p>
+          </Rise>
+        </div>
+      </section>
+
+      {/* Лента объектов — листается, как страницы журнала. */}
+      <section className="py-20">
+        <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
+          <Rise className="flex flex-wrap items-end justify-between gap-6">
+            <h2 className="text-[clamp(1.8rem,3vw,2.8rem)]">Портфолио</h2>
+            <p className="text-sm italic text-[var(--w-muted)]">Листайте вбок →</p>
+          </Rise>
+        </div>
+
+        <Rise delay={100} className="w-rail mt-10 flex gap-6 overflow-x-auto px-5 pb-6 sm:px-8">
+          {projects.map((project) => (
+            <article key={project.slug} className="w-[min(78vw,22rem)] shrink-0">
+              <div className="relative aspect-[3/4] overflow-hidden">
+                <Image
+                  src={project.photo}
+                  alt=""
+                  fill
+                  sizes="(min-width: 640px) 22rem, 78vw"
+                  className="object-cover transition-transform duration-700 ease-[var(--w-ease)] hover:scale-[1.04] motion-reduce:transform-none"
+                />
+              </div>
+              <p className="mt-4 text-[0.7rem] uppercase tracking-[0.18em] text-[var(--w-accent)]">
+                {project.segment} · {project.status}
+              </p>
+              <h3 className="mt-2 text-2xl">ЖК «{project.name}»</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--w-muted)]">{project.claim}</p>
+              <p className="mt-3 font-[family-name:var(--w-display)] text-lg">
+                от {money(project.priceUsd, "uzs")}
+                <span className="ml-1 text-sm text-[var(--w-muted)]">за м²</span>
+              </p>
+            </article>
+          ))}
+        </Rise>
+      </section>
+
+      {/* Разворот: интерьер и текст в две колонки. */}
+      <section className="border-y border-[var(--w-line)]">
+        <div className="mx-auto grid w-full max-w-[1500px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:gap-16">
+          <Rise delay={80} className="lg:col-span-5 lg:order-2">
+            <ParallaxFigure
+              src="/images/mavera/interior.jpg"
+              alt="Интерьер квартиры"
+              className="aspect-[4/5]"
+              depth={30}
+              sizes="(min-width: 1024px) 40vw, 100vw"
+            />
+          </Rise>
+
+          <Rise className="lg:col-span-7 lg:order-1">
+            <h2 className="text-[clamp(1.8rem,3vw,2.8rem)] leading-[1.1]">
+              Что остаётся, когда съезжает мебель
+            </h2>
+            <div className="mt-8 text-base leading-[1.8] text-[var(--w-muted)] lg:columns-2 lg:gap-10">
+              <p className="mb-5">
+                Планировка переживает три поколения жильцов, отделка — одно. Поэтому в
+                проектах MAVERA сначала считают, как квартира разделится на комнаты через
+                десять лет, а уже потом выбирают ламинат.
+              </p>
+              <p className="mb-5">
+                Кухня-гостиная с окном в пол, спальня с прямым доступом к санузлу,
+                кладовая, в которую помещается велосипед. Ни одного «тёмного» помещения:
+                каждое имеет естественный свет или примыкает к нему.
+              </p>
+              <p>
+                Высота потолка 2,9 метра в комфорте и 3,1 в бизнесе — разница
+                чувствуется на второй день, а не на экскурсии.
+              </p>
+            </div>
+          </Rise>
+        </div>
+      </section>
+
+      {/* Цифры — редакционно, засечными. */}
+      <section className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
+        <dl className="grid gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat, index) => (
+            <Rise key={stat.label} delay={index * 70} className="border-t border-[var(--w-line)] pt-6">
+              <dd className="font-[family-name:var(--w-display)] text-[clamp(2.4rem,4vw,3.4rem)] leading-none">
+                {stat.value}
+                {stat.suffix ? (
+                  <span className="ml-2 text-base text-[var(--w-accent)]">{stat.suffix}</span>
+                ) : null}
+              </dd>
+              <dt className="mt-3 text-sm text-[var(--w-muted)]">{stat.label}</dt>
+            </Rise>
+          ))}
+        </dl>
+      </section>
+
+      {/* Запись на показ — купон в конце выпуска. */}
+      <section className="bg-[var(--w-paper)]">
+        <div className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
+          <Rise className="mx-auto max-w-3xl border-2 border-dashed border-[var(--w-accent)] bg-[var(--w-surface)] p-8 text-center sm:p-12">
+            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
+              Личная встреча
+            </p>
+            <h2 className="mt-5 text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.1]">
+              Покажем квартал ногами
+            </h2>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[var(--w-muted)]">
+              Полтора часа с архитектором проекта: двор, планировки, ход работ и честный
+              разговор о сроках. Без обязательств купить.
+            </p>
+            <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
+              <input
+                type="text"
+                placeholder="Телефон"
+                className="flex-1 border border-[var(--w-line)] bg-[var(--w-bg)] px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--w-accent)]"
+              />
+              <button
+                type="button"
+                className="bg-[var(--w-accent)] px-7 py-3 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90"
+              >
+                Записаться
+              </button>
+            </div>
+          </Rise>
+        </div>
+      </section>
+
+      <footer className="border-t border-[var(--w-line)]">
+        <div className="mx-auto w-full max-w-[1500px] px-5 py-10 sm:px-8">
+          <p className="text-center font-[family-name:var(--w-display)] text-2xl tracking-[0.3em]">
+            MAVERA
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 border-t border-[var(--w-line)] pt-6 text-[0.7rem] uppercase tracking-[0.18em] text-[var(--w-muted)]">
+            <span>Ташкент, ул. ______, 00</span>
+            <span>+998 (__) ___-__-__</span>
+            <span>Instagram</span>
+            <span>Telegram</span>
+            <span>WhatsApp</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

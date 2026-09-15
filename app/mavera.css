@@ -1,0 +1,176 @@
+/* ------------------------------------------------------------------
+   MAVERA — три мира оформления.
+
+   Отдельный файл рядом с adar.css: у каждого варианта своя сетка, свой
+   шрифт, свой радиус и свой бюджет движения, и различаются они не парой
+   оттенков, а системой. Токены навешиваются на `data-world`, поэтому одна
+   и та же разметка секции в трёх мирах выглядит по-разному.
+
+   Стандарт  — швейцарская школа: белый лист, нулевой радиус, один акцент.
+   Люкс      — журнальный разворот: тёплая бумага, засечки, буквица.
+   Премиум   — кинозал: глубокий тёмный, свечение, параллакс, стекло.
+   ------------------------------------------------------------------ */
+
+[data-world="standard"] {
+  --w-bg: #ffffff;
+  --w-surface: #ffffff;
+  --w-paper: #f2f0eb;
+  --w-ink: #101216;
+  --w-muted: #5a616e;
+  --w-line: #d5d2cb;
+  --w-accent: #1d4ed8;
+  --w-accent-soft: #e8edfc;
+  --w-accent-ink: #ffffff;
+  --w-radius: 0px;
+  --w-radius-lg: 0px;
+  --w-shadow: none;
+  --w-font: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --w-display: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --w-display-weight: 600;
+  --w-display-tracking: -0.02em;
+  --w-ease: cubic-bezier(0.2, 0, 0, 1);
+  --w-duration: 220ms;
+}
+
+[data-world="lux"] {
+  --w-bg: #f4efe6;
+  --w-surface: #fbf8f2;
+  --w-paper: #eae2d4;
+  --w-ink: #1b1813;
+  --w-muted: #6c6255;
+  --w-line: #cdc2ae;
+  --w-accent: #8a5a2b;
+  --w-accent-soft: #e7d9c4;
+  --w-accent-ink: #fbf8f2;
+  --w-radius: 2px;
+  --w-radius-lg: 3px;
+  --w-shadow: 0 30px 60px -40px rgba(27, 24, 19, 0.45);
+  --w-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display: var(--font-spectral), Georgia, "Times New Roman", serif;
+  --w-display-weight: 500;
+  --w-display-tracking: -0.01em;
+  --w-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --w-duration: 600ms;
+}
+
+[data-world="premium"] {
+  --w-bg: #050506;
+  --w-surface: rgba(255, 255, 255, 0.05);
+  --w-paper: #0a0a0c;
+  --w-ink: #ededef;
+  --w-muted: #8a8f98;
+  --w-line: rgba(255, 255, 255, 0.1);
+  --w-accent: #6f7bea;
+  --w-accent-soft: rgba(111, 123, 234, 0.18);
+  --w-accent-ink: #050506;
+  --w-radius: 16px;
+  --w-radius-lg: 24px;
+  --w-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+  --w-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display-weight: 600;
+  --w-display-tracking: -0.04em;
+  --w-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --w-duration: 700ms;
+
+  /* Генплан и шахматка написаны под витрину и читают свои переменные —
+     здесь они просто получают премиальную палитру, а не копию компонента. */
+  --mv-bg: #050506;
+  --mv-surface: #0a0a0c;
+  --mv-raised: #101013;
+  --mv-line: rgba(255, 255, 255, 0.1);
+  --mv-text: #ededef;
+  --mv-muted: #8a8f98;
+  --mv-faint: rgba(255, 255, 255, 0.12);
+  --mv-accent: #6f7bea;
+  --mv-accent-ink: #050506;
+  --mv-accent-soft: rgba(111, 123, 234, 0.18);
+}
+
+@layer base {
+  [data-world] {
+    background-color: var(--w-bg);
+    color: var(--w-ink);
+    font-family: var(--w-font);
+  }
+
+  [data-world] h1,
+  [data-world] h2,
+  [data-world] h3 {
+    font-family: var(--w-display);
+    font-weight: var(--w-display-weight);
+    letter-spacing: var(--w-display-tracking);
+  }
+}
+
+@layer utilities {
+  /* Появление снизу — общий приём, но длительность у каждого мира своя. */
+  .w-rise {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition:
+      opacity var(--w-duration) var(--w-ease),
+      transform var(--w-duration) var(--w-ease);
+    transition-delay: var(--w-delay, 0ms);
+  }
+
+  .w-rise-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Журнальная буквица — только в «Люксе». */
+  .w-dropcap::first-letter {
+    float: left;
+    font-family: var(--w-display);
+    font-size: 4.2em;
+    line-height: 0.82;
+    padding: 0.06em 0.1em 0 0;
+    color: var(--w-accent);
+  }
+
+  /* Лента с прилипанием — проекты в «Люксе» и кинолента в «Премиуме». */
+  .w-rail {
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .w-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .w-rail > * {
+    scroll-snap-align: start;
+  }
+
+  /* Свечение под кнопкой и за карточкой — подпись «Премиума». */
+  .w-glow {
+    box-shadow: 0 0 0 1px var(--w-line), 0 20px 60px -20px var(--w-accent-soft);
+  }
+
+  /* Медленно плывущее световое пятно на тёмном фоне. */
+  .w-blob {
+    animation: w-drift 24s ease-in-out infinite alternate;
+  }
+
+  @keyframes w-drift {
+    from {
+      transform: translate3d(-4%, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(6%, -4%, 0) scale(1.12);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w-rise {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .w-blob {
+    animation: none;
+  }
+}

@@ -13,7 +13,7 @@ const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webman
  * Three routes sit outside that rule. The admin panel is a single-language tool
  * and needs its Supabase session refreshed on the way through. The showcase at
  * `/present` belongs to the pitch rather than to the company's site, and
- * `/adar` is a second pitch altogether — design concepts for another company.
+ * `/adar` and `/mavera` are pitches for other companies altogether.
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -34,6 +34,12 @@ export async function proxy(request: NextRequest) {
   }
 
   if (pathname === "/present" || pathname.startsWith("/present/")) {
+    return NextResponse.next();
+  }
+
+  // Третий проект витрины — три варианта сайта для застройщика. Языкового
+  // префикса нет: предложение одноязычное, а три языка показаны внутри макетов.
+  if (pathname === "/mavera" || pathname.startsWith("/mavera/")) {
     return NextResponse.next();
   }
 

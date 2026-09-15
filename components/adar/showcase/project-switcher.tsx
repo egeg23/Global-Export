@@ -12,7 +12,7 @@ type Props = {
 const projects = [
   { id: "globalex", label: "Global Export", href: "/present", note: "сельхозэкспорт" },
   { id: "adar", label: "ADAR", href: "/adar", note: "подарочные наборы" },
-  { id: "mavera", label: "MAVERA", href: "/present/mavera", note: "застройщик" },
+  { id: "mavera", label: "MAVERA", href: "/mavera", note: "застройщик" },
 ] as const;
 
 /**
