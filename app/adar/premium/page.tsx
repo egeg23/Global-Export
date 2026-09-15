@@ -6,7 +6,8 @@ import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
 import { BudgetPicker } from "@/components/adar/premium/budget-picker";
 import { CatalogFrame } from "@/components/adar/premium/catalog-frame";
 import { AboutCompany } from "@/components/adar/premium/about-company";
-import { Banner } from "@/components/adar/premium/banner";
+import { ArchiveDrum } from "@/components/adar/premium/archive-drum";
+import { HeroStage } from "@/components/adar/premium/hero-stage";
 import { CorporateBlock } from "@/components/adar/premium/corporate-block";
 import { PremiumHeader } from "@/components/adar/premium/header";
 import { SkipLink } from "@/components/adar/ui/skip-link";
@@ -47,8 +48,9 @@ export default function AdarPremiumConcept() {
       <div className="bg-adar-green-950">
         <PremiumHeader />
         <main id="content">
-          <Banner />
+          <HeroStage />
           <AboutCompany />
+          <ArchiveDrum />
           <CatalogFrame showcase={growthStages} />
           <BudgetPicker />
           <CatalogBrowser />
