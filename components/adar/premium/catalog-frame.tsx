@@ -28,11 +28,16 @@ export function CatalogFrame({ showcase }: { showcase: GiftSet[] }) {
           </>
         }
       >
-        <ul className="grid h-full grid-cols-2 gap-px bg-adar-green-900/10 sm:grid-cols-3 md:grid-cols-4">
+        {/*
+          Число рядов задано явно под каждую ширину: рамка фиксированной
+          высоты и с обрезкой, а ряды по содержимому на телефоне выходили за
+          неё — из восьми линеек «в одном кадре» было видно четыре с половиной.
+        */}
+        <ul className="grid h-full grid-cols-2 grid-rows-4 gap-px bg-adar-green-900/10 sm:grid-cols-3 sm:grid-rows-3 md:grid-cols-4 md:grid-rows-2">
           {showcase.map((set) => (
             <li
               key={set.slug}
-              className="flex flex-col items-center justify-end bg-adar-cream-50 p-3 md:p-4"
+              className="flex min-h-0 flex-col items-center justify-end bg-adar-cream-50 p-2 md:p-4"
             >
               <Image
                 src={set.image}

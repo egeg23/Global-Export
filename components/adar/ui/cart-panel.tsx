@@ -107,7 +107,12 @@ export function CartPanel() {
       <div className="flex max-h-[85vh] flex-col">
         <header className="flex shrink-0 items-center justify-between gap-4 border-b border-adar-green-900/10 px-6 py-5 sm:px-8">
           <h2 className="font-adar-display text-2xl text-adar-green-950">
-            {stage === "sent" ? "Заявка принята" : "Корзина"}
+            {/*
+              Заголовок повторяет судьбу заявки, а не желаемое: пока канал
+              доставки не подключён, «Заявка принята» над словами «до
+              менеджера не дошла» — это две противоположные надписи разом.
+            */}
+            {stage === "sent" ? (delivered ? "Заявка принята" : "Заявка не ушла") : "Корзина"}
           </h2>
           <button
             type="button"
