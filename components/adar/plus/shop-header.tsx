@@ -38,7 +38,7 @@ export function ShopHeader() {
     <header className="sticky top-0 z-40 border-b border-adar-green-900/10 bg-adar-cream-50/95 backdrop-blur-md">
       <Shell size="wide" className="flex items-center gap-5 py-3.5">
         <Link href="#" className="shrink-0" aria-label="ADAR — на главную">
-          <Wordmark />
+          <Wordmark size="small" />
         </Link>
 
         <form

@@ -1,50 +1,43 @@
 import { cn } from "@/lib/cn";
 
 /**
- * Логотип ADAR.
+ * Логотип ADAR — настоящий, от заказчика.
  *
- * На фирменном пакете это золотое тиснение с разрядкой и подписью
- * «SINCE 2011» под ним — так и набрано, шрифтом, а не картинкой: логотип в
- * векторе у компании не запрашивался, а растровый на их сайте мутный.
+ * Солнце с узором и подпись «EST ADAR 2011» лежат в `public/adar/brand/`
+ * отдельными файлами: в шапке нужен горизонтальный замок, а знак без подписи
+ * уходит в баннер и в значок вкладки.
  *
- * Цвет подписи задаётся не начертанием знака, а поверхностью под ним:
- * золотой знак стоит и на кремовой шапке, и на тёмной, а тёмно-серая подпись
- * читается только на первой.
+ * Цвет даёт не файл, а градиент под маской — в брифе просили заменить жёлтый
+ * на золотой, и это делается, не трогая исходник. На тёмной подложке золото
+ * читается тиснением, на светлой — фольгой.
  */
 export function Wordmark({
   className,
-  tone = "gold",
-  withYear = true,
-  onDark = false,
+  size = "default",
+  withMark = false,
 }: {
   className?: string;
-  tone?: "gold" | "ink" | "cream";
-  withYear?: boolean;
-  /** Знак стоит на тёмной подложке — подпись под ним должна быть светлой. */
-  onDark?: boolean;
+  /** Высота подписи: в шапке компактнее, в подвале крупнее. */
+  size?: "small" | "default";
+  /** Показать солнце слева от подписи. */
+  withMark?: boolean;
 }) {
   return (
-    <span className={cn("inline-flex flex-col leading-none", className)}>
-      <span
-        className={cn(
-          "font-adar-display text-2xl font-medium tracking-[0.28em]",
-          tone === "gold" && "adar-gold-text",
-          tone === "ink" && "text-adar-green-900",
-          tone === "cream" && "text-adar-cream-50",
-        )}
-      >
-        ADAR
-      </span>
-      {withYear ? (
+    <span className={cn("inline-flex items-center gap-2 sm:gap-3", className)}>
+      {withMark ? (
         <span
+          aria-hidden="true"
           className={cn(
-            "mt-1 text-[0.55rem] tracking-[0.4em]",
-            onDark || tone === "cream" ? "text-adar-cream-50/65" : "text-adar-ink-subtle",
+            "adar-logo-mark block shrink-0",
+            size === "small" ? "w-8 max-[359px]:hidden" : "w-11",
           )}
-        >
-          SINCE 2011
-        </span>
+        />
       ) : null}
+      <span
+        role="img"
+        aria-label="ADAR, основана в 2011 году"
+        className={cn("adar-logo-word block", size === "small" ? "w-32 sm:w-[9.5rem]" : "w-44")}
+      />
     </span>
   );
 }
