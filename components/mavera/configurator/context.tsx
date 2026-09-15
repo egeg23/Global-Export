@@ -293,6 +293,9 @@ export function Addon({
 
   const Tag = as as React.ElementType;
   const spec = addonById(id);
+  // Плавающая кнопка чата приходит с `fixed`: своё `relative` обёртка тогда не
+  // ставит, иначе кнопка легла бы в поток в конце страницы.
+  const positioned = /\b(fixed|absolute|sticky)\b/.test(className ?? "");
   const label = (
     <>
       <span className="min-w-0 truncate">{spec.label}</span>
@@ -308,7 +311,7 @@ export function Addon({
         id={anchor}
         data-addon={id}
         data-addon-on={raw ? "true" : "false"}
-        className={cn("relative scroll-mt-[16vh]", inline ? "inline-block max-w-full align-middle" : "block", className)}
+        className={cn(positioned ? null : "relative", "scroll-mt-[16vh]", inline ? "inline-block max-w-full align-middle" : "block", className)}
       >
         {children}
         {ctx.open ? (
@@ -386,7 +389,8 @@ export function Addon({
       id={anchor}
       data-addon={id}
       className={cn(
-        "relative scroll-mt-[16vh]",
+        positioned ? null : "relative",
+        "scroll-mt-[16vh]",
         inline ? "inline-block max-w-full align-middle" : "block",
         stamp ? "w-row" : null,
         className,
