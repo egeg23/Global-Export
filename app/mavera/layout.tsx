@@ -51,7 +51,7 @@ export const metadata: Metadata = {
 
 export default function MaveraLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${plex.variable} ${spectral.variable} ${inter.variable}`}>
+    <html lang="ru" className={`${plex.variable} ${spectral.variable} ${inter.variable} scroll-smooth`}>
       <head>
         <noscript>
           <style>{`.w-rise { opacity: 1 !important; transform: none !important; }`}</style>

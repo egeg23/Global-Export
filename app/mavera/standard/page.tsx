@@ -10,6 +10,7 @@ import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
 import { commercial, projects, stats, terms } from "@/content/mavera/data";
 import { expenses, finishes, voices } from "@/content/mavera/voice";
+import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = { title: "Вариант 01 — «Стандарт»" };
 
@@ -33,10 +34,20 @@ export default function MaveraStandard() {
         <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between gap-6 px-5 py-4 sm:px-8">
           <span className="text-lg font-semibold tracking-[0.3em]">MAVERA</span>
           <nav className="hidden gap-8 text-sm text-[var(--w-muted)] md:flex">
-            {["Каталог", "О компании", "Коммерция", "Как купить", "Контакты"].map((item, index) => (
-              <span key={item} className={index === 0 ? "text-[var(--w-ink)]" : undefined}>
+            {[
+              ["Каталог", "#catalog"],
+              ["О компании", "#about"],
+              ["Коммерция", "#commerce"],
+              ["Как купить", "#steps"],
+              ["Контакты", "#contacts"],
+            ].map(([item, href], index) => (
+              <a
+                key={item}
+                href={href}
+                className={cn("transition-colors hover:text-[var(--w-ink)]", index === 0 && "text-[var(--w-ink)]")}
+              >
                 {item}
-              </span>
+              </a>
             ))}
           </nav>
           <div className="flex items-center gap-5 text-sm">
@@ -88,9 +99,9 @@ export default function MaveraStandard() {
               <Addon id="magnetic" flag className="mt-4">
                 <div className="flex flex-wrap gap-3">
                   <Magnetic>
-                    <span className="inline-block bg-[var(--w-accent)] px-7 py-3.5 text-sm font-medium text-[var(--w-accent-ink)]">
+                    <a href="#catalog" className="inline-block bg-[var(--w-accent)] px-7 py-3.5 text-sm font-medium text-[var(--w-accent-ink)]">
                       {voice.hero.primary}
-                    </span>
+                    </a>
                   </Magnetic>
                   <Magnetic>
                     <span className="inline-block border border-[var(--w-line)] px-7 py-3.5 text-sm">
@@ -118,7 +129,7 @@ export default function MaveraStandard() {
       </section>
 
       {/* Цифры — таблицей, без украшений. */}
-      <section className="border-b border-[var(--w-line)]">
+      <section id="about" className="scroll-mt-20 border-b border-[var(--w-line)]">
         <div className="mx-auto w-full max-w-[1400px] px-5 pt-14 sm:px-8">
           <Rise>
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
@@ -147,7 +158,7 @@ export default function MaveraStandard() {
       </section>
 
       {/* Каталог с работающим фильтром — сердце варианта. */}
-      <section className="mx-auto w-full max-w-[1400px] px-5 py-20 sm:px-8">
+      <section id="catalog" className="mx-auto w-full max-w-[1400px] scroll-mt-20 px-5 py-20 sm:px-8">
         <Rise className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">Каталог</p>
@@ -180,7 +191,7 @@ export default function MaveraStandard() {
       </Addon>
 
       {/* Как купить — четыре шага, пронумерованные. */}
-      <section className="mx-auto w-full max-w-[1400px] px-5 py-20 sm:px-8">
+      <section id="steps" className="mx-auto w-full max-w-[1400px] scroll-mt-20 px-5 py-20 sm:px-8">
         <Rise>
           <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">Как купить</p>
           <h2 className="mt-4 text-[clamp(1.8rem,3vw,2.6rem)]">{voice.steps.title}</h2>
@@ -251,7 +262,7 @@ export default function MaveraStandard() {
       </section>
 
       {/* Коммерция — компактной таблицей. */}
-      <section className="border-t border-[var(--w-line)]">
+      <section id="commerce" className="scroll-mt-20 border-t border-[var(--w-line)]">
         <div className="mx-auto w-full max-w-[1400px] px-5 py-20 sm:px-8">
           <Rise className="flex flex-wrap items-end justify-between gap-6">
             <div>
@@ -305,7 +316,7 @@ export default function MaveraStandard() {
       </Addon>
 
       {/* Контакты и форма — плоские, как всё остальное. */}
-      <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+      <section id="contacts" className="scroll-mt-20 border-t border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto grid w-full max-w-[1400px] gap-12 px-5 py-20 sm:px-8 lg:grid-cols-2">
           <Rise>
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">

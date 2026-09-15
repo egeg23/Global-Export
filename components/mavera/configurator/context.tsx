@@ -230,11 +230,14 @@ export function Addon({
   compact = false,
   flag = false,
   scroll = true,
+  anchor,
 }: {
   id: AddonId;
   children: React.ReactNode;
   className?: string;
   as?: Tag;
+  /** HTML-id обёртки — для якорных ссылок из меню. */
+  anchor?: string;
   /** Маленький элемент в строке — пилюля языка, кнопка: ярлык и призрак встают рядом. */
   inline?: boolean;
   /** Низкий призрак — когда на месте блока остаётся замена, а не пустота. */
@@ -302,6 +305,7 @@ export function Addon({
     return (
       <Tag
         ref={ref}
+        id={anchor}
         data-addon={id}
         data-addon-on={raw ? "true" : "false"}
         className={cn("relative scroll-mt-[16vh]", inline ? "inline-block max-w-full align-middle" : "block", className)}
@@ -333,6 +337,7 @@ export function Addon({
   if (peeking) {
     return (
       <Tag
+        id={anchor}
         data-addon-peek={id}
         className={cn(
           "w-ghost items-center justify-center",
@@ -354,6 +359,7 @@ export function Addon({
     if (!ctx.open) return null;
     return (
       <Tag
+        id={anchor}
         data-addon-ghost={id}
         className={cn(
           "w-ghost items-center justify-center",
@@ -377,6 +383,7 @@ export function Addon({
   return (
     <Tag
       ref={ref}
+      id={anchor}
       data-addon={id}
       className={cn(
         "relative scroll-mt-[16vh]",

@@ -33,6 +33,15 @@ export function Dock() {
   const motion = useMotionPreferred();
   const total = useCountUp(ctx?.totalUsd ?? 0, motion, 600);
   const [copied, setCopied] = useState(false);
+  // На телефоне пилюля закрывала главную кнопку первого экрана. Пока не
+  // прокрутили — её нет; на широком экране места хватает, показываем сразу.
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 240);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (!copied) return;
@@ -60,7 +69,10 @@ export function Dock() {
         type="button"
         onClick={() => ctx.setOpen(true)}
         aria-expanded={false}
-        className="w-dock-in fixed bottom-5 right-4 z-[70] flex items-center gap-3 rounded-full bg-[#0b0d10] py-3 pl-4 pr-5 text-sm text-[#f2efe9] shadow-2xl ring-1 ring-white/10 transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transform-none sm:right-5"
+        className={cn(
+          "w-dock-in fixed bottom-5 right-4 z-[70] items-center gap-3 rounded-full bg-[#0b0d10] py-3 pl-4 pr-5 text-sm text-[#f2efe9] shadow-2xl ring-1 ring-white/10 transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transform-none sm:right-5",
+          scrolled ? "flex" : "hidden sm:flex",
+        )}
       >
         <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#ffd166]" />
         <span>Конструктор</span>

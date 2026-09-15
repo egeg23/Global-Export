@@ -44,7 +44,14 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
     { label: "Сдача", value: project.due },
   ];
 
-  const gallery = [project.photo, "/images/mavera/interior.jpg", "/images/mavera/facade.jpg", "/images/mavera/park.jpg"];
+  // Один большой и четыре малых: ровно два ряда, без пустой ячейки в сетке.
+  const gallery = [
+    project.photo,
+    "/images/mavera/interior.jpg",
+    "/images/mavera/facade.jpg",
+    "/images/mavera/park.jpg",
+    "/images/mavera/construction.jpg",
+  ];
   const rounded = variant === "premium" ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "";
 
   return (
@@ -60,9 +67,9 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
             <Link href={home} prefetch={false} className="transition-colors hover:text-[var(--w-ink)]">
               Все проекты
             </Link>
-            <span>Выбор квартиры</span>
-            <span>Ипотека</span>
-            <span>Контакты</span>
+            <a href="#flats" className="transition-colors hover:text-[var(--w-ink)]">Выбор квартиры</a>
+            <a href="#flats" className="transition-colors hover:text-[var(--w-ink)]">Ипотека</a>
+            <a href="#lead" className="transition-colors hover:text-[var(--w-ink)]">Контакты</a>
           </nav>
           <div className="flex items-center gap-4">
             <Addon id="langs" inline scroll={false}>
@@ -200,7 +207,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
       </section>
 
       {/* Выбор квартиры и расчёт платежа */}
-      <section id="flats" className="border-y border-[var(--w-line)] bg-[var(--w-paper)]">
+      <section id="flats" className="scroll-mt-20 border-y border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto w-full max-w-[1500px] px-5 py-16 sm:px-8">
           <Rise className="max-w-2xl">
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
@@ -273,7 +280,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
       </Addon>
 
       {/* Заявка */}
-      <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+      <section id="lead" className="scroll-mt-20 border-t border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto grid w-full max-w-[1500px] gap-10 px-5 py-16 sm:px-8 lg:grid-cols-2">
           <Rise>
             <h2 className="text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.08]">{voice.closing.title}</h2>

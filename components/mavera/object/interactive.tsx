@@ -112,8 +112,8 @@ export function ObjectInteractive({
 
   return (
     <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
-      {/* Фильтры и результаты */}
-      <div className="lg:col-span-7">
+      {/* Фильтры и результаты. min-w-0: иначе таблица квартир распирает колонку и страницу на телефоне. */}
+      <div className="min-w-0 lg:col-span-7">
         <div className="flex flex-wrap items-center gap-2">
           {[1, 2, 3, 4].map((n) => (
             <button key={n} type="button" onClick={() => toggleRoom(n)} className={chip(rooms.includes(n))}>

@@ -37,7 +37,7 @@ export function AdminPage({ variant }: { variant: TierId }) {
             За основу взята админка Global Export, которая уже работает у действующего
             клиента. В пакете «{tier.label}» из допников панели{" "}
             {inside.length
-              ? `уже есть: ${inside.map((addon) => addon.label.toLowerCase()).join(", ")}`
+              ? `уже есть: ${inside.map((addon) => addon.label).join(", ")}`
               : "ничего нет — базовые разделы без расширений"}
             . Остальное включается в конструкторе внизу справа: экран переключится
             сам, а у нового блока появится «было / стало».
