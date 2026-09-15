@@ -39,7 +39,7 @@ export default function AdarShowcase() {
         </Shell>
 
         <Shell size="wide" className="pb-20 lg:pb-28">
-          <Wordmark tone="gold" />
+          <Wordmark withMark />
 
           <h1 className="mt-10 max-w-4xl font-adar-display text-[2.75rem] leading-[1.02] sm:text-6xl xl:text-7xl">
             Три варианта нового сайта — рабочие, а не картинки

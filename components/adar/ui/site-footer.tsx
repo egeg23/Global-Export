@@ -20,7 +20,7 @@ export function SiteFooter() {
     <footer className="bg-adar-green-950 py-16 text-adar-cream-50">
       <Shell size="wide" className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Wordmark tone="cream" />
+          <Wordmark withMark />
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-adar-cream-50/65">
             Подарочные наборы для мероприятий и праздников. Ташкент, с{" "}
             {company.since} года.

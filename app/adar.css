@@ -107,6 +107,47 @@
   letter-spacing: -0.035em;
 }
 
+/* ------------------------------------------------------------------
+   Логотип ADAR.
+
+   Файл от заказчика — плоская жёлтая заливка (#e4a92b). В брифе просили
+   золото, и оно берётся не перекраской файла, а маской: форма знака остаётся
+   заказчикова до пикселя, а сквозь неё видно золотой градиент. Так знак
+   выглядит тиснением и на тёмном, и на светлом, а исходник остаётся один.
+   ------------------------------------------------------------------ */
+
+@layer utilities {
+  .adar-logo-mark,
+  .adar-logo-word {
+    background-image: linear-gradient(
+      118deg,
+      var(--color-adar-gold-700) 0%,
+      var(--color-adar-gold-300) 26%,
+      var(--color-adar-gold-500) 48%,
+      var(--color-adar-gold-200) 72%,
+      var(--color-adar-gold-600) 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  .adar-logo-mark {
+    -webkit-mask-image: url("/adar/brand/mark.png");
+    mask-image: url("/adar/brand/mark.png");
+    aspect-ratio: 768 / 767;
+  }
+
+  .adar-logo-word {
+    -webkit-mask-image: url("/adar/brand/wordmark.png");
+    mask-image: url("/adar/brand/wordmark.png");
+    aspect-ratio: 1400 / 256;
+  }
+}
+
 @layer base {
   /* Переход по якорю из меню упирается в липкую шапку: без этого отступа
      заголовок секции оказывается под ней. Правило ограничено витриной ADAR,
@@ -150,6 +191,23 @@
       rgb(208 160 60 / 0.22) 0%,
       rgb(208 160 60 / 0.06) 45%,
       transparent 72%
+    );
+  }
+
+  /* Подложка под текстом первого экрана. Ровная пелена по всему кадру
+     съедает красочность фотографии, поэтому затемняем только ту область,
+     где лежит заголовок, и мягко отпускаем края. */
+  .adar-text-plate::before {
+    content: "";
+    position: absolute;
+    inset: -4rem -7rem -2rem -7rem;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      95% 85% at 25% 40%,
+      color-mix(in srgb, var(--color-adar-green-950) 85%, transparent) 0%,
+      color-mix(in srgb, var(--color-adar-green-950) 56%, transparent) 55%,
+      transparent 84%
     );
   }
 

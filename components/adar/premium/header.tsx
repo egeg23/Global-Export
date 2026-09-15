@@ -41,9 +41,9 @@ export function PremiumHeader() {
           : "border-b border-transparent",
       )}
     >
-      <Shell size="wide" className="flex items-center gap-8 py-5">
+      <Shell size="wide" className="flex items-center gap-4 py-5 lg:gap-8">
         <Link href="#" aria-label="ADAR — на главную">
-          <Wordmark onDark />
+          <Wordmark size="small" withMark />
         </Link>
 
         <nav aria-label="Основное меню" className="ml-4 hidden gap-8 lg:flex">
@@ -58,7 +58,7 @@ export function PremiumHeader() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-4">
+        <div className="ml-auto flex items-center gap-3 sm:gap-4">
           <a
             href={`tel:${company.contacts.phones[2].replace(/\s/g, "")}`}
             className="hidden text-sm text-adar-cream-50/80 transition-colors hover:text-adar-gold-400 sm:block"
@@ -67,7 +67,7 @@ export function PremiumHeader() {
           </a>
           <a
             href="#kontakty"
-            className="rounded-full border border-adar-gold-500/60 px-5 py-2.5 text-sm font-medium text-adar-gold-300 transition-colors duration-300 hover:bg-adar-gold-500 hover:text-adar-green-950"
+            className="rounded-full border border-adar-gold-500/60 px-4 py-2.5 text-sm font-medium text-adar-gold-300 sm:px-5 transition-colors duration-300 hover:bg-adar-gold-500 hover:text-adar-green-950"
           >
             Заказать
           </a>

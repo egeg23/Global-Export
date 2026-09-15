@@ -27,9 +27,9 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-adar-green-900/8 bg-adar-cream-50/85 backdrop-blur-md">
-      <Shell size="wide" className="flex items-center gap-6 py-4">
+      <Shell size="wide" className="flex items-center gap-4 py-4 sm:gap-6">
         <Link href="#" className="shrink-0" aria-label="ADAR — на главную">
-          <Wordmark />
+          <Wordmark size="small" withMark />
         </Link>
 
         <nav aria-label="Основное меню" className="ml-6 hidden gap-8 lg:flex">
@@ -53,7 +53,7 @@ export function SiteHeader() {
           </a>
           <a
             href="#kontakty"
-            className="rounded-full bg-adar-green-900 px-5 py-2.5 text-sm font-medium text-adar-cream-50 transition-colors duration-300 hover:bg-adar-green-800"
+            className="rounded-full bg-adar-green-900 px-4 py-2.5 text-sm font-medium text-adar-cream-50 sm:px-5 transition-colors duration-300 hover:bg-adar-green-800"
           >
             Заказать
           </a>

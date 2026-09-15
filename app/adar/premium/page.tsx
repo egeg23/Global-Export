@@ -5,7 +5,7 @@ import { ThemesGrid } from "@/components/adar/base/themes-grid";
 import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
 import { BudgetPicker } from "@/components/adar/premium/budget-picker";
 import { CatalogFrame } from "@/components/adar/premium/catalog-frame";
-import { CinematicHero } from "@/components/adar/premium/cinematic-hero";
+import { Banner } from "@/components/adar/premium/banner";
 import { CorporateBlock } from "@/components/adar/premium/corporate-block";
 import { PremiumHeader } from "@/components/adar/premium/header";
 import { NumbersBand } from "@/components/adar/premium/numbers-band";
@@ -47,7 +47,7 @@ export default function AdarPremiumConcept() {
       <div className="bg-adar-green-950">
         <PremiumHeader />
         <main id="content">
-          <CinematicHero />
+          <Banner />
           <NumbersBand />
           <CatalogFrame showcase={growthStages} />
           <BudgetPicker />
