@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
+import { ProjectSwitcher } from "@/components/adar/showcase/project-switcher";
 import { AdminGallery } from "@/components/present/mavera/admin-gallery";
 import { MaveraGallery } from "@/components/present/mavera/gallery";
 import { MaveraHero } from "@/components/present/mavera/hero";
-import { StandSwitch } from "@/components/present/stand-switch";
 import { Container } from "@/components/ui/container";
 
 /**
@@ -43,7 +43,9 @@ const benchmarks = [
 export default function MaveraPresentPage() {
   return (
     <main className="pb-24">
-      <StandSwitch active="mavera" />
+      <Container className="pt-10">
+        <ProjectSwitcher active="mavera" tone="dark" />
+      </Container>
 
       <MaveraHero />
 

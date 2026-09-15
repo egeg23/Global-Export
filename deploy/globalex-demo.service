@@ -14,7 +14,12 @@
 # каталога.
 #
 # Переменные окружения лежат в /srv/globalex/.env.local — там же ключи
-# Supabase. Файл не в репозитории и не должен туда попадать.
+# Supabase и порт службы. Файл не в репозитории и не должен туда попадать.
+#
+# После правки юнита:
+#
+#   sudo cp deploy/globalex-demo.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl restart globalex-demo
 
 [Unit]
 Description=Global Export prototype (Next.js)
@@ -26,10 +31,14 @@ User=globalex
 Group=globalex
 WorkingDirectory=/srv/globalex
 Environment=NODE_ENV=production
+# Запасное значение: настоящий порт задаётся в .env.local, и он побеждает —
+# EnvironmentFile подключается ниже и переопределяет всё, что объявлено выше.
 Environment=PORT=3210
-Environment=HOSTNAME=127.0.0.1
 EnvironmentFile=/srv/globalex/.env.local
-ExecStart=/srv/globalex/node_modules/.bin/next start
+# Адрес прослушивания задаётся только флагом: переменной окружения для него у
+# `next start` нет, и без -H приложение слушает 0.0.0.0, то есть открыто по
+# своему порту в обход nginx и сертификата.
+ExecStart=/srv/globalex/node_modules/.bin/next start -H 127.0.0.1
 Restart=on-failure
 RestartSec=5
 KillMode=mixed
