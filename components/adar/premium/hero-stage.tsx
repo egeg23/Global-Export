@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -11,7 +10,7 @@ import {
   type MotionValue,
 } from "motion/react";
 
-import { AssemblingSet } from "@/components/adar/premium/assembling-set";
+import { ChocoField } from "@/components/adar/premium/choco-field";
 import { Shell } from "@/components/adar/ui/shell";
 import { bannerSlides } from "@/content/adar/banner";
 import { sets } from "@/content/adar/catalog";
@@ -48,33 +47,42 @@ const chapters = bannerSlides.map((slide) => {
   return { slide, set, parts };
 });
 
+/** Снимки, из которых нарезается и фон, и сами наборы. */
+const sources = chapters.map((chapter) => chapter.set.image);
+
 const clamp = (value: number) => Math.min(1, Math.max(0, value));
 
 /**
  * Первый экран — сцена, а не обложка.
  *
- * Кадр закрепляется на весь экран, и прокрутка ведёт по трём главам. В
- * каждой набор собирается из плиток, держит паузу, а потом разбирается:
- * заголовок уходит, кадр темнеет, и вокруг набора встаёт кольцо с составом —
- * что лежит внутри и по сколько граммов. Потом всё собирается обратно и
- * начинается следующая глава.
+ * Фона-фотографии здесь нет: на тёмном лежит поле настоящих шоколадок,
+ * нарезанных из снимков наборов. Прокрутка ведёт по трём главам, и в начале
+ * каждой часть этих шоколадок слетается в середину и складывается в
+ * коробку. Дальше коробка разбирается: кадр гаснет, вокруг неё встают
+ * подписи состава — что внутри и по сколько граммов, — и к концу главы всё
+ * разлетается обратно в поле.
  *
  * Прокрутку никто не перехватывает: страница едет как обычно, просто кадр
- * держится на месте, пока идёт сценарий. Кнопки каталога и расчёта партии
- * стоят на экране всё это время — сценарий не должен мешать заказать.
+ * держится на месте, пока идёт сценарий.
  */
 export function HeroStage() {
   const outer = useRef<HTMLElement>(null);
+  const box = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
+  const activeRef = useRef(0);
 
   const { scrollYProgress } = useScroll({ target: outer, offset: ["start start", "end end"] });
   /** 0…3 — сквозная позиция по главам. */
   const timeline = useTransform(scrollYProgress, (value) => value * chapters.length);
+  /** 0…1 — положение внутри текущей главы. */
+  const q = useTransform(timeline, (value) => clamp(value - activeRef.current));
 
   useMotionValueEvent(timeline, "change", (value) => {
     const next = Math.min(chapters.length - 1, Math.max(0, Math.floor(value)));
-    setActive((current) => (current === next ? current : next));
+    if (next === activeRef.current) return;
+    activeRef.current = next;
+    setActive(next);
   });
 
   const hint = useTransform(timeline, [0, 0.22], [1, 0]);
@@ -97,29 +105,28 @@ export function HeroStage() {
       )}
     >
       <div className="sticky top-0 flex h-svh flex-col overflow-hidden">
-        {chapters.map((chapter, index) => (
-          <Backdrop
-            key={chapter.slide.photo}
-            index={index}
-            photo={chapter.slide.photo}
-            timeline={timeline}
-          />
-        ))}
-
-        {/* Затемнение: низ держим, верх отпускаем — ради красочности кадра */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-adar-green-950 from-20% via-adar-green-950/70 via-58% to-adar-green-950/35"
-        />
-        <div aria-hidden="true" className="adar-glow absolute inset-x-0 top-0 -z-10 h-[70vh]" />
-
-        <Act
-          key={active}
-          index={active}
-          chapter={chapters[active]}
+        <ChocoField
+          sources={sources}
+          active={active}
+          progress={q}
           timeline={timeline}
+          boxRef={box}
           reduced={!!reduced}
         />
+
+        {/* Низ кадра держим тёмным — под текстом поле не должно рябить, —
+            и подтемняем верх, чтобы шапка читалась поверх шоколада */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-adar-green-950 from-18% via-adar-green-950/55 via-52% to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[26vh] bg-gradient-to-b from-adar-green-950 via-adar-green-950/70 to-transparent"
+        />
+        <div aria-hidden="true" className="adar-glow pointer-events-none absolute inset-x-0 top-0 h-[70vh]" />
+
+        <Act key={active} index={active} chapter={chapters[active]} q={q} boxRef={box} reduced={!!reduced} />
 
         {/* Счётчик глав */}
         <Shell size="wide" className="pointer-events-none absolute inset-x-0 top-0 pt-52 lg:pt-36">
@@ -167,7 +174,7 @@ export function HeroStage() {
           style={reduced ? undefined : { opacity: hint }}
           className="pointer-events-none absolute bottom-6 right-24 hidden lg:block"
         >
-          <span className="flex flex-col items-center gap-2 text-[0.6rem] uppercase tracking-[0.3em] text-adar-cream-50/50">
+          <span className="flex flex-col items-center gap-2 text-[0.6rem] uppercase tracking-[0.3em] text-adar-cream-50/55">
             Листайте
             <span className="adar-scroll-line block h-7 w-px bg-adar-cream-50/25" />
           </span>
@@ -185,102 +192,54 @@ export function HeroStage() {
   );
 }
 
-/** Фотография главы: проявляется к своей главе и уезжает из неё. */
-function Backdrop({
-  index,
-  photo,
-  timeline,
-}: {
-  index: number;
-  photo: string;
-  timeline: MotionValue<number>;
-}) {
-  const opacity = useTransform(
-    timeline,
-    [index - 0.4, index + 0.08, index + 0.92, index + 1.4],
-    [0, 1, 1, 0],
-  );
-  const scale = useTransform(timeline, [index - 0.4, index + 1.4], [1.14, 1]);
-
-  return (
-    <motion.div style={{ opacity, scale }} className="absolute inset-0 -z-20">
-      <Image src={photo} alt="" fill priority={index === 0} sizes="100vw" className="object-cover" />
-    </motion.div>
-  );
-}
-
 /**
- * Одна глава: набор собирается, держит паузу, разбирается на состав и
- * собирается обратно. Всё считается от местной позиции внутри главы.
+ * Одна глава. Сам набор рисует канва — здесь остаются подписи состава,
+ * которые встают вокруг него, и текст главы.
  */
 function Act({
   index,
   chapter,
-  timeline,
+  q,
+  boxRef,
   reduced,
 }: {
   index: number;
   chapter: (typeof chapters)[number];
-  timeline: MotionValue<number>;
+  q: MotionValue<number>;
+  boxRef: React.RefObject<HTMLDivElement | null>;
   reduced: boolean;
 }) {
   const { slide, set, parts } = chapter;
-  const q = useTransform(timeline, (value) => clamp(value - index));
 
   // Радиус кольца берётся из настоящего размера коробки: подписи разлетаются
   // в пикселях, а не в процентах от собственной ширины.
-  const stage = useRef<HTMLDivElement>(null);
   const [half, setHalf] = useState(0);
-  useEffect(() => {
-    const element = stage.current;
-    if (!element) return;
-    const observer = new ResizeObserver(([entry]) => setHalf(entry.contentRect.width / 2));
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
+  const measure = useCallback(
+    (node: HTMLDivElement | null) => {
+      boxRef.current = node;
+      if (node) setHalf(node.getBoundingClientRect().width / 2);
+    },
+    [boxRef],
+  );
 
   // Заголовок уступает место разбору и не возвращается: следом идёт
   // следующая глава со своим заголовком.
   const textY = useTransform(q, [0, 0.5], [0, -18]);
   const textOpacity = useTransform(q, [0, 0.4, 0.5], [1, 1, 0]);
   const breakdown = useTransform(q, [0.46, 0.56, 0.84, 0.92], [0, 1, 1, 0]);
-  const dim = useTransform(q, [0.4, 0.55, 0.84, 0.94], [0, 0.66, 0.66, 0]);
-
-  const setScale = useTransform(q, [0, 0.42, 0.62, 0.94, 1], [1, 1, 0.78, 0.78, 0.9]);
-  const setOpacity = useTransform(q, [0, 0.95, 1], [1, 1, 0]);
 
   const ringOpacity = useTransform(q, [0.44, 0.56, 0.84, 0.92], [0, 1, 1, 0]);
   const ringSpin = useTransform(q, [0.44, 1], [-22, 12]);
 
   return (
     <>
-      {/* На время разбора кадр гаснет: читать состав поверх ёлки нельзя */}
-      <motion.div
-        aria-hidden="true"
-        style={reduced ? undefined : { opacity: dim }}
-        className="pointer-events-none absolute inset-0 -z-10 bg-adar-green-950"
-      />
-
-      {/* Набор, кольцо и подписи */}
+      {/* Пустая коробка: по ней канва знает, куда сажать набор, и вокруг неё
+          встают подписи состава. */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center pb-[34vh] pt-52 lg:pb-[16vh] lg:pt-24">
         <div
-          ref={stage}
+          ref={measure}
           className="relative aspect-square w-[min(58vw,14rem)] lg:w-[min(36vh,20rem)]"
         >
-          <motion.div
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0"
-          >
-            <motion.div
-              style={reduced ? undefined : { scale: setScale, opacity: setOpacity }}
-              className="h-full w-full"
-            >
-              <AssemblingSet src={set.image} alt={set.name} className="h-full w-full" />
-            </motion.div>
-          </motion.div>
-
           <motion.svg
             aria-hidden="true"
             viewBox="0 0 100 100"
@@ -301,7 +260,14 @@ function Act({
 
           {half > 0
             ? parts.map((part, order) => (
-                <RingLabel key={part.label} order={order} part={part} q={q} half={half} reduced={reduced} />
+                <RingLabel
+                  key={part.label}
+                  order={order}
+                  part={part}
+                  q={q}
+                  half={half}
+                  reduced={reduced}
+                />
               ))
             : null}
         </div>
@@ -316,17 +282,17 @@ function Act({
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-x-0 bottom-0 max-w-xl lg:max-w-[42%]"
           >
-          <motion.div style={reduced ? undefined : { y: textY, opacity: textOpacity }}>
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-adar-gold-300">
-              {slide.eyebrow}
-            </p>
-            <h1 className="mt-4 text-balance font-adar-display text-[2.2rem] leading-[1] text-adar-cream-50 sm:text-5xl xl:text-[3.4rem]">
-              {slide.title} <span className="adar-gold-text">{slide.accent}</span>
-            </h1>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-adar-cream-50/75">
-              {slide.note}
-            </p>
-          </motion.div>
+            <motion.div style={reduced ? undefined : { y: textY, opacity: textOpacity }}>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-adar-gold-300">
+                {slide.eyebrow}
+              </p>
+              <h1 className="mt-4 text-balance font-adar-display text-[2.2rem] leading-[1] text-adar-cream-50 sm:text-5xl xl:text-[3.4rem]">
+                {slide.title} <span className="adar-gold-text">{slide.accent}</span>
+              </h1>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-adar-cream-50/75">
+                {slide.note}
+              </p>
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -344,7 +310,7 @@ function Act({
               {formatNumber(set.price)} сум
             </p>
 
-            {/* На телефоне состав идёт столбцом: кольцо туда не поместится */}
+            {/* На телефоне состав идёт столбцами: кольцо туда не поместится */}
             <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-1 lg:hidden">
               {parts.slice(0, COLUMN).map((part, order) => (
                 <ColumnLabel key={part.label} order={order} part={part} q={q} reduced={reduced} />
