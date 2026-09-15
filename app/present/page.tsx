@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
+import { cn } from "@/lib/cn";
 import { getNews, getProducts } from "@/lib/content/source";
 import { isShowcase } from "@/lib/showcase";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
@@ -13,6 +14,8 @@ type Stop = {
   text: string;
   note?: string;
   external?: boolean;
+  /** Подпункт: сдвинут и отбит линией — отдельная работа внутри той же витрины. */
+  nested?: boolean;
 };
 
 /**
@@ -58,6 +61,14 @@ export default async function PresentPage() {
       title: "Панель управления",
       text: "Новости, товары, категории, сертификаты, команда и медиатека. Тексты в трёх языках, фотографии перетаскиванием, черновики. Изменения появляются на сайте сразу — отдельной публикации нет.",
       note: isShowcase ? "Открывается сразу, без пароля" : "Доступ выдаётся отдельно",
+    },
+    {
+      href: "/present/mavera",
+      eyebrow: "Новый клиент · MAVERA",
+      title: "Макеты сайта застройщика",
+      text: "Шесть страниц из брифа MAVERA в двух направлениях оформления. Тумблер перекрашивает все макеты разом, любой из них разворачивается и листается — на десктопе и на телефоне.",
+      note: "Отдельная работа, к Global Export не относится",
+      nested: true,
     },
   ];
 
@@ -109,7 +120,10 @@ export default async function PresentPage() {
                 href={stop.href}
                 prefetch={false}
                 {...(stop.external ? { target: "_blank", rel: "noopener" } : {})}
-                className="group grid gap-3 bg-forest-950 p-6 transition-colors duration-300 hover:bg-forest-900 sm:p-8 lg:grid-cols-12 lg:items-baseline lg:gap-8"
+                className={cn(
+                  "group grid gap-3 bg-forest-950 p-6 transition-colors duration-300 hover:bg-forest-900 sm:p-8 lg:grid-cols-12 lg:items-baseline lg:gap-8",
+                  stop.nested && "border-l-2 border-harvest-400/50 pl-8 sm:pl-12",
+                )}
               >
                 <div className="lg:col-span-4">
                   <span className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-harvest-300">
