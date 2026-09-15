@@ -8,7 +8,7 @@ const FIELD_GRID = 7;
 /** Мелкая: из неё складывается сам набор. */
 const FLOCK_GRID = 13;
 /** Сколько длится сборка набора, мс. */
-const BUILD = 1700;
+const BUILD = 2200;
 /**
  * Сколько пикселей канве разрешено держать.
  *
@@ -19,7 +19,7 @@ const BUILD = 1700;
  * снимки наборов всего 860 px, и на 1,5 плитка уже рисуется один к одному
  * с исходником.
  */
-const BUDGET = 2_600_000;
+const BUDGET = 2_200_000;
 /**
  * Ступени качества поля.
  *
@@ -33,14 +33,15 @@ const STAGGER = 0.45;
 
 type Crop = { image: number; sx: number; sy: number; ss: number };
 
-type FieldTile = Crop & {
+type FieldTile = {
   /** Место в долях экрана — чтобы поле не ломалось при смене размера окна. */
   u: number;
   v: number;
   depth: number;
-  spin: number;
-  size: number;
   alpha: number;
+  /** Повёрнутая плитка, испечённая заранее: поворот в кадре — дорого. */
+  sprite: HTMLCanvasElement;
+  side: number;
 };
 
 type FlockTile = Crop & {
@@ -180,6 +181,28 @@ export function ChocoField({
 
     const images: HTMLImageElement[] = [];
     let field: FieldTile[] = [];
+    /**
+     * Плитка поля не меняется от кадра к кадру — меняется только её место.
+     * Поэтому поворот делается один раз, а в кадре остаётся простая
+     * прямоугольная отрисовка: она идёт по быстрому пути отрисовщика.
+     */
+    const bakeTile = (crop: Crop, size: number, spin: number) => {
+      const side = Math.ceil(size * 1.45);
+      const sprite = document.createElement("canvas");
+      sprite.width = Math.round(side * ratio);
+      sprite.height = Math.round(side * ratio);
+      const spriteCtx = sprite.getContext("2d");
+      if (!spriteCtx) return { sprite, side };
+
+      const cos = Math.cos(spin) * ratio;
+      const sin = Math.sin(spin) * ratio;
+      spriteCtx.setTransform(cos, sin, -sin, cos, (side / 2) * ratio, (side / 2) * ratio);
+      const image = images[crop.image];
+      if (image) {
+        spriteCtx.drawImage(image, crop.sx, crop.sy, crop.ss, crop.ss, -size / 2, -size / 2, size, size);
+      }
+      return { sprite, side };
+    };
     let flocks: FlockTile[][] = [];
     let halo: HTMLCanvasElement | null = null;
 
@@ -275,47 +298,66 @@ export function ChocoField({
       field = Array.from({ length: count }, (_, i) => {
         const crop = pool[Math.floor(noise(i * 5.7) * pool.length) % Math.max(1, pool.length)];
         const depth = 0.34 + noise(i + 3.3) * 0.66;
+        const baked = bakeTile(crop, base * (0.66 + depth * 0.62), (noise(i + 9.1) - 0.5) * 0.9);
         return {
-          ...crop,
           u: halton(i + 1, 2),
           v: halton(i + 1, 3),
           depth,
-          spin: (noise(i + 9.1) - 0.5) * 0.9,
-          size: base * (0.66 + depth * 0.62),
           alpha: 0.13 + depth * 0.26,
+          sprite: baked.sprite,
+          side: baked.side,
         };
       });
     };
 
-    const paint = (now: number) => {
-      reset();
-      ctx.clearRect(0, 0, width, height);
+    // Что было на канве в прошлый раз: пока эти числа не изменились,
+    // перерисовывать нечего. Страница, на которую просто смотрят, не
+    // должна занимать процессор.
+    let lastQ = Number.NaN;
+    let lastLine = Number.NaN;
+    let lastPx = Number.NaN;
+    let lastPy = Number.NaN;
+    let lastBuilt = Number.NaN;
 
+    const paint = (now: number) => {
       const q = progress.get();
       const line = timeline.get();
       const px = pointer.current.x;
       const py = pointer.current.y;
+      const built = reduced ? 1 : clamp01((now - bornRef.current) / BUILD);
 
-      const dim = curve(q, [0.4, 0.55, 0.84, 0.94], [0, 0.72, 0.72, 0]);
+      const same =
+        Math.abs(q - lastQ) < 0.0002 &&
+        Math.abs(line - lastLine) < 0.0002 &&
+        Math.abs(px - lastPx) < 0.002 &&
+        Math.abs(py - lastPy) < 0.002 &&
+        built === lastBuilt;
+      if (same) return false;
 
-      // Поле: медленно едет вверх на прокрутке и чуть ведётся за курсором.
+      lastQ = q;
+      lastLine = line;
+      lastPx = px;
+      lastPy = py;
+      lastBuilt = built;
+
+      reset();
+      ctx.clearRect(0, 0, width, height);
+
+      const dim = curve(q, [0.34, 0.5, 0.9, 0.98], [0, 0.72, 0.72, 0]);
+
+      // Поле едет вверх на прокрутке и чуть ведётся за курсором. Само по
+      // себе оно не шевелится: незачем жечь кадры, пока страницу читают.
       for (let i = 0; i < field.length; i += 1) {
         const tile = field[i];
-        const image = images[tile.image];
-        if (!image) continue;
-
-        const span = height + tile.size * 2;
-        const shift = line * 90 * tile.depth + (reduced ? 0 : now * 0.0055 * tile.depth);
-        let y = ((tile.v * height + tile.size + shift) % span + span) % span - tile.size;
+        const span = height + tile.side * 2;
+        const shift = line * 96 * tile.depth;
+        let y = ((tile.v * height + tile.side + shift) % span + span) % span - tile.side;
         const x = tile.u * width + px * 34 * tile.depth;
         y += py * 22 * tile.depth;
 
-        const spin = tile.spin + (reduced ? 0 : Math.sin(now * 0.00016 + i) * 0.06);
         ctx.globalAlpha = tile.alpha;
-        place(x, y, spin);
-        ctx.drawImage(image, tile.sx, tile.sy, tile.ss, tile.ss, -tile.size / 2, -tile.size / 2, tile.size, tile.size);
+        ctx.drawImage(tile.sprite, x - tile.side / 2, y - tile.side / 2, tile.side, tile.side);
       }
-      reset();
 
       if (dim > 0) {
         ctx.globalAlpha = dim;
@@ -327,16 +369,15 @@ export function ChocoField({
       const image = images[activeRef.current];
       if (!image) {
         ctx.globalAlpha = 1;
-        return;
+        return true;
       }
 
       // Последняя глава не разлетается: экран должен кончиться набором, а
       // не пустым полем.
       const last = activeRef.current === flocks.length - 1;
-      const scale = curve(q, [0, 0.42, 0.62, 1], [1, 1, 0.78, 0.78]);
-      const fade = last ? 1 : curve(q, [0, 0.95, 1], [1, 1, 0]);
-      const back = last ? 0 : curve(q, [0.94, 1], [0, 1]);
-      const built = reduced ? 1 : clamp01((now - bornRef.current) / BUILD);
+      const scale = curve(q, [0, 0.36, 0.56, 1], [1, 1, 0.78, 0.78]);
+      const fade = last ? 1 : curve(q, [0, 0.97, 1], [1, 1, 0]);
+      const back = last ? 0 : curve(q, [0.96, 1], [0, 1]);
 
       const side = (box.size * scale) / FLOCK_GRID;
       const left = box.x + box.size / 2 - (side * FLOCK_GRID) / 2;
@@ -376,6 +417,7 @@ export function ChocoField({
 
       reset();
       ctx.globalAlpha = 1;
+      return true;
     };
 
     // Сторож частоты: медиана по полусотне кадров, ступень вниз — сразу,
@@ -419,8 +461,10 @@ export function ChocoField({
     const loop = (now: number) => {
       if (stopped) return;
       if (visible) {
-        paint(now);
-        govern(now);
+        // Сторож считает только те кадры, в которых что-то рисовалось:
+        // простой без перерисовки не должен выглядеть как быстрый кадр.
+        if (paint(now)) govern(now);
+        else previous = 0;
       } else {
         previous = 0;
         spans.length = 0;
@@ -431,6 +475,7 @@ export function ChocoField({
     const onResize = () => {
       measure();
       build();
+      lastQ = Number.NaN;
     };
 
     let pointerFrame = 0;

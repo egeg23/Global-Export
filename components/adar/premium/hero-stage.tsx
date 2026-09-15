@@ -81,9 +81,9 @@ export function HeroStage() {
    * догоняет её, примерно за полсекунды.
    */
   const eased = useSpring(scrollYProgress, {
-    stiffness: 58,
-    damping: 24,
-    mass: 0.35,
+    stiffness: 48,
+    damping: 22,
+    mass: 0.4,
     restDelta: 0.0002,
   });
   const flow = reduced ? scrollYProgress : eased;
@@ -106,7 +106,7 @@ export function HeroStage() {
     const element = outer.current;
     if (!element) return;
     const step = element.offsetHeight / chapters.length;
-    window.scrollTo({ top: element.offsetTop + step * (index + 0.22), behavior: "smooth" });
+    window.scrollTo({ top: element.offsetTop + step * (index + 0.14), behavior: "smooth" });
   }, []);
 
   return (
@@ -115,7 +115,7 @@ export function HeroStage() {
       aria-label="Главный экран"
       className={cn(
         "relative -mt-52 bg-adar-green-950 lg:-mt-[8.75rem]",
-        reduced ? "" : "h-[300svh] lg:h-[340svh]",
+        reduced ? "" : "h-[420svh] lg:h-[480svh]",
       )}
     >
       <div className="sticky top-0 flex h-svh flex-col overflow-hidden">
@@ -247,20 +247,20 @@ function Act({
 
   // Заголовок уступает место разбору и не возвращается: следом идёт
   // следующая глава со своим заголовком.
-  const textY = useTransform(q, [0, 0.5], [0, -18]);
-  const textOpacity = useTransform(q, [0, 0.4, 0.5], [1, 1, 0]);
+  const textY = useTransform(q, [0, 0.46], [0, -22]);
+  const textOpacity = useTransform(q, [0, 0.34, 0.46], [1, 1, 0]);
   const breakdown = useTransform(
     q,
-    last ? [0.46, 0.56, 1, 1] : [0.46, 0.56, 0.84, 0.92],
+    last ? [0.46, 0.6, 1, 1] : [0.46, 0.6, 0.9, 0.97],
     [0, 1, 1, last ? 1 : 0],
   );
 
   const ringOpacity = useTransform(
     q,
-    last ? [0.44, 0.56, 1, 1] : [0.44, 0.56, 0.84, 0.92],
+    last ? [0.44, 0.6, 1, 1] : [0.44, 0.6, 0.9, 0.97],
     [0, 1, 1, last ? 1 : 0],
   );
-  const ringSpin = useTransform(q, [0.44, 1], [-22, 12]);
+  const ringSpin = useTransform(q, [0.44, 1], [-26, 16]);
 
   return (
     <>
@@ -405,13 +405,15 @@ function RingLabel({
   const x = Math.cos(angle) * reach;
   const y = Math.sin(angle) * reach;
 
-  const start = 0.46 + order * 0.016;
+  // Подписи выходят по очереди и не спеша: семь штук растянуты на треть
+  // главы, иначе они выскакивают все разом.
+  const start = 0.48 + order * 0.03;
   const opacity = useTransform(
     q,
-    last ? [start, start + 0.09, 1, 1] : [start, start + 0.09, 0.84, 0.91],
+    last ? [start, start + 0.12, 1, 1] : [start, start + 0.12, 0.9, 0.96],
     [0, 1, 1, last ? 1 : 0],
   );
-  const travel = useTransform(q, [start, start + 0.13], [0.22, 1]);
+  const travel = useTransform(q, [start, start + 0.17], [0.22, 1]);
   const tx = useTransform(travel, (value) => x * value);
   const ty = useTransform(travel, (value) => y * value);
 
@@ -441,9 +443,9 @@ function ColumnLabel({
   q: MotionValue<number>;
   reduced: boolean;
 }) {
-  const start = 0.5 + order * 0.022;
-  const opacity = useTransform(q, [start, start + 0.08], [0, 1]);
-  const x = useTransform(q, [start, start + 0.1], [-12, 0]);
+  const start = 0.5 + order * 0.035;
+  const opacity = useTransform(q, [start, start + 0.1], [0, 1]);
+  const x = useTransform(q, [start, start + 0.13], [-14, 0]);
 
   return (
     <motion.span
