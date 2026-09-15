@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { Container } from "@/components/ui/container";
 
 import { Skyline } from "./skyline";
-import { directions } from "./theme";
+import { tiers } from "./theme";
 
 /**
  * Обложка вкладки с параллаксом.
@@ -63,7 +63,7 @@ export function MaveraHero() {
       ref={ref}
       onPointerMove={onPointerMove}
       onPointerLeave={(event) => event.currentTarget.style.setProperty("--mv-mx", "0")}
-      style={directions[0].vars as React.CSSProperties}
+      style={tiers[2].vars as React.CSSProperties}
       className="relative isolate flex min-h-[78svh] items-end overflow-hidden border-b border-sand-50/10 bg-[var(--mv-bg)]"
     >
       <div aria-hidden="true" className="absolute inset-0 -z-10">
@@ -86,17 +86,17 @@ export function MaveraHero() {
             opacity: "calc(1 - var(--mv-p, 0) * 0.85)",
           }}
         >
-          Два направления
+          Три варианта
           <br />
-          для сайта застройщика
+          сайта застройщика
         </h1>
         <p
           className="mt-7 max-w-2xl text-base leading-relaxed text-[var(--mv-muted)] sm:text-lg"
           style={{ transform: "translate3d(0, calc(var(--mv-p, 0) * -22px), 0)" }}
         >
-          Шесть страниц из брифа, собранные как рабочая вёрстка, а не картинки.
-          Тумблер переключает оформление целиком, любой макет разворачивается и
-          листается — на десктопе и на телефоне.
+          Стандарт, Люкс и Премиум — с ценой, сроком и составом работ в каждом.
+          Макеты собраны рабочей вёрсткой: тумблер переключает оформление
+          целиком, генплан и подбор квартиры по-настоящему кликаются.
         </p>
       </Container>
     </section>

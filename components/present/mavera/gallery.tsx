@@ -5,104 +5,25 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/cn";
 
+import { BrowserFrame, PhoneFrame, useMotionAllowed, usePointerParallax } from "./frames";
 import { Screen } from "./screens";
-import { directions, screens, type DirectionId, type ScreenId } from "./theme";
+import { lockedIn, screensFor, tiers, type ScreenId, type TierId } from "./theme";
 
 type Device = "desktop" | "mobile";
 
-/** Переменные палитры отдаются как обычный инлайновый стиль. */
-function paletteOf(id: DirectionId): React.CSSProperties {
-  const found = directions.find((direction) => direction.id === id) ?? directions[0];
+/** Экраны, где зритель действительно кликает, а не смотрит картинку. */
+const interactiveScreens: ScreenId[] = ["genplan", "picker"];
+
+function paletteOf(id: TierId): React.CSSProperties {
+  const found = tiers.find((tier) => tier.id === id) ?? tiers[0];
   return found.vars as React.CSSProperties;
 }
 
-/**
- * Указатель двигает слои: рамка слегка поворачивается, а силуэты внутри неё
- * разъезжаются по глубине. Значения пишутся прямо в CSS-переменные узла, без
- * состояния React — перерисовка на каждый кадр мыши обошлась бы дороже
- * самого эффекта.
- */
-function usePointerParallax(enabled: boolean) {
-  const onPointerMove = useCallback(
-    (event: React.PointerEvent<HTMLElement>) => {
-      if (!enabled || event.pointerType !== "mouse") return;
-      const node = event.currentTarget;
-      const box = node.getBoundingClientRect();
-      node.style.setProperty("--mv-mx", ((event.clientX - box.left) / box.width - 0.5).toFixed(3));
-      node.style.setProperty("--mv-my", ((event.clientY - box.top) / box.height - 0.5).toFixed(3));
-    },
-    [enabled],
-  );
-
-  const onPointerLeave = useCallback((event: React.PointerEvent<HTMLElement>) => {
-    const node = event.currentTarget;
-    node.style.setProperty("--mv-mx", "0");
-    node.style.setProperty("--mv-my", "0");
-  }, []);
-
-  return { onPointerMove, onPointerLeave };
-}
-
-/** Рамка браузера: верхняя планка с адресом и обрезанный по ней экран. */
-function BrowserFrame({
-  path,
-  children,
-  className,
-  bodyClassName,
-  style,
-}: {
-  path: string;
-  children: React.ReactNode;
-  className?: string;
-  bodyClassName?: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <div
-      style={style}
-      className={cn(
-        "overflow-hidden rounded-xl border border-sand-50/12 bg-forest-900 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.75)]",
-        className,
-      )}
-    >
-      <div className="flex items-center gap-2 border-b border-sand-50/10 px-3 py-2">
-        <span className="flex gap-1.5" aria-hidden="true">
-          <span className="h-2 w-2 rounded-full bg-sand-50/20" />
-          <span className="h-2 w-2 rounded-full bg-sand-50/20" />
-          <span className="h-2 w-2 rounded-full bg-sand-50/20" />
-        </span>
-        <span className="mx-auto max-w-[70%] truncate rounded-full bg-sand-50/8 px-3 py-0.5 text-[0.62rem] text-sand-300/60">
-          {path}
-        </span>
-      </div>
-      <div className={cn("[container-type:inline-size]", bodyClassName)}>{children}</div>
-    </div>
-  );
-}
-
-/** Телефон — для показа адаптивности (пункт 9 брифа). */
-function PhoneFrame({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div
-      className={cn(
-        "relative overflow-hidden rounded-[2rem] border-[6px] border-forest-900 bg-forest-900 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.75)]",
-        className,
-      )}
-    >
-      <span
-        aria-hidden="true"
-        className="absolute left-1/2 top-2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-sand-50/20"
-      />
-      <div className="h-full [container-type:inline-size]">{children}</div>
-    </div>
-  );
-}
-
 export function MaveraGallery() {
-  const [direction, setDirection] = useState<DirectionId>("night");
+  const [tierId, setTierId] = useState<TierId>("premium");
   const [openId, setOpenId] = useState<ScreenId | null>(null);
   const [device, setDevice] = useState<Device>("desktop");
-  const [motion, setMotion] = useState(true);
+  const motion = useMotionAllowed();
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -110,20 +31,13 @@ export function MaveraGallery() {
   const devicePicked = useRef(false);
 
   const parallax = usePointerParallax(motion);
-  const active = directions.find((entry) => entry.id === direction) ?? directions[0];
-  const openIndex = openId ? screens.findIndex((screen) => screen.id === openId) : -1;
-  const openScreen = openIndex >= 0 ? screens[openIndex] : null;
+  const tier = tiers.find((entry) => entry.id === tierId) ?? tiers[0];
+  const visible = screensFor(tierId);
+  const locked = lockedIn(tierId);
+  const openIndex = openId ? visible.findIndex((screen) => screen.id === openId) : -1;
+  const openScreen = openIndex >= 0 ? visible[openIndex] : null;
+  const live = openScreen ? interactiveScreens.includes(openScreen.id) : false;
 
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setMotion(!query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
-
-  // Диалог открывается только из эффекта: показать его на сервере нельзя, а
-  // `showModal` даёт бесплатно фокус-ловушку, Esc и затемнение фона.
   useEffect(() => {
     const node = dialogRef.current;
     if (!node) return;
@@ -148,15 +62,14 @@ export function MaveraGallery() {
     setDevice(next);
   }, []);
 
-  const step = useCallback(
-    (delta: number) => {
-      if (openIndex < 0) return;
-      const next = (openIndex + delta + screens.length) % screens.length;
-      setOpenId(screens[next].id);
-      scrollRef.current?.scrollTo({ top: 0 });
-    },
-    [openIndex],
-  );
+  // Без useCallback: список экранов пересобирается на каждый рендер, и ручная
+  // мемоизация только мешала бы компилятору React оптимизировать компонент.
+  const step = (delta: number) => {
+    if (openIndex < 0) return;
+    const next = (openIndex + delta + visible.length) % visible.length;
+    setOpenId(visible[next].id);
+    scrollRef.current?.scrollTo({ top: 0 });
+  };
 
   /** Прокрутка внутри развёрнутого макета двигает задний план медленнее переднего. */
   const onScroll = useCallback(() => {
@@ -172,46 +85,70 @@ export function MaveraGallery() {
   useEffect(() => () => cancelAnimationFrame(frame.current), []);
 
   return (
-    <div style={paletteOf(direction)}>
-      {/* Тумблер направлений */}
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-        <div
-          role="group"
-          aria-label="Направление оформления"
-          className="relative inline-flex w-full max-w-sm rounded-full border border-sand-50/12 bg-forest-900/60 p-1"
-        >
-          <span
-            aria-hidden="true"
-            className="absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full bg-[var(--mv-accent)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
-            style={{ transform: `translateX(${direction === "night" ? "0%" : "100%"})` }}
-          />
-          {directions.map((entry) => (
-            <button
-              key={entry.id}
-              type="button"
-              aria-pressed={direction === entry.id}
-              onClick={() => setDirection(entry.id)}
-              className={cn(
-                "relative z-10 flex-1 rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-300",
-                direction === entry.id
-                  ? "text-[var(--mv-accent-ink)]"
-                  : "text-sand-200/70 hover:text-sand-50",
-              )}
-            >
-              {entry.label}
-            </button>
-          ))}
+    <div style={paletteOf(tierId)}>
+      {/* Тумблер пакетов */}
+      <div
+        role="group"
+        aria-label="Вариант сайта"
+        className="relative flex w-full max-w-xl rounded-full border border-sand-50/12 bg-forest-900/60 p-1"
+      >
+        <span
+          aria-hidden="true"
+          className="absolute inset-y-1 left-1 w-[calc(33.333%-0.1667rem)] rounded-full bg-[var(--mv-accent)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+          style={{ transform: `translateX(${tiers.findIndex((e) => e.id === tierId) * 100}%)` }}
+        />
+        {tiers.map((entry) => (
+          <button
+            key={entry.id}
+            type="button"
+            aria-pressed={tierId === entry.id}
+            onClick={() => setTierId(entry.id)}
+            className={cn(
+              "relative z-10 flex-1 rounded-full px-3 py-2.5 text-sm font-medium transition-colors duration-300",
+              tierId === entry.id
+                ? "text-[var(--mv-accent-ink)]"
+                : "text-sand-200/70 hover:text-sand-50",
+            )}
+          >
+            {entry.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Смета выбранного варианта */}
+      <div
+        key={tier.id}
+        className="mv-fade mt-6 grid gap-8 rounded-card border border-sand-50/12 p-6 sm:p-8 lg:grid-cols-12 lg:gap-12"
+      >
+        <div className="lg:col-span-5">
+          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--mv-accent)]">
+            {tier.mood}
+          </p>
+          <p className="mt-4 font-display text-4xl leading-none text-sand-50">{tier.price}</p>
+          <p className="mt-3 text-sm text-sand-300/60">
+            {tier.duration} · {tier.hours}
+          </p>
+          <p className="mt-5 text-sm leading-relaxed text-sand-200/75">{tier.note}</p>
         </div>
 
-        <p key={active.id} className="mv-fade max-w-md text-sm leading-relaxed text-sand-300/60">
-          {active.note}
-        </p>
+        <ul className="space-y-2.5 lg:col-span-7">
+          {tier.includes.map((item) => (
+            <li key={item} className="flex gap-3 text-sm leading-relaxed text-sand-200/75">
+              <span aria-hidden="true" className="mt-[0.45em] h-1 w-1 shrink-0 rounded-full bg-[var(--mv-accent)]" />
+              {item}
+            </li>
+          ))}
+          <li className="pt-2 text-xs text-sand-300/45">
+            Цены без допников: перевод носителями, CRM, 3D-тур и поддержка считаются
+            отдельно.
+          </li>
+        </ul>
       </div>
 
       {/* Сетка макетов */}
       <ul className="mt-12 grid gap-8 md:grid-cols-2 xl:gap-10">
-        {screens.map((screen, index) => (
-          <Reveal as="li" key={screen.id} delay={index * 70}>
+        {visible.map((screen, index) => (
+          <Reveal as="li" key={screen.id} delay={index * 60}>
             <button
               type="button"
               onClick={() => open(screen.id)}
@@ -235,10 +172,9 @@ export function MaveraGallery() {
                 }
               >
                 <span aria-hidden="true">
-                  <Screen id={screen.id} device="desktop" />
+                  <Screen id={screen.id} device="desktop" tier={tierId} />
                 </span>
 
-                {/* Подсказка появляется поверх макета, а не двигает вёрстку. */}
                 <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center bg-gradient-to-t from-forest-950/90 to-transparent pb-4 pt-10 text-xs font-medium text-sand-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
                   Развернуть макет
                 </span>
@@ -255,6 +191,37 @@ export function MaveraGallery() {
           </Reveal>
         ))}
       </ul>
+
+      {/* Чего в этом пакете нет — сразу с переходом туда, где есть. */}
+      {locked.length > 0 ? (
+        <ul className="mt-10 grid gap-4 md:grid-cols-2">
+          {locked.map((screen) => (
+            <li key={screen.id}>
+              <button
+                type="button"
+                onClick={() => {
+                  setTierId("premium");
+                  open(screen.id);
+                }}
+                className="group flex w-full items-center justify-between gap-4 rounded-card border border-dashed border-sand-50/18 px-5 py-4 text-left transition-colors hover:border-harvest-300/60 hover:bg-sand-50/4"
+              >
+                <span>
+                  <span className="block font-display text-lg text-sand-50">{screen.title}</span>
+                  <span className="mt-1 block text-xs text-sand-300/55">
+                    Есть только в «Премиуме» — посмотреть
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="text-harvest-300 transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  →
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
       {/* Развёрнутый макет */}
       <dialog
@@ -275,7 +242,8 @@ export function MaveraGallery() {
               <div>
                 <h2 className="font-display text-2xl text-sand-50">{openScreen.title}</h2>
                 <p className="mt-1 text-xs text-sand-300/55">
-                  {active.label} · {openScreen.brief}
+                  {tier.label} · {openScreen.brief}
+                  {live ? " · экран работает: попробуйте кликнуть" : ""}
                 </p>
               </div>
 
@@ -336,11 +304,12 @@ export function MaveraGallery() {
                   onScroll={onScroll}
                   onPointerMove={parallax.onPointerMove}
                   onPointerLeave={parallax.onPointerLeave}
-                  role="img"
-                  aria-label={`Макет страницы «${openScreen.title}» — ${active.label}`}
+                  {...(live
+                    ? { role: "group", "aria-label": `Рабочий макет: ${openScreen.title}` }
+                    : { role: "img", "aria-label": `Макет страницы «${openScreen.title}»` })}
                   className="max-h-[62svh] overflow-y-auto overscroll-contain sm:max-h-[70svh]"
                 >
-                  <Screen id={openScreen.id} device="desktop" />
+                  <Screen id={openScreen.id} device="desktop" tier={tierId} live={live} />
                 </div>
               </BrowserFrame>
             ) : (
@@ -351,11 +320,12 @@ export function MaveraGallery() {
                     onScroll={onScroll}
                     onPointerMove={parallax.onPointerMove}
                     onPointerLeave={parallax.onPointerLeave}
-                    role="img"
-                    aria-label={`Мобильный макет страницы «${openScreen.title}» — ${active.label}`}
+                    {...(live
+                      ? { role: "group", "aria-label": `Рабочий макет: ${openScreen.title}` }
+                      : { role: "img", "aria-label": `Мобильный макет: ${openScreen.title}` })}
                     className="h-full overflow-y-auto overscroll-contain"
                   >
-                    <Screen id={openScreen.id} device="mobile" />
+                    <Screen id={openScreen.id} device="mobile" tier={tierId} live={live} />
                   </div>
                 </PhoneFrame>
               </div>

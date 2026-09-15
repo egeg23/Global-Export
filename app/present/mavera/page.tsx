@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { AdminGallery } from "@/components/present/mavera/admin-gallery";
 import { MaveraGallery } from "@/components/present/mavera/gallery";
 import { MaveraHero } from "@/components/present/mavera/hero";
 import { Container } from "@/components/ui/container";
@@ -8,29 +9,34 @@ import { Container } from "@/components/ui/container";
 /**
  * Вкладка MAVERA в витрине.
  *
- * Отдельная страница, а не ещё один пункт в списке: макетов шесть, у них свой
- * тумблер оформления и развёрнутый просмотр, и в общем перечне это утонуло бы.
- * Из витрины на неё ведёт подпункт.
+ * Отдельная страница, а не ещё один пункт в списке: макетов восемь, у них свой
+ * тумблер пакетов со сметой и развёрнутый просмотр, а панель управления идёт
+ * отдельным блоком. Из витрины на неё ведёт подпункт.
  */
 export const metadata: Metadata = {
   title: "MAVERA — макеты сайта",
   description:
-    "Шесть страниц из брифа MAVERA в двух направлениях оформления: кликабельные макеты с параллаксом, десктоп и телефон.",
+    "Три варианта сайта застройщика со сметой: кликабельные макеты, интерактивный генплан и подбор квартиры, отдельно — панель управления.",
   robots: { index: false, follow: false, nocache: true },
 };
 
-const packages = [
+/** Что подсмотрено у крупных девелоперов и зачем это здесь. */
+const benchmarks = [
   {
-    name: "Стандарт",
-    text: "Одно направление на выбор, адаптация проверенного макета, один круг правок. Ровно то, что перечислено в брифе.",
+    source: "Донстрой",
+    taken: "Цифры масштаба на главной (млн м², жителей, награды) и отдельный поиск по параметрам с выходом на карту.",
   },
   {
-    name: "Люкс",
-    text: "Оба направления прорабатываются как концепции, выбранное доводится до дизайн-системы: параллакс на первом экране, появления при прокрутке, фильтры и статусы объектов.",
+    source: "Level Group",
+    taken: "Карточка проекта со стартовой ценой и сроком сдачи, статусы «сдан / скоро / IV кв. 2027» и счётчик найденных квартир.",
   },
   {
-    name: "Премиум",
-    text: "Сверх этого — сценарий движения между разделами, генплан с кликабельными блоками, подбор квартиры по параметрам, интеграция с CRM.",
+    source: "FORMA",
+    taken: "Строка условий покупки поверх шапки — ипотека, рассрочка, скидка — и разделение на квартиры, ретейл и офисы.",
+  },
+  {
+    source: "Общая практика рынка",
+    taken: "Интерактивный генплан с кликабельными корпусами, шахматка этажей с планировкой и фотоотчёт о ходе строительства по месяцам.",
   },
 ];
 
@@ -40,40 +46,87 @@ export default function MaveraPresentPage() {
       <MaveraHero />
 
       <Container className="pt-14 lg:pt-20">
-        <Link
-          href="/present"
-          prefetch={false}
-          className="inline-flex items-center gap-2 text-sm text-sand-300/60 transition-colors hover:text-sand-50"
-        >
-          <span aria-hidden="true">←</span> Ко всей витрине
-        </Link>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <Link
+            href="/present"
+            prefetch={false}
+            className="inline-flex items-center gap-2 text-sm text-sand-300/60 transition-colors hover:text-sand-50"
+          >
+            <span aria-hidden="true">←</span> Ко всей витрине
+          </Link>
 
-        <div className="mt-10">
-          <MaveraGallery />
+          <nav aria-label="Разделы страницы" className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <a href="#variants" className="link-underline text-sand-200/75 hover:text-sand-50">
+              Варианты сайта
+            </a>
+            <a href="#admin" className="link-underline text-sand-200/75 hover:text-sand-50">
+              Панель управления
+            </a>
+            <a href="#benchmarks" className="link-underline text-sand-200/75 hover:text-sand-50">
+              Ориентиры
+            </a>
+          </nav>
         </div>
+
+        <section id="variants" className="mt-10 scroll-mt-8">
+          <MaveraGallery />
+        </section>
       </Container>
 
-      {/* Связь макетов с пакетами из сметы. */}
-      <Container className="pt-20">
-        <div className="border-t border-sand-50/10 pt-12">
-          <h2 className="font-display text-2xl text-sand-50">
-            Что из увиденного входит в какой пакет
+      {/* Панель управления — вне тумблера вариантов. */}
+      <Container className="pt-24">
+        <section id="admin" className="scroll-mt-8 border-t border-sand-50/10 pt-14">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-harvest-300">
+            Пункт 7 брифа · отдельно от вариантов
+          </p>
+          <h2 className="mt-5 max-w-3xl font-display text-3xl leading-tight text-sand-50 sm:text-4xl">
+            Панель управления
           </h2>
-          <dl className="mt-8 grid gap-px overflow-hidden rounded-card bg-sand-50/12 lg:grid-cols-3">
-            {packages.map((item) => (
-              <div key={item.name} className="bg-forest-950 p-6 sm:p-7">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-sand-200/75">
+            За основу взята админка Global Export — она уже работает у действующего
+            клиента. Владелец сам добавляет проекты и коммерческие объекты, грузит
+            рендеры, правит страницы и разбирает заявки. Без разработчика.
+          </p>
+
+          <div className="mt-10">
+            <AdminGallery />
+          </div>
+        </section>
+      </Container>
+
+      {/* На что ориентировались. */}
+      <Container className="pt-24">
+        <section id="benchmarks" className="scroll-mt-8 border-t border-sand-50/10 pt-14">
+          <h2 className="font-display text-3xl leading-tight text-sand-50">
+            На что смотрели: рынок РФ
+          </h2>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-sand-200/75">
+            «Премиум» собран не из головы. Разобрали, как устроены сайты крупных
+            московских девелоперов, и взяли то, что у них действительно работает на
+            продажи.
+          </p>
+
+          <dl className="mt-10 grid gap-px overflow-hidden rounded-card bg-sand-50/12 lg:grid-cols-2">
+            {benchmarks.map((item) => (
+              <div key={item.source} className="bg-forest-950 p-6 sm:p-7">
                 <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-harvest-300">
-                  {item.name}
+                  {item.source}
                 </dt>
-                <dd className="mt-3 text-sm leading-relaxed text-sand-200/75">{item.text}</dd>
+                <dd className="mt-3 text-sm leading-relaxed text-sand-200/75">{item.taken}</dd>
               </div>
             ))}
           </dl>
-        </div>
+
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-sand-300/55">
+            Чего у них нет, а у MAVERA должно быть: три языка во всех разделах и
+            отдельный раздел коммерческой недвижимости со своей линией заявок — это
+            требования брифа, и они в макетах есть.
+          </p>
+        </section>
       </Container>
 
       {/* Тот же принцип, что и на витрине: не выдавать заглушки за данные. */}
-      <Container className="pt-16">
+      <Container className="pt-20">
         <div className="grid gap-10 border-t border-sand-50/10 pt-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <h2 className="font-display text-2xl text-sand-50">
@@ -86,20 +139,23 @@ export default function MaveraPresentPage() {
 
           <div className="space-y-5 text-sm leading-relaxed text-sand-200/75 lg:col-span-7">
             <p>
-              Настоящие здесь структура и поведение: состав страниц, набор полей
-              в карточке проекта, вкладки «Продажа» и «Аренда», переключатель
-              языка, поведение при прокрутке и на телефоне — всё это собрано
-              строго по пунктам брифа.
+              Настоящие здесь структура и поведение: состав страниц, набор полей в
+              карточке проекта, вкладки «Продажа» и «Аренда», переключатель языка,
+              генплан и подбор квартиры, поведение при прокрутке и на телефоне.
             </p>
             <p>
-              Заглушки — названия жилых комплексов, районы, цифры, телефоны и
+              Заглушки — названия жилых комплексов, районы, цифры, цены, телефоны и
               адрес. Портфель MAVERA мы не знаем и выдумывать его за компанию не
               будем: поля заполняются вашими данными при наполнении.
             </p>
             <p>
-              Виды застройки нарисованы кодом, а не фотографиями. Рендеров у нас
-              нет, а подставлять в макет застройщика чужие дома нечестно — на
-              их место встанут ваши изображения.
+              Виды застройки нарисованы кодом, а не фотографиями. Рендеров у нас нет,
+              а подставлять в макет застройщика чужие дома нечестно — на их место
+              встанут ваши изображения.
+            </p>
+            <p className="text-sand-300/55">
+              Цены в смете — за разработку, без допников: перевод носителями, CRM,
+              3D-тур, съёмка и поддержка считаются отдельно.
             </p>
           </div>
         </div>

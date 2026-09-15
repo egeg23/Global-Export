@@ -1,7 +1,8 @@
 import { cn } from "@/lib/cn";
 
+import { Genplan, Picker } from "./interactive";
 import { Skyline } from "./skyline";
-import type { ScreenId } from "./theme";
+import type { ScreenId, TierId } from "./theme";
 
 /**
  * Макеты страниц MAVERA.
@@ -17,17 +18,24 @@ import type { ScreenId } from "./theme";
 
 type Device = "desktop" | "mobile";
 
-type ScreenProps = { device: Device };
+type ScreenProps = {
+  device: Device;
+  /** Пакет: «Премиум» показывает то, чего нет в брифе, — условия покупки,
+   *  цены, ход строительства, генплан и подбор квартиры. */
+  tier: TierId;
+  /** В превью интерактив выключен: макет лежит внутри кнопки «Развернуть». */
+  live: boolean;
+};
 
 const nav = ["Главная", "О компании", "Проекты", "Коммерция", "Контакты"];
 
 const projects = [
-  { name: "Чинор", district: "Мирзо-Улугбекский", segment: "Комфорт", status: "Строится" },
-  { name: "Дарё", district: "Яшнабадский", segment: "Бизнес", status: "Продаётся" },
-  { name: "Бахор", district: "Сергелийский", segment: "Эконом", status: "Сдан" },
-  { name: "Олтин Водий", district: "Юнусабадский", segment: "Комфорт", status: "Строится" },
-  { name: "Нур", district: "Чиланзарский", segment: "Эконом", status: "Сдан" },
-  { name: "Зарафшон", district: "Мирабадский", segment: "Бизнес", status: "Продаётся" },
+  { name: "Чинор", district: "Мирзо-Улугбекский", segment: "Комфорт", status: "Строится", price: "11,4" },
+  { name: "Дарё", district: "Яшнабадский", segment: "Бизнес", status: "Продаётся", price: "14,8" },
+  { name: "Бахор", district: "Сергелийский", segment: "Эконом", status: "Сдан", price: "9,2" },
+  { name: "Олтин Водий", district: "Юнусабадский", segment: "Комфорт", status: "Строится", price: "11,9" },
+  { name: "Нур", district: "Чиланзарский", segment: "Эконом", status: "Сдан", price: "9,6" },
+  { name: "Зарафшон", district: "Мирабадский", segment: "Бизнес", status: "Продаётся", price: "15,3" },
 ];
 
 const segments = [
@@ -101,41 +109,65 @@ function Badge({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Header({ device }: ScreenProps) {
+/** Строка условий покупки — так открывают сайт Level, Донстрой и ПИК. */
+function PromoBar() {
   return (
-    <header className="flex items-center justify-between border-b border-[var(--mv-line)] px-[2em] py-[1.1em] transition-colors duration-500">
-      <span className="text-[0.95em] font-semibold tracking-[0.34em] text-[var(--mv-text)]">
-        MAVERA
+    <div className="flex items-center justify-between gap-[1em] bg-[var(--mv-accent)] px-[2em] py-[0.5em] text-[var(--mv-accent-ink)] transition-colors duration-500">
+      <span className="flex flex-wrap items-center gap-x-[1.4em] gap-y-[0.2em] text-[0.58em] font-medium">
+        <span>Ипотека от 4,9%</span>
+        <span>Рассрочка 0% до 18 месяцев</span>
+        <span>Скидка до 12% при 100% оплате</span>
       </span>
+      <span className="whitespace-nowrap text-[0.58em] font-medium">Подобрать квартиру →</span>
+    </div>
+  );
+}
 
-      {device === "desktop" ? (
-        <nav className="flex items-center gap-[1.6em] text-[0.62em] text-[var(--mv-muted)]">
-          {nav.map((item, index) => (
-            <span key={item} className={index === 0 ? "text-[var(--mv-text)]" : undefined}>
-              {item}
-            </span>
-          ))}
-        </nav>
-      ) : null}
+function Header({ device, tier }: Pick<ScreenProps, "device" | "tier">) {
+  return (
+    <>
+      {tier === "premium" ? <PromoBar /> : null}
 
-      <span className="flex items-center gap-[0.5em]">
-        <span className="rounded-full border border-[var(--mv-line)] px-[0.7em] py-[0.25em] text-[0.55em] tracking-[0.1em] text-[var(--mv-muted)]">
-          RU <span className="text-[var(--mv-faint)]">/ EN / UZ</span>
+      <header className="flex items-center justify-between border-b border-[var(--mv-line)] px-[2em] py-[1.1em] transition-colors duration-500">
+        <span className="text-[0.95em] font-semibold tracking-[0.34em] text-[var(--mv-text)]">
+          MAVERA
         </span>
-        {device === "mobile" ? (
-          <span className="flex flex-col gap-[0.22em]">
-            <span className="block h-[0.12em] w-[1.1em] rounded-full bg-[var(--mv-text)]" />
-            <span className="block h-[0.12em] w-[1.1em] rounded-full bg-[var(--mv-text)]" />
-            <span className="block h-[0.12em] w-[1.1em] rounded-full bg-[var(--mv-text)]" />
-          </span>
+
+        {device === "desktop" ? (
+          <nav className="flex items-center gap-[1.6em] text-[0.62em] text-[var(--mv-muted)]">
+            {nav.map((item, index) => (
+              <span key={item} className={index === 0 ? "text-[var(--mv-text)]" : undefined}>
+                {item}
+              </span>
+            ))}
+          </nav>
         ) : null}
-      </span>
-    </header>
+
+        <span className="flex items-center gap-[0.5em]">
+          <span className="rounded-full border border-[var(--mv-line)] px-[0.7em] py-[0.25em] text-[0.55em] tracking-[0.1em] text-[var(--mv-muted)]">
+            RU <span className="text-[var(--mv-faint)]">/ EN / UZ</span>
+          </span>
+          {device === "mobile" ? (
+            <span className="flex flex-col gap-[0.22em]">
+              <span className="block h-[0.12em] w-[1.1em] rounded-full bg-[var(--mv-text)]" />
+              <span className="block h-[0.12em] w-[1.1em] rounded-full bg-[var(--mv-text)]" />
+              <span className="block h-[0.12em] w-[1.1em] rounded-full bg-[var(--mv-text)]" />
+            </span>
+          ) : null}
+        </span>
+      </header>
+    </>
   );
 }
 
 /** Карточка проекта — общая для главной, списка и похожих объектов. */
-function ProjectCard({ project }: { project: (typeof projects)[number] }) {
+function ProjectCard({
+  project,
+  tier,
+}: {
+  project: (typeof projects)[number];
+  tier: TierId;
+}) {
   return (
     <div className="overflow-hidden rounded-[0.7em] border border-[var(--mv-line)] bg-[var(--mv-surface)] transition-colors duration-500">
       <div className="relative h-[6.5em] overflow-hidden">
@@ -147,6 +179,14 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
       <div className="px-[1em] pb-[1.1em] pt-[0.9em]">
         <p className="text-[0.85em] font-medium text-[var(--mv-text)]">ЖК «{project.name}»</p>
         <p className="mt-[0.3em] text-[0.6em] text-[var(--mv-muted)]">{project.district}</p>
+
+        {tier === "premium" ? (
+          <p className="mt-[0.6em] text-[0.7em] font-medium text-[var(--mv-text)]">
+            от {project.price}{" "}
+            <span className="text-[0.75em] font-normal text-[var(--mv-muted)]">млн сум/м²</span>
+          </p>
+        ) : null}
+
         <div className="mt-[0.9em] flex items-center justify-between border-t border-[var(--mv-line)] pt-[0.7em]">
           <span className="text-[0.58em] text-[var(--mv-muted)]">{project.segment}</span>
           <span className="text-[0.58em] text-[var(--mv-accent)]">Подробнее →</span>
@@ -180,12 +220,12 @@ function Footer() {
 /* Экраны                                                              */
 /* ------------------------------------------------------------------ */
 
-function Home({ device }: ScreenProps) {
+function Home({ device, tier }: ScreenProps) {
   const mobile = device === "mobile";
 
   return (
     <>
-      <Header device={device} />
+      <Header device={device} tier={tier} />
 
       {/* Первый экран: карусель рендеров во всю ширину. */}
       <section className={cn("relative overflow-hidden", mobile ? "h-[20em]" : "h-[17em]")}>
@@ -288,7 +328,7 @@ function Home({ device }: ScreenProps) {
         </div>
         <div className={cn("grid gap-[0.9em]", mobile ? "grid-cols-1" : "grid-cols-3")}>
           {projects.slice(0, 3).map((project) => (
-            <ProjectCard key={project.name} project={project} />
+            <ProjectCard key={project.name} project={project} tier={tier} />
           ))}
         </div>
       </section>
@@ -298,12 +338,12 @@ function Home({ device }: ScreenProps) {
   );
 }
 
-function Projects({ device }: ScreenProps) {
+function Projects({ device, tier }: ScreenProps) {
   const mobile = device === "mobile";
 
   return (
     <>
-      <Header device={device} />
+      <Header device={device} tier={tier} />
 
       <section className="px-[2em] pb-[1.2em] pt-[1.8em]">
         <span className="text-[0.55em] uppercase tracking-[0.3em] text-[var(--mv-accent)]">
@@ -327,7 +367,7 @@ function Projects({ device }: ScreenProps) {
       <section className="px-[2em] pb-[2em]">
         <div className={cn("grid gap-[0.9em]", mobile ? "grid-cols-1" : "grid-cols-3")}>
           {projects.map((project) => (
-            <ProjectCard key={project.name} project={project} />
+            <ProjectCard key={project.name} project={project} tier={tier} />
           ))}
         </div>
       </section>
@@ -337,7 +377,7 @@ function Projects({ device }: ScreenProps) {
   );
 }
 
-function Project({ device }: ScreenProps) {
+function Project({ device, tier }: ScreenProps) {
   const mobile = device === "mobile";
   const specs = [
     { label: "Площадь", value: "84 600 м²" },
@@ -350,7 +390,7 @@ function Project({ device }: ScreenProps) {
 
   return (
     <>
-      <Header device={device} />
+      <Header device={device} tier={tier} />
 
       {/* Галерея: крупный рендер и превью. */}
       <section className="px-[2em] pt-[1.4em]">
@@ -432,15 +472,51 @@ function Project({ device }: ScreenProps) {
           <span className="mt-[0.6em] flex w-full items-center justify-center rounded-full border border-[var(--mv-line)] py-[0.7em] text-[0.62em] text-[var(--mv-muted)]">
             Написать в Telegram
           </span>
+
+          {tier === "premium" ? (
+            <div className="mt-[1em] flex flex-col gap-[0.5em] border-t border-[var(--mv-line)] pt-[0.9em]">
+              <span className="text-[0.58em] text-[var(--mv-accent)]">Генплан корпусов →</span>
+              <span className="text-[0.58em] text-[var(--mv-accent)]">Подобрать квартиру →</span>
+              <span className="text-[0.58em] text-[var(--mv-accent)]">Рассчитать рассрочку →</span>
+            </div>
+          ) : null}
         </aside>
       </section>
+
+      {/* Ход строительства — то, что спрашивают на сайте застройщика чаще всего. */}
+      {tier === "premium" ? (
+        <section className="px-[2em] pb-[2em]">
+          <div className="flex items-end justify-between">
+            <h2 className="text-[1.05em] font-medium text-[var(--mv-text)]">Ход строительства</h2>
+            <span className="text-[0.58em] text-[var(--mv-muted)]">Обновлено в сентябре</span>
+          </div>
+
+          <div className="mt-[0.7em] h-[0.35em] w-full overflow-hidden rounded-full bg-[var(--mv-faint)]">
+            <span className="block h-full w-[68%] rounded-full bg-[var(--mv-accent)]" />
+          </div>
+          <p className="mt-[0.4em] text-[0.55em] text-[var(--mv-muted)]">
+            Готовность 68% · монтаж фасадов, внутренние работы
+          </p>
+
+          <div className={cn("mt-[1em] grid gap-[0.6em]", mobile ? "grid-cols-2" : "grid-cols-4")}>
+            {["Июнь", "Июль", "Август", "Сентябрь"].map((month) => (
+              <div key={month} className="overflow-hidden rounded-[0.5em]">
+                <div className="relative h-[4.2em]">
+                  <Skyline depth={0.2} />
+                </div>
+                <p className="mt-[0.4em] text-[0.55em] text-[var(--mv-muted)]">{month} 2026</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <Footer />
     </>
   );
 }
 
-function Commercial({ device }: ScreenProps) {
+function Commercial({ device, tier }: ScreenProps) {
   const mobile = device === "mobile";
   const objects = [
     { name: "Бизнес-центр на Амира Темура", area: "4 200 м²", kind: "Бизнес-центр", status: "Свободно" },
@@ -451,7 +527,7 @@ function Commercial({ device }: ScreenProps) {
 
   return (
     <>
-      <Header device={device} />
+      <Header device={device} tier={tier} />
 
       <section className="px-[2em] pb-[1.2em] pt-[1.8em]">
         <span className="text-[0.55em] uppercase tracking-[0.3em] text-[var(--mv-accent)]">
@@ -546,7 +622,7 @@ function Commercial({ device }: ScreenProps) {
   );
 }
 
-function About({ device }: ScreenProps) {
+function About({ device, tier }: ScreenProps) {
   const mobile = device === "mobile";
   const years = [
     { year: "2012", height: "22%" },
@@ -559,7 +635,7 @@ function About({ device }: ScreenProps) {
 
   return (
     <>
-      <Header device={device} />
+      <Header device={device} tier={tier} />
 
       <section className="relative h-[11em] overflow-hidden">
         <div className="absolute inset-0">
@@ -630,12 +706,12 @@ function About({ device }: ScreenProps) {
   );
 }
 
-function Contacts({ device }: ScreenProps) {
+function Contacts({ device, tier }: ScreenProps) {
   const mobile = device === "mobile";
 
   return (
     <>
-      <Header device={device} />
+      <Header device={device} tier={tier} />
 
       <section className={cn("px-[2em] py-[1.8em]", mobile ? "" : "grid grid-cols-2 gap-[2em]")}>
         <div>
@@ -728,10 +804,68 @@ function Contacts({ device }: ScreenProps) {
   );
 }
 
+function GenplanScreen({ device, tier, live }: ScreenProps) {
+  const mobile = device === "mobile";
+
+  return (
+    <>
+      <Header device={device} tier={tier} />
+
+      <section className="px-[2em] pb-[1em] pt-[1.6em]">
+        <p className="text-[0.58em] text-[var(--mv-muted)]">
+          Проекты <span className="text-[var(--mv-faint)]">/</span> ЖК «Чинор»{" "}
+          <span className="text-[var(--mv-faint)]">/</span> Генплан
+        </p>
+        <h1 className="mt-[0.4em] text-[1.9em] font-semibold leading-[1.1] text-[var(--mv-text)]">
+          Выберите корпус
+        </h1>
+        <p className="mt-[0.5em] max-w-[26em] text-[0.62em] leading-[1.6] text-[var(--mv-muted)]">
+          Корпуса кликабельны: статус, этажность и стартовая цена меняются справа,
+          оттуда же переход в подбор квартиры.
+        </p>
+      </section>
+
+      <section className="px-[2em] pb-[2em]">
+        <Genplan compact={mobile} live={live} />
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
+function PickerScreen({ device, tier, live }: ScreenProps) {
+  const mobile = device === "mobile";
+
+  return (
+    <>
+      <Header device={device} tier={tier} />
+
+      <section className="px-[2em] pb-[1em] pt-[1.6em]">
+        <p className="text-[0.58em] text-[var(--mv-muted)]">
+          ЖК «Чинор» <span className="text-[var(--mv-faint)]">/</span> Корпус 3{" "}
+          <span className="text-[var(--mv-faint)]">/</span> Подбор квартиры
+        </p>
+        <h1 className="mt-[0.4em] text-[1.9em] font-semibold leading-[1.1] text-[var(--mv-text)]">
+          86 квартир в продаже
+        </h1>
+      </section>
+
+      <section className="px-[2em] pb-[2em]">
+        <Picker compact={mobile} live={live} />
+      </section>
+
+      <Footer />
+    </>
+  );
+}
+
 const registry: Record<ScreenId, (props: ScreenProps) => React.ReactNode> = {
   home: Home,
   projects: Projects,
   project: Project,
+  genplan: GenplanScreen,
+  picker: PickerScreen,
   commercial: Commercial,
   about: About,
   contacts: Contacts,
@@ -742,7 +876,17 @@ const registry: Record<ScreenId, (props: ScreenProps) => React.ReactNode> = {
  * экран одинаково собирается и в карточке шириной 320 px, и развёрнутым на
  * весь экран.
  */
-export function Screen({ id, device }: { id: ScreenId; device: Device }) {
+export function Screen({
+  id,
+  device,
+  tier,
+  live = false,
+}: {
+  id: ScreenId;
+  device: Device;
+  tier: TierId;
+  live?: boolean;
+}) {
   const Body = registry[id];
 
   return (
@@ -750,7 +894,7 @@ export function Screen({ id, device }: { id: ScreenId; device: Device }) {
       className="flex min-h-full flex-col bg-[var(--mv-bg)] text-[var(--mv-text)] transition-colors duration-500"
       style={{ fontSize: device === "mobile" ? "3.4cqw" : "1.15cqw" }}
     >
-      <Body device={device} />
+      <Body device={device} tier={tier} live={live} />
     </div>
   );
 }
