@@ -17,6 +17,9 @@ export function CartButton({ className }: { className?: string }) {
     <button
       type="button"
       onClick={cart.open}
+      // Имя целиком в aria-label: иначе диктор читает «Корзина Корзина,
+      // наборов: 2» — видимое слово и скрытую подпись подряд.
+      aria-label={`Корзина, наборов: ${cart.count}`}
       className={cn(
         "relative flex h-10 cursor-pointer items-center gap-2 rounded-full border border-white/20 px-4 text-sm text-adar-cream-50 transition-colors hover:border-adar-gold-500 hover:text-adar-gold-300",
         className,
@@ -36,8 +39,9 @@ export function CartButton({ className }: { className?: string }) {
         <path d="M5 8h14l-1.2 11.2a1.6 1.6 0 0 1-1.6 1.4H7.8a1.6 1.6 0 0 1-1.6-1.4z" />
         <path d="M9 8V6.2A3 3 0 0 1 15 6.2V8" />
       </svg>
-      <span className="hidden sm:inline">Корзина</span>
-      <span className="sr-only">Корзина, наборов: {cart.count}</span>
+      <span aria-hidden="true" className="hidden sm:inline">
+        Корзина
+      </span>
       {cart.count > 0 ? (
         <span
           aria-hidden="true"

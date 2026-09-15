@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
 import { SEARCH_EVENT } from "@/components/adar/plus/catalog-browser";
@@ -37,9 +36,9 @@ export function ShopHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-adar-green-900/10 bg-adar-cream-50/95 backdrop-blur-md">
       <Shell size="wide" className="flex items-center gap-5 py-3.5">
-        <Link href="#" className="shrink-0" aria-label="ADAR — на главную">
+        <a href="#content" className="shrink-0" aria-label="ADAR — к началу страницы">
           <Wordmark size="small" />
-        </Link>
+        </a>
 
         <form
           onSubmit={search}

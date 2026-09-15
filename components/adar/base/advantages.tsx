@@ -1,3 +1,4 @@
+import { SeasonsCount } from "@/components/adar/ui/seasons-count";
 import { Shell } from "@/components/adar/ui/shell";
 import { Reveal } from "@/components/ui/reveal";
 import { advantages, company } from "@/content/adar/company";
@@ -8,11 +9,24 @@ import { cn } from "@/lib/cn";
  * первой крупной отгрузки — она у компании на странице «О нас» и работает
  * лучше любого списка преимуществ.
  */
-export function Advantages({ tone = "light" }: { tone?: "light" | "dark" }) {
+export function Advantages({
+  tone = "light",
+  anchor = "o-kompanii",
+  kicker = "О компании",
+}: {
+  tone?: "light" | "dark";
+  // На премиуме о компании рассказывает отдельная секция, и якорь «о компании»
+  // принадлежит ей: два элемента с одним id — это ссылка, ведущая наугад.
+  anchor?: string;
+  /** Там же, где есть отдельный блок о компании, надзаголовок должен отличаться. */
+  kicker?: string;
+}) {
   const dark = tone === "dark";
+  // Запасной год — только для разметки с сервера: точный подставит браузер.
+  const buildYear = new Date().getFullYear();
 
   return (
-    <section id="o-kompanii" className={cn("py-20 lg:py-28", dark && "bg-adar-green-900")}>
+    <section id={anchor} className={cn("py-20 lg:py-28", dark && "bg-adar-green-900")}>
       <Shell size="wide" className="grid gap-14 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-5">
           <p
@@ -21,7 +35,7 @@ export function Advantages({ tone = "light" }: { tone?: "light" | "dark" }) {
               dark ? "text-adar-gold-400" : "text-adar-green-500",
             )}
           >
-            О компании
+            {kicker}
           </p>
           <h2
             className={cn(
@@ -29,7 +43,7 @@ export function Advantages({ tone = "light" }: { tone?: "light" | "dark" }) {
               dark ? "text-adar-cream-50" : "text-adar-green-950",
             )}
           >
-            Пятнадцатый сезон подряд
+            <SeasonsCount since={company.since} buildYear={buildYear} />
           </h2>
 
           <blockquote className="mt-8 border-l-2 border-adar-gold-500 pl-6">

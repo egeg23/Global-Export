@@ -21,6 +21,7 @@ import { SiteFooter } from "@/components/adar/ui/site-footer";
 import { sets } from "@/content/adar/catalog";
 import { getConcept } from "@/content/adar/concepts";
 import { CartProvider } from "@/lib/adar/cart";
+import { showcaseChrome } from "@/lib/adar/showcase";
 import { growthStages } from "@/lib/adar/catalog";
 
 export const metadata: Metadata = {
@@ -46,7 +47,7 @@ export default function AdarPremiumConcept() {
   return (
     <CartProvider>
       <SkipLink />
-      <ConceptBar current="premium" />
+      {showcaseChrome ? <ConceptBar current="premium" /> : null}
       <div className="bg-adar-green-950">
         <PremiumHeader />
         <main id="content">
@@ -64,14 +65,14 @@ export default function AdarPremiumConcept() {
           />
           <CorporateBlock />
           <ThemesGrid tone="dark" />
-          <Advantages tone="dark" />
+          <Advantages tone="dark" anchor="pochemu-adar" kicker="Почему ADAR" />
           <ClientsWall tone="dark" />
           <ContactSection tone="dark" />
         </main>
         <SiteFooter />
       </div>
       <CartPanel />
-      <EstimatePanel concept={concept} />
+      {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
     </CartProvider>
   );
 }

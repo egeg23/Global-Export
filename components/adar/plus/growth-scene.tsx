@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useRef } from "react";
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -12,6 +11,7 @@ import {
 } from "motion/react";
 
 import { Shell } from "@/components/adar/ui/shell";
+import { useCalmMotion } from "@/lib/adar/calm-motion";
 import { formatNumber, formatWeight } from "@/lib/adar/format";
 import type { GiftSet } from "@/lib/adar/types";
 
@@ -31,7 +31,9 @@ type Props = { stages: GiftSet[] };
  */
 export function GrowthScene({ stages }: Props) {
   const container = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  // Хук именно этот: сцена при «уменьшить движение» рисует другую разметку,
+  // а обычный вернул бы её уже на первой отрисовке и разошёлся бы с сервером.
+  const reduced = useCalmMotion();
 
   const { scrollYProgress } = useScroll({
     target: container,

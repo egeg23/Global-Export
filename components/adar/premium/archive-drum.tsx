@@ -24,7 +24,7 @@ const HOLD = 2600;
 /**
  * Барабан архива.
  *
- * Компания работает с 2008 года, и каждый сезон у неё был свой: свой символ
+ * Компания работает с 2011 года, и каждый сезон у неё был свой: свой символ
  * года на новогодней коробке, своё 8 марта, свои детские наборы. Здесь эти
  * сезоны стоят гранями барабана — он открывается на первом и сам идёт по
  * годам до нынешнего, пока его не перехватят рукой.
@@ -112,7 +112,7 @@ export function ArchiveDrum() {
   };
 
   // Активный год подводится в видимую часть линейки: иначе на узком экране
-  // барабан крутится, а линейка стоит на 2008.
+  // барабан крутится, а линейка стоит на первом сезоне.
   useEffect(() => {
     const list = rail.current;
     const chip = list?.children[index] as HTMLElement | undefined;
@@ -146,7 +146,7 @@ export function ArchiveDrum() {
             Каждый сезон — <span className="adar-gold-text">своя упаковка</span>
           </h2>
           <p className="mt-5 max-w-md text-base leading-relaxed text-adar-cream-50/75">
-            С 2008 года — символ года на новогодней коробке, свои линейки к 8 марта, к утренникам
+            С 2011 года — символ года на новогодней коробке, свои линейки к 8 марта, к утренникам
             и к Дню защитника. Крутите барабан: от первого сезона к нынешнему.
           </p>
           <p className="mt-6 text-sm text-adar-cream-50/60">{archiveSeasonsList.join(" · ")}</p>
@@ -154,7 +154,10 @@ export function ArchiveDrum() {
 
         <div className="min-w-0 lg:col-span-7">
           <div
-            className="adar-drum relative select-none"
+            // Ширина обёртки равна ширине окна: затемнения по краям лежат
+            // поверх неё, и, будь она шире, они рисовали бы по фону секции
+            // прямоугольник с жёсткой кромкой — его и было видно.
+            className="adar-drum relative mx-auto w-[min(88vw,32rem)] select-none"
             onPointerEnter={() => setHeld(true)}
             onPointerLeave={() => {
               onUp();
@@ -185,7 +188,7 @@ export function ArchiveDrum() {
               // Окно чуть выше грани: соседние сезоны видно, но за края они
               // не вылезают. touch-pan-y оставляет вертикальную прокрутку
               // странице — пальцем барабан листают вбок.
-              className="relative mx-auto h-[calc(var(--adar-card)*1.62)] w-[min(88vw,32rem)] cursor-grab touch-pan-y overflow-hidden outline-none ring-adar-gold-500/60 focus-visible:ring-2 active:cursor-grabbing"
+              className="adar-drum-window relative h-[calc(var(--adar-card)*1.62)] w-full cursor-grab touch-pan-y overflow-hidden outline-none ring-adar-gold-500/60 focus-visible:ring-2 active:cursor-grabbing"
               style={{ perspective: "1500px" }}
             >
               <div
@@ -209,16 +212,6 @@ export function ArchiveDrum() {
                 </motion.ul>
               </div>
             </div>
-
-            {/* Грани должны уходить в тень, а не обрываться по краю окна */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-adar-green-950 via-adar-green-950/75 to-transparent"
-            />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-adar-green-950 via-adar-green-950/75 to-transparent"
-            />
           </div>
 
           <div className="mt-6 flex min-w-0 items-center justify-center gap-3">
@@ -233,7 +226,12 @@ export function ArchiveDrum() {
             </button>
 
             {/* Линейка годов: по ней и видно, что это ретроспектива */}
-            <ol ref={rail} className="flex min-w-0 flex-1 gap-1 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <ol
+              ref={rail}
+              // Край линейки растворяется, а не обрубается: иначе крайний год
+              // виден половиной и читается как вёрстка, которая не сошлась.
+              className="adar-rail flex min-w-0 flex-1 gap-1 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
               {seasons.map((item, order) => (
                 <li key={item.year}>
                   <button

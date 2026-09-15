@@ -62,7 +62,9 @@ export function ContactSection({ tone = "light" }: { tone?: "light" | "dark" }) 
                     key={phone}
                     href={`tel:${phone.replace(/\s/g, "")}`}
                     className={cn(
-                      "w-fit transition-colors",
+                      // Отступ добавлен ради пальца: строка в 20 пикселей —
+                      // это меньше, чем промахивается средний палец.
+                      "-my-1 w-fit py-1 transition-colors",
                       dark
                         ? "text-adar-cream-50 hover:text-adar-gold-400"
                         : "text-adar-ink hover:text-adar-green-700",
@@ -86,7 +88,10 @@ export function ContactSection({ tone = "light" }: { tone?: "light" | "dark" }) 
               <dd className="mt-2">
                 <a
                   href={`mailto:${company.contacts.email}`}
-                  className={cn(dark ? "text-adar-cream-50" : "text-adar-ink")}
+                  className={cn(
+                    "-my-1 inline-block py-1",
+                    dark ? "text-adar-cream-50" : "text-adar-ink",
+                  )}
                 >
                   {company.contacts.email}
                 </a>

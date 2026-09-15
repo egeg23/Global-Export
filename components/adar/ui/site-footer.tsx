@@ -4,7 +4,7 @@ import { company } from "@/content/adar/company";
 import { CurrentYear } from "@/components/layout/current-year";
 
 const menu = [
-  { label: "Главная", href: "#" },
+  { label: "Главная", href: "#content" },
   { label: "Каталог", href: "#katalog" },
   { label: "Тематики", href: "#tematiki" },
   { label: "О компании", href: "#o-kompanii" },
@@ -34,7 +34,7 @@ export function SiteFooter() {
               <li key={item.label}>
                 <a
                   href={item.href}
-                  className="text-adar-cream-50/75 transition-colors hover:text-adar-gold-400"
+                  className="-my-1 inline-block py-1 text-adar-cream-50/75 transition-colors hover:text-adar-gold-400"
                 >
                   {item.label}
                 </a>
@@ -50,7 +50,7 @@ export function SiteFooter() {
               <li key={phone}>
                 <a
                   href={`tel:${phone.replace(/\s/g, "")}`}
-                  className="text-adar-cream-50/75 transition-colors hover:text-adar-gold-400"
+                  className="-my-1 inline-block py-1 text-adar-cream-50/75 transition-colors hover:text-adar-gold-400"
                 >
                   {phone}
                 </a>
@@ -59,7 +59,7 @@ export function SiteFooter() {
             <li>
               <a
                 href={`mailto:${company.contacts.email}`}
-                className="text-adar-cream-50/75 transition-colors hover:text-adar-gold-400"
+                className="-my-1 inline-block py-1 text-adar-cream-50/75 transition-colors hover:text-adar-gold-400"
               >
                 {company.contacts.email}
               </a>

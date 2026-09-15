@@ -15,6 +15,7 @@ import { SetShowcase } from "@/components/adar/ui/set-showcase";
 import { SiteFooter } from "@/components/adar/ui/site-footer";
 import { sets } from "@/content/adar/catalog";
 import { getConcept } from "@/content/adar/concepts";
+import { showcaseChrome } from "@/lib/adar/showcase";
 import { featuredSets, growthStages } from "@/lib/adar/catalog";
 
 export const metadata: Metadata = {
@@ -47,7 +48,7 @@ export default function AdarPlusConcept() {
   return (
     <>
       <SkipLink />
-      <ConceptBar current="plus" />
+      {showcaseChrome ? <ConceptBar current="plus" /> : null}
       <div data-concept="shop">
         <ShopHeader />
         <main id="content">
@@ -65,7 +66,7 @@ export default function AdarPlusConcept() {
           <ContactSection />
         </main>
         <SiteFooter />
-        <EstimatePanel concept={concept} />
+        {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
       </div>
     </>
   );
