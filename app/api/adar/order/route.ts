@@ -65,12 +65,25 @@ function clientIp(request: Request): string {
   return request.headers.get("x-real-ip") ?? "unknown";
 }
 
-/** Отсекает посты с чужих сайтов: у своей формы Origin совпадает. */
+/**
+ * Отсекает посты с чужих сайтов.
+ *
+ * Сверяем Origin с именем узла, на который пришёл запрос. За обратным
+ * прокси в request.url остаётся внутренний адрес, поэтому в сравнение
+ * идут ещё Host и X-Forwarded-Host — иначе своя же форма получала бы отказ.
+ * Подделать Origin из браузера нельзя, на этом проверка и держится.
+ */
 function sameOrigin(request: Request): boolean {
   const origin = request.headers.get("origin");
   if (!origin) return true;
   try {
-    return new URL(origin).host === new URL(request.url).host;
+    const from = new URL(origin).host;
+    const here = [
+      new URL(request.url).host,
+      request.headers.get("x-forwarded-host"),
+      request.headers.get("host"),
+    ];
+    return here.some((host) => host === from);
   } catch {
     return false;
   }
