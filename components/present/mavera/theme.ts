@@ -133,6 +133,8 @@ export function moneyParts(usd: number, currency: CurrencyId): { value: string; 
   if (currency === "usd") return { value: `$${group(value)}`, unit: "" };
 
   const suffix = currency === "uzs" ? "сум" : "₽";
+  // Цена квартиры в сумах уходит за миллиард — «1270 млн» читается хуже.
+  if (value >= 1_000_000_000) return { value: millions(value / 1000), unit: `млрд\u00a0${suffix}` };
   if (value >= 1_000_000) return { value: millions(value), unit: `млн\u00a0${suffix}` };
   return { value: group(value), unit: suffix };
 }
