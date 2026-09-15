@@ -9,6 +9,25 @@ const FIELD_GRID = 7;
 const FLOCK_GRID = 13;
 /** Сколько длится сборка набора, мс. */
 const BUILD = 1700;
+/**
+ * Сколько пикселей канве разрешено держать.
+ *
+ * Плотность считается от этого числа, а не берётся у экрана: на ретине
+ * 2560×1440 полноэкранная канва в два пикселя на точку — это почти
+ * пятнадцать миллионов пикселей на кадр, и без видеоускорения кадр
+ * считается впятеро дольше, чем нужно. Качество при этом не теряется:
+ * снимки наборов всего 860 px, и на 1,5 плитка уже рисуется один к одному
+ * с исходником.
+ */
+const BUDGET = 2_600_000;
+/**
+ * Ступени качества поля.
+ *
+ * Сцена сама смотрит, укладывается ли кадр в 60 в секунду, и если нет —
+ * спускается на ступень: шоколадок становится меньше. Замерять чужую
+ * машину заранее нельзя, а обещание «сайт не лагает» держать надо.
+ */
+const LEVELS = [1, 0.68, 0.45, 0.3];
 /** Доля сборки, которую занимает разброс стартов по плиткам. */
 const STAGGER = 0.45;
 
@@ -144,22 +163,62 @@ export function ChocoField({
     let stopped = false;
     let frame = 0;
     let visible = true;
+    let level = 0;
+    let quality = LEVELS[0];
     let width = 0;
     let height = 0;
+    let ratio = 1;
     let box = { x: 0, y: 0, size: 0 };
+
+    /** Ставит плитку: масштаб под плотность пикселей входит в саму матрицу. */
+    const place = (x: number, y: number, spin: number) => {
+      const cos = Math.cos(spin) * ratio;
+      const sin = Math.sin(spin) * ratio;
+      ctx.setTransform(cos, sin, -sin, cos, x * ratio, y * ratio);
+    };
+    const reset = () => ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
     const images: HTMLImageElement[] = [];
     let field: FieldTile[] = [];
     let flocks: FlockTile[][] = [];
+    let halo: HTMLCanvasElement | null = null;
+
+    /** Тёмная земля и золотой ореол под набором — заранее, одной картинкой. */
+    const bakeHalo = () => {
+      const size = 320;
+      const sprite = document.createElement("canvas");
+      sprite.width = size;
+      sprite.height = size;
+      const paintCtx = sprite.getContext("2d");
+      if (!paintCtx) return;
+
+      const mid = size / 2;
+      const ground = paintCtx.createRadialGradient(mid, mid, 0, mid, mid, mid * 0.86);
+      ground.addColorStop(0, "rgba(6, 18, 12, 0.82)");
+      ground.addColorStop(0.5, "rgba(6, 18, 12, 0.46)");
+      ground.addColorStop(1, "rgba(6, 18, 12, 0)");
+      paintCtx.fillStyle = ground;
+      paintCtx.fillRect(0, 0, size, size);
+
+      const glow = paintCtx.createRadialGradient(mid, mid, 0, mid, mid, mid * 0.72);
+      glow.addColorStop(0, "rgba(208, 160, 60, 0.26)");
+      glow.addColorStop(0.55, "rgba(208, 160, 60, 0.07)");
+      glow.addColorStop(1, "rgba(208, 160, 60, 0)");
+      paintCtx.fillStyle = glow;
+      paintCtx.fillRect(0, 0, size, size);
+
+      halo = sprite;
+    };
 
     const measure = () => {
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
       const rect = canvas.getBoundingClientRect();
       width = Math.max(1, Math.round(rect.width));
       height = Math.max(1, Math.round(rect.height));
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const room = Math.sqrt(BUDGET / (width * height));
+      ratio = Math.max(1, Math.min(window.devicePixelRatio || 1, 1.6, room));
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      reset();
 
       const target = boxRef.current?.getBoundingClientRect();
       box = target
@@ -169,8 +228,10 @@ export function ChocoField({
 
     const build = () => {
       const narrow = width < 900;
-      const count = narrow ? 32 : 64;
-      const base = narrow ? 64 : 96;
+      const cell = narrow ? 116 : 152;
+      const fit = Math.max(16, Math.min(130, Math.round((width * height) / (cell * cell))));
+      const count = Math.max(12, Math.round(fit * quality));
+      const base = narrow ? 64 : Math.max(88, Math.min(118, Math.round(width / 13)));
 
       // Поле: крупные куски со всех наборов, разложенные по Халтону.
       const pool: Crop[] = [];
@@ -209,6 +270,8 @@ export function ChocoField({
         flocks[index] = tiles;
       });
 
+      bakeHalo();
+
       field = Array.from({ length: count }, (_, i) => {
         const crop = pool[Math.floor(noise(i * 5.7) * pool.length) % Math.max(1, pool.length)];
         const depth = 0.34 + noise(i + 3.3) * 0.66;
@@ -219,12 +282,13 @@ export function ChocoField({
           depth,
           spin: (noise(i + 9.1) - 0.5) * 0.9,
           size: base * (0.66 + depth * 0.62),
-          alpha: 0.15 + depth * 0.29,
+          alpha: 0.13 + depth * 0.26,
         };
       });
     };
 
     const paint = (now: number) => {
+      reset();
       ctx.clearRect(0, 0, width, height);
 
       const q = progress.get();
@@ -247,13 +311,11 @@ export function ChocoField({
         y += py * 22 * tile.depth;
 
         const spin = tile.spin + (reduced ? 0 : Math.sin(now * 0.00016 + i) * 0.06);
-        const cos = Math.cos(spin);
-        const sin = Math.sin(spin);
         ctx.globalAlpha = tile.alpha;
-        ctx.setTransform(cos, sin, -sin, cos, x, y);
+        place(x, y, spin);
         ctx.drawImage(image, tile.sx, tile.sy, tile.ss, tile.ss, -tile.size / 2, -tile.size / 2, tile.size, tile.size);
       }
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      reset();
 
       if (dim > 0) {
         ctx.globalAlpha = dim;
@@ -268,9 +330,12 @@ export function ChocoField({
         return;
       }
 
-      const scale = curve(q, [0, 0.42, 0.62, 0.94, 1], [1, 1, 0.78, 0.78, 0.86]);
-      const fade = curve(q, [0, 0.95, 1], [1, 1, 0]);
-      const back = curve(q, [0.94, 1], [0, 1]);
+      // Последняя глава не разлетается: экран должен кончиться набором, а
+      // не пустым полем.
+      const last = activeRef.current === flocks.length - 1;
+      const scale = curve(q, [0, 0.42, 0.62, 1], [1, 1, 0.78, 0.78]);
+      const fade = last ? 1 : curve(q, [0, 0.95, 1], [1, 1, 0]);
+      const back = last ? 0 : curve(q, [0.94, 1], [0, 1]);
       const built = reduced ? 1 : clamp01((now - bornRef.current) / BUILD);
 
       const side = (box.size * scale) / FLOCK_GRID;
@@ -279,29 +344,12 @@ export function ChocoField({
 
       const cx = box.x + box.size / 2;
       const cy = box.y + box.size / 2;
-      ctx.globalAlpha = clamp01(built * 1.4) * fade;
 
-      const ground = ctx.createRadialGradient(cx, cy, 0, cx, cy, box.size * 0.95);
-      ground.addColorStop(0, "rgba(6, 18, 12, 0.82)");
-      ground.addColorStop(0.5, "rgba(6, 18, 12, 0.46)");
-      ground.addColorStop(1, "rgba(6, 18, 12, 0)");
-      ctx.fillStyle = ground;
-      ctx.fillRect(box.x - box.size, box.y - box.size, box.size * 3, box.size * 3);
-
-      // Золотой ореол под набором: без него коробка висит в пустоте.
-      const glow = ctx.createRadialGradient(
-        box.x + box.size / 2,
-        box.y + box.size / 2,
-        0,
-        box.x + box.size / 2,
-        box.y + box.size / 2,
-        box.size * 0.8,
-      );
-      glow.addColorStop(0, "rgba(208, 160, 60, 0.26)");
-      glow.addColorStop(0.55, "rgba(208, 160, 60, 0.07)");
-      glow.addColorStop(1, "rgba(208, 160, 60, 0)");
-      ctx.fillStyle = glow;
-      ctx.fillRect(box.x - box.size, box.y - box.size, box.size * 3, box.size * 3);
+      if (halo) {
+        const reach = box.size * 2.2;
+        ctx.globalAlpha = clamp01(built * 1.4) * fade;
+        ctx.drawImage(halo, cx - reach / 2, cy - reach / 2, reach, reach);
+      }
 
       for (let i = 0; i < flock.length; i += 1) {
         const tile = flock[i];
@@ -321,20 +369,62 @@ export function ChocoField({
         const size = mix(side * 2.6, side, settle) + 0.5;
         const spin = mix(tile.spin, 0, settle);
 
-        const cos = Math.cos(spin);
-        const sin = Math.sin(spin);
         ctx.globalAlpha = clamp01(t * 2) * fade * (back > 0 ? 1 - back * 0.85 : 1);
-        ctx.setTransform(cos, sin, -sin, cos, x, y);
+        place(x, y, spin);
         ctx.drawImage(image, tile.sx, tile.sy, tile.ss, tile.ss, -size / 2, -size / 2, size, size);
       }
 
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      reset();
       ctx.globalAlpha = 1;
+    };
+
+    // Сторож частоты: медиана по полусотне кадров, ступень вниз — сразу,
+    // вверх — только после трёх спокойных замеров, иначе качество запрыгает.
+    const spans: number[] = [];
+    let previous = 0;
+    let calm = 0;
+
+    const govern = (now: number) => {
+      const delta = now - previous;
+      previous = now;
+      if (delta <= 0 || delta > 400) return;
+      spans.push(delta);
+      if (spans.length < 48) return;
+
+      spans.sort((a, b) => a - b);
+      // Смотрим не медиану, а хвост: медиана держит 16,7 мс и тогда, когда
+      // каждый третий кадр проседает, — а видно именно просадки.
+      const slow = spans[Math.floor(spans.length * 0.7)];
+      const fast = spans[Math.floor(spans.length * 0.9)];
+      spans.length = 0;
+
+      if (slow > 20 && level < LEVELS.length - 1) {
+        level += 1;
+        quality = LEVELS[level];
+        calm = 0;
+        build();
+      } else if (fast < 15 && level > 0) {
+        calm += 1;
+        if (calm >= 3) {
+          level -= 1;
+          quality = LEVELS[level];
+          calm = 0;
+          build();
+        }
+      } else {
+        calm = 0;
+      }
     };
 
     const loop = (now: number) => {
       if (stopped) return;
-      if (visible) paint(now);
+      if (visible) {
+        paint(now);
+        govern(now);
+      } else {
+        previous = 0;
+        spans.length = 0;
+      }
       frame = requestAnimationFrame(loop);
     };
 
@@ -384,12 +474,18 @@ export function ChocoField({
       frame = requestAnimationFrame(loop);
     });
 
+    const sizer = new ResizeObserver(() => {
+      if (images.length) onResize();
+    });
+    sizer.observe(canvas);
+
     window.addEventListener("resize", onResize);
     if (!reduced) window.addEventListener("pointermove", onPointer, { passive: true });
 
     return () => {
       stopped = true;
       watcher.disconnect();
+      sizer.disconnect();
       if (frame) cancelAnimationFrame(frame);
       if (pointerFrame) cancelAnimationFrame(pointerFrame);
       window.removeEventListener("resize", onResize);

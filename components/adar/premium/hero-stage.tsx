@@ -6,6 +6,7 @@ import {
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
   type MotionValue,
 } from "motion/react";
@@ -73,8 +74,21 @@ export function HeroStage() {
   const activeRef = useRef(0);
 
   const { scrollYProgress } = useScroll({ target: outer, offset: ["start start", "end end"] });
+  /**
+   * Сценарий едет не за колесом, а за пружиной: колесо даёт рывками, и на
+   * тачпаде с инерцией это видно на каждой подписи. Затухание выше
+   * критического (ζ ≈ 2,4), поэтому пружина не перелетает цель — только
+   * догоняет её, примерно за полсекунды.
+   */
+  const eased = useSpring(scrollYProgress, {
+    stiffness: 58,
+    damping: 24,
+    mass: 0.35,
+    restDelta: 0.0002,
+  });
+  const flow = reduced ? scrollYProgress : eased;
   /** 0…3 — сквозная позиция по главам. */
-  const timeline = useTransform(scrollYProgress, (value) => value * chapters.length);
+  const timeline = useTransform(flow, (value) => value * chapters.length);
   /** 0…1 — положение внутри текущей главы. */
   const q = useTransform(timeline, (value) => clamp(value - activeRef.current));
 
@@ -86,7 +100,7 @@ export function HeroStage() {
   });
 
   const hint = useTransform(timeline, [0, 0.22], [1, 0]);
-  const rail = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const rail = useTransform(flow, [0, 1], ["0%", "100%"]);
 
   const goTo = useCallback((index: number) => {
     const element = outer.current;
@@ -126,7 +140,14 @@ export function HeroStage() {
         />
         <div aria-hidden="true" className="adar-glow pointer-events-none absolute inset-x-0 top-0 h-[70vh]" />
 
-        <Act key={active} index={active} chapter={chapters[active]} q={q} boxRef={box} reduced={!!reduced} />
+        <Act
+          key={active}
+          index={active}
+          chapter={chapters[active]}
+          q={q}
+          boxRef={box}
+          reduced={!!reduced}
+        />
 
         {/* Счётчик глав */}
         <Shell size="wide" className="pointer-events-none absolute inset-x-0 top-0 pt-52 lg:pt-36">
@@ -210,6 +231,8 @@ function Act({
   reduced: boolean;
 }) {
   const { slide, set, parts } = chapter;
+  /** Последняя глава ничего не отпускает: ею экран и заканчивается. */
+  const last = index === chapters.length - 1;
 
   // Радиус кольца берётся из настоящего размера коробки: подписи разлетаются
   // в пикселях, а не в процентах от собственной ширины.
@@ -226,9 +249,17 @@ function Act({
   // следующая глава со своим заголовком.
   const textY = useTransform(q, [0, 0.5], [0, -18]);
   const textOpacity = useTransform(q, [0, 0.4, 0.5], [1, 1, 0]);
-  const breakdown = useTransform(q, [0.46, 0.56, 0.84, 0.92], [0, 1, 1, 0]);
+  const breakdown = useTransform(
+    q,
+    last ? [0.46, 0.56, 1, 1] : [0.46, 0.56, 0.84, 0.92],
+    [0, 1, 1, last ? 1 : 0],
+  );
 
-  const ringOpacity = useTransform(q, [0.44, 0.56, 0.84, 0.92], [0, 1, 1, 0]);
+  const ringOpacity = useTransform(
+    q,
+    last ? [0.44, 0.56, 1, 1] : [0.44, 0.56, 0.84, 0.92],
+    [0, 1, 1, last ? 1 : 0],
+  );
   const ringSpin = useTransform(q, [0.44, 1], [-22, 12]);
 
   return (
@@ -238,7 +269,7 @@ function Act({
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center pb-[34vh] pt-52 lg:pb-[16vh] lg:pt-24">
         <div
           ref={measure}
-          className="relative aspect-square w-[min(58vw,14rem)] lg:w-[min(36vh,20rem)]"
+          className="relative aspect-square w-[min(58vw,14rem)] lg:w-[min(38vh,34rem)]"
         >
           <motion.svg
             aria-hidden="true"
@@ -266,6 +297,7 @@ function Act({
                   part={part}
                   q={q}
                   half={half}
+                  last={last}
                   reduced={reduced}
                 />
               ))
@@ -275,7 +307,7 @@ function Act({
 
       {/* Текст главы и подпись разбора — в одном месте, по очереди */}
       <Shell size="wide" className="relative mt-auto pb-14 lg:pb-12">
-        <div className="relative min-h-[12rem] lg:min-h-[13rem]">
+        <div className="relative min-h-[12rem] lg:min-h-[13rem] 2xl:min-h-[15rem]">
           <motion.div
             initial={reduced ? false : { opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
@@ -286,10 +318,10 @@ function Act({
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-adar-gold-300">
                 {slide.eyebrow}
               </p>
-              <h1 className="mt-4 text-balance font-adar-display text-[2.2rem] leading-[1] text-adar-cream-50 sm:text-5xl xl:text-[3.4rem]">
+              <h1 className="mt-4 text-balance font-adar-display text-[2.2rem] leading-[1] text-adar-cream-50 sm:text-5xl xl:text-[3.4rem] 2xl:text-[4.2rem]">
                 {slide.title} <span className="adar-gold-text">{slide.accent}</span>
               </h1>
-              <p className="mt-4 max-w-md text-base leading-relaxed text-adar-cream-50/75">
+              <p className="mt-4 max-w-md text-base leading-relaxed text-adar-cream-50/75 2xl:max-w-lg 2xl:text-lg">
                 {slide.note}
               </p>
             </motion.div>
@@ -302,7 +334,7 @@ function Act({
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-adar-gold-300">
               Что внутри
             </p>
-            <p className="mt-4 font-adar-display text-3xl leading-tight text-adar-cream-50 sm:text-4xl">
+            <p className="mt-4 font-adar-display text-3xl leading-tight text-adar-cream-50 sm:text-4xl 2xl:text-5xl">
               {set.name}
             </p>
             <p className="mt-2 text-sm text-adar-cream-50/70">
@@ -354,12 +386,15 @@ function RingLabel({
   part,
   q,
   half,
+  last,
   reduced,
 }: {
   order: number;
   part: { label: string; grams: number };
   q: MotionValue<number>;
   half: number;
+  /** В последней главе подписи не убираются. */
+  last: boolean;
   reduced: boolean;
 }) {
   // Подписи раскрываются веером вверх и вправо: нижний левый угол оставлен
@@ -371,7 +406,11 @@ function RingLabel({
   const y = Math.sin(angle) * reach;
 
   const start = 0.46 + order * 0.016;
-  const opacity = useTransform(q, [start, start + 0.09, 0.84, 0.91], [0, 1, 1, 0]);
+  const opacity = useTransform(
+    q,
+    last ? [start, start + 0.09, 1, 1] : [start, start + 0.09, 0.84, 0.91],
+    [0, 1, 1, last ? 1 : 0],
+  );
   const travel = useTransform(q, [start, start + 0.13], [0.22, 1]);
   const tx = useTransform(travel, (value) => x * value);
   const ty = useTransform(travel, (value) => y * value);
