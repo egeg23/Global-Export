@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 import { ParallaxFigure } from "@/components/mavera/lux/parallax-figure";
 import { Rise } from "@/components/mavera/reveal";
@@ -159,9 +160,13 @@ export default function MaveraLux() {
             </dl>
 
             <p className="mt-8">
-              <span className="inline-block border border-[var(--w-ink)] px-8 py-3.5 text-sm transition-colors duration-300 hover:bg-[var(--w-ink)] hover:text-[var(--w-surface)]">
-                {voice.hero.primary}
-              </span>
+              <Link
+                href={`/mavera/lux/${featured.slug}`}
+                prefetch={false}
+                className="inline-block border border-[var(--w-ink)] px-8 py-3.5 text-sm transition-colors duration-300 hover:bg-[var(--w-ink)] hover:text-[var(--w-surface)]"
+              >
+                Выбрать квартиру в проекте
+              </Link>
             </p>
           </Rise>
         </div>
@@ -178,7 +183,12 @@ export default function MaveraLux() {
 
         <Rise delay={100} className="w-rail mt-10 flex gap-6 overflow-x-auto px-5 pb-6 sm:px-8">
           {projects.map((project) => (
-            <article key={project.slug} className="w-[min(78vw,22rem)] shrink-0">
+            <Link
+              key={project.slug}
+              href={`/mavera/lux/${project.slug}`}
+              prefetch={false}
+              className="group w-[min(78vw,22rem)] shrink-0"
+            >
               <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src={project.photo}
@@ -197,7 +207,13 @@ export default function MaveraLux() {
                 от {money(project.priceUsd, "uzs")}
                 <span className="ml-1 text-sm text-[var(--w-muted)]">за м²</span>
               </p>
-            </article>
+              <p className="mt-2 text-sm text-[var(--w-accent)]">
+                Выбрать квартиру
+                <span aria-hidden="true" className="ml-1 inline-block transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </p>
+            </Link>
           ))}
         </Rise>
       </section>

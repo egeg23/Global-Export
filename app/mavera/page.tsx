@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { ProjectSwitcher } from "@/components/adar/showcase/project-switcher";
 import { VariantCards } from "@/components/mavera/hub/variants";
-import { AdminGallery } from "@/components/present/mavera/admin-gallery";
+import { AdminGallery } from "@/components/mavera/admin/gallery";
 import { photos } from "@/content/mavera/photos";
 import { Container } from "@/components/ui/container";
 
@@ -82,11 +82,27 @@ export default function MaveraHub() {
           <h2 className="mt-5 max-w-3xl font-display text-3xl leading-tight text-sand-50 sm:text-4xl">
             Панель управления
           </h2>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-sand-200/75">
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-sand-200/75">
             За основу взята админка Global Export — она уже работает у действующего
-            клиента. Владелец сам добавляет проекты и коммерческие объекты, грузит
-            рендеры, правит страницы и разбирает заявки.
+            клиента. Под застройщика добавлено то, без чего нельзя: корпуса и
+            квартиры с ценами и статусами, планировки, роли сотрудников и аналитика
+            поведения посетителей.
           </p>
+
+          <ul className="mt-8 grid gap-px overflow-hidden rounded-card bg-sand-50/12 sm:grid-cols-3">
+            {[
+              ["Каталог", "ЖК, корпуса, квартиры, планировки, цены и фотографии — без разработчика"],
+              ["Продажи", "Заявки с источником до квартиры, выгрузка в CRM, цели и вебвизор Метрики"],
+              ["Доступ", "Роли для продаж, контента и подрядчиков, журнал изменений цен и статусов"],
+            ].map(([title, text]) => (
+              <li key={title} className="bg-forest-950 p-6">
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-harvest-300">
+                  {title}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-sand-200/75">{text}</p>
+              </li>
+            ))}
+          </ul>
 
           <div className="mt-10">
             <AdminGallery />

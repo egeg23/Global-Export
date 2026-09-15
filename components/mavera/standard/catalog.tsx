@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 import { money } from "@/components/present/mavera/theme";
@@ -98,7 +99,7 @@ export function StandardCatalog({ claims }: { claims: Record<string, string> }) 
       <ul className="grid gap-px border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-2 lg:grid-cols-3">
         {list.map((project) => (
           <li key={project.slug} className="group bg-[var(--w-surface)]">
-            <article>
+            <Link href={`/mavera/standard/${project.slug}`} prefetch={false} className="block">
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
                   src={project.photo}
@@ -143,11 +144,11 @@ export function StandardCatalog({ claims }: { claims: Record<string, string> }) 
                     <span className="ml-1 text-sm font-normal text-[var(--w-muted)]">за м²</span>
                   </span>
                   <span className="text-sm text-[var(--w-accent)] transition-transform duration-200 group-hover:translate-x-1">
-                    Открыть →
+                    Выбрать квартиру →
                   </span>
                 </p>
               </div>
-            </article>
+            </Link>
           </li>
         ))}
       </ul>

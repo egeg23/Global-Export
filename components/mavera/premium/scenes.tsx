@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { money } from "@/components/present/mavera/theme";
@@ -203,11 +204,12 @@ export function FilmRail({ claims }: { claims: Record<string, string> }) {
     <div>
       <div className="w-rail flex gap-5 overflow-x-auto pb-6">
         {projects.map((project, index) => (
-          <article
+          <Link
             key={project.slug}
+            href={`/mavera/premium/${project.slug}`}
+            prefetch={false}
             onMouseEnter={() => setActive(index)}
             onFocus={() => setActive(index)}
-            tabIndex={0}
             className={cn(
               "group relative w-[min(84vw,30rem)] shrink-0 overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] transition-all duration-500 ease-[var(--w-ease)]",
               active === index ? "w-glow" : "opacity-70",
@@ -238,10 +240,10 @@ export function FilmRail({ claims }: { claims: Record<string, string> }) {
                   от {money(project.priceUsd, "uzs")}
                   <span className="ml-1 text-sm font-normal text-[var(--w-muted)]">за м²</span>
                 </span>
-                <span className="text-sm text-[var(--w-accent)]">Смотреть →</span>
+                <span className="text-sm text-[var(--w-accent)]">Выбрать квартиру →</span>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
 
