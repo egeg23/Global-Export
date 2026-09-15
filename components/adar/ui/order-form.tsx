@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 
 import { ORDER_EVENT } from "@/components/adar/ui/set-dialog";
+import { company } from "@/content/adar/company";
 import { cn } from "@/lib/cn";
 
 type Props = { tone?: "light" | "dark" };
@@ -19,6 +20,9 @@ export function OrderForm({ tone = "light" }: Props) {
   const id = useId();
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  // Сервер отвечает, дошла ли заявка до менеджера. Пока бот не подключён,
+  // говорим об этом прямо: «Спасибо» на потерянную заявку — обман.
+  const [delivered, setDelivered] = useState(true);
   const [error, setError] = useState("");
   const [note, setNote] = useState("");
   const noteField = useRef<HTMLTextAreaElement>(null);
@@ -43,7 +47,9 @@ export function OrderForm({ tone = "light" }: Props) {
         }),
       });
 
-      const result: { ok?: boolean } = await response.json().catch(() => ({}));
+      const result: { ok?: boolean; delivered?: boolean } = await response
+        .json()
+        .catch(() => ({}));
       if (!response.ok || !result.ok) {
         setError(
           response.status === 422
@@ -55,6 +61,7 @@ export function OrderForm({ tone = "light" }: Props) {
         return;
       }
 
+      setDelivered(result.delivered !== false);
       setNote("");
       setSent(true);
     } catch {
@@ -101,15 +108,33 @@ export function OrderForm({ tone = "light" }: Props) {
           dark ? "border-adar-gold-500/30 bg-white/5" : "border-adar-green-900/12 bg-white",
         )}
       >
-        <span className="font-adar-display text-4xl text-adar-gold-500">Спасибо</span>
+        <span className="font-adar-display text-4xl text-adar-gold-500">
+          {delivered ? "Спасибо" : "Позвоните нам"}
+        </span>
         <p
           className={cn(
             "mt-4 max-w-sm text-sm leading-relaxed",
             dark ? "text-adar-cream-50/70" : "text-adar-ink-muted",
           )}
         >
-          Заявка принята. Менеджер перезвонит и уточнит количество, бюджет
-          на человека и сроки отгрузки.
+          {delivered ? (
+            <>
+              Заявка принята. Менеджер перезвонит и уточнит количество, бюджет
+              на человека и сроки отгрузки.
+            </>
+          ) : (
+            <>
+              Автоматический приём заявок ещё не подключён, и эта заявка до менеджера не
+              дошла. Наберите{" "}
+              <a
+                href={`tel:${company.contacts.phones[2].replace(/\s/g, "")}`}
+                className="underline underline-offset-4"
+              >
+                {company.contacts.phones[2]}
+              </a>{" "}
+              — ответим сразу.
+            </>
+          )}
         </p>
         <button
           type="button"

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 
+import { company } from "@/content/adar/company";
 import { useCart } from "@/lib/adar/cart";
 import { formatPrice } from "@/lib/adar/format";
 import { cn } from "@/lib/cn";
@@ -25,6 +26,9 @@ export function CartPanel() {
   const id = useId();
   const [stage, setStage] = useState<Stage>("list");
   const [error, setError] = useState("");
+  // Сервер отвечает, дошла ли заявка до менеджера. Пока бот не подключён,
+  // говорим об этом прямо: «Спасибо» на потерянную заявку — обман.
+  const [delivered, setDelivered] = useState(true);
 
   useEffect(() => {
     const dialog = node.current;
@@ -60,7 +64,9 @@ export function CartPanel() {
         }),
       });
 
-      const result: { ok?: boolean } = await response.json().catch(() => ({}));
+      const result: { ok?: boolean; delivered?: boolean } = await response
+        .json()
+        .catch(() => ({}));
       if (!response.ok || !result.ok) {
         setError(
           response.status === 422
@@ -73,6 +79,7 @@ export function CartPanel() {
         return;
       }
 
+      setDelivered(result.delivered !== false);
       cart.clear();
       setStage("sent");
     } catch {
@@ -116,10 +123,28 @@ export function CartPanel() {
 
         {stage === "sent" ? (
           <div className="px-6 py-10 text-center sm:px-8">
-            <p className="font-adar-display text-4xl text-adar-green-800">Спасибо</p>
+            <p className="font-adar-display text-4xl text-adar-green-800">
+              {delivered ? "Спасибо" : "Позвоните нам"}
+            </p>
             <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-adar-ink-muted">
-              Менеджер перезвонит, подтвердит состав и выставит счёт. Работаем ежедневно
-              с 8:00 до 23:00.
+              {delivered ? (
+                <>
+                  Менеджер перезвонит, подтвердит состав и выставит счёт. Работаем ежедневно
+                  с 8:00 до 23:00.
+                </>
+              ) : (
+                <>
+                  Автоматический приём заявок ещё не подключён, и эта заявка до менеджера не
+                  дошла. Наберите{" "}
+                  <a
+                    href={`tel:${company.contacts.phones[2].replace(/\s/g, "")}`}
+                    className="underline underline-offset-4"
+                  >
+                    {company.contacts.phones[2]}
+                  </a>{" "}
+                  — ответим сразу.
+                </>
+              )}
             </p>
             <button
               type="button"
