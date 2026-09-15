@@ -6,6 +6,7 @@ import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
 import { BudgetPicker } from "@/components/adar/premium/budget-picker";
 import { CatalogFrame } from "@/components/adar/premium/catalog-frame";
 import { AboutCompany } from "@/components/adar/premium/about-company";
+import { ArchiveDrum } from "@/components/adar/premium/archive-drum";
 import { HeroStage } from "@/components/adar/premium/hero-stage";
 import { CorporateBlock } from "@/components/adar/premium/corporate-block";
 import { PremiumHeader } from "@/components/adar/premium/header";
@@ -49,6 +50,7 @@ export default function AdarPremiumConcept() {
         <main id="content">
           <HeroStage />
           <AboutCompany />
+          <ArchiveDrum />
           <CatalogFrame showcase={growthStages} />
           <BudgetPicker />
           <CatalogBrowser />
