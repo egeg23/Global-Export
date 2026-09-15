@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { AdminGallery } from "@/components/present/mavera/admin-gallery";
 import { MaveraGallery } from "@/components/present/mavera/gallery";
 import { MaveraHero } from "@/components/present/mavera/hero";
+import { StandSwitch } from "@/components/present/stand-switch";
 import { Container } from "@/components/ui/container";
 
 /**
@@ -43,17 +43,13 @@ const benchmarks = [
 export default function MaveraPresentPage() {
   return (
     <main className="pb-24">
+      <StandSwitch active="mavera" />
+
       <MaveraHero />
 
       <Container className="pt-14 lg:pt-20">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <Link
-            href="/present"
-            prefetch={false}
-            className="inline-flex items-center gap-2 text-sm text-sand-300/60 transition-colors hover:text-sand-50"
-          >
-            <span aria-hidden="true">←</span> Ко всей витрине
-          </Link>
+          <p className="text-sm text-sand-300/60">Три варианта, панель управления и ориентиры</p>
 
           <nav aria-label="Разделы страницы" className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
             <a href="#variants" className="link-underline text-sand-200/75 hover:text-sand-50">
