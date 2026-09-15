@@ -8,7 +8,7 @@ import { News, Reviews } from "@/components/mavera/sections";
 import { StandardCatalog } from "@/components/mavera/standard/catalog";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
-import { commercial, stats, terms } from "@/content/mavera/data";
+import { commercial, projects, stats, terms } from "@/content/mavera/data";
 import { expenses, finishes, voices } from "@/content/mavera/voice";
 
 export const metadata: Metadata = { title: "Вариант 01 — «Стандарт»" };
@@ -25,7 +25,7 @@ const voice = voices.standard;
 
 export default function MaveraStandard() {
   return (
-    <ConfiguratorProvider tier="standard" page="main">
+    <ConfiguratorProvider tier="standard" page="main" objectHref={`/mavera/standard/${projects[0].slug}`}>
       <VariantBar current="standard" />
 
       {/* Шапка — тонкая, липкая, без теней. */}
@@ -159,7 +159,7 @@ export default function MaveraStandard() {
         </Rise>
 
         <Rise delay={100} className="mt-10">
-          <StandardCatalog claims={voice.claims} />
+          <StandardCatalog claims={voice.claims} projects={projects} />
         </Rise>
       </section>
 

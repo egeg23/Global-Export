@@ -1,6 +1,6 @@
 "use client";
 
-import { planFor, roomAreas } from "@/content/mavera/plans";
+import type { Plan } from "@/content/mavera/plans";
 import { cn } from "@/lib/cn";
 
 /**
@@ -11,20 +11,20 @@ import { cn } from "@/lib/cn";
  * Задержка живёт в CSS-переменной, поэтому кадры анимации не проходят через
  * состояние React.
  *
- * Подписи считаются от площади конкретной квартиры, а не хранятся: на любой
- * из семи планировок сумма комнат сходится с метражом в карточке.
+ * Чертёж и площади комнат приходят с сервера готовыми: правила выбора
+ * планировки по метражу в браузер не уезжают.
  */
 export function FlatPlan({
-  rooms,
+  plan,
+  areas,
   area,
   className,
 }: {
-  rooms: number;
+  plan: Plan;
+  areas: number[];
   area: number;
   className?: string;
 }) {
-  const plan = planFor(rooms, area);
-  const areas = roomAreas(plan, area);
 
   return (
     <svg
@@ -102,7 +102,7 @@ export function FlatPlan({
             className="fill-[var(--w-ink)]"
             style={{ fontSize: room.w < 70 ? 8.5 : 10, fontWeight: 500 }}
           >
-            {areas[index].toFixed(1).replace(".", ",")}
+            {(areas[index] ?? 0).toFixed(1).replace(".", ",")}
           </text>
         </g>
       ))}
@@ -120,10 +120,4 @@ export function FlatPlan({
       </g>
     </svg>
   );
-}
-
-/** Название и особенность планировки — для подписи рядом с чертежом. */
-export function planLabel(rooms: number, area: number) {
-  const plan = planFor(rooms, area);
-  return { name: plan.name, note: plan.note };
 }

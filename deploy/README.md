@@ -304,3 +304,20 @@ delete from public.admins
  where user_id = (select id from auth.users where email = 'demo@globalex.uz');
 delete from auth.users where email = 'demo@globalex.uz';
 ```
+
+## Код доступа к витрине MAVERA
+
+Раздел `/mavera` (три варианта сайта, панели управления, смета) закрыт кодом:
+без него посетитель видит только страницу ввода. Код задаётся в
+`/srv/globalex/.env.local`:
+
+```
+SHOWCASE_ACCESS_CODE=придумайте-код
+```
+
+Без строки действует встроенный код `mavera-2026`, значение `off` открывает
+витрину всем. После правки — `sudo systemctl restart globalex-demo`.
+
+Ссылка заказчику: `https://globalex.maximov-tech.ru/mavera?key=КОД`. Ключ
+ставит куки на 60 дней и убирает себя из адреса. Смена кода отзывает все
+выданные куки — так ссылку можно «отключить» после встречи.

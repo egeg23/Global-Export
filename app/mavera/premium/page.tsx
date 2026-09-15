@@ -7,7 +7,7 @@ import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scen
 import { Rise } from "@/components/mavera/reveal";
 import { News, Reviews } from "@/components/mavera/sections";
 import { VariantBar } from "@/components/mavera/variant-bar";
-import { stats, terms } from "@/content/mavera/data";
+import { projects, stats, terms } from "@/content/mavera/data";
 import { faq, investment, voices } from "@/content/mavera/voice";
 
 export const metadata: Metadata = { title: "Вариант 03 — «Премиум»" };
@@ -25,7 +25,7 @@ const voice = voices.premium;
 
 export default function MaveraPremium() {
   return (
-    <ConfiguratorProvider tier="premium" page="main">
+    <ConfiguratorProvider tier="premium" page="main" objectHref={`/mavera/premium/${projects[0].slug}`}>
       <VariantBar current="premium" />
 
       {/* Стеклянная шапка поверх кадра. */}
@@ -88,7 +88,7 @@ export default function MaveraPremium() {
           </Rise>
         </div>
         <Rise delay={80} className="mx-auto mt-10 w-full max-w-[1500px] px-5 sm:px-8">
-          <FilmRail claims={voice.claims} />
+          <FilmRail claims={voice.claims} projects={projects} />
         </Rise>
       </section>
 

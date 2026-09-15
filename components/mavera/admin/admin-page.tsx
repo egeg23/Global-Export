@@ -6,6 +6,7 @@ import { VariantBar } from "@/components/mavera/variant-bar";
 import { tiers, type TierId } from "@/components/present/mavera/theme";
 import { Container } from "@/components/ui/container";
 import { addons, included } from "@/content/mavera/addons";
+import { projects } from "@/content/mavera/data";
 
 /**
  * Панель управления в составе пакета.
@@ -21,7 +22,7 @@ export function AdminPage({ variant }: { variant: TierId }) {
   const inside = adminAddons.filter((addon) => included[variant].includes(addon.id));
 
   return (
-    <ConfiguratorProvider tier={variant} page="admin" frame="studio">
+    <ConfiguratorProvider tier={variant} page="admin" frame="studio" objectHref={`/mavera/${variant}/${projects[0].slug}`}>
       <VariantBar current={variant} admin />
 
       <main className="min-h-screen bg-[#0b0d10] pb-28 text-sand-50">

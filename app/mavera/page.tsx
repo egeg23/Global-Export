@@ -184,6 +184,15 @@ export default function MaveraHub() {
         </section>
       </Container>
 
+      {/* Кому и на каких условиях показывается. */}
+      <Container className="pt-16">
+        <p className="border-t border-sand-50/10 pt-8 text-xs leading-relaxed text-sand-300/45">
+          © 2026 Maximov Tech. Закрытый показ для MAVERA: макеты, тексты и код
+          защищены авторским правом, копирование и передача третьим лицам без
+          согласия студии запрещены.
+        </p>
+      </Container>
+
       {/* Авторы снимков. */}
       <Container className="pt-16">
         <details className="border-t border-sand-50/10 pt-8">

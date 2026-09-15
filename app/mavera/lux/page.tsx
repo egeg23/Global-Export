@@ -27,7 +27,7 @@ const voice = voices.lux;
  */
 export default function MaveraLux() {
   return (
-    <ConfiguratorProvider tier="lux" page="main">
+    <ConfiguratorProvider tier="lux" page="main" objectHref={`/mavera/lux/${projects[0].slug}`}>
       <VariantBar current="lux" />
 
       {/* Шапка-масthead: тонкие линейки, засечный логотип по центру. */}

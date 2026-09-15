@@ -10,9 +10,10 @@ import { Rise } from "@/components/mavera/reveal";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money, type TierId } from "@/components/present/mavera/theme";
 import { projects } from "@/content/mavera/data";
+import { plans } from "@/content/mavera/plans";
 import { voices } from "@/content/mavera/voice";
 import { cn } from "@/lib/cn";
-import { area, corpusCount, summaryOf } from "@/lib/mavera/flats";
+import { area, corpusCount, flatsOf, summaryOf } from "@/lib/mavera/flats";
 
 /**
  * Карточка жилого комплекса — одна на три варианта.
@@ -47,7 +48,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
   const rounded = variant === "premium" ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "";
 
   return (
-    <ConfiguratorProvider tier={variant} page="object">
+    <ConfiguratorProvider tier={variant} page="object" objectHref={`${home}/${slug}`}>
       <VariantBar current={variant} />
 
       <header className="sticky top-0 z-40 border-b border-[var(--w-line)] bg-[var(--w-bg)]/85 backdrop-blur-xl">
@@ -215,7 +216,8 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
           </Rise>
 
           <Rise delay={120} className="mt-10">
-            <ObjectInteractive slug={slug} variant={variant} />
+            {/* Квартиры и чертежи считаются здесь, на сервере; подбор получает готовые данные. */}
+            <ObjectInteractive variant={variant} flats={flatsOf(slug)} corpuses={corpuses} plans={plans} />
           </Rise>
         </div>
       </section>

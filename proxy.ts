@@ -1,6 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { locales, matchLocale } from "@/lib/i18n";
+import {
+  ACCESS_COOKIE,
+  accessCode,
+  accessCookie,
+  accessToken,
+  isGated,
+  sameSecret,
+  verifyToken,
+} from "@/lib/showcase/access";
 import { refreshSession } from "@/lib/supabase/session";
 
 const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webmanifest)$/i;
@@ -35,6 +44,40 @@ export async function proxy(request: NextRequest) {
 
   if (pathname === "/present" || pathname.startsWith("/present/")) {
     return NextResponse.next();
+  }
+
+  // Витрина MAVERA закрыта кодом. Ключ в адресе (?key=…) ставит куки и
+  // убирает себя из адреса — так ссылку отправляют заказчику. Без куки —
+  // страница ввода кода. Граница стоит здесь, до отдачи разметки: то, что уже
+  // попало в браузер, скопировать можно всегда.
+  if (isGated(pathname)) {
+    const code = accessCode();
+    if (!code) return NextResponse.next();
+
+    const key = request.nextUrl.searchParams.get("key");
+    if (key !== null && sameSecret(key, code)) {
+      const url = request.nextUrl.clone();
+      url.searchParams.delete("key");
+      const response = NextResponse.redirect(url, 307);
+      response.cookies.set(accessCookie(await accessToken(code)));
+      return response;
+    }
+
+    if (!(await verifyToken(request.cookies.get(ACCESS_COOKIE)?.value, code))) {
+      const target = request.nextUrl.clone();
+      target.searchParams.delete("key");
+      const url = request.nextUrl.clone();
+      url.pathname = "/mavera/access";
+      url.search = "";
+      url.searchParams.set("next", `${target.pathname}${target.search}`);
+      const response = NextResponse.redirect(url, 307);
+      response.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return response;
+    }
+
+    const response = NextResponse.next();
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return response;
   }
 
   // Третий проект витрины — три варианта сайта для застройщика. Языкового

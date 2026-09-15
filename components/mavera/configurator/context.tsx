@@ -18,7 +18,6 @@ import {
 } from "@/components/mavera/configurator/store";
 import { money, tiers, type CurrencyId, type TierId } from "@/components/present/mavera/theme";
 import { addonById, addons, included, type AddonId, type AddonWhere } from "@/content/mavera/addons";
-import { projects } from "@/content/mavera/data";
 import { cn } from "@/lib/cn";
 
 /**
@@ -91,11 +90,14 @@ export function useAddon(id: AddonId) {
 export function ConfiguratorProvider({
   tier,
   page,
+  objectHref,
   frame = "world",
   children,
 }: {
   tier: TierId;
   page: Page;
+  /** Куда вести, если блок живёт в карточке ЖК: страница знает это сама, браузеру список проектов не нужен. */
+  objectHref: string;
   /** «world» — корень мира сайта; «studio» — наша тёмная витрина без токенов мира. */
   frame?: "world" | "studio";
   children: React.ReactNode;
@@ -115,8 +117,6 @@ export function ConfiguratorProvider({
   useEffect(() => adopt(tier), [tier]);
 
   const homeHref = `/mavera/${tier}`;
-  // Куда вести с главной, если блок живёт в карточке ЖК: в первый проект.
-  const objectHref = `${homeHref}/${projects[0].slug}`;
   const adminHref = `${homeHref}/admin`;
   const packageUsd = (tiers.find((entry) => entry.id === tier) ?? tiers[0]).priceUsd;
 

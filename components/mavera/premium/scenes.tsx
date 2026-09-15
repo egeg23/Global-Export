@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Addon, useAddon } from "@/components/mavera/configurator/context";
 import { Magnetic, Words } from "@/components/mavera/configurator/live";
 import { money } from "@/components/present/mavera/theme";
-import { projects } from "@/content/mavera/data";
+import type { Project } from "@/content/mavera/data";
 import { cn } from "@/lib/cn";
 
 /** Прокрутка страницы, записанная в переменную узла: 0 — верх кадра, 1 — ушёл. */
@@ -212,7 +212,7 @@ export function Counters({ items }: { items: { value: string; suffix?: string; l
  * Кинолента проектов: карточки едут горизонтально, снимок внутри каждой —
  * с собственной скоростью, поэтому лента читается как проезд камеры.
  */
-export function FilmRail({ claims }: { claims: Record<string, string> }) {
+export function FilmRail({ claims, projects }: { claims: Record<string, string>; projects: Project[] }) {
   const [active, setActive] = useState(0);
 
   return (

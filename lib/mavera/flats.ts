@@ -1,4 +1,9 @@
 import { projects, type Project } from "@/content/mavera/data";
+import { planFor, roomAreas } from "@/content/mavera/plans";
+import type { Flat, FlatStatus } from "@/lib/mavera/catalog";
+
+export { area, filterFlats } from "@/lib/mavera/catalog";
+export type { Flat, FlatFilter, FlatStatus } from "@/lib/mavera/catalog";
 
 /**
  * Квартирография проектов.
@@ -12,24 +17,6 @@ import { projects, type Project } from "@/content/mavera/data";
  * тот же дом. Иначе сервер и браузер нарисовали бы разные шахматки, а ссылка
  * на конкретную квартиру перестала бы что-то значить.
  */
-
-export type FlatStatus = "free" | "booked" | "sold";
-
-export type Flat = {
-  id: string;
-  corpus: number;
-  floor: number;
-  /** Номер на этаже, слева направо. */
-  line: number;
-  rooms: number;
-  area: number;
-  /** Цена целиком, в долларах. */
-  priceUsd: number;
-  status: FlatStatus;
-  /** Номер типовой планировки — их четыре на проект. */
-  plan: number;
-  view: "Во двор" | "На улицу" | "Панорама";
-};
 
 function noise(seed: number): number {
   const x = Math.sin(seed) * 43758.5453;
@@ -83,6 +70,9 @@ export function flatsOf(slug: string): Flat[] {
         const area = Math.round((layout.area + (noise(seed + 1.5) - 0.5) * 6) * 10) / 10;
         // Надбавка за этаж: до 9% между первым и последним.
         const floorFactor = 1 + ((floor - 2) / Math.max(top - 2, 1)) * 0.09;
+        // Планировка и подписи считаются здесь, чтобы браузеру достались
+        // готовые строки, а не правила их выбора.
+        const plan = planFor(layout.rooms, area);
 
         out.push({
           id: `${slug}-${corpus}-${floor}-${line}`,
@@ -93,38 +83,18 @@ export function flatsOf(slug: string): Flat[] {
           area,
           priceUsd: Math.round(area * project.priceUsd * floorFactor),
           status,
-          plan: (Math.floor(noise(seed + 2.5) * 4) % 4) + 1,
           view: layout.view,
+          typeName: plan.short,
+          planId: plan.id,
+          planName: plan.name,
+          planNote: plan.note,
+          roomAreas: roomAreas(plan, area).map((value) => Math.round(value * 10) / 10),
         });
       }
     }
   }
 
   return out;
-}
-
-/** Площадь по-русски: запятая, один знак. */
-export function area(value: number): string {
-  return value.toFixed(1).replace(".", ",");
-}
-
-export type FlatFilter = {
-  rooms: number[];
-  corpus: number | null;
-  floorFrom: number;
-  priceMaxUsd: number | null;
-  onlyFree: boolean;
-};
-
-export function filterFlats(flats: Flat[], filter: FlatFilter): Flat[] {
-  return flats.filter((flat) => {
-    if (filter.rooms.length && !filter.rooms.includes(flat.rooms)) return false;
-    if (filter.corpus && flat.corpus !== filter.corpus) return false;
-    if (flat.floor < filter.floorFrom) return false;
-    if (filter.priceMaxUsd && flat.priceUsd > filter.priceMaxUsd) return false;
-    if (filter.onlyFree && flat.status !== "free") return false;
-    return true;
-  });
 }
 
 /** Сводка по проекту для карточки и шапки: сколько и от какой цены. */

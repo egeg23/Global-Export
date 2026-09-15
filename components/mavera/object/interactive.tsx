@@ -4,13 +4,12 @@ import { useMemo, useState } from "react";
 
 import { Addon, useAddon } from "@/components/mavera/configurator/context";
 import { useCountUp, useMotionPreferred } from "@/components/mavera/motion";
-import { FlatPlan, planLabel } from "@/components/mavera/object/flat-plan";
-import { flatTypeName } from "@/content/mavera/plans";
+import { FlatPlan } from "@/components/mavera/object/flat-plan";
 import { money } from "@/components/present/mavera/theme";
 import { banks, monthlyPayment } from "@/content/mavera/banks";
-import { projects } from "@/content/mavera/data";
+import type { Plan } from "@/content/mavera/plans";
 import { cn } from "@/lib/cn";
-import { area, corpusCount, filterFlats, flatsOf, type Flat } from "@/lib/mavera/flats";
+import { area, filterFlats, type Flat } from "@/lib/mavera/catalog";
 
 /**
  * Выбор квартиры и расчёт ипотеки — одним компонентом.
@@ -22,6 +21,9 @@ import { area, corpusCount, filterFlats, flatsOf, type Flat } from "@/lib/mavera
  * Показ различается по вариантам: «Стандарт» получает таблицу, которую можно
  * сортировать глазами, «Люкс» — карточки, «Премиум» — шахматку этажей. Данные
  * при этом одни и те же.
+ *
+ * Список квартир, чертежи и подписи приходят с сервера готовыми: здесь только
+ * фильтр, выбор и расчёт платежа. Как квартиры получаются — браузер не знает.
  */
 
 type Variant = "standard" | "lux" | "premium";
@@ -32,11 +34,17 @@ const statusLabel: Record<Flat["status"], string> = {
   sold: "Продана",
 };
 
-export function ObjectInteractive({ slug, variant }: { slug: string; variant: Variant }) {
-  const project = projects.find((p) => p.slug === slug);
-  const all = useMemo(() => flatsOf(slug), [slug]);
-  const corpuses = project ? corpusCount(project) : 1;
-
+export function ObjectInteractive({
+  variant,
+  flats: all,
+  corpuses,
+  plans,
+}: {
+  variant: Variant;
+  flats: Flat[];
+  corpuses: number;
+  plans: Plan[];
+}) {
   const [rooms, setRooms] = useState<number[]>([]);
   const [corpus, setCorpus] = useState<number | null>(null);
   const [floorFrom, setFloorFrom] = useState(2);
@@ -69,7 +77,8 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
   // Меняется при любой правке фильтра — список переигрывает появление.
   const listKey = `${rooms.join()}-${corpus}-${floorFrom}-${priceMax}-${onlyFree}`;
   const shownPrice = useCountUp(selected?.priceUsd ?? 0, motion);
-  const plan = selected ? planLabel(selected.rooms, selected.area) : null;
+  const plan = selected ? { name: selected.planName, note: selected.planNote } : null;
+  const drawing = selected ? (plans.find((item) => item.id === selected.planId) ?? plans[0]) : null;
 
   // Ипотека считается по выбранной квартире, а не по «цене от».
   const [bankId, setBankId] = useState(banks[0].id);
@@ -198,7 +207,7 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
                 >
                   <p className="font-[family-name:var(--w-display)] text-xl">
                     {favorites && saved.includes(flat.id) ? <span className="mr-1.5 text-[var(--w-accent)]">♥</span> : null}
-                    {flatTypeName(flat.rooms, flat.area)}, {area(flat.area)} м²
+                    {flat.typeName}, {area(flat.area)} м²
                   </p>
                   <p className="mt-1.5 text-sm text-[var(--w-muted)]">
                     Корпус {flat.corpus} · {flat.floor} этаж · {flat.view.toLowerCase()}
@@ -266,7 +275,7 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
             <>
               <div className="flex items-baseline justify-between gap-4">
                 <h3 className="text-xl">
-                  {flatTypeName(selected.rooms, selected.area)}, {area(selected.area)} м²
+                  {selected.typeName}, {area(selected.area)} м²
                 </h3>
                 <span className="text-sm text-[var(--w-muted)]">{statusLabel[selected.status]}</span>
               </div>
@@ -275,7 +284,9 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
               </p>
 
               <div className="mt-5 aspect-[320/232] border border-[var(--w-line)] p-2.5">
-                <FlatPlan key={selected.id} rooms={selected.rooms} area={selected.area} />
+                {drawing ? (
+                  <FlatPlan key={selected.id} plan={drawing} areas={selected.roomAreas} area={selected.area} />
+                ) : null}
               </div>
               {plan ? (
                 <p key={`${plan.name}-note`} className="mv-fade mt-3 text-xs leading-relaxed text-[var(--w-muted)]">
@@ -465,7 +476,7 @@ function ChessBoard({
                     key={flat.id}
                     type="button"
                     onClick={() => onPick(flat.id)}
-                    aria-label={`Корпус ${flat.corpus}, этаж ${flat.floor}, ${flatTypeName(flat.rooms, flat.area).toLowerCase()} ${area(flat.area)} м²`}
+                    aria-label={`Корпус ${flat.corpus}, этаж ${flat.floor}, ${flat.typeName.toLowerCase()} ${area(flat.area)} м²`}
                     title={`${flat.rooms}к · ${area(flat.area)} м² · корпус ${flat.corpus}`}
                     className={cn(
                       "h-6 w-9 rounded-[4px] text-[0.6rem] tabular-nums transition-all duration-200",
