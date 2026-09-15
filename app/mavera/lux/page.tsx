@@ -49,31 +49,38 @@ export default function MaveraLux() {
         </div>
       </header>
 
-      {/* Обложка выпуска. */}
-      <section className="relative">
-        <div className="relative h-[72svh] min-h-[420px] overflow-hidden">
-          <Image
-            src="/images/mavera/hero-editorial.jpg"
-            alt="Фасад жилого дома"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-bg)] via-[var(--w-bg)]/20 to-transparent" />
-        </div>
+      {/* Обложка выпуска: текст лежит поверх кадра, а не свисает под ним.
 
-        <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
-          <Rise className="-mt-24 max-w-3xl bg-[var(--w-surface)] p-8 shadow-[var(--w-shadow)] sm:p-12">
+          Раньше карточка с заголовком выезжала на фотографию отрицательным
+          отступом — и на узком экране пропадала под ней. Причина не в
+          отступе: блок с фотографией позиционирован, карточка шла в потоке,
+          а позиционированный элемент по правилам отрисовки всегда выше. Тут
+          порядок задан явно: кадр и затемнение уходят за содержимое. */}
+      <section className="relative isolate flex min-h-[86svh] items-end overflow-hidden">
+        <Image
+          src="/images/mavera/hero-editorial.jpg"
+          alt="Фасад жилого дома"
+          fill
+          priority
+          sizes="100vw"
+          className="-z-20 object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-[var(--w-bg)] via-[var(--w-bg)]/45 to-[var(--w-bg)]/5"
+        />
+
+        <div className="mx-auto w-full max-w-[1500px] px-5 pb-10 sm:px-8 lg:pb-16">
+          <Rise className="max-w-2xl bg-[var(--w-surface)]/92 p-7 shadow-[var(--w-shadow)] backdrop-blur-sm sm:p-10 lg:p-12">
             <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">
               {voice.hero.eyebrow}
             </p>
-            <h1 className="mt-6 text-[clamp(2.2rem,5vw,4.2rem)] leading-[1.02]">
+            <h1 className="mt-5 text-[clamp(1.9rem,5vw,4.2rem)] leading-[1.04]">
               {voice.hero.titleTop}
               <br />
               {voice.hero.titleBottom}
             </h1>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-[var(--w-muted)]">
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-[var(--w-muted)] sm:text-lg">
               {voice.hero.lead}
             </p>
             <p className="mt-6 text-sm text-[var(--w-muted)]">

@@ -47,7 +47,7 @@ export default function MaveraPremium() {
 
       {/* Условия покупки — стеклянной лентой сразу под кадром. */}
       <section className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
-        <Rise className="-mt-10 grid gap-px overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-3">
+        <Rise className="relative z-10 -mt-10 grid gap-px overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-3">
           {terms.map((term) => (
             <div key={term.label} className="bg-[var(--w-paper)]/90 p-6 backdrop-blur-xl">
               <p className="text-2xl font-semibold text-[var(--w-accent)]">{term.value}</p>
