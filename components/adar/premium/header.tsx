@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { CartButton } from "@/components/adar/ui/cart-button";
 import { Shell } from "@/components/adar/ui/shell";
 import { Wordmark } from "@/components/adar/ui/wordmark";
 import { company } from "@/content/adar/company";
@@ -66,9 +67,10 @@ export function PremiumHeader() {
           >
             {company.contacts.phones[2]}
           </a>
+          <CartButton />
           <a
             href="#kontakty"
-            className="rounded-full border border-adar-gold-500/60 px-4 py-2.5 text-sm font-medium text-adar-gold-300 sm:px-5 transition-colors duration-300 hover:bg-adar-gold-500 hover:text-adar-green-950"
+            className="hidden rounded-full border border-adar-gold-500/60 px-4 py-2.5 text-sm font-medium text-adar-gold-300 transition-colors duration-300 hover:bg-adar-gold-500 hover:text-adar-green-950 sm:block sm:px-5"
           >
             Заказать
           </a>
