@@ -200,6 +200,88 @@
     }
   }
 
+  /* ----------------------------------------------------------------
+     Конструктор: тумблер «Анимации и параллакс» выключает движение
+     атрибутом, а не системной настройкой. Блоки стоят на месте видимыми,
+     кадры не едут, пятна не плывут. Метки и призраки самого конструктора
+     сюда не входят — это наш инструмент, он двигается всегда.
+     ---------------------------------------------------------------- */
+  [data-motion="off"] .w-rise {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  [data-motion="off"] .w-parallax {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  [data-motion="off"] .w-blob {
+    animation: none;
+  }
+
+  /* Только что включённый блок обводится расходящимся кольцом. */
+  .w-tag-pulse::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    border-radius: inherit;
+    animation: w-tag-pulse 1.1s ease-out 2;
+  }
+
+  @keyframes w-tag-pulse {
+    from {
+      box-shadow: 0 0 0 0 rgba(255, 209, 102, 0.9);
+    }
+    to {
+      box-shadow: 0 0 0 18px rgba(255, 209, 102, 0);
+    }
+  }
+
+  /* Призрак выключенного блока: видно место и цену, а не пустоту. */
+  .w-ghost {
+    border: 1px dashed rgba(255, 209, 102, 0.75);
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        rgba(255, 209, 102, 0.06) 0 10px,
+        rgba(255, 209, 102, 0.12) 10px 20px
+      );
+  }
+
+  /* Док и его пилюля всплывают снизу. */
+  .w-dock-in {
+    animation: w-dock-in 0.35s cubic-bezier(0.2, 0, 0, 1) both;
+  }
+
+  @keyframes w-dock-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Панорама 360°: кадр медленно панорамирует, как в просмотрщике тура. */
+  .w-pan {
+    animation: w-pan 16s ease-in-out infinite alternate;
+  }
+
+  @keyframes w-pan {
+    from {
+      object-position: 0% 50%;
+    }
+    to {
+      object-position: 100% 50%;
+    }
+  }
+
   /* Медленно плывущее световое пятно на тёмном фоне. */
   .w-blob {
     animation: w-drift 24s ease-in-out infinite alternate;
@@ -225,7 +307,10 @@
   .w-blob,
   .w-room,
   .w-pop,
-  .w-row {
+  .w-row,
+  .w-pan,
+  .w-dock-in,
+  .w-tag-pulse::after {
     animation: none;
   }
 }

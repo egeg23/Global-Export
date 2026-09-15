@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
 import { Rise } from "@/components/mavera/reveal";
 import { StandardCatalog } from "@/components/mavera/standard/catalog";
 import { VariantBar } from "@/components/mavera/variant-bar";
@@ -22,7 +23,7 @@ const voice = voices.standard;
 
 export default function MaveraStandard() {
   return (
-    <div data-world="standard">
+    <ConfiguratorProvider tier="standard" page="main">
       <VariantBar current="standard" />
 
       {/* Шапка — тонкая, липкая, без теней. */}
@@ -38,9 +39,11 @@ export default function MaveraStandard() {
           </nav>
           <div className="flex items-center gap-5 text-sm">
             <span className="hidden tabular-nums sm:inline">+998 (__) ___-__-__</span>
-            <span className="border border-[var(--w-line)] px-2 py-1 text-[0.7rem] tracking-[0.12em] text-[var(--w-muted)]">
-              RU <span className="opacity-40">EN UZ</span>
-            </span>
+            <Addon id="langs" inline scroll={false}>
+              <span className="border border-[var(--w-line)] px-2 py-1 text-[0.7rem] tracking-[0.12em] text-[var(--w-muted)]">
+                RU <span className="opacity-40">EN UZ</span>
+              </span>
+            </Addon>
           </div>
         </div>
       </header>
@@ -146,8 +149,8 @@ export default function MaveraStandard() {
         </Rise>
       </section>
 
-      {/* Условия покупки — строкой, без баннеров. */}
-      <section className="border-y border-[var(--w-line)] bg-[var(--w-paper)]">
+      {/* Условия покупки — строкой, без баннеров. Допник «Строка условий». */}
+      <Addon id="promo" as="section" className="border-y border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto grid w-full max-w-[1400px] sm:grid-cols-3">
           {terms.map((term, index) => (
             <Rise
@@ -160,7 +163,7 @@ export default function MaveraStandard() {
             </Rise>
           ))}
         </div>
-      </section>
+      </Addon>
 
       {/* Как купить — четыре шага, пронумерованные. */}
       <section className="mx-auto w-full max-w-[1400px] px-5 py-20 sm:px-8">
@@ -354,6 +357,6 @@ export default function MaveraStandard() {
           </span>
         </div>
       </footer>
-    </div>
+    </ConfiguratorProvider>
   );
 }

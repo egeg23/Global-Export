@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useAddon } from "@/components/mavera/configurator/context";
 import { money } from "@/components/present/mavera/theme";
 import { projects } from "@/content/mavera/data";
 import { cn } from "@/lib/cn";
@@ -64,7 +65,7 @@ export function CinemaHero({
       className="relative isolate flex min-h-[100svh] items-end overflow-hidden"
     >
       <div
-        className="absolute inset-0 -z-30 scale-110"
+        className="w-parallax absolute inset-0 -z-30 scale-110"
         style={{ transform: "translate3d(0, var(--shift, 0px), 0) scale(1.1)" }}
       >
         <Image
@@ -93,6 +94,7 @@ export function CinemaHero({
 
       <div className="mx-auto w-full max-w-[1500px] px-5 pb-20 sm:px-8 lg:pb-28">
         <div
+          className="w-parallax"
           style={{
             transform: "translate3d(0, calc(var(--p, 0) * -90px), 0)",
             opacity: "calc(1 - var(--p, 0) * 1.1)",
@@ -132,6 +134,8 @@ function Counter({ value, suffix }: { value: string; suffix?: string }) {
   const target = Number(value.replace(/[^\d,]/g, "").replace(",", "."));
   const [shown, setShown] = useState(value);
   const started = useRef(false);
+  // Счёт — часть допника «Анимации»: без него цифра просто стоит.
+  const animate = useAddon("motion");
 
   const attach = useCallback(
     (node: HTMLSpanElement | null) => {
@@ -144,7 +148,7 @@ function Counter({ value, suffix }: { value: string; suffix?: string }) {
         started.current = true;
         observer.disconnect();
 
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (!animate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
         const from = performance.now();
         const tick = (now: number) => {
@@ -167,7 +171,7 @@ function Counter({ value, suffix }: { value: string; suffix?: string }) {
       observer.observe(node);
       return () => observer.disconnect();
     },
-    [target, value],
+    [target, value, animate],
   );
 
   return (

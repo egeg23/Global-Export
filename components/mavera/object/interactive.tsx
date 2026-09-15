@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
+import { Addon, useAddon } from "@/components/mavera/configurator/context";
+import { useCountUp, useMotionPreferred } from "@/components/mavera/motion";
 import { FlatPlan, planLabel } from "@/components/mavera/object/flat-plan";
 import { flatTypeName } from "@/content/mavera/plans";
 import { money } from "@/components/present/mavera/theme";
@@ -30,39 +32,6 @@ const statusLabel: Record<Flat["status"], string> = {
   sold: "Продана",
 };
 
-/**
- * Цена, которая досчитывается при смене квартиры.
- *
- * Не украшение: когда в списке кликают подряд несколько квартир, счёт даёт
- * понять, что цифра поменялась именно из-за выбора, а не была такой всегда.
- */
-function useCountUp(value: number, enabled: boolean) {
-  const [shown, setShown] = useState(value);
-  const from = useRef(value);
-  const frame = useRef(0);
-
-  useEffect(() => {
-    // При выключенном движении состояние не трогаем вовсе: значение
-    // возвращается напрямую, и лишнего каскада перерисовок не возникает.
-    if (!enabled) return;
-
-    const start = from.current;
-    const startedAt = performance.now();
-    const tick = (now: number) => {
-      const p = Math.min((now - startedAt) / 520, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setShown(Math.round(start + (value - start) * eased));
-      if (p < 1) frame.current = requestAnimationFrame(tick);
-      else from.current = value;
-    };
-
-    frame.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame.current);
-  }, [value, enabled]);
-
-  return enabled ? shown : value;
-}
-
 export function ObjectInteractive({ slug, variant }: { slug: string; variant: Variant }) {
   const project = projects.find((p) => p.slug === slug);
   const all = useMemo(() => flatsOf(slug), [slug]);
@@ -74,15 +43,14 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
   const [priceMax, setPriceMax] = useState<number | null>(null);
   const [onlyFree, setOnlyFree] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [motion, setMotion] = useState(true);
 
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setMotion(!query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
+  // Движение разрешают и система, и тумблер «Анимации» в конструкторе.
+  const systemMotion = useMotionPreferred();
+  const addonMotion = useAddon("motion");
+  const motion = systemMotion && addonMotion;
+  // Допники карточки: шахматка вместо списка, калькулятор, бронь вместо заявки.
+  const chess = useAddon("chess");
+  const booking = useAddon("booking");
 
   const found = useMemo(
     () =>
@@ -205,10 +173,11 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
           </p>
         </div>
 
-        {/* Показ результата — свой в каждом варианте */}
-        {variant === "premium" ? (
+        {/* Показ результата: шахматка — допник; без неё свой список в каждом варианте */}
+        <Addon id="chess" compact className="mt-6">
           <ChessBoard key={listKey} flats={found} selectedId={selected?.id} onPick={setSelectedId} />
-        ) : variant === "lux" ? (
+        </Addon>
+        {chess ? null : variant === "lux" ? (
           <ul key={listKey} className="mt-6 grid gap-4 sm:grid-cols-2">
             {found.slice(0, 8).map((flat, index) => (
               <li key={flat.id} className="w-row" style={{ "--w-delay": `${index * 55}ms` } as React.CSSProperties}>
@@ -313,8 +282,8 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
             </>
           ) : null}
 
-          {/* Калькулятор — считает по выбранной квартире */}
-          <div className="mt-7 border-t border-[var(--w-line)] pt-6">
+          {/* Калькулятор — допник; считает по выбранной квартире */}
+          <Addon id="calc" className="mt-7 border-t border-[var(--w-line)] pt-6">
             <div className="flex items-baseline justify-between gap-4">
               <h4 className="text-lg">Ипотека и рассрочка</h4>
               <span className="text-[0.65rem] uppercase tracking-[0.12em] text-[var(--w-muted)]">
@@ -398,20 +367,30 @@ export function ObjectInteractive({ slug, variant }: { slug: string; variant: Va
               ))}
             </dl>
 
-            <button
-              type="button"
-              className={cn(
-                "mt-6 w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
-                variant === "premium" ? "w-glow rounded-full" : "rounded-none",
-              )}
-            >
-              {selected?.status === "free" ? "Забронировать на 5 дней" : "Оставить заявку"}
-            </button>
-
-            <p className="mt-3 text-xs leading-relaxed text-[var(--w-muted)]">
+            <p className="mt-4 text-xs leading-relaxed text-[var(--w-muted)]">
               Ставки банков условные и заданы для примера — в готовом сайте они
               правятся в панели управления. Точные условия подтверждает банк.
             </p>
+          </Addon>
+
+          <div className="mt-6 border-t border-[var(--w-line)] pt-6">
+            <button
+              type="button"
+              className={cn(
+                "w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
+                variant === "premium" ? "w-glow rounded-full" : "rounded-none",
+              )}
+            >
+              {booking && selected?.status === "free" ? "Забронировать на 5 дней" : "Оставить заявку"}
+            </button>
+
+            {/* Онлайн-бронирование — допник: без него кнопка ведёт на заявку менеджеру */}
+            <Addon id="booking" className="mt-3">
+              <p className="text-xs leading-relaxed text-[var(--w-muted)]">
+                Бронь бесплатная: квартира снимается с продажи на 5 дней, договор
+                подписывается в офисе или онлайн.
+              </p>
+            </Addon>
           </div>
         </div>
       </div>
@@ -432,7 +411,7 @@ function ChessBoard({
   const floors = [...new Set(flats.map((f) => f.floor))].sort((a, b) => b - a);
 
   return (
-    <div className="mt-6 rounded-[var(--w-radius-lg)] border border-[var(--w-line)] p-4">
+    <div className="rounded-[var(--w-radius-lg)] border border-[var(--w-line)] p-4">
       <div className="flex max-h-[26rem] flex-col gap-1.5 overflow-y-auto pr-1">
         {floors.map((floor) => (
           <div key={floor} className="flex items-center gap-2">

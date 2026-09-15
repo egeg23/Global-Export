@@ -14,7 +14,7 @@ const cards: Record<TierId, { href: string; photo: string; school: string; motio
     href: "/mavera/standard",
     photo: "/images/mavera/hero-catalog.jpg",
     school: "Швейцарская школа",
-    motion: "Движение: только проявление блоков",
+    motion: "Движение: нет — анимации подключаются тумблером",
   },
   lux: {
     href: "/mavera/lux",
@@ -125,9 +125,29 @@ export function VariantCards() {
       </ul>
 
       <p className="mt-6 text-xs leading-relaxed text-sand-300/45">
-        Цены без допников: перевод носителями, CRM, 3D-тур и поддержка считаются
-        отдельно.{currency === "usd" ? null : <> Договор считается в долларах. {rateNote}.</>}
+        Цены пакетов без допников.{currency === "usd" ? null : <> Договор считается в долларах. {rateNote}.</>}
       </p>
+
+      <Rise delay={120} className="mt-8 flex flex-col gap-4 rounded-card border border-harvest-300/30 bg-forest-950 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-7">
+        <span
+          aria-hidden="true"
+          className="inline-flex w-fit shrink-0 items-center gap-3 rounded-full bg-[#0b0d10] py-2.5 pl-4 pr-5 text-sm text-[#f2efe9] ring-1 ring-white/10"
+        >
+          <span className="h-2 w-2 rounded-full bg-[#ffd166]" />
+          Конструктор
+          <span className="tabular-nums text-[#ffd166]">$6 400</span>
+        </span>
+        <div>
+          <p className="text-sm font-medium text-sand-50">
+            Допники включаются тумблерами прямо на сайте
+          </p>
+          <p className="mt-1.5 text-sm leading-relaxed text-sand-200/70">
+            Внизу справа на каждом варианте — конструктор. Включили калькулятор,
+            шахматку или 3D-тур — блок появился на странице, итог пересчитался,
+            ссылку с набором можно отправить. Без перезагрузок.
+          </p>
+        </div>
+      </Rise>
     </div>
   );
 }

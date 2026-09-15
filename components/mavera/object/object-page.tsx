@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { Progress, Tour } from "@/components/mavera/object/extras";
 import { ObjectInteractive } from "@/components/mavera/object/interactive";
 import { Rise } from "@/components/mavera/reveal";
 import { VariantBar } from "@/components/mavera/variant-bar";
@@ -44,7 +46,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
   const rounded = variant === "premium" ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "";
 
   return (
-    <div data-world={variant}>
+    <ConfiguratorProvider tier={variant} page="object">
       <VariantBar current={variant} />
 
       <header className="sticky top-0 z-40 border-b border-[var(--w-line)] bg-[var(--w-bg)]/85 backdrop-blur-xl">
@@ -60,7 +62,19 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
             <span>Ипотека</span>
             <span>Контакты</span>
           </nav>
-          <span className="text-sm tabular-nums">+998 (__) ___-__-__</span>
+          <div className="flex items-center gap-4">
+            <Addon id="langs" inline scroll={false}>
+              <span
+                className={cn(
+                  "hidden border border-[var(--w-line)] px-2.5 py-1 text-[0.7rem] tracking-[0.12em] text-[var(--w-muted)] sm:inline-block",
+                  variant === "premium" ? "rounded-full" : rounded,
+                )}
+              >
+                RU <span className="opacity-40">EN UZ</span>
+              </span>
+            </Addon>
+            <span className="text-sm tabular-nums">+998 (__) ___-__-__</span>
+          </div>
         </div>
       </header>
 
@@ -230,19 +244,30 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
             </dl>
           </Rise>
 
-          <Rise delay={100} className={cn("relative aspect-[16/9] overflow-hidden lg:col-span-8", rounded)}>
-            <Image src="/images/mavera/park.jpg" alt="" fill sizes="(min-width: 1024px) 66vw, 100vw" className="object-cover" />
-            <span
-              className={cn(
-                "absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-sm font-medium",
-                "bg-[var(--w-accent)] text-[var(--w-accent-ink)]",
-              )}
-            >
-              ЖК
-            </span>
-          </Rise>
+          {/* Карта — допник, входит во все пакеты; выключается для сравнения. */}
+          <Addon id="map" className="lg:col-span-8">
+            <Rise delay={100} className={cn("relative aspect-[16/9] overflow-hidden", rounded)}>
+              <Image src="/images/mavera/park.jpg" alt="" fill sizes="(min-width: 1024px) 66vw, 100vw" className="object-cover" />
+              <span
+                className={cn(
+                  "absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-sm font-medium",
+                  "bg-[var(--w-accent)] text-[var(--w-accent-ink)]",
+                )}
+              >
+                ЖК
+              </span>
+            </Rise>
+          </Addon>
         </div>
       </section>
+
+      {/* Допники карточки: ход строительства и 3D-тур включаются в конструкторе. */}
+      <Addon id="progress" as="section" className="border-t border-[var(--w-line)]">
+        <Progress name={project.name} rounded={rounded} />
+      </Addon>
+      <Addon id="tour" as="section" className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+        <Tour rounded={rounded} />
+      </Addon>
 
       {/* Заявка */}
       <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
@@ -294,7 +319,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
           <span className="tracking-[0.3em] text-[var(--w-ink)]">MAVERA</span>
         </div>
       </footer>
-    </div>
+    </ConfiguratorProvider>
   );
 }
 

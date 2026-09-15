@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
 import { Genplan, Picker } from "@/components/present/mavera/interactive";
 import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scenes";
 import { Rise } from "@/components/mavera/reveal";
@@ -23,7 +24,7 @@ const voice = voices.premium;
 
 export default function MaveraPremium() {
   return (
-    <div data-world="premium">
+    <ConfiguratorProvider tier="premium" page="main">
       <VariantBar current="premium" />
 
       {/* Стеклянная шапка поверх кадра. */}
@@ -37,16 +38,23 @@ export default function MaveraPremium() {
               </span>
             ))}
           </nav>
-          <span className="w-glow rounded-full bg-[var(--w-accent)] px-5 py-2.5 text-sm font-medium text-white">
-            {voice.closing.primary}
-          </span>
+          <div className="flex items-center gap-3">
+            <Addon id="langs" inline scroll={false}>
+              <span className="hidden rounded-full border border-[var(--w-line)] px-3 py-1.5 text-[0.7rem] tracking-[0.12em] text-[var(--w-muted)] sm:inline-block">
+                RU <span className="opacity-40">EN UZ</span>
+              </span>
+            </Addon>
+            <span className="w-glow rounded-full bg-[var(--w-accent)] px-5 py-2.5 text-sm font-medium text-white">
+              {voice.closing.primary}
+            </span>
+          </div>
         </div>
       </header>
 
       <CinemaHero hero={voice.hero} />
 
-      {/* Условия покупки — стеклянной лентой сразу под кадром. */}
-      <section className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
+      {/* Условия покупки — стеклянной лентой сразу под кадром. Допник «Строка условий». */}
+      <Addon id="promo" as="section" className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
         <Rise className="relative z-10 -mt-10 grid gap-px overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-3">
           {terms.map((term) => (
             <div key={term.label} className="bg-[var(--w-paper)]/90 p-6 backdrop-blur-xl">
@@ -55,7 +63,7 @@ export default function MaveraPremium() {
             </div>
           ))}
         </Rise>
-      </section>
+      </Addon>
 
       {/* Цифры, которые досчитываются. */}
       <section className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
@@ -121,8 +129,8 @@ export default function MaveraPremium() {
         </div>
       </section>
 
-      {/* Ход строительства. */}
-      <section className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
+      {/* Ход строительства — допник, в «Премиуме» входит в пакет. */}
+      <Addon id="progress" as="section" className="border-t border-[var(--w-line)] bg-[var(--w-paper)]">
         <div className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
           <Rise className="flex flex-wrap items-end justify-between gap-6">
             <div>
@@ -158,7 +166,7 @@ export default function MaveraPremium() {
             </div>
           </Rise>
         </div>
-      </section>
+      </Addon>
 
       {/* Только в «Премиуме»: как росла цена по стадиям. */}
       <section className="border-t border-[var(--w-line)]">
@@ -271,6 +279,6 @@ export default function MaveraPremium() {
           </span>
         </div>
       </footer>
-    </div>
+    </ConfiguratorProvider>
   );
 }

@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
 import { ParallaxFigure } from "@/components/mavera/lux/parallax-figure";
 import { Rise } from "@/components/mavera/reveal";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
-import { projects, stats } from "@/content/mavera/data";
+import { projects, stats, terms } from "@/content/mavera/data";
 import { district, materials, voices } from "@/content/mavera/voice";
 
 export const metadata: Metadata = { title: "Вариант 02 — «Люкс»" };
@@ -24,7 +25,7 @@ const voice = voices.lux;
  */
 export default function MaveraLux() {
   return (
-    <div data-world="lux">
+    <ConfiguratorProvider tier="lux" page="main">
       <VariantBar current="lux" />
 
       {/* Шапка-масthead: тонкие линейки, засечный логотип по центру. */}
@@ -33,7 +34,9 @@ export default function MaveraLux() {
           <div className="flex items-center justify-between gap-6 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-[var(--w-muted)]">
             <span>Ташкент</span>
             <span className="hidden sm:inline">Выпуск 01 · 2026</span>
-            <span>RU / EN / UZ</span>
+            <Addon id="langs" inline scroll={false}>
+              <span>RU / EN / UZ</span>
+            </Addon>
           </div>
           <div className="border-t border-[var(--w-line)] py-6 text-center">
             <p className="font-[family-name:var(--w-display)] text-[clamp(2rem,6vw,3.6rem)] tracking-[0.3em]">
@@ -49,6 +52,20 @@ export default function MaveraLux() {
           </nav>
         </div>
       </header>
+
+      {/* Допник «Строка условий покупки»: в журнале — тонкая строка под шапкой. */}
+      <Addon id="promo" as="section" className="border-b border-[var(--w-line)] bg-[var(--w-paper)]">
+        <div className="mx-auto flex w-full max-w-[1500px] flex-wrap items-baseline justify-center gap-x-10 gap-y-1 px-5 py-3 text-[0.68rem] uppercase tracking-[0.16em] text-[var(--w-muted)] sm:px-8">
+          {terms.map((term) => (
+            <span key={term.label}>
+              <span className="font-[family-name:var(--w-display)] text-base normal-case tracking-normal text-[var(--w-accent)]">
+                {term.value}
+              </span>{" "}
+              {term.label}
+            </span>
+          ))}
+        </div>
+      </Addon>
 
       {/* Обложка выпуска: текст лежит поверх кадра, а не свисает под ним.
 
@@ -400,6 +417,6 @@ export default function MaveraLux() {
           </div>
         </div>
       </footer>
-    </div>
+    </ConfiguratorProvider>
   );
 }

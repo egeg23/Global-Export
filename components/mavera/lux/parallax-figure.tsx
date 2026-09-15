@@ -73,7 +73,7 @@ export function ParallaxFigure({
           fill
           priority={priority}
           sizes={sizes}
-          className={cn("scale-[1.12] object-cover will-change-transform", imageClassName)}
+          className={cn("w-parallax scale-[1.12] object-cover will-change-transform", imageClassName)}
           style={{ transform: "translate3d(0, var(--w-shift, 0px), 0) scale(1.12)" }}
         />
       </div>
