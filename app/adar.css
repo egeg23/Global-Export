@@ -241,6 +241,29 @@
     );
   }
 
+  /* Тонкая черта под словом «листайте»: бегунок сползает по ней вниз и
+     объясняет, что кадр не сломался, а ждёт прокрутки. */
+  .adar-scroll-line {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .adar-scroll-line::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 45%;
+    background: var(--color-adar-gold-400);
+    animation: adar-scroll-run 1.9s var(--ease-adar) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .adar-scroll-line::after {
+      animation: none;
+    }
+  }
+
   .adar-hairline {
     border-color: rgb(239 227 205 / 0.14);
   }
@@ -279,5 +302,15 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+@keyframes adar-scroll-run {
+  0% {
+    transform: translateY(-120%);
+  }
+  60%,
+  100% {
+    transform: translateY(240%);
   }
 }

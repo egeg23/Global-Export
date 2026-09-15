@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import { animate, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 
+import { cn } from "@/lib/cn";
+
 /** Сторона плитки в css-пикселях: крупнее — грубее «пиксели», мельче — дороже кадр. */
 const TILE = 20;
 /** Сколько длится сборка. 1.15 — это 1 плюс запас на волну сверху вниз. */
@@ -23,7 +25,16 @@ const REACH = 520;
  * закончилась, на канве лежит обычная картинка, и страница больше ничего
  * не считает.
  */
-export function AssemblingSet({ src, alt }: { src: string; alt: string }) {
+export function AssemblingSet({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  /** Ширина сцены задаётся снаружи: на первом экране она своя. */
+  className?: string;
+}) {
   const box = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const reduced = useReducedMotion();
@@ -188,7 +199,7 @@ export function AssemblingSet({ src, alt }: { src: string; alt: string }) {
   }, [reduced, src]);
 
   return (
-    <div className="relative mx-auto w-full max-w-[min(28rem,46vh)] [perspective:900px]">
+    <div className={cn("relative mx-auto w-full [perspective:900px]", className ?? "max-w-[min(28rem,46vh)]")}>
       {/* Тёмная земля под набором успокаивает пёструю фотографию, золотой
           ореол поверх неё отделяет набор от кадра. Без этой пары вырезанный
           набор читается наклейкой. */}
