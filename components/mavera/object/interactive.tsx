@@ -28,6 +28,12 @@ import { area, filterFlats, type Flat } from "@/lib/mavera/catalog";
 
 type Variant = "standard" | "lux" | "premium";
 
+/** До какого числа держится бронь: пять дней от момента нажатия. Считается в обработчике, не при отрисовке. */
+function bookedUntilLabel(): string {
+  const date = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
+  return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
 const statusLabel: Record<Flat["status"], string> = {
   free: "Свободна",
   booked: "Бронь",
@@ -36,14 +42,16 @@ const statusLabel: Record<Flat["status"], string> = {
 
 export function ObjectInteractive({
   variant,
-  flats: all,
+  flats: source,
   corpuses,
   plans,
+  projectName,
 }: {
   variant: Variant;
   flats: Flat[];
   corpuses: number;
   plans: Plan[];
+  projectName: string;
 }) {
   const [rooms, setRooms] = useState<number[]>([]);
   const [corpus, setCorpus] = useState<number | null>(null);
@@ -51,6 +59,15 @@ export function ObjectInteractive({
   const [priceMax, setPriceMax] = useState<number | null>(null);
   const [onlyFree, setOnlyFree] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  // Онлайн-бронирование: бронь меняет статус квартиры здесь же — в шахматке,
+  // в списке и в карточке. Заявка без брони просто подтверждается.
+  const [booked, setBooked] = useState<Record<string, string>>({});
+  const [requestedIds, setRequestedIds] = useState<string[]>([]);
+  const all = useMemo(
+    () => source.map((flat) => (booked[flat.id] ? { ...flat, status: "booked" as const } : flat)),
+    [source, booked],
+  );
 
   // Движение разрешают и система, и тумблер «Анимации» в конструкторе.
   const systemMotion = useMotionPreferred();
@@ -73,7 +90,12 @@ export function ObjectInteractive({
     [all, rooms, corpus, floorFrom, priceMax, onlyFree],
   );
 
-  const selected = found.find((f) => f.id === selectedId) ?? found[0] ?? all[0];
+  // Только что забронированная квартира остаётся в карточке, даже если фильтр
+  // «только свободные» убрал её из списка: человек должен видеть, что сделал.
+  const selected =
+    (selectedId && booked[selectedId] ? all : found).find((f) => f.id === selectedId) ?? found[0] ?? all[0];
+  const bookedUntil = selected ? booked[selected.id] : undefined;
+  const isRequested = selected ? requestedIds.includes(selected.id) : false;
   // Меняется при любой правке фильтра — список переигрывает появление.
   const listKey = `${rooms.join()}-${corpus}-${floorFrom}-${priceMax}-${onlyFree}`;
   const shownPrice = useCountUp(selected?.priceUsd ?? 0, motion);
@@ -323,7 +345,20 @@ export function ObjectInteractive({
                     {saved.length ? (
                       <>
                         {" · "}
-                        <span className="underline decoration-dotted underline-offset-2">Отправить подборку в Telegram</span>
+                        <a
+                          href={`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(
+                            `ЖК «${projectName}» — подборка:\n` +
+                              all
+                                .filter((flat) => saved.includes(flat.id))
+                                .map((flat) => `${flat.typeName}, ${area(flat.area)} м², корпус ${flat.corpus}, ${flat.floor} этаж — ${money(flat.priceUsd, "uzs")}`)
+                                .join("\n"),
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline decoration-dotted underline-offset-2 hover:text-[var(--w-ink)]"
+                        >
+                          Отправить подборку в Telegram
+                        </a>
                       </>
                     ) : null}
                   </span>
@@ -424,15 +459,50 @@ export function ObjectInteractive({
           </Addon>
 
           <div className="mt-6 border-t border-[var(--w-line)] pt-6">
-            <button
-              type="button"
-              className={cn(
-                "w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
-                variant === "premium" ? "w-glow rounded-full" : "rounded-none",
-              )}
-            >
-              {booking && selected?.status === "free" ? "Забронировать на 5 дней" : "Оставить заявку"}
-            </button>
+            {selected && bookedUntil ? (
+              <div role="status" className="mv-fade border border-[var(--w-accent)] bg-[var(--w-accent-soft)] px-5 py-4 text-sm">
+                <p className="font-medium">Забронирована до {bookedUntil}</p>
+                <p className="mt-1 text-xs leading-relaxed text-[var(--w-muted)]">
+                  Квартира снята с продажи на 5 дней — в шахматке и списке она уже
+                  помечена как бронь. Менеджер свяжется для подтверждения.
+                </p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setBooked((prev) => {
+                      const next = { ...prev };
+                      delete next[selected.id];
+                      return next;
+                    })
+                  }
+                  className="mt-3 text-xs underline decoration-dotted underline-offset-2"
+                >
+                  Снять бронь
+                </button>
+              </div>
+            ) : selected && isRequested ? (
+              <p role="status" className="mv-fade border border-[var(--w-accent)] bg-[var(--w-accent-soft)] px-5 py-3.5 text-sm">
+                Заявка принята. Менеджер перезвонит в течение 15 минут.
+              </p>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  if (!selected) return;
+                  if (booking && selected.status === "free") {
+                    setBooked((prev) => ({ ...prev, [selected.id]: bookedUntilLabel() }));
+                  } else {
+                    setRequestedIds((prev) => [...prev, selected.id]);
+                  }
+                }}
+                className={cn(
+                  "w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
+                  variant === "premium" ? "w-glow rounded-full" : "rounded-none",
+                )}
+              >
+                {booking && selected?.status === "free" ? "Забронировать на 5 дней" : "Оставить заявку"}
+              </button>
+            )}
 
             {/* Онлайн-бронирование — допник: без него кнопка ведёт на заявку менеджеру */}
             <Addon id="booking" className="mt-3">

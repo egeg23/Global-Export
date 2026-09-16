@@ -21,6 +21,9 @@ export type Project = {
   area: string;
   priceUsd: number;
   photo: string;
+  /** Точка на карте: центр района, где стоит дом. Настоящий адрес заказчик подставит в панели. */
+  lat: number;
+  lng: number;
 };
 
 export const projects: Project[] = [
@@ -36,6 +39,8 @@ export const projects: Project[] = [
     area: "84 600 м²",
     priceUsd: 970,
     photo: "/images/mavera/project-chinor.jpg",
+    lat: 41.335,
+    lng: 69.335,
   },
   {
     slug: "daryo",
@@ -49,6 +54,8 @@ export const projects: Project[] = [
     area: "58 200 м²",
     priceUsd: 1260,
     photo: "/images/mavera/project-daryo.jpg",
+    lat: 41.285,
+    lng: 69.325,
   },
   {
     slug: "bahor",
@@ -62,6 +69,8 @@ export const projects: Project[] = [
     area: "41 300 м²",
     priceUsd: 780,
     photo: "/images/mavera/project-bahor.jpg",
+    lat: 41.225,
+    lng: 69.225,
   },
   {
     slug: "oltin-vodiy",
@@ -75,6 +84,8 @@ export const projects: Project[] = [
     area: "72 800 м²",
     priceUsd: 1010,
     photo: "/images/mavera/project-oltin.jpg",
+    lat: 41.365,
+    lng: 69.29,
   },
   {
     slug: "nur",
@@ -88,6 +99,8 @@ export const projects: Project[] = [
     area: "49 700 м²",
     priceUsd: 820,
     photo: "/images/mavera/project-nur.jpg",
+    lat: 41.28,
+    lng: 69.205,
   },
   {
     slug: "zarafshon",
@@ -101,6 +114,8 @@ export const projects: Project[] = [
     area: "39 400 м²",
     priceUsd: 1300,
     photo: "/images/mavera/project-zarafshon.jpg",
+    lat: 41.295,
+    lng: 69.28,
   },
 ];
 

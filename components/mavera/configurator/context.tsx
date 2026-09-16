@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useMemo, useRef, useSyncExternalStore } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { Dock } from "@/components/mavera/configurator/dock";
 import {
@@ -293,6 +293,9 @@ export function Addon({
 
   const Tag = as as React.ElementType;
   const spec = addonById(id);
+  // Плавающая кнопка чата приходит с `fixed`: своё `relative` обёртка тогда не
+  // ставит, иначе кнопка легла бы в поток в конце страницы.
+  const positioned = /\b(fixed|absolute|sticky)\b/.test(className ?? "");
   const label = (
     <>
       <span className="min-w-0 truncate">{spec.label}</span>
@@ -308,7 +311,7 @@ export function Addon({
         id={anchor}
         data-addon={id}
         data-addon-on={raw ? "true" : "false"}
-        className={cn("relative scroll-mt-[16vh]", inline ? "inline-block max-w-full align-middle" : "block", className)}
+        className={cn(positioned ? null : "relative", "scroll-mt-[16vh]", inline ? "inline-block max-w-full align-middle" : "block", className)}
       >
         {children}
         {ctx.open ? (
@@ -386,7 +389,8 @@ export function Addon({
       id={anchor}
       data-addon={id}
       className={cn(
-        "relative scroll-mt-[16vh]",
+        positioned ? null : "relative",
+        "scroll-mt-[16vh]",
         inline ? "inline-block max-w-full align-middle" : "block",
         stamp ? "w-row" : null,
         className,
@@ -451,19 +455,63 @@ export function Compare({ className }: { className?: string }) {
   );
 }
 
-/** Плавающая кнопка мессенджера — допник «Чат». */
+/**
+ * Плавающая кнопка мессенджера — допник «Чат».
+ *
+ * Нажатие открывает выбор: WhatsApp или Telegram. Ссылки настоящие — без
+ * номера отдела продаж мессенджер предложит выбрать, кому писать, а номер и
+ * аккаунт подставятся из настроек панели. Заглушечный номер сюда не ставим:
+ * он бы вёл к случайному человеку.
+ */
 function ChatButton() {
+  const [open, setOpen] = useState(false);
+  const text = encodeURIComponent("Здравствуйте! Интересует квартира в MAVERA.");
+
   return (
-    <span
-      role="img"
-      aria-label="Чат WhatsApp / Telegram"
-      title="Чат WhatsApp / Telegram"
-      className="flex h-13 w-13 items-center justify-center rounded-full bg-[#25d366] text-white shadow-[0_12px_30px_-10px_rgba(37,211,102,0.8)]"
-    >
-      <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.6-4.4A8.5 8.5 0 1 1 21 12Z" />
-        <path d="M9 10h.01M12 10h.01M15 10h.01" />
-      </svg>
-    </span>
+    <div className="relative">
+      {open ? (
+        <div
+          role="dialog"
+          aria-label="Написать в мессенджер"
+          className="mv-fade absolute bottom-16 left-0 w-64 rounded-2xl bg-[#0b0d10] p-3 text-[#f2efe9] shadow-2xl ring-1 ring-white/10"
+        >
+          <p className="px-2 pb-2 text-xs text-[#f2efe9]/60">Отдел продаж отвечает с 9:00 до 19:00</p>
+          <a
+            href={`https://wa.me/?text=${text}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-white/10"
+          >
+            <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-[#25d366]" />
+            WhatsApp
+          </a>
+          <a
+            href={`https://t.me/share/url?url=${encodeURIComponent("https://mavera.uz")}&text=${text}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-white/10"
+          >
+            <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-[#2aabee]" />
+            Telegram
+          </a>
+          <p className="px-2 pt-2 text-[0.68rem] leading-relaxed text-[#f2efe9]/45">
+            Номер и аккаунт отдела продаж задаются в панели управления.
+          </p>
+        </div>
+      ) : null}
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        aria-label="Чат WhatsApp / Telegram"
+        title="Чат WhatsApp / Telegram"
+        className="flex h-13 w-13 items-center justify-center rounded-full bg-[#25d366] text-white shadow-[0_12px_30px_-10px_rgba(37,211,102,0.8)] transition-transform duration-200 hover:scale-105 motion-reduce:transform-none"
+      >
+        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.6-4.4A8.5 8.5 0 1 1 21 12Z" />
+          <path d="M9 10h.01M12 10h.01M15 10h.01" />
+        </svg>
+      </button>
+    </div>
   );
 }

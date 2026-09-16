@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
 import { Magnetic } from "@/components/mavera/configurator/live";
+import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Progress, Tour } from "@/components/mavera/object/extras";
 import { ObjectInteractive } from "@/components/mavera/object/interactive";
 import { Rise } from "@/components/mavera/reveal";
@@ -224,7 +225,13 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
 
           <Rise delay={120} className="mt-10">
             {/* Квартиры и чертежи считаются здесь, на сервере; подбор получает готовые данные. */}
-            <ObjectInteractive variant={variant} flats={flatsOf(slug)} corpuses={corpuses} plans={plans} />
+            <ObjectInteractive
+              variant={variant}
+              flats={flatsOf(slug)}
+              corpuses={corpuses}
+              plans={plans}
+              projectName={project.name}
+            />
           </Rise>
         </div>
       </section>
@@ -254,18 +261,31 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
             </dl>
           </Rise>
 
-          {/* Карта — допник, входит во все пакеты; выключается для сравнения. */}
+          {/* Карта — допник, входит во все пакеты; выключается для сравнения.
+              Настоящая, а не снимок с меткой: OpenStreetMap без ключей и счётов,
+              двигается и масштабируется. В готовом сайте — Яндекс или Google по выбору. */}
           <Addon id="map" className="lg:col-span-8">
-            <Rise delay={100} className={cn("relative aspect-[16/9] overflow-hidden", rounded)}>
-              <Image src="/images/mavera/park.jpg" alt="" fill sizes="(min-width: 1024px) 66vw, 100vw" className="object-cover" />
-              <span
-                className={cn(
-                  "absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-sm font-medium",
-                  "bg-[var(--w-accent)] text-[var(--w-accent-ink)]",
-                )}
-              >
-                ЖК
-              </span>
+            <Rise delay={100}>
+              <div className={cn("relative aspect-[16/9] overflow-hidden bg-[var(--w-paper)]", rounded)}>
+                <iframe
+                  title={`ЖК «${project.name}» на карте`}
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${project.lng - 0.022}%2C${project.lat - 0.012}%2C${project.lng + 0.022}%2C${project.lat + 0.012}&layer=mapnik&marker=${project.lat}%2C${project.lng}`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 h-full w-full border-0"
+                />
+              </div>
+              <p className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--w-muted)]">
+                <span>Карта двигается и масштабируется. Точка — центр района: адрес дома подставит заказчик.</span>
+                <a
+                  href={`https://www.openstreetmap.org/?mlat=${project.lat}&mlon=${project.lng}#map=15/${project.lat}/${project.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--w-accent)] underline decoration-dotted underline-offset-2"
+                >
+                  Открыть карту целиком →
+                </a>
+              </p>
             </Rise>
           </Addon>
         </div>
@@ -307,15 +327,14 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
               {/* Допник «Магнитные кнопки» — здесь тоже, чтобы было видно в карточке. */}
               <Addon id="magnetic" flag className="mt-5">
                 <Magnetic className="block">
-                  <button
-                    type="button"
+                  <DemoSubmit
+                    label={voice.closing.primary}
+                    done="Заявка принята. Менеджер перезвонит в течение 15 минут."
                     className={cn(
                       "w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
                       variant === "premium" ? "w-glow rounded-full" : rounded,
                     )}
-                  >
-                    {voice.closing.primary}
-                  </button>
+                  />
                 </Magnetic>
               </Addon>
               <p className="mt-4 text-xs text-[var(--w-muted)]">

@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
 import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
+import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Rise } from "@/components/mavera/reveal";
 import { News, Reviews } from "@/components/mavera/sections";
 import { StandardCatalog } from "@/components/mavera/standard/catalog";
@@ -364,12 +365,13 @@ export default function MaveraStandard() {
                   />
                 </label>
               </div>
-              <button
-                type="button"
-                className="mt-6 w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90"
-              >
-                {voice.closing.primary}
-              </button>
+              <div className="mt-6">
+                <DemoSubmit
+                  label={voice.closing.primary}
+                  done="Заявка принята. Менеджер перезвонит в течение 15 минут."
+                  className="w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90"
+                />
+              </div>
               <p className="mt-4 text-xs text-[var(--w-muted)]">
                 Заявка уходит на почту и в Telegram отдела продаж. Демонстрация — ничего
                 не отправляется.
