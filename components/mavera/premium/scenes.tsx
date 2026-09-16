@@ -49,9 +49,10 @@ function useScrollShift(depth: number) {
 /**
  * Сцена первого экрана: три слоя на разной глубине.
  *
- * Снимок уезжает медленнее страницы, затемнение стоит на месте, заголовок
+ * Снимок уезжает медленнее страницы, засветка стоит на месте, заголовок
  * обгоняет оба и растворяется — глубина берётся не из тени, а из разной
- * скорости. Световые пятна дышат сами по себе, независимо от прокрутки.
+ * скорости. Световые пятна дышат сами по себе, независимо от прокрутки;
+ * цвет они берут из палитры, поэтому переключение света их не минует.
  */
 export function CinemaHero({
   hero,
@@ -81,7 +82,9 @@ export function CinemaHero({
         />
       </div>
 
-      <div aria-hidden="true" className="absolute inset-0 -z-20 bg-gradient-to-t from-[var(--w-bg)] via-[var(--w-bg)]/70 to-[var(--w-bg)]/30" />
+      {/* Засветка вместо затемнения: снимок уходит в бумагу, а заголовок
+          внизу ложится на плотный край и читается без подложки. */}
+      <div aria-hidden="true" className="absolute inset-0 -z-20 bg-gradient-to-t from-[var(--w-bg)] via-[var(--w-bg)]/72 to-[var(--w-bg)]/28" />
 
       {/* Световые пятна — подпись «кинозала». */}
       <div
@@ -92,7 +95,7 @@ export function CinemaHero({
       <div
         aria-hidden="true"
         className="w-blob absolute -right-40 bottom-0 -z-10 h-[26rem] w-[26rem] rounded-full blur-[110px]"
-        style={{ background: "radial-gradient(circle, rgba(111,123,234,0.14), transparent 70%)", animationDelay: "-8s" }}
+        style={{ background: "radial-gradient(circle, var(--w-accent-soft), transparent 70%)", animationDelay: "-8s" }}
       />
 
       <div className="mx-auto w-full max-w-[1500px] px-5 pb-20 sm:px-8 lg:pb-28">
@@ -118,7 +121,7 @@ export function CinemaHero({
           <Addon id="magnetic" flag className="mt-10">
             <div className="flex flex-wrap items-center gap-4">
               <Magnetic>
-                <a href="#picker" className="w-glow inline-block rounded-full bg-[var(--w-accent)] px-8 py-4 text-sm font-medium text-white">
+                <a href="#picker" className="w-glow inline-block rounded-full bg-[var(--w-accent)] px-8 py-4 text-sm font-medium text-[var(--w-accent-ink)]">
                   {hero.primary}
                 </a>
               </Magnetic>
@@ -197,7 +200,7 @@ export function Counters({ items }: { items: { value: string; suffix?: string; l
   return (
     <dl className="grid gap-px overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-2 lg:grid-cols-4">
       {items.map((item) => (
-        <div key={item.label} className="bg-[var(--w-paper)] p-8">
+        <div key={item.label} className="bg-[var(--w-surface)] p-8">
           <dd className="text-[clamp(2.2rem,4vw,3.4rem)] font-semibold leading-none">
             <Counter value={item.value} suffix={item.suffix} />
           </dd>
@@ -226,7 +229,7 @@ export function FilmRail({ claims, projects }: { claims: Record<string, string>;
             onMouseEnter={() => setActive(index)}
             onFocus={() => setActive(index)}
             className={cn(
-              "group relative w-[min(84vw,30rem)] shrink-0 overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] transition-all duration-500 ease-[var(--w-ease)]",
+              "group relative w-[min(84vw,30rem)] shrink-0 overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-surface)] transition-all duration-500 ease-[var(--w-ease)]",
               active === index ? "w-glow" : "opacity-70",
             )}
           >
@@ -238,8 +241,8 @@ export function FilmRail({ claims, projects }: { claims: Record<string, string>;
                 sizes="(min-width: 640px) 30rem, 84vw"
                 className="object-cover transition-transform duration-[900ms] ease-[var(--w-ease)] group-hover:scale-105 motion-reduce:transform-none"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-bg)] via-transparent to-transparent" />
-              <span className="absolute left-5 top-5 rounded-full border border-[var(--w-line)] bg-[var(--w-bg)]/60 px-3 py-1 text-[0.7rem] uppercase tracking-[0.14em] backdrop-blur-sm">
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-surface)] via-transparent to-transparent" />
+              <span className="absolute left-5 top-5 rounded-full border border-[var(--w-line)] bg-[var(--w-surface)]/75 px-3 py-1 text-[0.7rem] uppercase tracking-[0.14em] backdrop-blur-sm">
                 {project.status}
               </span>
             </div>
