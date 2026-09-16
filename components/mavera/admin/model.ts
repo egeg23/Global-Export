@@ -25,6 +25,9 @@ export type AdminScreenId =
   | "media"
   | "audit";
 
+/** Панель на весь экран для этого пакета: отдельная страница, без рамки презентации. */
+export const panelHref = (tier: string) => `/mavera/${tier}/panel`;
+
 export const adminSections: { id: AdminScreenId; label: string; group: string }[] = [
   { id: "overview", label: "Обзор", group: "Работа" },
   { id: "projects", label: "Жилые комплексы", group: "Каталог" },

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AdminGallery } from "@/components/mavera/admin/gallery";
+import { AdminGallery, PanelButton } from "@/components/mavera/admin/gallery";
 import { ConfiguratorProvider } from "@/components/configurator/context";
 import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { VariantBar } from "@/components/mavera/variant-bar";
@@ -51,6 +51,12 @@ export function AdminPage({ variant }: { variant: TierId }) {
             журнале действий. Изменения живут до обновления страницы — базы за
             прототипом нет, она в составе работ.
           </p>
+          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <PanelButton />
+            <p className="text-sm text-sand-300/55">
+              Откроется на весь экран, как у вас в работе. Внизу — та же рамка для обзора.
+            </p>
+          </div>
         </Container>
 
         <Container className="pt-10">

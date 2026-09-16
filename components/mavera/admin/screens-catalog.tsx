@@ -64,85 +64,87 @@ export function ProjectsScreen() {
         onAction={() => admin.addProject()}
       />
 
-      <div className="mt-[0.9em] overflow-hidden rounded-[0.5em] border border-forest-900/10 bg-white">
-        <div className="grid grid-cols-[0.5fr_2fr_1.2fr_1fr_1fr_1fr_1.4fr] gap-[0.5em] border-b border-forest-900/10 bg-forest-900/4 px-[0.9em] py-[0.4em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
-          <span>№</span>
-          <span>Название</span>
-          <span>Район</span>
-          <span>Сегмент</span>
-          <span>Квартир</span>
-          <span>Свободно</span>
-          <span>На сайте</span>
-        </div>
+      <div className="mt-[0.9em] overflow-x-auto rounded-[0.5em] border border-forest-900/10 bg-white">
+        <div className="min-w-[30em]">
+          <div className="grid grid-cols-[0.5fr_2fr_1.2fr_1fr_1fr_1fr_1.4fr] gap-[0.5em] border-b border-forest-900/10 bg-forest-900/4 px-[0.9em] py-[0.4em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
+            <span>№</span>
+            <span>Название</span>
+            <span>Район</span>
+            <span>Сегмент</span>
+            <span>Квартир</span>
+            <span>Свободно</span>
+            <span>На сайте</span>
+          </div>
 
-        {rows.map((project) => {
-          const flats = admin.flatsOf(project.id);
-          const counts = countByStatus(flats);
-          return (
-            <div
-              key={project.id}
-              className="grid grid-cols-[0.5fr_2fr_1.2fr_1fr_1fr_1fr_1.4fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.42em] text-[0.5em] last:border-b-0"
-            >
-              <input
-                type="number"
-                min={1}
-                max={99}
-                aria-label={`Порядок ${project.name.RU}`}
-                value={project.order}
-                onChange={(event) =>
-                  admin.patchProject(project.id, { order: Number(event.target.value) || 1 })
-                }
-                className="w-full rounded-[0.3em] border border-transparent bg-transparent py-[0.1em] tabular-nums outline-none hover:border-forest-900/15 focus:border-forest-700"
-              />
-              <button
-                type="button"
-                onClick={() => admin.openProject(project.id)}
-                className="truncate text-left font-medium underline decoration-dotted underline-offset-2 hover:text-forest-700"
+          {rows.map((project) => {
+            const flats = admin.flatsOf(project.id);
+            const counts = countByStatus(flats);
+            return (
+              <div
+                key={project.id}
+                className="grid grid-cols-[0.5fr_2fr_1.2fr_1fr_1fr_1fr_1.4fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.42em] text-[0.5em] last:border-b-0"
               >
-                {project.name.RU}
-              </button>
-              <span className="truncate text-ink-subtle">{project.district}</span>
-              <RowSelect
-                label={`Сегмент ${project.name.RU}`}
-                value={project.segment}
-                options={segments}
-                onChange={(value) =>
-                  admin.patchProject(project.id, { segment: value as typeof project.segment })
-                }
-                className="text-ink-subtle"
-              />
-              <span className="tabular-nums">{fmt(flats.length)}</span>
-              <span className="tabular-nums text-forest-700">{fmt(counts.free)}</span>
-              <span className="flex items-center gap-[0.4em]">
-                <Switch
-                  checked={project.published}
-                  label={`Публикация ${project.name.RU}`}
-                  onChange={(next) =>
-                    admin.patchProject(
-                      project.id,
-                      { published: next },
-                      next ? "Опубликован" : "Снят с публикации",
-                    )
+                <input
+                  type="number"
+                  min={1}
+                  max={99}
+                  aria-label={`Порядок ${project.name.RU}`}
+                  value={project.order}
+                  onChange={(event) =>
+                    admin.patchProject(project.id, { order: Number(event.target.value) || 1 })
                   }
+                  className="w-full rounded-[0.3em] border border-transparent bg-transparent py-[0.1em] tabular-nums outline-none hover:border-forest-900/15 focus:border-forest-700"
                 />
-                <span className="text-[0.85em] text-ink-subtle">
-                  {project.published ? "виден" : "черновик"}
-                </span>
                 <button
                   type="button"
-                  aria-label={`Удалить ${project.name.RU}`}
-                  onClick={() => {
-                    admin.removeProject(project.id);
-                    setNote(`Проект «${project.name.RU}» удалён вместе с квартирами`);
-                  }}
-                  className="ml-auto rounded-full px-[0.35em] text-ink-subtle hover:bg-forest-900/8 hover:text-red-700"
+                  onClick={() => admin.openProject(project.id)}
+                  className="truncate text-left font-medium underline decoration-dotted underline-offset-2 hover:text-forest-700"
                 >
-                  ×
+                  {project.name.RU}
                 </button>
-              </span>
-            </div>
-          );
-        })}
+                <span className="truncate text-ink-subtle">{project.district}</span>
+                <RowSelect
+                  label={`Сегмент ${project.name.RU}`}
+                  value={project.segment}
+                  options={segments}
+                  onChange={(value) =>
+                    admin.patchProject(project.id, { segment: value as typeof project.segment })
+                  }
+                  className="text-ink-subtle"
+                />
+                <span className="tabular-nums">{fmt(flats.length)}</span>
+                <span className="tabular-nums text-forest-700">{fmt(counts.free)}</span>
+                <span className="flex items-center gap-[0.4em]">
+                  <Switch
+                    checked={project.published}
+                    label={`Публикация ${project.name.RU}`}
+                    onChange={(next) =>
+                      admin.patchProject(
+                        project.id,
+                        { published: next },
+                        next ? "Опубликован" : "Снят с публикации",
+                      )
+                    }
+                  />
+                  <span className="text-[0.85em] text-ink-subtle">
+                    {project.published ? "виден" : "черновик"}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label={`Удалить ${project.name.RU}`}
+                    onClick={() => {
+                      admin.removeProject(project.id);
+                      setNote(`Проект «${project.name.RU}» удалён вместе с квартирами`);
+                    }}
+                    className="ml-auto rounded-full px-[0.35em] text-ink-subtle hover:bg-forest-900/8 hover:text-red-700"
+                  >
+                    ×
+                  </button>
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <Note text={note} />
@@ -211,7 +213,7 @@ export function ProjectFormScreen() {
       />
 
       <div className="mt-[0.9em] grid gap-[0.7em] @min-[40rem]:grid-cols-[1.7fr_1fr]">
-        <div className="space-y-[0.7em]">
+        <div className="min-w-0 space-y-[0.7em]">
           <Card>
             <div className="flex items-center justify-between">
               <p className="text-[0.55em] font-medium">Основное</p>
@@ -306,65 +308,67 @@ export function ProjectFormScreen() {
               </ScreenButton>
             </div>
 
-            <div className="mt-[0.6em] overflow-hidden rounded-[0.4em] border border-forest-900/10">
-              <div className="grid grid-cols-[0.5fr_0.8fr_0.8fr_1.2fr_1fr_0.4fr] gap-[0.5em] border-b border-forest-900/10 bg-forest-900/4 px-[0.7em] py-[0.35em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
-                <span>№</span>
-                <span>Этажей</span>
-                <span>Квартир</span>
-                <span>Срок сдачи</span>
-                <span>Статус</span>
-                <span />
-              </div>
-              {project.corpuses.map((row) => (
-                <div
-                  key={row.id}
-                  className="grid grid-cols-[0.5fr_0.8fr_0.8fr_1.2fr_1fr_0.4fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.7em] py-[0.32em] text-[0.5em] last:border-b-0"
-                >
-                  <span className="tabular-nums">{row.id}</span>
-                  <input
-                    type="number"
-                    min={1}
-                    max={40}
-                    value={row.floors}
-                    aria-label={`Этажей в корпусе ${row.id}`}
-                    onChange={(event) =>
-                      setCorpus(row.id, {
-                        floors: Math.max(1, Math.min(40, Number(event.target.value) || 1)),
-                      })
-                    }
-                    className="w-full rounded-[0.3em] border border-transparent bg-transparent py-[0.1em] tabular-nums outline-none hover:border-forest-900/15 focus:border-forest-700"
-                  />
-                  <span className="tabular-nums text-ink-subtle">{row.floors * row.perFloor}</span>
-                  <input
-                    type="text"
-                    value={row.due}
-                    aria-label={`Срок сдачи корпуса ${row.id}`}
-                    onChange={(event) => setCorpus(row.id, { due: event.target.value })}
-                    className="w-full rounded-[0.3em] border border-transparent bg-transparent py-[0.1em] outline-none hover:border-forest-900/15 focus:border-forest-700"
-                  />
-                  <RowSelect
-                    label={`Статус корпуса ${row.id}`}
-                    value={row.state}
-                    options={corpusStates}
-                    onChange={(value) => setCorpus(row.id, { state: value as Corpus["state"] })}
-                    className="text-ink-subtle"
-                  />
-                  <button
-                    type="button"
-                    aria-label={`Удалить корпус ${row.id}`}
-                    onClick={() =>
-                      admin.setCorpuses(
-                        project.id,
-                        project.corpuses.filter((item) => item.id !== row.id),
-                        `Корпус ${row.id} удалён`,
-                      )
-                    }
-                    className="justify-self-end rounded-full px-[0.4em] text-ink-subtle hover:bg-forest-900/8 hover:text-red-700"
-                  >
-                    ×
-                  </button>
+            <div className="mt-[0.6em] overflow-x-auto rounded-[0.4em] border border-forest-900/10">
+              <div className="min-w-[24em]">
+                <div className="grid grid-cols-[0.5fr_0.8fr_0.8fr_1.2fr_1fr_0.4fr] gap-[0.5em] border-b border-forest-900/10 bg-forest-900/4 px-[0.7em] py-[0.35em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
+                  <span>№</span>
+                  <span>Этажей</span>
+                  <span>Квартир</span>
+                  <span>Срок сдачи</span>
+                  <span>Статус</span>
+                  <span />
                 </div>
-              ))}
+                {project.corpuses.map((row) => (
+                  <div
+                    key={row.id}
+                    className="grid grid-cols-[0.5fr_0.8fr_0.8fr_1.2fr_1fr_0.4fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.7em] py-[0.32em] text-[0.5em] last:border-b-0"
+                  >
+                    <span className="tabular-nums">{row.id}</span>
+                    <input
+                      type="number"
+                      min={1}
+                      max={40}
+                      value={row.floors}
+                      aria-label={`Этажей в корпусе ${row.id}`}
+                      onChange={(event) =>
+                        setCorpus(row.id, {
+                          floors: Math.max(1, Math.min(40, Number(event.target.value) || 1)),
+                        })
+                      }
+                      className="w-full rounded-[0.3em] border border-transparent bg-transparent py-[0.1em] tabular-nums outline-none hover:border-forest-900/15 focus:border-forest-700"
+                    />
+                    <span className="tabular-nums text-ink-subtle">{row.floors * row.perFloor}</span>
+                    <input
+                      type="text"
+                      value={row.due}
+                      aria-label={`Срок сдачи корпуса ${row.id}`}
+                      onChange={(event) => setCorpus(row.id, { due: event.target.value })}
+                      className="w-full rounded-[0.3em] border border-transparent bg-transparent py-[0.1em] outline-none hover:border-forest-900/15 focus:border-forest-700"
+                    />
+                    <RowSelect
+                      label={`Статус корпуса ${row.id}`}
+                      value={row.state}
+                      options={corpusStates}
+                      onChange={(value) => setCorpus(row.id, { state: value as Corpus["state"] })}
+                      className="text-ink-subtle"
+                    />
+                    <button
+                      type="button"
+                      aria-label={`Удалить корпус ${row.id}`}
+                      onClick={() =>
+                        admin.setCorpuses(
+                          project.id,
+                          project.corpuses.filter((item) => item.id !== row.id),
+                          `Корпус ${row.id} удалён`,
+                        )
+                      }
+                      className="justify-self-end rounded-full px-[0.4em] text-ink-subtle hover:bg-forest-900/8 hover:text-red-700"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <ScreenButton
@@ -401,7 +405,7 @@ export function ProjectFormScreen() {
           </Card>
         </div>
 
-        <div className="space-y-[0.7em]">
+        <div className="min-w-0 space-y-[0.7em]">
           <Card>
             <p className="text-[0.55em] font-medium">Публикация</p>
             <div className="mt-[0.5em] flex items-center gap-[0.4em]">

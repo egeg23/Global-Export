@@ -193,7 +193,7 @@ export function LeadsScreen() {
       <Addon id="crm" compact className="mt-[0.9em]">
         <Card className="flex flex-wrap items-center gap-[0.8em] border-forest-700/30 bg-forest-700/5">
           <span className={cn("h-[0.6em] w-[0.6em] shrink-0 rounded-full", waiting ? "bg-harvest-400" : "bg-forest-600")} />
-          <span className="min-w-0 flex-1">
+          <span className="min-w-0 flex-1 basis-[14em]">
             <span className="block text-[0.55em] font-medium">amoCRM подключена · воронка «Продажи квартир»</span>
             <span className="block text-[0.46em] text-ink-subtle">
               {waiting
@@ -214,7 +214,7 @@ export function LeadsScreen() {
         </Card>
       </Addon>
 
-      <div className="mt-[0.9em] grid grid-cols-4 gap-[0.5em]">
+      <div className="mt-[0.9em] grid grid-cols-2 gap-[0.5em] @min-[40rem]:grid-cols-4">
         {leadStates.map((state) => {
           const on = filter === state;
           return (
@@ -235,81 +235,83 @@ export function LeadsScreen() {
         })}
       </div>
 
-      <div className="mt-[0.7em] overflow-hidden rounded-[0.5em] border border-forest-900/10 bg-white">
-        <div
-          className={cn(
-            "grid gap-[0.5em] border-b border-forest-900/10 px-[0.9em] py-[0.45em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle",
-            columns,
-          )}
-        >
-          <span>Дата</span>
-          <span>Имя</span>
-          <span>Контакт</span>
-          <span>Источник</span>
-          <span>Менеджер</span>
-          <span>Статус</span>
-          {crm ? <span>CRM</span> : null}
-        </div>
-
-        {shown.map((lead) => (
+      <div className="mt-[0.7em] overflow-x-auto rounded-[0.5em] border border-forest-900/10 bg-white">
+        <div className="min-w-[32em]">
           <div
-            key={lead.id}
             className={cn(
-              "grid items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.4em] text-[0.5em] last:border-b-0",
+              "grid gap-[0.5em] border-b border-forest-900/10 px-[0.9em] py-[0.45em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle",
               columns,
             )}
           >
-            <span className="tabular-nums text-ink-subtle">{lead.date}</span>
-            <span className="truncate">{lead.name}</span>
-            <span className="truncate text-ink-subtle">{lead.contact}</span>
-            <span className="truncate text-ink-subtle">{lead.source}</span>
-            <RowSelect
-              label={`Менеджер заявки ${lead.name}`}
-              value={lead.owner}
-              options={managers}
-              onChange={(value) =>
-                admin.patchLead(lead.id, { owner: value }, `Менеджер: ${lead.owner} → ${value}`)
-              }
-              className="text-ink-subtle"
-            />
-            <span
+            <span>Дата</span>
+            <span>Имя</span>
+            <span>Контакт</span>
+            <span>Источник</span>
+            <span>Менеджер</span>
+            <span>Статус</span>
+            {crm ? <span>CRM</span> : null}
+          </div>
+
+          {shown.map((lead) => (
+            <div
+              key={lead.id}
               className={cn(
-                "w-fit rounded-full px-[0.3em]",
-                lead.state === "Новая"
-                  ? "bg-harvest-100 text-harvest-800"
-                  : lead.state === "Сделка"
-                    ? "bg-forest-700 text-sand-50"
-                    : lead.state === "В работе"
-                      ? "bg-forest-800/10 text-forest-800"
-                      : "bg-forest-900/6 text-ink-subtle",
+                "grid items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.4em] text-[0.5em] last:border-b-0",
+                columns,
               )}
             >
+              <span className="tabular-nums text-ink-subtle">{lead.date}</span>
+              <span className="truncate">{lead.name}</span>
+              <span className="truncate text-ink-subtle">{lead.contact}</span>
+              <span className="truncate text-ink-subtle">{lead.source}</span>
               <RowSelect
-                label={`Статус заявки ${lead.name}`}
-                value={lead.state}
-                options={leadStates}
-                onChange={(value) => {
-                  admin.patchLead(
-                    lead.id,
-                    { state: value as LeadState, synced: false },
-                    `Статус: ${lead.state} → ${value}`,
-                  );
-                  setNote(`${lead.name}: статус «${value}» · записано в журнал действий`);
-                }}
-                className="text-[0.85em]"
+                label={`Менеджер заявки ${lead.name}`}
+                value={lead.owner}
+                options={managers}
+                onChange={(value) =>
+                  admin.patchLead(lead.id, { owner: value }, `Менеджер: ${lead.owner} → ${value}`)
+                }
+                className="text-ink-subtle"
               />
-            </span>
-            {crm ? (
-              <span className={cn("text-[0.85em]", lead.synced ? "text-forest-700" : "text-harvest-800")}>
-                {lead.synced ? "✓ amoCRM" : "ждёт"}
+              <span
+                className={cn(
+                  "w-fit rounded-full px-[0.3em]",
+                  lead.state === "Новая"
+                    ? "bg-harvest-100 text-harvest-800"
+                    : lead.state === "Сделка"
+                      ? "bg-forest-700 text-sand-50"
+                      : lead.state === "В работе"
+                        ? "bg-forest-800/10 text-forest-800"
+                        : "bg-forest-900/6 text-ink-subtle",
+                )}
+              >
+                <RowSelect
+                  label={`Статус заявки ${lead.name}`}
+                  value={lead.state}
+                  options={leadStates}
+                  onChange={(value) => {
+                    admin.patchLead(
+                      lead.id,
+                      { state: value as LeadState, synced: false },
+                      `Статус: ${lead.state} → ${value}`,
+                    );
+                    setNote(`${lead.name}: статус «${value}» · записано в журнал действий`);
+                  }}
+                  className="text-[0.85em]"
+                />
               </span>
-            ) : null}
-          </div>
-        ))}
+              {crm ? (
+                <span className={cn("text-[0.85em]", lead.synced ? "text-forest-700" : "text-harvest-800")}>
+                  {lead.synced ? "✓ amoCRM" : "ждёт"}
+                </span>
+              ) : null}
+            </div>
+          ))}
 
-        {shown.length === 0 ? (
-          <p className="px-[0.9em] py-[0.8em] text-[0.48em] text-ink-subtle">В этом статусе заявок нет.</p>
-        ) : null}
+          {shown.length === 0 ? (
+            <p className="px-[0.9em] py-[0.8em] text-[0.48em] text-ink-subtle">В этом статусе заявок нет.</p>
+          ) : null}
+        </div>
       </div>
 
       <Note text={note} />
@@ -357,7 +359,7 @@ export function AnalyticsScreen() {
             aria-pressed={period === days}
             onClick={() => setPeriod(days)}
             className={cn(
-              "rounded-full px-[0.8em] py-[0.32em] text-[0.48em] transition-colors",
+              "whitespace-nowrap rounded-full px-[0.8em] py-[0.32em] text-[0.48em] transition-colors",
               period === days
                 ? "bg-forest-800 text-sand-50"
                 : "border border-forest-900/15 text-ink-subtle hover:border-forest-900/40",

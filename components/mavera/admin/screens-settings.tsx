@@ -104,49 +104,51 @@ export function UsersScreen() {
         </Card>
       ) : null}
 
-      <div className="mt-[0.9em] overflow-hidden rounded-[0.5em] border border-forest-900/10 bg-white">
-        <div className="grid grid-cols-[1.4fr_1.6fr_1.4fr_1fr] gap-[0.5em] border-b border-forest-900/10 bg-forest-900/4 px-[0.9em] py-[0.4em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
-          <span>Имя</span>
-          <span>Почта</span>
-          <span>Роль</span>
-          <span>Доступ</span>
-        </div>
-        {admin.staff.map((person) => (
-          <div
-            key={person.id}
-            className="grid grid-cols-[1.4fr_1.6fr_1.4fr_1fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.42em] text-[0.5em] last:border-b-0"
-          >
-            <span className={cn("truncate", person.active ? "" : "text-ink-subtle line-through")}>
-              {person.name}
-            </span>
-            <span className="truncate text-ink-subtle">{person.email}</span>
-            <RowSelect
-              label={`Роль ${person.name}`}
-              value={person.role}
-              options={roles}
-              onChange={(value) =>
-                admin.patchStaff(person.id, { role: value as Role }, `Роль: ${person.role} → ${value}`)
-              }
-              className="text-ink-subtle"
-            />
-            <span className="flex items-center gap-[0.4em]">
-              <Switch
-                checked={person.active}
-                label={`Доступ ${person.name}`}
-                onChange={(next) =>
-                  admin.patchStaff(
-                    person.id,
-                    { active: next },
-                    next ? "Доступ восстановлен" : "Доступ отключён",
-                  )
-                }
-              />
-              <span className="text-[0.85em] text-ink-subtle">
-                {person.active ? "в работе" : "отключён"}
-              </span>
-            </span>
+      <div className="mt-[0.9em] overflow-x-auto rounded-[0.5em] border border-forest-900/10 bg-white">
+        <div className="min-w-[22em]">
+          <div className="grid grid-cols-[1.4fr_1.6fr_1.4fr_1fr] gap-[0.5em] border-b border-forest-900/10 bg-forest-900/4 px-[0.9em] py-[0.4em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
+            <span>Имя</span>
+            <span>Почта</span>
+            <span>Роль</span>
+            <span>Доступ</span>
           </div>
-        ))}
+          {admin.staff.map((person) => (
+            <div
+              key={person.id}
+              className="grid grid-cols-[1.4fr_1.6fr_1.4fr_1fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.42em] text-[0.5em] last:border-b-0"
+            >
+              <span className={cn("truncate", person.active ? "" : "text-ink-subtle line-through")}>
+                {person.name}
+              </span>
+              <span className="truncate text-ink-subtle">{person.email}</span>
+              <RowSelect
+                label={`Роль ${person.name}`}
+                value={person.role}
+                options={roles}
+                onChange={(value) =>
+                  admin.patchStaff(person.id, { role: value as Role }, `Роль: ${person.role} → ${value}`)
+                }
+                className="text-ink-subtle"
+              />
+              <span className="flex items-center gap-[0.4em]">
+                <Switch
+                  checked={person.active}
+                  label={`Доступ ${person.name}`}
+                  onChange={(next) =>
+                    admin.patchStaff(
+                      person.id,
+                      { active: next },
+                      next ? "Доступ восстановлен" : "Доступ отключён",
+                    )
+                  }
+                />
+                <span className="text-[0.85em] text-ink-subtle">
+                  {person.active ? "в работе" : "отключён"}
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <Note text={note} />
@@ -257,45 +259,47 @@ export function AuditScreen() {
         </span>
       </div>
 
-      <div className="mt-[0.7em] overflow-hidden rounded-[0.5em] border border-forest-900/10 bg-white">
-        <div className="grid grid-cols-[1fr_1.3fr_1fr_2fr_1.4fr_0.9fr] gap-[0.5em] border-b border-forest-900/10 bg-forest-900/4 px-[0.9em] py-[0.4em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
-          <span>Когда</span>
-          <span>Кто</span>
-          <span>Раздел</span>
-          <span>Что изменилось</span>
-          <span>Где</span>
-          <span />
-        </div>
-
-        {shown.slice(0, 14).map((entry) => (
-          <div
-            key={entry.id}
-            className="grid grid-cols-[1fr_1.3fr_1fr_2fr_1.4fr_0.9fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.42em] text-[0.5em] last:border-b-0"
-          >
-            <span className="tabular-nums text-ink-subtle">{entry.at}</span>
-            <span className="truncate">{entry.who}</span>
-            <span className="truncate text-ink-subtle">{entry.section}</span>
-            <span className={cn("truncate", entry.reverted ? "text-ink-subtle line-through" : "")}>
-              {entry.what}
-            </span>
-            <span className="truncate text-ink-subtle">{entry.target}</span>
-            <span className="justify-self-end">
-              {entry.undo && !entry.reverted ? (
-                <ScreenButton
-                  tone="outline"
-                  onClick={() => {
-                    admin.revert(entry.id);
-                    setNote(`Откат применён: ${entry.what}`);
-                  }}
-                >
-                  Откатить
-                </ScreenButton>
-              ) : entry.reverted ? (
-                <span className="text-[0.85em] text-ink-subtle">откачено</span>
-              ) : null}
-            </span>
+      <div className="mt-[0.7em] overflow-x-auto rounded-[0.5em] border border-forest-900/10 bg-white">
+        <div className="min-w-[32em]">
+          <div className="grid grid-cols-[1fr_1.3fr_1fr_2fr_1.4fr_0.9fr] gap-[0.5em] border-b border-forest-900/10 bg-forest-900/4 px-[0.9em] py-[0.4em] text-[0.42em] uppercase tracking-[0.1em] text-ink-subtle">
+            <span>Когда</span>
+            <span>Кто</span>
+            <span>Раздел</span>
+            <span>Что изменилось</span>
+            <span>Где</span>
+            <span />
           </div>
-        ))}
+
+          {shown.slice(0, 14).map((entry) => (
+            <div
+              key={entry.id}
+              className="grid grid-cols-[1fr_1.3fr_1fr_2fr_1.4fr_0.9fr] items-center gap-[0.5em] border-b border-forest-900/6 px-[0.9em] py-[0.42em] text-[0.5em] last:border-b-0"
+            >
+              <span className="tabular-nums text-ink-subtle">{entry.at}</span>
+              <span className="truncate">{entry.who}</span>
+              <span className="truncate text-ink-subtle">{entry.section}</span>
+              <span className={cn("truncate", entry.reverted ? "text-ink-subtle line-through" : "")}>
+                {entry.what}
+              </span>
+              <span className="truncate text-ink-subtle">{entry.target}</span>
+              <span className="justify-self-end">
+                {entry.undo && !entry.reverted ? (
+                  <ScreenButton
+                    tone="outline"
+                    onClick={() => {
+                      admin.revert(entry.id);
+                      setNote(`Откат применён: ${entry.what}`);
+                    }}
+                  >
+                    Откатить
+                  </ScreenButton>
+                ) : entry.reverted ? (
+                  <span className="text-[0.85em] text-ink-subtle">откачено</span>
+                ) : null}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <Note text={note} />

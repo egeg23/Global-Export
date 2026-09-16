@@ -51,7 +51,20 @@ function stamp(): string {
   return `${pad(now.getDate())}.${pad(now.getMonth() + 1)}, ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 }
 
+/**
+ * Панель на весь экран, а не в рамке презентации: корпус растягивается на
+ * окно, меню на телефоне прячется в шторку, в подвале меню — выход обратно.
+ */
+export type AppMode = {
+  /** Куда ведёт «Выйти» — на страницу презентации, откуда панель открыли. */
+  exitHref: string;
+  /** Название пакета для шапки: «Премиум». */
+  tierLabel: string;
+};
+
 export type Admin = {
+  /** Полноэкранный режим или null, если панель показана в рамке. */
+  app: AppMode | null;
   screen: AdminScreenId;
   /**
    * Открыть раздел. `at` — отметка свежего допника на момент нажатия: по ней
@@ -106,7 +119,13 @@ export function useAdmin(): Admin {
   return value;
 }
 
-export function AdminProvider({ children }: { children: React.ReactNode }) {
+export function AdminProvider({
+  app = null,
+  children,
+}: {
+  app?: AppMode | null;
+  children: React.ReactNode;
+}) {
   const [screen, setScreenState] = useState<AdminScreenId>("overview");
   const [pickedAt, setPickedAt] = useState(0);
   const [projects, setProjects] = useState<Project[]>(initialProjects);
@@ -136,6 +155,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     };
 
     return {
+      app,
       screen,
       setScreen,
       pickedAt,
@@ -303,7 +323,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       query,
       setQuery,
     };
-  }, [screen, pickedAt, projects, projectId, flats, leads, staff, rights, media, audit, query]);
+  }, [app, screen, pickedAt, projects, projectId, flats, leads, staff, rights, media, audit, query]);
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
