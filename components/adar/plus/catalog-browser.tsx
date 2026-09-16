@@ -7,7 +7,7 @@ import { useSetDialog } from "@/components/adar/ui/set-dialog";
 import { Shell } from "@/components/adar/ui/shell";
 import { items, lines, sets } from "@/content/adar/catalog";
 import { priceRange, searchIndex, translit } from "@/lib/adar/catalog";
-import { formatNumber, formatPrice, plural, pluralize } from "@/lib/adar/format";
+import { formatNumber, formatPrice, formatWeight, plural, pluralize } from "@/lib/adar/format";
 import { cn } from "@/lib/cn";
 import type { GiftSet, SetLine } from "@/lib/adar/types";
 
@@ -92,6 +92,48 @@ export function CatalogBrowser() {
 
   const visible = found.slice(0, shown);
   const dirty = Boolean(needle) || line !== "all" || pack !== "all" || budget !== priceRange.max;
+
+  /**
+   * Что представляет собой выбранная линейка.
+   *
+   * Подсказки к линейкам были написаны давно, но жили в атрибуте `title` — то
+   * есть всплывали по наведению на большом экране и не существовали на
+   * телефоне вовсе. Здесь они выходят на экран вместе с тем, по чему линейки
+   * и сравнивают: сколько внутри наименований и сколько это весит.
+   */
+  const picked = useMemo(() => {
+    if (line === "all") return null;
+    const option = lines.find((item) => item.id === line);
+    const inLine = sets.filter((set) => set.line === line);
+    if (!option || inLine.length === 0) return null;
+
+    const counts = inLine.map((set) => set.count);
+    const grams = inLine.map((set) => set.weight);
+    const least = Math.min(...counts);
+    const most = Math.max(...counts);
+    const lightest = Math.min(...grams);
+    const heaviest = Math.max(...grams);
+
+    // Единица измерения пишется один раз на диапазон, а не по разу на каждый
+    // конец: «1,6–2 кг», а не «1,6 кг–2 кг». Где разброс переваливает за
+    // килограмм, в килограммах показываются оба конца.
+    const kilos = (value: number) =>
+      (value / 1000).toFixed(1).replace(".", ",");
+    const weight =
+      heaviest < 1000
+        ? `${lightest === heaviest ? formatWeight(heaviest) : `${lightest}–${heaviest} г`}`
+        : `${kilos(lightest)}–${kilos(heaviest)} кг`;
+
+    return {
+      label: option.label,
+      note: option.hint.charAt(0).toUpperCase() + option.hint.slice(1),
+      count: least === most ? String(most) : `${least}–${most}`,
+      // Склоняем по верхней границе — её и произносят: «до двадцати шести».
+      countWord: plural(most, ["наименование", "наименования", "наименований"]),
+      weight,
+    };
+  }, [line]);
+
 
   function reset() {
     setQuery("");
@@ -302,6 +344,13 @@ export function CatalogBrowser() {
             "Ничего не нашлось — попробуйте поднять бюджет или сбросить фильтры."
           )}
         </p>
+
+        {picked ? (
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-adar-ink-muted">
+            <span className="font-medium text-adar-ink">{picked.label}</span> — {picked.count}{" "}
+            {picked.countWord}, {picked.weight}. {picked.note}.
+          </p>
+        ) : null}
 
         {found.length > 0 ? (
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
