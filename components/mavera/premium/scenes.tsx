@@ -86,7 +86,7 @@ export function CinemaHero({
           внизу ложится на плотный край и читается без подложки. */}
       <div aria-hidden="true" className="absolute inset-0 -z-20 bg-gradient-to-t from-[var(--w-bg)] via-[var(--w-bg)]/72 to-[var(--w-bg)]/28" />
 
-      {/* Световые пятна — подпись «кинозала». */}
+      {/* Световые пятна: цвет берут из палитры, поэтому греют, а не светят мимо. */}
       <div
         aria-hidden="true"
         className="w-blob absolute -left-32 top-1/4 -z-10 h-[32rem] w-[32rem] rounded-full blur-[120px]"

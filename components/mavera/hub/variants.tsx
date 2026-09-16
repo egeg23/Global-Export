@@ -25,7 +25,7 @@ const cards: Record<TierId, { href: string; photo: string; school: string; motio
   premium: {
     href: "/mavera/premium",
     photo: "/images/mavera/hero-cinema.jpg",
-    school: "Кинозал",
+    school: "Светлый зал",
     motion: "Движение: сцены, слои, счётчики, рабочие экраны",
   },
 };
