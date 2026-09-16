@@ -37,6 +37,15 @@ const captions: Record<AdminScreenId, string> = {
     "Журнал действий: кто, когда и что поменял — с прежним и новым значением. Спорная цена или статус откатываются одной кнопкой.",
 };
 
+/**
+ * Экраны, которые работают по-настоящему.
+ *
+ * Остальные показывают вид. Разница названа прямо на странице: заказчик всё
+ * равно нажмёт, и лучше он будет знать заранее, где нажатие сработает, чем
+ * решит, что панель сломана.
+ */
+const live = new Set<AdminScreenId>(["project-form", "flats", "leads"]);
+
 /** На каком экране живёт допник панели — туда переключаемся, когда его включают. */
 const screenOf: Partial<Record<string, AdminScreenId>> = {
   roles: "users",
@@ -87,6 +96,16 @@ export function AdminGallery() {
                       )}
                     >
                       {section.label}
+                      {live.has(section.id) ? (
+                        <span
+                          aria-hidden="true"
+                          title="Экран работает"
+                          className={cn(
+                            "ml-2 inline-block h-1.5 w-1.5 rounded-full align-middle",
+                            activeId === section.id ? "bg-forest-900/50" : "bg-harvest-300/70",
+                          )}
+                        />
+                      ) : null}
                     </button>
                   ))}
               </div>
@@ -123,6 +142,12 @@ export function AdminGallery() {
         <p key={`${activeId}-text`} className="mv-fade mt-5 max-w-3xl text-sm leading-relaxed text-sand-200/75">
           <span className="font-medium text-sand-50">{active.label}. </span>
           {captions[activeId]}
+        </p>
+
+        <p className="mt-2 text-sm text-sand-300/55">
+          {live.has(activeId)
+            ? "Экран рабочий — выделяйте, меняйте и смотрите, как пересчитываются цифры."
+            : "Экран показан макетом: он про устройство и вид, интерактив входит в состав работ."}
         </p>
       </div>
     </div>
