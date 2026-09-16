@@ -23,17 +23,24 @@ import { SiteFooter } from "@/components/adar/ui/site-footer";
 import { sets } from "@/content/adar/catalog";
 import { getConcept } from "@/content/adar/concepts";
 import { CartProvider } from "@/lib/adar/cart";
+import { adarIndexable, adarMetadata, businessJsonLd, catalogJsonLd, websiteJsonLd } from "@/lib/adar/seo";
 import { showcaseChrome } from "@/lib/adar/showcase";
 import { growthStages } from "@/lib/adar/catalog";
 
-export const metadata: Metadata = {
-  title: "Вариант 03 — «Премиум»",
-  // Своё описание, а не унаследованное от витрины: оно говорит про выбор из
-  // трёх вариантов, а эта страница — будущий сайт компании, и в выдаче должна
-  // описывать её, а не наше предложение.
-  description:
-    "Подарочные наборы ADAR: 80 готовых вариантов от 50 000 до 1 500 000 сум, состав и вес каждого, подбор по бюджету и расчёт партии для организаций. Ташкент, с 2011 года.",
-};
+/**
+ * Заголовок и описание страницы.
+ *
+ * На витрине это «Вариант 03» — там страница стоит в ряду с двумя другими.
+ * На сервере заказчика это главная страница компании, и в выдаче она должна
+ * называться так, как её ищут, а не так, как называется у нас в смете.
+ */
+export const metadata: Metadata = showcaseChrome
+  ? {
+      title: "Вариант 03 — «Премиум»",
+      description:
+        "Подарочные наборы ADAR: 80 готовых вариантов от 50 000 до 1 500 000 сум, состав и вес каждого, подбор по бюджету и расчёт партии для организаций. Ташкент, с 2011 года.",
+    }
+  : adarMetadata();
 
 /**
  * Вариант 03 — «Премиум».
@@ -52,6 +59,29 @@ export default function AdarPremiumConcept() {
 
   return (
     <CartProvider>
+      {/*
+        Разметка для поиска. Она повторяет то, что и так написано на странице,
+        — адрес, часы, телефоны, цены каталога, — но в виде, который Google
+        читает без разбора вёрстки. На нашей площадке её нет: страницы там
+        закрыты от индексации, и рассказывать поисковику о чужой компании с
+        чужого домена незачем.
+      */}
+      {adarIndexable ? (
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd()) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(catalogJsonLd(sets)) }}
+          />
+        </>
+      ) : null}
       <AdarConfigurator tier="premium">
         <SkipLink />
         {showcaseChrome ? <ConceptBar current="premium" /> : null}

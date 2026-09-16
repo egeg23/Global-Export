@@ -1,5 +1,6 @@
 import { OrderForm } from "@/components/adar/ui/order-form";
 import { Shell } from "@/components/adar/ui/shell";
+import { VenueMap } from "@/components/adar/ui/venue-map";
 import { company } from "@/content/adar/company";
 import { cn } from "@/lib/cn";
 
@@ -114,6 +115,8 @@ export function ContactSection({ tone = "light" }: { tone?: "light" | "dark" }) 
               </dd>
             </div>
           </dl>
+
+          <VenueMap tone={tone} />
         </div>
 
         <div className="lg:col-span-6 lg:col-start-7">

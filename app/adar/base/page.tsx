@@ -25,8 +25,13 @@ import { getConcept } from "@/content/adar/concepts";
 import { showcaseChrome } from "@/lib/adar/showcase";
 import { growthStages } from "@/lib/adar/catalog";
 
+/**
+ * Вариант остаётся закрытым от поиска и на сервере заказчика: сайт у него
+ * один, а два адреса с тем же содержимым делят между собой показы.
+ */
 export const metadata: Metadata = {
   title: "Вариант 01 — «Витрина»",
+  robots: { index: false, follow: false },
 };
 
 /**
