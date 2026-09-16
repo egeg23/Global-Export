@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 
 import { AdminScreen, adminSections, type AdminScreenId } from "@/components/mavera/admin/screens";
 import { useConfigurator } from "@/components/configurator/context";
+import { AdminProvider, useAdmin } from "@/components/mavera/admin/store";
 import { BrowserFrame } from "@/components/present/mavera/frames";
 import { cn } from "@/lib/cn";
 
@@ -37,15 +37,6 @@ const captions: Record<AdminScreenId, string> = {
     "Журнал действий: кто, когда и что поменял — с прежним и новым значением. Спорная цена или статус откатываются одной кнопкой.",
 };
 
-/**
- * Экраны, которые работают по-настоящему.
- *
- * Остальные показывают вид. Разница названа прямо на странице: заказчик всё
- * равно нажмёт, и лучше он будет знать заранее, где нажатие сработает, чем
- * решит, что панель сломана.
- */
-const live = new Set<AdminScreenId>(["project-form", "flats", "leads"]);
-
 /** На каком экране живёт допник панели — туда переключаемся, когда его включают. */
 const screenOf: Partial<Record<string, AdminScreenId>> = {
   roles: "users",
@@ -55,16 +46,31 @@ const screenOf: Partial<Record<string, AdminScreenId>> = {
   audit: "audit",
 };
 
+/**
+ * Панель со своим состоянием.
+ *
+ * Провайдер стоит здесь, а не на странице: галерею показывают в двух местах —
+ * на странице панели и в перечне вариантов, — и каждый показ должен получать
+ * рабочую панель без отдельной обвязки на вызывающей стороне.
+ */
 export function AdminGallery() {
+  return (
+    <AdminProvider>
+      <Gallery />
+    </AdminProvider>
+  );
+}
+
+function Gallery() {
   const ctx = useConfigurator();
+  const admin = useAdmin();
   // Свежий допник конструктора открывает свой экран, но более поздний клик по
-  // вкладке важнее. Клик запоминает, какой допник был свежим в тот момент:
-  // пока он тот же — выбор за кликом, появился новый — за допником.
-  const [choice, setChoice] = useState<{ id: AdminScreenId; after: number }>({ id: "project-form", after: 0 });
+  // разделу важнее. Отметка времени клика запоминается рядом с экраном: пока
+  // допник тот же — выбор за человеком, появился новый — за допником.
   const freshAt = ctx?.fresh?.at ?? 0;
   const target = ctx?.fresh ? screenOf[ctx.fresh.id] : undefined;
-  const activeId = target && freshAt > choice.after ? target : choice.id;
-  const setActiveId = (id: AdminScreenId) => setChoice({ id, after: freshAt });
+  const activeId = target && freshAt > admin.pickedAt ? target : admin.screen;
+  const setActiveId = (id: AdminScreenId) => admin.setScreen(id, freshAt);
   const groups = [...new Set(adminSections.map((s) => s.group))];
   const active = adminSections.find((s) => s.id === activeId) ?? adminSections[0];
 
@@ -96,16 +102,6 @@ export function AdminGallery() {
                       )}
                     >
                       {section.label}
-                      {live.has(section.id) ? (
-                        <span
-                          aria-hidden="true"
-                          title="Экран работает"
-                          className={cn(
-                            "ml-2 inline-block h-1.5 w-1.5 rounded-full align-middle",
-                            activeId === section.id ? "bg-forest-900/50" : "bg-harvest-300/70",
-                          )}
-                        />
-                      ) : null}
                     </button>
                   ))}
               </div>
@@ -145,9 +141,9 @@ export function AdminGallery() {
         </p>
 
         <p className="mt-2 text-sm text-sand-300/55">
-          {live.has(activeId)
-            ? "Экран рабочий — выделяйте, меняйте и смотрите, как пересчитываются цифры."
-            : "Экран показан макетом: он про устройство и вид, интерактив входит в состав работ."}
+          Панель рабочая: меню внутри окна переключает разделы, поиск ищет по
+          проектам, квартирам и заявкам, а всё, что вы измените, пересчитается
+          на остальных экранах и попадёт в журнал действий.
         </p>
       </div>
     </div>
