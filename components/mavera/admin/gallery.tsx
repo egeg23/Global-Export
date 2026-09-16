@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { AdminScreen, adminSections, type AdminScreenId } from "@/components/mavera/admin/screens";
 import { useConfigurator } from "@/components/configurator/context";
 import { AdminProvider, useAdmin } from "@/components/mavera/admin/store";
@@ -110,16 +108,10 @@ function Gallery() {
         </div>
 
         <div className="mt-8 border-t border-sand-50/10 pt-6">
-          <Link
-            href="/admin"
-            prefetch={false}
-            className="inline-flex items-center gap-2 text-sm font-medium text-harvest-300 transition-colors hover:text-harvest-200"
-          >
-            Открыть рабочую панель
-            <span aria-hidden="true">↗</span>
-          </Link>
-          <p className="mt-2 text-xs leading-relaxed text-sand-300/45">
-            Не макет: действующая админка Global Export, на которой это собрано.
+          <p className="text-xs leading-relaxed text-sand-300/45">
+            Разделы переключаются здесь, экран справа нажимается целиком.
+            Основа — админка, которая уже работает у нашего клиента; тут она
+            пересобрана под застройщика. Правки живут до обновления страницы.
           </p>
         </div>
       </div>
