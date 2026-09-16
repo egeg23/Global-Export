@@ -361,3 +361,21 @@ SHOWCASE_ACCESS_CODE=придумайте-код
 Проверить после выкатки: `curl -s https://adar.uz/ | grep -c 'Все варианты'`
 должен вернуть `0`, а `curl -s https://adar.uz/adar/sitemap.xml | head -3` —
 карту с адресами на домене заказчика.
+
+## Бриф из конструктора
+
+У MAVERA, ADAR и концепций Global Export в доке конструктора есть кнопка
+«Отправить бриф»: набор с ценой уходит в студию. Чтобы он доходил до
+ассистента в боте, в `/srv/globalex/.env.local` нужны:
+
+```
+SHOWCASE_BRIEF_SECRET=тот-же-секрет-что-на-devuz.studio
+SHOWCASE_OWNER_CHAT_ID=числовой id личного чата владельца
+```
+
+Секрет генерируется один раз (`openssl rand -hex 24`) и прописывается в
+обоих местах: здесь и в `.env` devuz.studio (`SHOWCASE_BRIEF_SECRET`; там же
+`TELEGRAM_OWNER_CHAT_ID`). Правило одно на оба пути: заказ дороже $10 000
+получает только владелец, всё дешевле — общий чат. Без секрета бриф уходит в
+Telegram прямо отсюда (`TELEGRAM_CHAT_ID` / `SHOWCASE_OWNER_CHAT_ID`), уже без
+ассистента. После правки — `sudo systemctl restart globalex-demo`.

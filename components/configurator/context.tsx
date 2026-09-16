@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { Dock } from "@/components/mavera/configurator/dock";
+import { Dock } from "@/components/configurator/dock";
 import {
   adopt,
   clear,
@@ -15,10 +15,18 @@ import {
   readSessionOnServer,
   subscribe,
   write,
-} from "@/components/mavera/configurator/store";
-import { money, tiers, type CurrencyId, type TierId } from "@/components/present/mavera/theme";
-import { addonById, addons, included, type AddonId, type AddonWhere } from "@/content/mavera/addons";
+} from "@/components/configurator/store";
+import { money, type CurrencyId } from "@/components/present/mavera/theme";
 import { cn } from "@/lib/cn";
+import {
+  addonOf,
+  extrasUsd as extrasOf,
+  firstSharedPage,
+  isIncluded as includedIn,
+  pageOf,
+  tierOf,
+  type Catalog,
+} from "@/lib/configurator/catalog";
 
 /**
  * Конструктор сайта: тумблер в доке включает настоящий блок на странице.
@@ -35,28 +43,29 @@ import { cn } from "@/lib/cn";
  *     «было» временно прячет его, не меняя цену, «стало» возвращает и заново
  *     проигрывает появление. Так сравнивают, не трогая тумблер.
  *  4. Перенос. Если блок живёт на другой странице (карточка ЖК, панель
- *     управления), конструктор сам переводит туда, оставляет док открытым и
- *     подъезжает к блоку.
+ *     управления, соседняя концепция), конструктор сам переводит туда,
+ *     оставляет док открытым и подъезжает к блоку.
  *  5. Ссылка. Набор лежит в адресе и в хранилище браузера: его можно
  *     отправить коллеге, и он переживает переходы между страницами.
+ *  6. Бриф. Кнопка в доке отправляет собранный набор с ценой нам в
+ *     Telegram и ведёт клиента к ассистенту в боте.
  *
- * Провайдер сам рисует корень мира (`data-world`) и тумблер движения
- * (`data-motion`): так «Анимации и параллакс» отключаются одним атрибутом.
+ * Проект описывается каталогом (lib/configurator/catalog.ts): один и тот же
+ * док работает у MAVERA, ADAR и Global Export. Провайдер сам рисует корень
+ * мира (`data-world`) и тумблер движения (`data-motion`), если каталог их
+ * задаёт.
  */
 
-export type Page = "main" | "object" | "admin";
-
 export type Configurator = {
-  tier: TierId;
-  page: Page;
-  homeHref: string;
-  objectHref: string;
-  adminHref: string;
+  catalog: Catalog;
+  tier: string;
+  page: string;
+  hrefs: Record<string, string>;
   /** Что включено по тумблерам — от этого считается цена. */
-  enabled: ReadonlySet<AddonId>;
+  enabled: ReadonlySet<string>;
   /** Что показывается: то же, минус свежий допник, пока смотрим «было». */
-  shown: ReadonlySet<AddonId>;
-  fresh: { id: AddonId; at: number } | null;
+  shown: ReadonlySet<string>;
+  fresh: { id: string; at: number } | null;
   peek: boolean;
   open: boolean;
   currency: CurrencyId;
@@ -66,13 +75,15 @@ export type Configurator = {
   setOpen: (open: boolean) => void;
   setPeek: (peek: boolean) => void;
   setCurrency: (currency: CurrencyId) => void;
-  toggle: (id: AddonId) => void;
+  toggle: (id: string) => void;
   reset: () => void;
-  isIncluded: (id: AddonId) => boolean;
+  isIncluded: (id: string) => boolean;
   /** «в пакете» или «+$500» — одной строкой для ярлыков и дока. */
-  priceLabel: (id: AddonId) => string;
+  priceLabel: (id: string) => string;
   /** Куда переводит тумблер, если блок живёт не на этой странице. */
-  destination: (where: AddonWhere) => string | null;
+  destination: (where: string) => string | null;
+  /** Заголовок группы: «Главная», «Главная и карточка». */
+  placeLabel: (where: string) => string;
 };
 
 const Context = createContext<Configurator | null>(null);
@@ -82,30 +93,32 @@ export function useConfigurator() {
 }
 
 /** Показан ли допник. Вне конструктора — всегда да: страница живёт как раньше. */
-export function useAddon(id: AddonId) {
+export function useAddon(id: string) {
   const ctx = useContext(Context);
   return ctx ? ctx.shown.has(id) : true;
 }
 
 export function ConfiguratorProvider({
+  catalog,
   tier,
   page,
-  objectHref,
-  frame = "world",
+  hrefs,
+  frame = "none",
   children,
 }: {
-  tier: TierId;
-  page: Page;
-  /** Куда вести, если блок живёт в карточке ЖК: страница знает это сама, браузеру список проектов не нужен. */
-  objectHref: string;
-  /** «world» — корень мира сайта; «studio» — наша тёмная витрина без токенов мира. */
-  frame?: "world" | "studio";
+  catalog: Catalog;
+  tier: string;
+  page: string;
+  /** Адреса страниц каталога: страница знает их сама, браузеру список проектов не нужен. */
+  hrefs: Record<string, string>;
+  /** «world» — корень мира сайта (data-world); «studio» — наша тёмная витрина; «none» — без атрибута. */
+  frame?: "world" | "studio" | "none";
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const raw = useSyncExternalStore(subscribe, () => read(tier), readOnServer);
+  const raw = useSyncExternalStore(subscribe, () => read(catalog.project, tier), readOnServer);
   const session = useSyncExternalStore(subscribe, readSession, readSessionOnServer);
-  const enabled = useMemo(() => new Set(parse(raw, tier)), [raw, tier]);
+  const enabled = useMemo(() => new Set(parse(raw, catalog, tier)), [raw, catalog, tier]);
   const shown = useMemo(() => {
     if (!session.peek || !session.fresh) return enabled;
     const next = new Set(enabled);
@@ -114,30 +127,34 @@ export function ConfiguratorProvider({
   }, [enabled, session.peek, session.fresh]);
   const currency = useSyncExternalStore(subscribe, readCurrency, () => "usd" as CurrencyId);
 
-  useEffect(() => adopt(tier), [tier]);
+  useEffect(() => adopt(catalog.project, tier), [catalog.project, tier]);
 
-  const homeHref = `/mavera/${tier}`;
-  const adminHref = `${homeHref}/admin`;
-  const packageUsd = (tiers.find((entry) => entry.id === tier) ?? tiers[0]).priceUsd;
+  const packageUsd = tierOf(catalog, tier).priceUsd;
+  const isIncluded = (id: string) => includedIn(catalog, tier, id);
+  const extrasUsd = extrasOf(catalog, tier, enabled);
 
-  const isIncluded = (id: AddonId) => included[tier].includes(id);
-  const extrasUsd = addons
-    .filter((addon) => enabled.has(addon.id) && !isIncluded(addon.id))
-    .reduce((sum, addon) => sum + addon.priceUsd, 0);
+  const destination = (where: string): string | null => {
+    if (catalog.crossMounted) return null;
+    if (catalog.everywhere && where === catalog.everywhere) {
+      if (pageOf(catalog, page)?.shared !== false) return null;
+      const first = firstSharedPage(catalog);
+      return first ? (hrefs[first.id] ?? null) : null;
+    }
+    return where === page ? null : (hrefs[where] ?? null);
+  };
 
-  const destination = (where: AddonWhere): string | null => {
-    if (where === "main") return page === "main" ? null : homeHref;
-    if (where === "object") return page === "object" ? null : objectHref;
-    if (where === "admin") return page === "admin" ? null : adminHref;
-    return page === "admin" ? homeHref : null;
+  const placeLabel = (where: string): string => {
+    if (catalog.everywhere && where === catalog.everywhere) {
+      return catalog.everywhereLabel ?? firstSharedPage(catalog)?.label ?? "Везде";
+    }
+    return pageOf(catalog, where)?.label ?? where;
   };
 
   const value: Configurator = {
+    catalog,
     tier,
     page,
-    homeHref,
-    objectHref,
-    adminHref,
+    hrefs,
     enabled,
     shown,
     fresh: session.fresh,
@@ -152,8 +169,9 @@ export function ConfiguratorProvider({
     setCurrency: writeCurrency,
     isIncluded,
     destination,
+    placeLabel,
     priceLabel: (id) => {
-      const addon = addonById(id);
+      const addon = addonOf(catalog, id);
       if (isIncluded(id) || addon.priceUsd === 0) return "в пакете";
       return `+${money(addon.priceUsd, currency)}`;
     },
@@ -162,32 +180,33 @@ export function ConfiguratorProvider({
       if (next.has(id)) {
         next.delete(id);
         patchSession({ fresh: null, peek: false });
-        write(tier, next);
+        write(catalog, tier, next);
         return;
       }
       next.add(id);
       patchSession({ fresh: { id, at: Date.now() }, peek: false, open: true });
-      write(tier, next);
-      const target = destination(addonById(id).where);
+      write(catalog, tier, next);
+      const target = destination(addonOf(catalog, id).where);
       if (target) router.push(target);
     },
     reset: () => {
-      clear(tier);
+      clear(catalog.project, tier);
       patchSession({ fresh: null, peek: false });
     },
   };
 
-  const motion = shown.has("motion") ? "on" : "off";
+  const motion = catalog.motionAddon ? (shown.has(catalog.motionAddon) ? "on" : "off") : undefined;
+  const withChat = catalog.chat && pageOf(catalog, page)?.shared !== false;
 
   return (
     <Context.Provider value={value}>
       <div data-world={frame === "world" ? tier : undefined} data-motion={motion}>
         {children}
-        {page === "admin" ? null : (
-          <Addon id="chat" inline scroll={false} className="fixed bottom-5 left-4 z-[60] sm:left-5">
-            <ChatButton />
+        {withChat && catalog.chat ? (
+          <Addon id={catalog.chat.id} inline scroll={false} className="fixed bottom-5 left-4 z-[60] sm:left-5">
+            <ChatButton text={catalog.chat.text} site={catalog.chat.site} />
           </Addon>
-        )}
+        ) : null}
         <Dock />
       </div>
     </Context.Provider>
@@ -232,7 +251,7 @@ export function Addon({
   scroll = true,
   anchor,
 }: {
-  id: AddonId;
+  id: string;
   children: React.ReactNode;
   className?: string;
   as?: Tag;
@@ -292,7 +311,7 @@ export function Addon({
   if (!ctx) return <>{children}</>;
 
   const Tag = as as React.ElementType;
-  const spec = addonById(id);
+  const spec = addonOf(ctx.catalog, id);
   // Плавающая кнопка чата приходит с `fixed`: своё `relative` обёртка тогда не
   // ставит, иначе кнопка легла бы в поток в конце страницы.
   const positioned = /\b(fixed|absolute|sticky)\b/.test(className ?? "");
@@ -411,7 +430,7 @@ export function Addon({
 const chipClass =
   "z-20 inline-flex items-center gap-2 rounded-full bg-[#0b0d10] py-1 pl-3 pr-1 text-xs font-normal normal-case tracking-normal text-[#f2efe9] shadow-lg ring-1 ring-white/10";
 
-function Off({ id, label }: { id: AddonId; label: string }) {
+function Off({ id, label }: { id: string; label: string }) {
   const ctx = useContext(Context);
   if (!ctx) return null;
   return (
@@ -463,9 +482,9 @@ export function Compare({ className }: { className?: string }) {
  * аккаунт подставятся из настроек панели. Заглушечный номер сюда не ставим:
  * он бы вёл к случайному человеку.
  */
-function ChatButton() {
+function ChatButton({ text, site }: { text: string; site: string }) {
   const [open, setOpen] = useState(false);
-  const text = encodeURIComponent("Здравствуйте! Интересует квартира в MAVERA.");
+  const encoded = encodeURIComponent(text);
 
   return (
     <div className="relative">
@@ -477,7 +496,7 @@ function ChatButton() {
         >
           <p className="px-2 pb-2 text-xs text-[#f2efe9]/60">Отдел продаж отвечает с 9:00 до 19:00</p>
           <a
-            href={`https://wa.me/?text=${text}`}
+            href={`https://wa.me/?text=${encoded}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-white/10"
@@ -486,7 +505,7 @@ function ChatButton() {
             WhatsApp
           </a>
           <a
-            href={`https://t.me/share/url?url=${encodeURIComponent("https://mavera.uz")}&text=${text}`}
+            href={`https://t.me/share/url?url=${encodeURIComponent(site)}&text=${encoded}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-white/10"

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 
-import { useAddon } from "@/components/mavera/configurator/context";
+import { useAddon } from "@/components/configurator/context";
 import { useMotionPreferred } from "@/components/mavera/motion";
 import { cn } from "@/lib/cn";
 import type { AddonId } from "@/content/mavera/addons";

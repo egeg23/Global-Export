@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { Addon, ConfiguratorProvider } from "@/components/configurator/context";
+import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { Magnetic } from "@/components/mavera/configurator/live";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Progress, Tour } from "@/components/mavera/object/extras";
@@ -56,7 +57,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
   const rounded = variant === "premium" ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "";
 
   return (
-    <ConfiguratorProvider tier={variant} page="object" objectHref={`${home}/${slug}`}>
+    <ConfiguratorProvider catalog={maveraCatalog} tier={variant} page="object" hrefs={maveraHrefs(variant, slug)} frame="world">
       <VariantBar current={variant} />
 
       <header className="sticky top-0 z-40 border-b border-[var(--w-line)] bg-[var(--w-bg)]/85 backdrop-blur-xl">

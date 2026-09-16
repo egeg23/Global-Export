@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { Manifesto } from "@/components/concepts/cinematic/manifesto";
+import { ProcessJourney } from "@/components/concepts/cinematic/process-journey";
+import { ProductRail } from "@/components/concepts/cinematic/product-rail";
 import { AboutTile } from "@/components/concepts/clean/about-tile";
 import { CategoryRows } from "@/components/concepts/clean/category-rows";
 import { CounterStrip } from "@/components/concepts/clean/counter-strip";
 import { QualityRows } from "@/components/concepts/clean/quality-rows";
 import { RoundedHero } from "@/components/concepts/clean/rounded-hero";
+import { Extra, GlobalexConfigurator } from "@/components/concepts/showcase/configurator";
+import { Addon } from "@/components/configurator/context";
 import { CtaForm } from "@/components/sections/cta-form";
 import { NewsTeaser } from "@/components/sections/news-teaser";
 import { getDictionary } from "@/content/dictionaries";
@@ -20,6 +25,10 @@ type Props = { params: Promise<{ locale: string }> };
  *
  * A proposal route, not part of the site: excluded from the sitemap, marked
  * noindex, and removed once a direction is chosen.
+ *
+ * On the showcase every block is behind a toggle in the configurator dock, and
+ * the blocks of concept A stand here as ghosts — switch one on to compare.
+ * Without SHOWCASE_ROOT the page renders exactly as before.
  */
 export const metadata: Metadata = {
   title: "Концепция B — светлый каталог",
@@ -34,14 +43,33 @@ export default async function ConceptBPage({ params }: Props) {
   const dict = getDictionary(locale);
 
   return (
-    <>
+    <GlobalexConfigurator locale={locale} tier="b">
       <RoundedHero locale={locale} dict={dict} />
-      <CounterStrip locale={locale} />
-      <AboutTile locale={locale} dict={dict} />
-      <CategoryRows locale={locale} dict={dict} />
-      <QualityRows locale={locale} dict={dict} />
-      <NewsTeaser locale={locale} dict={dict} />
+      <Addon id="counters">
+        <CounterStrip locale={locale} />
+      </Addon>
+      <Addon id="about">
+        <AboutTile locale={locale} dict={dict} />
+      </Addon>
+      <Extra id="manifesto">
+        <Manifesto locale={locale} dict={dict} />
+      </Extra>
+      <Extra id="journey">
+        <ProcessJourney locale={locale} dict={dict} />
+      </Extra>
+      <Extra id="rail">
+        <ProductRail locale={locale} dict={dict} />
+      </Extra>
+      <Addon id="categories">
+        <CategoryRows locale={locale} dict={dict} />
+      </Addon>
+      <Addon id="quality">
+        <QualityRows locale={locale} dict={dict} />
+      </Addon>
+      <Addon id="news">
+        <NewsTeaser locale={locale} dict={dict} />
+      </Addon>
       <CtaForm locale={locale} dict={dict} />
-    </>
+    </GlobalexConfigurator>
   );
 }

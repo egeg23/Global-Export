@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 import { AdminGallery } from "@/components/mavera/admin/gallery";
-import { ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { ConfiguratorProvider } from "@/components/configurator/context";
+import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { tiers, type TierId } from "@/components/present/mavera/theme";
 import { Container } from "@/components/ui/container";
@@ -22,7 +23,7 @@ export function AdminPage({ variant }: { variant: TierId }) {
   const inside = adminAddons.filter((addon) => included[variant].includes(addon.id));
 
   return (
-    <ConfiguratorProvider tier={variant} page="admin" frame="studio" objectHref={`/mavera/${variant}/${projects[0].slug}`}>
+    <ConfiguratorProvider catalog={maveraCatalog} tier={variant} page="admin" frame="studio" hrefs={maveraHrefs(variant, projects[0].slug)}>
       <VariantBar current={variant} admin />
 
       <main className="min-h-screen bg-[#0b0d10] pb-28 text-sand-50">

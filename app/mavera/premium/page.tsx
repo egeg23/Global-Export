@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { Addon, ConfiguratorProvider } from "@/components/configurator/context";
+import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Genplan, Picker } from "@/components/present/mavera/interactive";
 import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scenes";
@@ -26,7 +27,7 @@ const voice = voices.premium;
 
 export default function MaveraPremium() {
   return (
-    <ConfiguratorProvider tier="premium" page="main" objectHref={`/mavera/premium/${projects[0].slug}`}>
+    <ConfiguratorProvider catalog={maveraCatalog} tier="premium" page="main" hrefs={maveraHrefs("premium", projects[0].slug)} frame="world">
       <VariantBar current="premium" />
 
       {/* Стеклянная шапка поверх кадра. */}
