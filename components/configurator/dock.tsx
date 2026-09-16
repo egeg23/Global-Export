@@ -21,7 +21,9 @@ import { firstSharedPage, pageOf, tierOf, type CatalogAddon } from "@/lib/config
  *
  * Допники сгруппированы по месту: сначала то, что живёт на этой странице,
  * потом остальное. Тумблер из другой группы сам переводит на нужную страницу.
- * Внизу — итог, ссылка и «Отправить бриф»: набор с ценой уходит в студию.
+ * Последними идут услуги сверх сайта — интеграции, ИИ, статьи по подписке:
+ * у них нет блока на макете, только цена. Внизу — итог (разовый и подписка
+ * отдельно), ссылка и «Отправить бриф»: набор с ценой уходит в студию.
  */
 
 export function Dock() {
@@ -74,7 +76,13 @@ export function Dock() {
       >
         <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#ffd166]" />
         <span>Конструктор</span>
-        <span className="tabular-nums text-[#ffd166]">{money(total, ctx.currency)}</span>
+        <span className="tabular-nums text-[#ffd166]">
+          {ctx.fromPrice ? "от " : ""}
+          {money(total, ctx.currency)}
+        </span>
+        {ctx.monthlyUsd ? (
+          <span className="tabular-nums text-xs text-[#ffd166]/80">+{money(ctx.monthlyUsd, ctx.currency)}/мес</span>
+        ) : null}
         {extrasOn ? (
           <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-[#f2efe9]/70">
             +{extrasOn}
@@ -163,11 +171,24 @@ export function Dock() {
           <footer className="border-t border-white/10 px-5 py-4">
             <div className="flex items-baseline justify-between gap-4">
               <span className="text-sm text-[#f2efe9]/60">Итого</span>
-              <span className="text-2xl font-semibold tabular-nums">{money(total, ctx.currency)}</span>
+              <span className="text-2xl font-semibold tabular-nums">
+                {ctx.fromPrice ? <span className="text-base font-normal text-[#f2efe9]/60">от </span> : null}
+                {money(total, ctx.currency)}
+              </span>
             </div>
+            {ctx.monthlyUsd ? (
+              <div className="mt-0.5 flex items-baseline justify-between gap-4">
+                <span className="text-xs text-[#f2efe9]/60">Подписка</span>
+                <span className="text-sm font-medium tabular-nums text-[#ffd166]">
+                  +{money(ctx.monthlyUsd, ctx.currency)}/мес
+                </span>
+              </div>
+            ) : null}
             <p className="mt-1 text-xs leading-relaxed text-[#f2efe9]/45">
               Пакет {money(ctx.packageUsd, ctx.currency)}
               {ctx.extrasUsd ? <> + допники {money(ctx.extrasUsd, ctx.currency)}</> : null}
+              {ctx.fromPrice ? <>. Точную цену по позициям «от» назовём после разговора</> : null}
+              {ctx.onRequest.length ? <>. По запросу: {ctx.onRequest.join(", ").toLowerCase()}</> : null}
               {ctx.currency === "usd" ? null : <>. {rateNote}</>}
               {catalog.pricingNote ? <>. {catalog.pricingNote}</> : null}
             </p>
@@ -232,30 +253,34 @@ function Group({ where }: { where: string }) {
     .sort((a, b) => Number(ctx.isIncluded(a.id)) - Number(ctx.isIncluded(b.id)));
   if (items.length === 0) return null;
 
-  const target = ctx.destination(where);
+  const virtual = pageOf(ctx.catalog, where)?.virtual === true;
+  const target = virtual ? null : ctx.destination(where);
 
   return (
     <section className="py-2">
       <h3 className="flex items-baseline justify-between gap-3 text-[0.65rem] uppercase tracking-[0.16em] text-[#f2efe9]/45">
         <span>{ctx.placeLabel(where)}</span>
-        <span className="normal-case tracking-normal">{target ? "тумблер переведёт туда" : "на этой странице"}</span>
+        <span className="normal-case tracking-normal">
+          {virtual ? "сверх сайта, на макете не показано" : target ? "тумблер переведёт туда" : "на этой странице"}
+        </span>
       </h3>
       <ul className="mt-1 divide-y divide-white/5">
         {items.map((addon) => (
-          <Row key={addon.id} addon={addon} target={target} />
+          <Row key={addon.id} addon={addon} target={target} virtual={virtual} />
         ))}
       </ul>
     </section>
   );
 }
 
-function Row({ addon, target }: { addon: CatalogAddon; target: string | null }) {
+function Row({ addon, target, virtual }: { addon: CatalogAddon; target: string | null; virtual: boolean }) {
   const ctx = useConfigurator();
   if (!ctx) return null;
 
   const on = ctx.enabled.has(addon.id);
-  const isFresh = ctx.fresh?.id === addon.id;
-  const free = ctx.isIncluded(addon.id) || addon.priceUsd === 0;
+  // У услуги нет блока на странице — сравнивать «было / стало» нечего.
+  const isFresh = !virtual && ctx.fresh?.id === addon.id;
+  const free = ctx.isIncluded(addon.id) || (addon.priceUsd === 0 && !addon.onRequest);
   const { catalog } = ctx;
   const openLabel =
     catalog.everywhere && addon.where === catalog.everywhere

@@ -1,4 +1,5 @@
 import { concepts } from "@/content/adar/concepts";
+import { servicePages, studioServices } from "@/content/services";
 import type { Catalog, CatalogAddon } from "@/lib/configurator/catalog";
 
 /**
@@ -34,13 +35,13 @@ export const adarCatalog: Catalog = {
     label: concept.name,
     priceUsd: concept.estimate.total,
   })),
-  addons: adarAddons,
+  addons: [...adarAddons, ...studioServices],
   included: {
     base: [],
     plus: ["search", "growth", "rail"],
     premium: ["search", "growth", "rail", "budget", "corporate", "archive", "about"],
   },
-  pages: [{ id: "main", label: "Главная" }],
+  pages: [{ id: "main", label: "Главная" }, ...servicePages],
   chat: { id: "chat", text: "Здравствуйте! Интересуют подарочные наборы ADAR.", site: "https://adar.uz" },
 };
 

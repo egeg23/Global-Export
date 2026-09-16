@@ -22,9 +22,13 @@ import {
   addonOf,
   extrasUsd as extrasOf,
   firstSharedPage,
+  hasFromPrice,
   isIncluded as includedIn,
+  monthlyUsd as monthlyOf,
+  onRequestAddons,
   pageOf,
   tierOf,
+  withToggled,
   type Catalog,
 } from "@/lib/configurator/catalog";
 
@@ -71,7 +75,14 @@ export type Configurator = {
   currency: CurrencyId;
   packageUsd: number;
   extrasUsd: number;
+  /** Разовый итог: пакет и допники без подписок. */
   totalUsd: number;
+  /** Подписки в месяц — отдельной суммой. */
+  monthlyUsd: number;
+  /** В наборе есть цена «от» — итог тоже «от». */
+  fromPrice: boolean;
+  /** Что отмечено «по запросу»: названия для итога и брифа. */
+  onRequest: string[];
   setOpen: (open: boolean) => void;
   setPeek: (peek: boolean) => void;
   setCurrency: (currency: CurrencyId) => void;
@@ -132,6 +143,7 @@ export function ConfiguratorProvider({
   const packageUsd = tierOf(catalog, tier).priceUsd;
   const isIncluded = (id: string) => includedIn(catalog, tier, id);
   const extrasUsd = extrasOf(catalog, tier, enabled);
+  const monthlyUsd = monthlyOf(catalog, tier, enabled);
 
   const destination = (where: string): string | null => {
     if (catalog.crossMounted) return null;
@@ -164,6 +176,9 @@ export function ConfiguratorProvider({
     packageUsd,
     extrasUsd,
     totalUsd: packageUsd + extrasUsd,
+    monthlyUsd,
+    fromPrice: hasFromPrice(catalog, tier, enabled),
+    onRequest: onRequestAddons(catalog, tier, enabled).map((addon) => addon.label),
     setOpen: (open) => patchSession({ open }),
     setPeek: (peek) => patchSession({ peek }),
     setCurrency: writeCurrency,
@@ -172,18 +187,20 @@ export function ConfiguratorProvider({
     placeLabel,
     priceLabel: (id) => {
       const addon = addonOf(catalog, id);
-      if (isIncluded(id) || addon.priceUsd === 0) return "в пакете";
+      if (isIncluded(id)) return "в пакете";
+      if (addon.onRequest) return "по запросу";
+      if (addon.priceUsd === 0) return "в пакете";
+      if (addon.monthly) return `+${money(addon.priceUsd, currency)}/мес`;
+      if (addon.from) return `от ${money(addon.priceUsd, currency)}`;
       return `+${money(addon.priceUsd, currency)}`;
     },
     toggle: (id) => {
-      const next = new Set(enabled);
-      if (next.has(id)) {
-        next.delete(id);
+      const next = withToggled(catalog, enabled, id);
+      if (!next.has(id)) {
         patchSession({ fresh: null, peek: false });
         write(catalog, tier, next);
         return;
       }
-      next.add(id);
       patchSession({ fresh: { id, at: Date.now() }, peek: false, open: true });
       write(catalog, tier, next);
       const target = destination(addonOf(catalog, id).where);

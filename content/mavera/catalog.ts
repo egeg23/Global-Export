@@ -1,5 +1,6 @@
 import { tiers, type TierId } from "@/components/present/mavera/theme";
 import { addons, included } from "@/content/mavera/addons";
+import { servicePages, studioServices } from "@/content/services";
 import type { Catalog } from "@/lib/configurator/catalog";
 
 /**
@@ -7,7 +8,8 @@ import type { Catalog } from "@/lib/configurator/catalog";
  *
  * Допники и пакеты остаются в своих файлах — на них ссылается смета и
  * страницы; здесь только то, что нужно доку: страницы, где живут блоки,
- * и что считать «везде».
+ * и что считать «везде». Услуги студии (content/services.ts) добавляются
+ * в конец: они общие для всех проектов витрины.
  */
 export const maveraCatalog: Catalog = {
   project: "mavera",
@@ -15,12 +17,14 @@ export const maveraCatalog: Catalog = {
   niche: "девелопмент, продажа квартир в новостройках",
   nicheTier: 1,
   tiers: tiers.map((tier) => ({ id: tier.id, label: tier.label, priceUsd: tier.priceUsd })),
-  addons,
+  // Интеграция с CRM у MAVERA уже есть тумблером в панели (crm) — общий дубль убираем.
+  addons: [...addons, ...studioServices.filter((service) => service.id !== "crm-link")],
   included,
   pages: [
     { id: "main", label: "Главная" },
     { id: "object", label: "Карточка ЖК" },
     { id: "admin", label: "Панель управления", shared: false },
+    ...servicePages,
   ],
   everywhere: "both",
   everywhereLabel: "Главная и карточка",

@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 
-import { addonOf, isIncluded, tierOf, totalUsd as totalOf, type Catalog } from "@/lib/configurator/catalog";
+import {
+  addonOf,
+  hasFromPrice,
+  isIncluded,
+  monthlyUsd as monthlyOf,
+  tierOf,
+  totalUsd as totalOf,
+  type Catalog,
+} from "@/lib/configurator/catalog";
 import { catalogOf } from "@/lib/configurator/catalogs";
 
 export const runtime = "nodejs";
@@ -96,11 +104,26 @@ function fmt(value: number): string {
     .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+type OrderAddon = {
+  id: string;
+  label: string;
+  priceUsd: number;
+  included: boolean;
+  monthly?: boolean;
+  from?: boolean;
+  onRequest?: boolean;
+};
+
 type Order = {
   catalog: Catalog;
   tier: { id: string; label: string; priceUsd: number };
-  addons: { id: string; label: string; priceUsd: number; included: boolean }[];
+  addons: OrderAddon[];
+  /** Разовый итог — по нему же решается «только владельцу». */
   totalUsd: number;
+  /** Подписки в месяц, отдельно. */
+  monthlyUsd: number;
+  /** В наборе есть цена «от». */
+  fromPrice: boolean;
   name: string;
   contact: string;
   comment: string;
@@ -131,6 +154,8 @@ async function sendToStudio(
         tier: order.tier,
         addons: order.addons,
         totalUsd: order.totalUsd,
+        monthlyUsd: order.monthlyUsd,
+        fromPrice: order.fromPrice,
         name: order.name,
         contact: order.contact,
         comment: order.comment,
@@ -158,8 +183,12 @@ async function sendToStudio(
 /* ------------------------------------------------------------------ */
 
 function buildMessage(order: Order, ownerOnly: boolean, fallback: boolean): string {
-  const paid = order.addons.filter((addon) => !addon.included && addon.priceUsd > 0);
-  const free = order.addons.filter((addon) => addon.included || addon.priceUsd === 0);
+  const extra = order.addons.filter((addon) => !addon.included && !addon.onRequest && addon.priceUsd > 0);
+  const paid = extra.filter((addon) => !addon.monthly);
+  const monthly = extra.filter((addon) => addon.monthly);
+  const onRequest = order.addons.filter((addon) => addon.onRequest);
+  const free = order.addons.filter((addon) => addon.included || (addon.priceUsd === 0 && !addon.onRequest));
+  const total = `${order.fromPrice ? "от " : ""}$${fmt(order.totalUsd)}`;
   const rows: [string, string][] = [
     ["Имя", order.name],
     ["Контакт", order.contact],
@@ -167,16 +196,20 @@ function buildMessage(order: Order, ownerOnly: boolean, fallback: boolean): stri
   ];
 
   const lines = [
-    `🧩 <b>БРИФ С ВИТРИНЫ</b> · ${escapeHtml(order.catalog.label)} · <b>$${fmt(order.totalUsd)}</b>`,
+    `🧩 <b>БРИФ С ВИТРИНЫ</b> · ${escapeHtml(order.catalog.label)} · <b>${total}</b>${
+      order.monthlyUsd ? ` + $${fmt(order.monthlyUsd)}/мес` : ""
+    }`,
     ownerOnly && !fallback ? `🔒 Только владельцу: заказ дороже $${fmt(OWNER_ONLY_FROM_USD)}` : "",
     fallback
       ? `⚠️ Заказ дороже $${fmt(OWNER_ONLY_FROM_USD)}, а чат владельца не задан (SHOWCASE_OWNER_CHAT_ID) — бриф ушёл сюда.`
       : "",
     "",
     `📦 Пакет «${escapeHtml(order.tier.label)}» — $${fmt(order.tier.priceUsd)}`,
-    ...paid.map((addon) => `➕ ${escapeHtml(addon.label)} — +$${fmt(addon.priceUsd)}`),
+    ...paid.map((addon) => `➕ ${escapeHtml(addon.label)} — ${addon.from ? "от" : "+"}$${fmt(addon.priceUsd)}`),
+    ...monthly.map((addon) => `🔁 ${escapeHtml(addon.label)} — $${fmt(addon.priceUsd)}/мес`),
+    ...onRequest.map((addon) => `❓ ${escapeHtml(addon.label)} — по запросу`),
     free.length ? `✔️ В пакете: ${free.map((addon) => escapeHtml(addon.label)).join(", ")}` : "",
-    `<b>Итого: $${fmt(order.totalUsd)}</b>`,
+    `<b>Итого: ${total}</b>${order.monthlyUsd ? ` + подписка $${fmt(order.monthlyUsd)}/мес` : ""}`,
     "",
     ...rows.filter(([, value]) => Boolean(value)).map(([label, value]) => `<b>${label}:</b> ${escapeHtml(value)}`),
     order.share ? `🔗 <a href="${escapeHtml(order.share)}">Открыть набор на витрине</a>` : "",
@@ -276,8 +309,13 @@ export async function POST(request: Request) {
         label: addonOf(catalog, addon.id).label,
         priceUsd: addon.priceUsd,
         included: isIncluded(catalog, tier.id, addon.id),
+        ...(addon.monthly ? { monthly: true } : {}),
+        ...(addon.from ? { from: true } : {}),
+        ...(addon.onRequest ? { onRequest: true } : {}),
       })),
     totalUsd: totalOf(catalog, tier.id, requested),
+    monthlyUsd: monthlyOf(catalog, tier.id, requested),
+    fromPrice: hasFromPrice(catalog, tier.id, requested),
     name: clean(body.name, 120),
     contact,
     comment: clean(body.comment, 1500),
@@ -294,6 +332,7 @@ export async function POST(request: Request) {
       botUrl: studio.botUrl,
       delivered: studio.delivered,
       totalUsd: order.totalUsd,
+      monthlyUsd: order.monthlyUsd,
     });
   }
 
@@ -311,5 +350,5 @@ export async function POST(request: Request) {
     console.warn("[showcase brief] канал доставки не настроен — бриф не отправлен");
   }
 
-  return NextResponse.json({ ok: true, via: "telegram", delivered, totalUsd: order.totalUsd });
+  return NextResponse.json({ ok: true, via: "telegram", delivered, totalUsd: order.totalUsd, monthlyUsd: order.monthlyUsd });
 }

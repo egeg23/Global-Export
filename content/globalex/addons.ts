@@ -1,3 +1,4 @@
+import { servicePages, studioServices } from "@/content/services";
 import type { Catalog, CatalogAddon } from "@/lib/configurator/catalog";
 
 /**
@@ -38,7 +39,7 @@ export const globalexCatalog: Catalog = {
     { id: "a", label: "Концепция A", priceUsd: 4900 },
     { id: "b", label: "Концепция B", priceUsd: 4900 },
   ],
-  addons: globalexAddons,
+  addons: [...globalexAddons, ...studioServices],
   included: {
     a: ["manifesto", "journey", "rail"],
     b: ["counters", "about", "categories", "quality", "news"],
@@ -46,6 +47,7 @@ export const globalexCatalog: Catalog = {
   pages: [
     { id: "a", label: "Концепция A" },
     { id: "b", label: "Концепция B" },
+    ...servicePages,
   ],
   crossMounted: true,
   everywhere: "all",
