@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Addon, useAddon } from "@/components/mavera/configurator/context";
+import { Addon, useAddon } from "@/components/configurator/context";
 import { Magnetic, Words } from "@/components/mavera/configurator/live";
 import { money } from "@/components/present/mavera/theme";
 import type { Project } from "@/content/mavera/data";

@@ -6,8 +6,14 @@ import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
 import { GrowthScene } from "@/components/adar/plus/growth-scene";
 import { PlusHero } from "@/components/adar/plus/hero";
 import { ShopHeader } from "@/components/adar/plus/shop-header";
+import { AboutCompany } from "@/components/adar/premium/about-company";
+import { ArchiveDrum } from "@/components/adar/premium/archive-drum";
+import { BudgetPicker } from "@/components/adar/premium/budget-picker";
+import { CorporateBlock } from "@/components/adar/premium/corporate-block";
+import { Addon } from "@/components/configurator/context";
 import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
+import { AdarConfigurator, Extra } from "@/components/adar/showcase/configurator";
 import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
 import { ContactSection } from "@/components/adar/ui/contact-section";
@@ -40,34 +46,54 @@ function railRow(offset: number) {
  * остаются общими.
  *
  * По содержанию — живой каталог, лента, которую крутят руками, и
- * закреплённый кадр, где набор растёт от эконома до платины.
+ * закреплённый кадр, где набор растёт от эконома до платины. На витрине
+ * каждый из них под тумблером конструктора, а блоки «Премиума» стоят
+ * призраками — их можно включить и посмотреть.
  */
 export default function AdarPlusConcept() {
   const concept = getConcept("plus");
 
   return (
-    <>
+    <AdarConfigurator tier="plus">
       <SkipLink />
       {showcaseChrome ? <ConceptBar current="plus" /> : null}
       <div data-concept="shop">
         <ShopHeader />
         <main id="content">
           <PlusHero showcase={featuredSets(3)} />
-          <SetShowcase
-            sets={railRow(0)}
-            title="Вся линейка одним движением"
-            note="Четырнадцать наборов от эконома до платины. Пролистайте и откройте любой — внутри полный состав и вес."
-          />
-          <GrowthScene stages={growthStages} />
-          <CatalogBrowser />
+          <Addon id="rail">
+            <SetShowcase
+              sets={railRow(0)}
+              title="Вся линейка одним движением"
+              note="Четырнадцать наборов от эконома до платины. Пролистайте и откройте любой — внутри полный состав и вес."
+            />
+          </Addon>
+          <Addon id="growth">
+            <GrowthScene stages={growthStages} />
+          </Addon>
+          <Addon id="search">
+            <CatalogBrowser />
+          </Addon>
           <ThemesGrid />
           <Advantages />
+          <Extra id="budget">
+            <BudgetPicker />
+          </Extra>
+          <Extra id="corporate">
+            <CorporateBlock />
+          </Extra>
+          <Extra id="archive">
+            <ArchiveDrum />
+          </Extra>
+          <Extra id="about">
+            <AboutCompany />
+          </Extra>
           <ClientsWall />
           <ContactSection />
         </main>
         <SiteFooter />
         {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
       </div>
-    </>
+    </AdarConfigurator>
   );
 }

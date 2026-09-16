@@ -10,9 +10,11 @@ import { ArchiveDrum } from "@/components/adar/premium/archive-drum";
 import { HeroStage } from "@/components/adar/premium/hero-stage";
 import { CorporateBlock } from "@/components/adar/premium/corporate-block";
 import { PremiumHeader } from "@/components/adar/premium/header";
+import { Addon } from "@/components/configurator/context";
 import { CartPanel } from "@/components/adar/ui/cart-panel";
 import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
+import { AdarConfigurator } from "@/components/adar/showcase/configurator";
 import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
 import { ContactSection } from "@/components/adar/ui/contact-section";
@@ -40,39 +42,59 @@ export const metadata: Metadata = {
  * в заголовках и шесть связанных сцен: кадр, цифры, каталог в объёме, подбор
  * по бюджету, расчёт партии и лента. Каталог оставлен светлым намеренно:
  * выбирать товар на тёмном тяжело, а перепад делает его центром страницы.
+ *
+ * Здесь всё входит в пакет, поэтому тумблеры конструктора только выключают:
+ * заказчик видит, что потеряет, взяв вариант дешевле. Каталог в объёме —
+ * это та же сцена «набор растёт», выросшая до кадра; тумблер у них общий.
  */
 export default function AdarPremiumConcept() {
   const concept = getConcept("premium");
 
   return (
     <CartProvider>
-      <SkipLink />
-      {showcaseChrome ? <ConceptBar current="premium" /> : null}
-      <div className="bg-adar-green-950">
-        <PremiumHeader />
-        <main id="content">
-          <HeroStage />
-          <AboutCompany />
-          <ArchiveDrum />
-          <CatalogFrame showcase={growthStages} />
-          <BudgetPicker />
-          <CatalogBrowser />
-          <SetShowcase
-            tone="dark"
-            sets={sets.filter((_, index) => index % 6 === 2)}
-            title="Каталог целиком"
-            note="Крутите ленту и открывайте любой набор — состав, вес и упаковка внутри."
-          />
-          <CorporateBlock />
-          <ThemesGrid tone="dark" />
-          <Advantages tone="dark" anchor="pochemu-adar" kicker="Почему ADAR" />
-          <ClientsWall tone="dark" />
-          <ContactSection tone="dark" />
-        </main>
-        <SiteFooter />
-      </div>
-      <CartPanel />
-      {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
+      <AdarConfigurator tier="premium">
+        <SkipLink />
+        {showcaseChrome ? <ConceptBar current="premium" /> : null}
+        <div className="bg-adar-green-950">
+          <PremiumHeader />
+          <main id="content">
+            <HeroStage />
+            <Addon id="about">
+              <AboutCompany />
+            </Addon>
+            <Addon id="archive">
+              <ArchiveDrum />
+            </Addon>
+            <Addon id="growth">
+              <CatalogFrame showcase={growthStages} />
+            </Addon>
+            <Addon id="budget">
+              <BudgetPicker />
+            </Addon>
+            <Addon id="search">
+              <CatalogBrowser />
+            </Addon>
+            <Addon id="rail">
+              <SetShowcase
+                tone="dark"
+                sets={sets.filter((_, index) => index % 6 === 2)}
+                title="Каталог целиком"
+                note="Крутите ленту и открывайте любой набор — состав, вес и упаковка внутри."
+              />
+            </Addon>
+            <Addon id="corporate">
+              <CorporateBlock />
+            </Addon>
+            <ThemesGrid tone="dark" />
+            <Advantages tone="dark" anchor="pochemu-adar" kicker="Почему ADAR" />
+            <ClientsWall tone="dark" />
+            <ContactSection tone="dark" />
+          </main>
+          <SiteFooter />
+        </div>
+        <CartPanel />
+        {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
+      </AdarConfigurator>
     </CartProvider>
   );
 }

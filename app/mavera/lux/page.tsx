@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { Addon, ConfiguratorProvider } from "@/components/configurator/context";
+import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { ParallaxFigure } from "@/components/mavera/lux/parallax-figure";
@@ -29,7 +30,7 @@ const voice = voices.lux;
  */
 export default function MaveraLux() {
   return (
-    <ConfiguratorProvider tier="lux" page="main" objectHref={`/mavera/lux/${projects[0].slug}`}>
+    <ConfiguratorProvider catalog={maveraCatalog} tier="lux" page="main" hrefs={maveraHrefs("lux", projects[0].slug)} frame="world">
       <VariantBar current="lux" />
 
       {/* Шапка-масthead: тонкие линейки, засечный логотип по центру. */}

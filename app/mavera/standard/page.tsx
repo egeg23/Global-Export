@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-import { Addon, ConfiguratorProvider } from "@/components/mavera/configurator/context";
+import { Addon, ConfiguratorProvider } from "@/components/configurator/context";
+import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Rise } from "@/components/mavera/reveal";
@@ -27,7 +28,7 @@ const voice = voices.standard;
 
 export default function MaveraStandard() {
   return (
-    <ConfiguratorProvider tier="standard" page="main" objectHref={`/mavera/standard/${projects[0].slug}`}>
+    <ConfiguratorProvider catalog={maveraCatalog} tier="standard" page="main" hrefs={maveraHrefs("standard", projects[0].slug)} frame="world">
       <VariantBar current="standard" />
 
       {/* Шапка — тонкая, липкая, без теней. */}

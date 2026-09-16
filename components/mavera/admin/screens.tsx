@@ -1,6 +1,6 @@
 "use client";
 
-import { Addon, useAddon } from "@/components/mavera/configurator/context";
+import { Addon, useAddon } from "@/components/configurator/context";
 import { cn } from "@/lib/cn";
 
 /**

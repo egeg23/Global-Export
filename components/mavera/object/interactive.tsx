@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import { Addon, useAddon } from "@/components/mavera/configurator/context";
+import { Addon, useAddon } from "@/components/configurator/context";
 import { useCountUp, useMotionPreferred } from "@/components/mavera/motion";
 import { FlatPlan } from "@/components/mavera/object/flat-plan";
 import { money } from "@/components/present/mavera/theme";

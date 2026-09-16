@@ -4,10 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { AdminScreen, adminSections, type AdminScreenId } from "@/components/mavera/admin/screens";
-import { useConfigurator } from "@/components/mavera/configurator/context";
+import { useConfigurator } from "@/components/configurator/context";
 import { BrowserFrame } from "@/components/present/mavera/frames";
 import { cn } from "@/lib/cn";
-import type { AddonId } from "@/content/mavera/addons";
 
 /**
  * Витрина панели управления.
@@ -39,7 +38,7 @@ const captions: Record<AdminScreenId, string> = {
 };
 
 /** На каком экране живёт допник панели — туда переключаемся, когда его включают. */
-const screenOf: Partial<Record<AddonId, AdminScreenId>> = {
+const screenOf: Partial<Record<string, AdminScreenId>> = {
   roles: "users",
   crm: "leads",
   import: "flats",

@@ -1,5 +1,4 @@
-import type { TierId } from "@/components/present/mavera/theme";
-import { addons, included, type AddonId } from "@/content/mavera/addons";
+import type { Catalog } from "@/lib/configurator/catalog";
 
 /**
  * Где живёт набор включённых допников.
@@ -11,14 +10,15 @@ import { addons, included, type AddonId } from "@/content/mavera/addons";
  *
  * Пустой набор кодируется словом, а не пустой строкой: отсутствие параметра
  * значит «не настраивали, взять пакет», а «ничего не включено» — это выбор.
+ *
+ * Ключ хранилища — проект и пакет: у MAVERA, ADAR и Global Export свои наборы.
  */
 
 const PARAM = "addons";
 const NONE = "none";
-const known = new Set<string>(addons.map((addon) => addon.id));
 const listeners = new Set<() => void>();
 
-const key = (tier: TierId) => `mavera:addons:${tier}`;
+const key = (project: string, tier: string) => `${project}:addons:${tier}`;
 
 function emit() {
   for (const listener of listeners) listener();
@@ -34,11 +34,11 @@ export function subscribe(listener: () => void) {
 }
 
 /** Сырая запись: из адреса, если она там есть, иначе из хранилища. null — не настраивали. */
-export function read(tier: TierId): string | null {
+export function read(project: string, tier: string): string | null {
   try {
     const fromUrl = new URLSearchParams(window.location.search).get(PARAM);
     if (fromUrl !== null) return fromUrl;
-    return window.localStorage.getItem(key(tier));
+    return window.localStorage.getItem(key(project, tier));
   } catch {
     return null;
   }
@@ -49,15 +49,16 @@ export function readOnServer(): string | null {
   return null;
 }
 
-export function parse(raw: string | null, tier: TierId): AddonId[] {
-  if (raw === null) return included[tier];
+export function parse(raw: string | null, catalog: Catalog, tier: string): string[] {
+  if (raw === null) return catalog.included[tier] ?? [];
   if (raw === NONE || raw === "") return [];
-  return raw.split(",").filter((id): id is AddonId => known.has(id));
+  const known = new Set(catalog.addons.map((addon) => addon.id));
+  return raw.split(",").filter((id) => known.has(id));
 }
 
-function encode(enabled: Iterable<AddonId>): string {
+function encode(catalog: Catalog, enabled: Iterable<string>): string {
   const set = new Set(enabled);
-  const ordered = addons.filter((addon) => set.has(addon.id)).map((addon) => addon.id);
+  const ordered = catalog.addons.filter((addon) => set.has(addon.id)).map((addon) => addon.id);
   return ordered.length ? ordered.join(",") : NONE;
 }
 
@@ -68,10 +69,10 @@ function setParam(raw: string | null) {
   window.history.replaceState(window.history.state, "", url);
 }
 
-export function write(tier: TierId, enabled: Iterable<AddonId>) {
-  const raw = encode(enabled);
+export function write(catalog: Catalog, tier: string, enabled: Iterable<string>) {
+  const raw = encode(catalog, enabled);
   try {
-    window.localStorage.setItem(key(tier), raw);
+    window.localStorage.setItem(key(catalog.project, tier), raw);
   } catch {
     /* приватный режим — останется только адрес */
   }
@@ -79,9 +80,9 @@ export function write(tier: TierId, enabled: Iterable<AddonId>) {
   emit();
 }
 
-export function clear(tier: TierId) {
+export function clear(project: string, tier: string) {
   try {
-    window.localStorage.removeItem(key(tier));
+    window.localStorage.removeItem(key(project, tier));
   } catch {
     /* нечего чистить */
   }
@@ -93,19 +94,19 @@ export function clear(tier: TierId) {
  * Набор из чужой ссылки запоминается, чтобы не потеряться при переходе на
  * соседнюю страницу. Вызывается из эффекта: это запись, а не чтение.
  */
-export function adopt(tier: TierId) {
+export function adopt(project: string, tier: string) {
   try {
     const fromUrl = new URLSearchParams(window.location.search).get(PARAM);
-    if (fromUrl !== null) window.localStorage.setItem(key(tier), fromUrl);
+    if (fromUrl !== null) window.localStorage.setItem(key(project, tier), fromUrl);
   } catch {
     /* без хранилища набор живёт только в адресе */
   }
 }
 
-/** Адрес текущей страницы с набором в параметре — для кнопки «Скопировать ссылку». */
-export function shareUrl(enabled: Iterable<AddonId>): string {
+/** Адрес текущей страницы с набором в параметре — для ссылки коллеге и для брифа. */
+export function shareUrl(catalog: Catalog, enabled: Iterable<string>): string {
   const url = new URL(window.location.href);
-  url.searchParams.set(PARAM, encode(enabled));
+  url.searchParams.set(PARAM, encode(catalog, enabled));
   return url.toString();
 }
 
@@ -121,7 +122,7 @@ export function shareUrl(enabled: Iterable<AddonId>): string {
  */
 export type Session = {
   /** Что включили последним — его блок подъезжает, пульсирует и умеет «было / стало». */
-  fresh: { id: AddonId; at: number } | null;
+  fresh: { id: string; at: number } | null;
   /** Смотрим «было»: свежий допник временно считается выключенным, цена не меняется. */
   peek: boolean;
   open: boolean;

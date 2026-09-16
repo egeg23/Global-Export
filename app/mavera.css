@@ -191,9 +191,11 @@
     }
   }
 
-  /* Результаты фильтра приезжают снизу с шагом. */
+  /* Результаты фильтра приезжают снизу с шагом. Кривая с запасным
+     значением: этим же классом конструктор поднимает свежий блок у ADAR и
+     Global Export, где токенов мира нет. */
   .w-row {
-    animation: w-row-in 0.42s var(--w-ease) both;
+    animation: w-row-in 0.42s var(--w-ease, cubic-bezier(0.2, 0, 0, 1)) both;
     animation-delay: var(--w-delay, 0ms);
   }
 
