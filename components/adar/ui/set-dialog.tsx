@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { useCart } from "@/lib/adar/cart";
 import { contentsOf } from "@/lib/adar/catalog";
@@ -166,14 +166,62 @@ export function SetDialog({ set, onClose }: { set: GiftSet | null; onClose: () =
   );
 }
 
+/** Приставка адреса открытой карточки: `#nabor-variant-n3-eko-standart`. */
+const HASH = "#nabor-";
+
+/** Своё событие: `replaceState` браузер молча проглатывает, не уведомляя никого. */
+const MOVED = "adar:nabor";
+
+function subscribe(onChange: () => void) {
+  window.addEventListener("hashchange", onChange);
+  window.addEventListener(MOVED, onChange);
+  return () => {
+    window.removeEventListener("hashchange", onChange);
+    window.removeEventListener(MOVED, onChange);
+  };
+}
+
+const hashNow = () => (typeof window === "undefined" ? "" : window.location.hash);
+/** На сервере адреса нет — значит и открытой карточки нет. */
+const hashOnServer = () => "";
+
+function writeHash(next: string) {
+  const { pathname, search } = window.location;
+  window.history.replaceState(null, "", `${pathname}${search}${next}`);
+  window.dispatchEvent(new Event(MOVED));
+}
+
 /**
  * Состояние карточки и сама карточка одним вызовом — чтобы каталог и лента
  * не заводили по три строки состояния каждый.
+ *
+ * Если передать каталог, открытая карточка начинает жить в адресе страницы:
+ * `…/#nabor-variant-n7-premium` открывает набор сразу, и такую ссылку можно
+ * переслать — «вот этот». На неё же указывает разметка товара для поиска,
+ * иначе восемьдесят наборов в ней были бы безадресными.
+ *
+ * Каталог передаёт кто-то один на странице: два владельца адреса открыли бы
+ * по карточке каждый.
  */
-export function useSetDialog() {
-  const [set, setSet] = useState<GiftSet | null>(null);
-  return {
-    open: setSet,
-    dialog: <SetDialog set={set} onClose={() => setSet(null)} />,
-  };
+export function useSetDialog(addressed?: GiftSet[]) {
+  const [picked, setPicked] = useState<GiftSet | null>(null);
+  const hash = useSyncExternalStore(subscribe, hashNow, hashOnServer);
+
+  const fromHash = addressed?.find((item) => hash === `${HASH}${item.slug}`) ?? null;
+  const set = addressed ? fromHash : picked;
+
+  const open = useCallback(
+    (next: GiftSet) => {
+      if (addressed) writeHash(`${HASH}${next.slug}`);
+      else setPicked(next);
+    },
+    [addressed],
+  );
+
+  const close = useCallback(() => {
+    if (addressed) writeHash("");
+    else setPicked(null);
+  }, [addressed]);
+
+  return { open, dialog: <SetDialog set={set} onClose={close} /> };
 }

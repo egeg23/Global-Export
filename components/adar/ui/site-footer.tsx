@@ -79,9 +79,19 @@ export function SiteFooter() {
       </Shell>
 
       <Shell size="wide" className="mt-14 border-t border-white/10 pt-8">
-        <p className="text-xs text-adar-cream-50/55">
-          © <CurrentYear fallback={buildYear} /> ADAR
-        </p>
+        {/*
+          Вторая строка — фраза с их собственной новогодней съёмки. Юмор в
+          подвале просили в брифе; выдумывать шутку за компанию не нужно,
+          когда у неё есть своя.
+        */}
+        <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+          <p className="text-xs text-adar-cream-50/55">
+            © <CurrentYear fallback={buildYear} /> ADAR
+          </p>
+          <p className="font-adar-display text-sm tracking-wide text-adar-gold-400/85">
+            Всё будет в шоколаде
+          </p>
+        </div>
       </Shell>
     </footer>
   );

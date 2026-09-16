@@ -42,7 +42,9 @@ export const SEARCH_EVENT = "adar:search";
 export function CatalogBrowser() {
   const id = useId();
   const field = useRef<HTMLInputElement>(null);
-  const { open, dialog } = useSetDialog();
+  // Адрес открытой карточки держит каталог: он один на странице и в нём есть
+  // все наборы, а ленты показывают лишь срез.
+  const { open, dialog } = useSetDialog(sets);
   const [query, setQuery] = useState("");
   const [line, setLine] = useState<SetLine | "all">("all");
   const [budget, setBudget] = useState(priceRange.max);
