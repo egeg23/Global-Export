@@ -36,7 +36,8 @@ export type AddonId =
   | "cabinet"
   | "partners"
   | "pay"
-  | "commerce-calc";
+  | "commerce-calc"
+  | "forecast";
 
 export type AddonWhere = "main" | "object" | "both" | "admin" | "integrations";
 
@@ -71,6 +72,7 @@ export const addons: Addon[] = [
   { id: "progress", label: "Ход строительства", priceUsd: 350, effect: "Фотоотчёт по месяцам в карточке ЖК", where: "object" },
   { id: "booking", label: "Онлайн-бронирование", priceUsd: 900, effect: "Бронь на 5 дней вместо заявки", where: "object" },
   { id: "tour", label: "3D-тур по квартире", priceUsd: 900, effect: "Панорама 360° в карточке ЖК", where: "object" },
+  { id: "forecast", label: "Прогноз стоимости квартиры", priceUsd: 350, effect: "График роста цены выбранной квартиры по годам в карточке ЖК", where: "object" },
 
   /* Панель управления */
   { id: "roles", label: "Роли и права", priceUsd: 400, effect: "Матрица прав по ролям в разделе «Пользователи»", where: "admin" },
@@ -98,6 +100,7 @@ export const included: Record<TierId, AddonId[]> = {
     "promo",
     "calc",
     "commerce-calc",
+    "forecast",
     "chess",
     "progress",
     "booking",
@@ -116,6 +119,7 @@ export const included: Record<TierId, AddonId[]> = {
     "promo",
     "calc",
     "commerce-calc",
+    "forecast",
     "chess",
     "progress",
     "booking",

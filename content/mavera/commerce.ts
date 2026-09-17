@@ -184,6 +184,75 @@ export const commerceObjects: CommerceObject[] = [
 
 export const commerceKinds: CommerceKind[] = ["Офис", "Торговое", "Стрит-ритейл", "Здание", "Склад"];
 
+/** То, что нужно для расчёта доходности: и объект из списка, и оценка по параметрам. */
+export type Yieldable = {
+  area: number;
+  priceUsd?: number;
+  rateUsdM2: number;
+  occupancy: number;
+  opexUsdM2: number;
+};
+
+/**
+ * Районы Ташкента с поправкой к базовой цене и ставке: центр дороже,
+ * окраина дешевле. Коэффициенты — оценка по объявлениям 2026 года, правятся
+ * заказчиком вместе со ставками.
+ */
+export type District = { id: string; name: string; factor: number; note: string };
+
+export const districts: District[] = [
+  { id: "mirabad", name: "Мирабадский", factor: 1.15, note: "Центр: посольства, банки, лучшие рестораны" },
+  { id: "yakkasaray", name: "Яккасарайский", factor: 1.12, note: "Деловой центр вдоль Бабура и Шота Руставели" },
+  { id: "mirzo-ulugbek", name: "Мирзо-Улугбекский", factor: 1.05, note: "Амира Темура, Tashkent City, метро" },
+  { id: "yunusabad", name: "Юнусабадский", factor: 1.0, note: "Крупные ЖК, торговые коридоры, кольцевая" },
+  { id: "shaykhantakhur", name: "Шайхантахурский", factor: 0.95, note: "Старый город, базары, плотный поток" },
+  { id: "yashnabad", name: "Яшнабадский", factor: 0.92, note: "Новые кварталы у Ташкент-Сити и вокзала" },
+  { id: "chilanzar", name: "Чиланзарский", factor: 0.9, note: "Спальный юго-запад, метро, семейный ритейл" },
+  { id: "sergeli", name: "Сергелийский", factor: 0.8, note: "Новый юг, склады и автотрафик" },
+];
+
+/** Базовые ставки по типу помещения — за м²: продажа и аренда в месяц, $. */
+export const kindRates: Record<CommerceKind, { saleUsdM2: number; rentUsdM2: number; occupancy: number; opexUsdM2: number }> = {
+  Офис: { saleUsdM2: 1_900, rentUsdM2: 18, occupancy: 0.9, opexUsdM2: 2.5 },
+  Торговое: { saleUsdM2: 2_400, rentUsdM2: 28, occupancy: 0.9, opexUsdM2: 3 },
+  "Стрит-ритейл": { saleUsdM2: 2_900, rentUsdM2: 34, occupancy: 0.93, opexUsdM2: 2.5 },
+  Здание: { saleUsdM2: 1_500, rentUsdM2: 14, occupancy: 0.85, opexUsdM2: 2 },
+  Склад: { saleUsdM2: 700, rentUsdM2: 6, occupancy: 0.95, opexUsdM2: 1 },
+};
+
+/** Крупные площади дешевле за метр — и в продаже, и в аренде. */
+function sizeFactor(area: number): number {
+  if (area <= 100) return 1.05;
+  if (area <= 300) return 1;
+  if (area <= 800) return 0.93;
+  return 0.86;
+}
+
+export type Estimate = Yieldable & {
+  kind: CommerceKind;
+  district: District;
+  /** Цена и ставка за метр после поправок — для подписи. */
+  saleUsdM2: number;
+};
+
+/** Оценка помещения, которого нет в списке: район, тип, метраж. */
+export function estimateOf(kind: CommerceKind, districtId: string, area: number): Estimate {
+  const district = districts.find((item) => item.id === districtId) ?? districts[0];
+  const base = kindRates[kind];
+  const factor = district.factor * sizeFactor(area);
+  const saleUsdM2 = Math.round(base.saleUsdM2 * factor);
+  return {
+    kind,
+    district,
+    area,
+    saleUsdM2,
+    priceUsd: saleUsdM2 * area,
+    rateUsdM2: Math.round(base.rentUsdM2 * factor * 10) / 10,
+    occupancy: base.occupancy,
+    opexUsdM2: base.opexUsdM2,
+  };
+}
+
 /**
  * Банки, которые кредитуют коммерческую недвижимость. Ставки и сроки —
  * условные, как и у жилья: реальные правятся в панели управления.
@@ -196,7 +265,7 @@ export const commerceBanks: Bank[] = [
 ];
 
 /** Что приносит объект при сдаче в аренду — в месяц и в год, до и после эксплуатации. */
-export function rentalOf(object: CommerceObject) {
+export function rentalOf(object: Yieldable) {
   const gross = object.area * object.rateUsdM2 * object.occupancy;
   const opex = object.area * object.opexUsdM2;
   const net = Math.max(gross - opex, 0);
@@ -212,7 +281,7 @@ export function rentalOf(object: CommerceObject) {
 }
 
 /** Сделка с банком: взнос, кредит, платёж, поток после платежа. */
-export function financingOf(object: CommerceObject, bank: Bank, downShare: number, years: number) {
+export function financingOf(object: Yieldable, bank: Bank, downShare: number, years: number) {
   const price = object.priceUsd ?? 0;
   const share = Math.min(Math.max(downShare, bank.down), 0.9);
   const down = Math.round(price * share);

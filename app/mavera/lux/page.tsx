@@ -55,6 +55,7 @@ export default function MaveraLux() {
               ["Архитектура", "#interior"],
               ["Район", "#district"],
               ["Материалы", "#materials"],
+              ["Коммерция", "#commerce"],
               ["Запись на показ", "#coupon"],
             ].map(([item, href], index) => (
               <a

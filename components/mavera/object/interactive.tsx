@@ -4,9 +4,11 @@ import { useMemo, useState } from "react";
 
 import { Addon, useAddon } from "@/components/configurator/context";
 import { useCountUp, useMotionPreferred } from "@/components/mavera/motion";
+import { PriceForecast } from "@/components/mavera/forecast/chart";
 import { FlatPlan } from "@/components/mavera/object/flat-plan";
 import { money } from "@/components/present/mavera/theme";
 import { banks, monthlyPayment } from "@/content/mavera/banks";
+import { forecastOf } from "@/content/mavera/forecast";
 import type { Plan } from "@/content/mavera/plans";
 import { cn } from "@/lib/cn";
 import { area, filterFlats, type Flat } from "@/lib/mavera/catalog";
@@ -49,12 +51,17 @@ export function ObjectInteractive({
   corpuses,
   plans,
   projectName,
+  district,
+  due,
 }: {
   variant: Variant;
   flats: Flat[];
   corpuses: number;
   plans: Plan[];
   projectName: string;
+  /** Район и срок сдачи — для прогноза цены по годам. */
+  district: string;
+  due: string;
 }) {
   const [rooms, setRooms] = useState<number[]>([]);
   const [corpus, setCorpus] = useState<number | null>(null);
@@ -342,6 +349,16 @@ export function ObjectInteractive({
               <p className="mt-1 text-sm text-[var(--w-muted)]">
                 {money(Math.round(selected.priceUsd / selected.area), "uzs")} за м²
               </p>
+
+              {/* Допник «Прогноз стоимости»: что будет с ценой этой квартиры через пять лет. */}
+              <Addon id="forecast" compact className="mt-5 border-t border-[var(--w-line)] pt-5">
+                <PriceForecast
+                  key={selected.id}
+                  compact
+                  title={`${selected.typeName}, ${area(selected.area)} м² · прогноз цены`}
+                  points={forecastOf({ priceUsd: selected.priceUsd, district, due })}
+                />
+              </Addon>
 
               {/* Допник «Избранное и подборка»: сердечко и подборка, которая уходит ссылкой. */}
               <Addon id="favorites" compact className="mt-4">

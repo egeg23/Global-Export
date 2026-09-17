@@ -6,6 +6,7 @@ import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Genplan, Picker } from "@/components/present/mavera/interactive";
 import { Commerce } from "@/components/mavera/commerce/section";
+import { ProjectForecast } from "@/components/mavera/forecast/project-forecast";
 import { PaletteBar, PaletteRoot, PaletteSection } from "@/components/mavera/premium/palette";
 import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scenes";
 import { Rise } from "@/components/mavera/reveal";
@@ -220,6 +221,11 @@ export default function MaveraPremium() {
                   </div>
                 ))}
               </div>
+            </Rise>
+
+            {/* Обычная квартира: не доходность, а что будет с ценой через пять лет. */}
+            <Rise delay={160} className="mt-16">
+              <ProjectForecast variant="premium" />
             </Rise>
           </div>
         </PaletteSection>

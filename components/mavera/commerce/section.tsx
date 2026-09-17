@@ -8,11 +8,14 @@ import { Rise } from "@/components/mavera/reveal";
 import { money, type TierId } from "@/components/present/mavera/theme";
 import {
   commerceBanks,
+  commerceKinds,
   commerceObjects,
+  districts,
+  estimateOf,
   financingOf,
   rentalOf,
   type CommerceDeal,
-  type CommerceObject,
+  type CommerceKind,
 } from "@/content/mavera/commerce";
 import { cn } from "@/lib/cn";
 
@@ -25,6 +28,10 @@ import { cn } from "@/lib/cn";
  * взнос, срок, платёж и то, что остаётся в месяц после платежа. Заявка уходит
  * банку-партнёру с этим же расчётом: менеджер банка видит цифры, а не «хочу
  * купить помещение».
+ *
+ * У калькулятора два режима: объект из списка MAVERA и «по параметрам» —
+ * район Ташкента, тип помещения и метраж, когда нужного помещения в списке
+ * нет. Второй считает по базовым ставкам с поправкой на район и размер.
  *
  * Калькулятор и заявка — допник «commerce-calc»: в «Премиуме» и «Noir» в пакете,
  * в «Стандарте» и «Люксе» включается тумблером. Список объектов — база.
@@ -207,12 +214,21 @@ export function Calculator({
   const setId = onSelect ?? setOwnId;
   const object = forSale.find((item) => item.id === id) ?? forSale[0];
 
+  // Второй режим: помещения нет в списке — считаем по району, типу и метражу.
+  const [mode, setMode] = useState<"object" | "custom">("object");
+  const [kind, setKind] = useState<CommerceKind>("Стрит-ритейл");
+  const [districtId, setDistrictId] = useState(districts[2].id);
+  const [area, setArea] = useState(120);
+  const estimate = estimateOf(kind, districtId, area);
+  const subject = mode === "object" ? object : estimate;
+  const subjectLabel = mode === "object" ? object.short : `${kind}, ${area} м², ${estimate.district.name} район`;
+
   const [bankId, setBankId] = useState(commerceBanks[0].id);
   const bank = commerceBanks.find((item) => item.id === bankId) ?? commerceBanks[0];
   const [downShare, setDownShare] = useState(0.3);
   const [term, setTerm] = useState(5);
 
-  const deal = financingOf(object, bank, downShare, term);
+  const deal = financingOf(subject, bank, downShare, term);
   const radius = radiusOf(variant);
   const pill = variant === "premium" || variant === "noir" ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none";
 
@@ -228,13 +244,70 @@ export function Calculator({
         <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[var(--w-accent)]">Расчёт покупки</p>
         <h3 className="mt-3 text-2xl leading-snug">Взнос, срок и что останется после платежа банку</h3>
 
-        <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Объект">
-          {forSale.map((item) => (
-            <button key={item.id} type="button" aria-pressed={item.id === object.id} onClick={() => setId(item.id)} className={chipOf(variant, item.id === object.id)}>
-              {item.short}
+        <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Режим расчёта">
+          {([["object", "Объект MAVERA"], ["custom", "По параметрам: район и метраж"]] as const).map(([value, label]) => (
+            <button key={value} type="button" aria-pressed={mode === value} onClick={() => setMode(value)} className={chipOf(variant, mode === value)}>
+              {label}
             </button>
           ))}
         </div>
+
+        {mode === "object" ? (
+          <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Объект">
+            {forSale.map((item) => (
+              <button key={item.id} type="button" aria-pressed={item.id === object.id} onClick={() => setId(item.id)} className={chipOf(variant, item.id === object.id)}>
+                {item.short}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-4 space-y-4">
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Тип помещения">
+              {commerceKinds.map((item) => (
+                <button key={item} type="button" aria-pressed={kind === item} onClick={() => setKind(item)} className={chipOf(variant, kind === item)}>
+                  {item}
+                </button>
+              ))}
+            </div>
+            <label className="block">
+              <span className="text-sm text-[var(--w-muted)]">Район</span>
+              <select
+                aria-label="Район"
+                value={districtId}
+                onChange={(event) => setDistrictId(event.target.value)}
+                className={cn(
+                  "mt-1.5 w-full border border-[var(--w-line)] bg-[var(--w-bg)] px-3.5 py-2.5 text-sm text-[var(--w-ink)] outline-none focus:border-[var(--w-accent)]",
+                  variant === "lux" ? "rounded-[2px]" : variant === "standard" ? "rounded-none" : "rounded-[var(--w-radius)]",
+                )}
+              >
+                {districts.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name} — {item.note}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
+              <span className="flex items-baseline justify-between text-sm">
+                <span className="text-[var(--w-muted)]">Площадь</span>
+                <span className="tabular-nums">{area.toLocaleString("ru-RU")} м²</span>
+              </span>
+              <input
+                type="range"
+                aria-label="Площадь"
+                min={30}
+                max={2000}
+                step={10}
+                value={area}
+                onChange={(event) => setArea(Number(event.target.value))}
+                className="mt-2 w-full accent-[var(--w-accent)]"
+              />
+            </label>
+            <p className="text-xs leading-relaxed text-[var(--w-muted)]">
+              Оценка: {money(estimate.saleUsdM2, "uzs")} за м² покупка · {money(estimate.rateUsdM2, "uzs")} за м² в месяц аренда — {estimate.district.note.toLowerCase()}.
+            </p>
+          </div>
+        )}
 
         <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Банк">
           {commerceBanks.map((item) => (
@@ -294,7 +367,7 @@ export function Calculator({
 
         <dl className="mt-6 grid gap-x-6 gap-y-3 border-t border-[var(--w-line)] pt-5 text-sm sm:grid-cols-2">
           {[
-            ["Цена объекта", money(object.priceUsd ?? 0, "uzs")],
+            [mode === "object" ? "Цена объекта" : "Оценка стоимости", money(subject.priceUsd ?? 0, "uzs")],
             ["Сумма кредита", money(deal.loan, "uzs")],
             ["Платёж банку в месяц", money(Math.round(deal.monthly), "uzs")],
             ["Аренда после эксплуатации", `≈ ${money(Math.round(deal.rental.netMonth), "uzs")} / мес`],
@@ -310,13 +383,13 @@ export function Calculator({
           ))}
         </dl>
         <p className="mt-4 text-xs leading-relaxed text-[var(--w-muted)]">
-          Аренда считается по рыночной ставке {money(object.rateUsdM2, "uzs")} за м² с заполняемостью {Math.round(object.occupancy * 100)}% минус
+          Аренда считается по рыночной ставке {money(subject.rateUsdM2, "uzs")} за м² с заполняемостью {Math.round(subject.occupancy * 100)}% минус
           эксплуатация. Ставки банков условные, заданы для примера — в готовом сайте правятся в панели управления. Точные условия
           подтверждает банк.
         </p>
       </div>
 
-      <BankRequest variant={variant} object={object} bankName={bank.name} down={deal.down} term={deal.term} className="lg:col-span-5" />
+      <BankRequest variant={variant} subject={subjectLabel} bankName={bank.name} down={deal.down} term={deal.term} className="lg:col-span-5" />
     </div>
   );
 }
@@ -324,14 +397,15 @@ export function Calculator({
 /** Заявка в банк: уходит с расчётом, а не с «хочу купить». */
 function BankRequest({
   variant,
-  object,
+  subject,
   bankName,
   down,
   term,
   className,
 }: {
   variant: TierId;
-  object: CommerceObject;
+  /** Что покупают: объект из списка или «Стрит-ритейл, 120 м², Мирабадский район». */
+  subject: string;
   bankName: string;
   down: number;
   term: number;
@@ -368,8 +442,8 @@ function BankRequest({
 
       {sent ? (
         <p role="status" className={cn("mv-fade mt-6 border border-[var(--w-accent)] bg-[var(--w-accent-soft)] px-5 py-4 text-sm", radius)}>
-          Заявка отправлена в {bankName}. Копия с расчётом по объекту «{object.name}» — у вашего менеджера. Демонстрация: на витрине заявка
-          никуда не уходит.
+          Заявка отправлена в {bankName}. Копия с расчётом ({subject}) — у вашего менеджера. Демонстрация: на витрине заявка никуда не
+          уходит.
         </p>
       ) : (
         <form onSubmit={submit} noValidate className="mt-6">
@@ -382,7 +456,7 @@ function BankRequest({
             <input type="tel" aria-label="Телефон" value={contact} onChange={(event) => setContact(event.target.value)} placeholder="+998 __ ___ __ __" className={field} />
           </label>
           <dl className="mt-4 space-y-1.5 text-xs text-[var(--w-muted)]">
-            <div className="flex justify-between gap-4"><dt>Объект</dt><dd className="text-right text-[var(--w-ink)]">{object.short}</dd></div>
+            <div className="flex justify-between gap-4"><dt>Объект</dt><dd className="text-right text-[var(--w-ink)]">{subject}</dd></div>
             <div className="flex justify-between gap-4"><dt>Взнос</dt><dd className="tabular-nums text-[var(--w-ink)]">{money(down, "uzs")}</dd></div>
             <div className="flex justify-between gap-4"><dt>Срок</dt><dd className="tabular-nums text-[var(--w-ink)]">{years(term)}</dd></div>
           </dl>

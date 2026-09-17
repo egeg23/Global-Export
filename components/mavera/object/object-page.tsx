@@ -242,6 +242,8 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
               corpuses={corpuses}
               plans={plans}
               projectName={project.name}
+              district={project.district}
+              due={project.due}
             />
           </Rise>
         </div>
