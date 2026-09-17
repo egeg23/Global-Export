@@ -10,7 +10,9 @@ import { News, Reviews } from "@/components/mavera/sections";
 import { StandardCatalog } from "@/components/mavera/standard/catalog";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
-import { commercial, projects, stats, terms } from "@/content/mavera/data";
+import { projects, stats, terms } from "@/content/mavera/data";
+import { commerceObjects } from "@/content/mavera/commerce";
+import { Calculator } from "@/components/mavera/commerce/section";
 import { expenses, finishes, voices } from "@/content/mavera/voice";
 import { cn } from "@/lib/cn";
 
@@ -290,11 +292,11 @@ export default function MaveraStandard() {
                 </tr>
               </thead>
               <tbody>
-                {commercial.map((item) => (
-                  <tr key={item.name} className="border-b border-[var(--w-line)]">
+                {commerceObjects.map((item) => (
+                  <tr key={item.id} className="border-b border-[var(--w-line)]">
                     <td className="py-4 pr-6">{item.name}</td>
                     <td className="py-4 pr-6 text-[var(--w-muted)]">{item.kind}</td>
-                    <td className="py-4 pr-6 tabular-nums">{item.area}</td>
+                    <td className="py-4 pr-6 tabular-nums">{item.area.toLocaleString("ru-RU")} м²</td>
                     <td className="py-4 pr-6 text-[var(--w-muted)]">{item.deal}</td>
                     <td className="py-4">
                       <span className="bg-[var(--w-accent-soft)] px-2.5 py-1 text-[0.7rem] uppercase tracking-[0.12em] text-[var(--w-accent)]">
@@ -306,6 +308,11 @@ export default function MaveraStandard() {
               </tbody>
             </table>
           </Rise>
+
+          {/* Допник: калькулятор покупки коммерции и заявка в банк. В «Стандарте» — тумблером. */}
+          <Addon id="commerce-calc" anchor="commerce-calc" className="mt-10 scroll-mt-24">
+            <Calculator variant="standard" />
+          </Addon>
         </div>
       </section>
 

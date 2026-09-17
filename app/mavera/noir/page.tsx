@@ -6,6 +6,7 @@ import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Genplan, Picker } from "@/components/present/mavera/interactive";
 import { Amenities, Collection, Manifesto, NoirHero } from "@/components/mavera/noir/scenes";
+import { Commerce } from "@/components/mavera/commerce/section";
 import { PaletteBar, PaletteRoot, PaletteSection } from "@/components/mavera/premium/palette";
 import { Counters } from "@/components/mavera/premium/scenes";
 import { Rise } from "@/components/mavera/reveal";
@@ -50,6 +51,7 @@ export default function MaveraNoir() {
                 ["Генплан", "#genplan"],
                 ["Подбор", "#picker"],
                 ["Сервис", "#amenities"],
+                ["Коммерция", "#commerce"],
                 ["Контакты", "#contacts"],
               ].map(([item, href]) => (
                 <a key={item} href={href} className="transition-colors hover:text-[var(--w-ink)]">
@@ -242,8 +244,13 @@ export default function MaveraNoir() {
           </div>
         </PaletteSection>
 
+        {/* Коммерческая недвижимость: объекты в Ташкенте, доходность, заявка в банк. */}
+        <PaletteSection id="commerce" tone="paper" anchor="commerce">
+          <Commerce variant="noir" title={voice.commercial.title} note={voice.commercial.note} />
+        </PaletteSection>
+
         {/* Сделка и вопросы. */}
-        <PaletteSection id="deal" tone="paper">
+        <PaletteSection id="deal" tone="bg">
           <div className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
             <Rise className="max-w-2xl">
               <p className="flex items-center gap-4 text-[0.68rem] uppercase tracking-[0.36em] text-[var(--w-accent)]">
@@ -281,7 +288,7 @@ export default function MaveraNoir() {
         </PaletteSection>
 
         {/* Допники «Отзывы» и «Новости». */}
-        <PaletteSection id="voices">
+        <PaletteSection id="voices" tone="paper">
           <Addon id="reviews">
             <Reviews variant="noir" />
           </Addon>

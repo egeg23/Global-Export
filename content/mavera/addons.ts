@@ -35,7 +35,8 @@ export type AddonId =
   | "audit"
   | "cabinet"
   | "partners"
-  | "pay";
+  | "pay"
+  | "commerce-calc";
 
 export type AddonWhere = "main" | "object" | "both" | "admin" | "integrations";
 
@@ -60,6 +61,7 @@ export const addons: Addon[] = [
   { id: "promo", label: "Строка условий покупки", priceUsd: 200, effect: "Ипотека, рассрочка, скидка над первым экраном", where: "main" },
   { id: "reviews", label: "Отзывы жильцов", priceUsd: 350, effect: "Три отзыва с оценкой перед формой заявки", where: "main" },
   { id: "news", label: "Новости и пресс-центр", priceUsd: 600, effect: "Лента новостей компании на главной", where: "main" },
+  { id: "commerce-calc", label: "Калькулятор доходности и заявка в банк", priceUsd: 600, effect: "Взнос, срок, аренда — расчёт по объекту коммерции и заявка банку-партнёру", where: "main" },
 
   /* Карточка ЖК */
   { id: "map", label: "Интерактивная карта", priceUsd: 0, effect: "Расположение с картой в карточке ЖК", where: "object" },
@@ -95,6 +97,7 @@ export const included: Record<TierId, AddonId[]> = {
     "hero",
     "promo",
     "calc",
+    "commerce-calc",
     "chess",
     "progress",
     "booking",
@@ -112,6 +115,7 @@ export const included: Record<TierId, AddonId[]> = {
     "hero",
     "promo",
     "calc",
+    "commerce-calc",
     "chess",
     "progress",
     "booking",

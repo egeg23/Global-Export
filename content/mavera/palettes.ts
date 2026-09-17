@@ -116,6 +116,7 @@ export const premiumSections: { id: string; label: string }[] = [
   { id: "amenities", label: "Сервис резиденций" },
   { id: "progress", label: "Ход строительства" },
   { id: "invest", label: "Инвестору" },
+  { id: "commerce", label: "Коммерческая недвижимость" },
   { id: "deal", label: "Сделка и вопросы" },
   { id: "voices", label: "Отзывы и новости" },
   { id: "contacts", label: "Контакты" },

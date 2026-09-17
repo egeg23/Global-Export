@@ -5,6 +5,7 @@ import { Addon, ConfiguratorProvider } from "@/components/configurator/context";
 import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { Genplan, Picker } from "@/components/present/mavera/interactive";
+import { Commerce } from "@/components/mavera/commerce/section";
 import { PaletteBar, PaletteRoot, PaletteSection } from "@/components/mavera/premium/palette";
 import { CinemaHero, Counters, FilmRail } from "@/components/mavera/premium/scenes";
 import { Rise } from "@/components/mavera/reveal";
@@ -47,6 +48,7 @@ export default function MaveraPremium() {
                 ["Генплан", "#genplan"],
                 ["Подбор", "#picker"],
                 ["Ход работ", "#progress"],
+                ["Коммерция", "#commerce"],
                 ["Контакты", "#contacts"],
               ].map(([item, href]) => (
                 <a key={item} href={href} className="transition-colors hover:text-[var(--w-ink)]">
@@ -222,8 +224,13 @@ export default function MaveraPremium() {
           </div>
         </PaletteSection>
 
+        {/* Коммерческая недвижимость: объекты в Ташкенте, доходность, заявка в банк. */}
+        <PaletteSection id="commerce" tone="paper" anchor="commerce">
+          <Commerce variant="premium" title={voice.commercial.title} note={voice.commercial.note} />
+        </PaletteSection>
+
         {/* Только в «Премиуме»: порядок онлайн-сделки и вопросы к нему. */}
-        <PaletteSection id="deal" tone="paper">
+        <PaletteSection id="deal" tone="bg">
           <div className="mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8">
             <Rise className="max-w-2xl">
               <p className="text-[0.7rem] uppercase tracking-[0.3em] text-[var(--w-accent)]">
@@ -264,7 +271,7 @@ export default function MaveraPremium() {
         </PaletteSection>
 
         {/* Допники «Отзывы» и «Новости» — перед финальным кадром. */}
-        <PaletteSection id="voices">
+        <PaletteSection id="voices" tone="paper">
           <Addon id="reviews">
             <Reviews variant="premium" />
           </Addon>

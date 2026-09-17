@@ -8,6 +8,7 @@ import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
 import { ParallaxFigure } from "@/components/mavera/lux/parallax-figure";
 import { Rise } from "@/components/mavera/reveal";
+import { Commerce } from "@/components/mavera/commerce/section";
 import { News, Reviews } from "@/components/mavera/sections";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money } from "@/components/present/mavera/theme";
@@ -405,6 +406,11 @@ export default function MaveraLux() {
       </Addon>
 
       {/* Запись на показ — купон в конце выпуска. */}
+      {/* Коммерческая недвижимость: объекты, доходность; калькулятор и заявка в банк — допник. */}
+      <section id="commerce" className="scroll-mt-6 border-t border-[var(--w-line)]">
+        <Commerce variant="lux" title={voice.commercial.title} note={voice.commercial.note} className="py-20" />
+      </section>
+
       <section id="coupon" className="scroll-mt-6 bg-[var(--w-paper)]">
         <div className="mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8">
           <Rise className="mx-auto max-w-3xl border-2 border-dashed border-[var(--w-accent)] bg-[var(--w-surface)] p-8 text-center sm:p-12">
