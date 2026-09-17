@@ -2,13 +2,53 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 
 import { money } from "@/components/present/mavera/theme";
 import type { Project } from "@/content/mavera/data";
 import { cn } from "@/lib/cn";
 
 const segments = ["Все", "Эконом", "Комфорт", "Бизнес"] as const;
+type Segment = (typeof segments)[number];
+
+/*
+ * Выбранный сегмент живёт в адресе страницы — как и обещает подводка к
+ * каталогу: ссылку на «только бизнес-класс» можно отправить кому угодно.
+ * В адресе латиницей, чтобы ссылка читалась и не кодировалась в проценты.
+ */
+const PARAM = "segment";
+const slugOf: Record<Segment, string | null> = { Все: null, Эконом: "econom", Комфорт: "comfort", Бизнес: "business" };
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  window.addEventListener("popstate", listener);
+  return () => {
+    listeners.delete(listener);
+    window.removeEventListener("popstate", listener);
+  };
+}
+
+function readSegment(): Segment {
+  try {
+    const slug = new URLSearchParams(window.location.search).get(PARAM);
+    return segments.find((item) => slugOf[item] === slug) ?? "Все";
+  } catch {
+    return "Все";
+  }
+}
+
+/** На сервере и при гидрации — все проекты; выбор из адреса подхватится сразу после. */
+const readOnServer = (): Segment => "Все";
+
+function writeSegment(value: Segment) {
+  const url = new URL(window.location.href);
+  const slug = slugOf[value];
+  if (slug) url.searchParams.set(PARAM, slug);
+  else url.searchParams.delete(PARAM);
+  window.history.replaceState(window.history.state, "", url);
+  for (const listener of listeners) listener();
+}
 
 /**
  * Каталог «Стандарта»: фильтр, который действительно фильтрует.
@@ -23,7 +63,7 @@ const segments = ["Все", "Эконом", "Комфорт", "Бизнес"] as
  * должен и выглядеть, и уметь проще, чем за $8 900.
  */
 export function StandardCatalog({ claims, projects }: { claims: Record<string, string>; projects: Project[] }) {
-  const [segment, setSegment] = useState<(typeof segments)[number]>("Все");
+  const segment = useSyncExternalStore(subscribe, readSegment, readOnServer);
 
   const list = projects.filter((p) => segment === "Все" || p.segment === segment);
 
@@ -40,7 +80,7 @@ export function StandardCatalog({ claims, projects }: { claims: Record<string, s
       <div className="flex flex-wrap items-center justify-between gap-6 border-b border-[var(--w-line)] pb-6">
         <div className="flex flex-wrap gap-2">
           {segments.map((item) => (
-            <button key={item} type="button" onClick={() => setSegment(item)} className={chip(segment === item)}>
+            <button key={item} type="button" aria-pressed={segment === item} onClick={() => writeSegment(item)} className={chip(segment === item)}>
               {item}
             </button>
           ))}
