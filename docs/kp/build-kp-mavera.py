@@ -55,6 +55,9 @@ def fonts_css() -> str:
 
 FONTS = fonts_css()
 LOGO = base64.b64encode((HERE / "mavera-logo.png").read_bytes()).decode()
+# Подпись — с прозрачным фоном, чтобы легла на линию, а не белым прямоугольником.
+SIGN = base64.b64encode((HERE / "signature.png").read_bytes()).decode()
+SIGN_DATE = "17.09.2026"
 
 GREEN_900, GREEN_700, GREEN_500 = "#10261c", "#1d4535", "#35735a"
 GOLD, GOLD_DARK = "#d0a03c", "#ad7f26"
@@ -279,8 +282,12 @@ table.extras td.num {{ text-align: right; white-space: nowrap; width: 88px; font
 .sign {{ display: flex; justify-content: space-between; align-items: flex-end; margin-top: 9mm; break-inside: avoid; }}
 .sign .who b {{ display: block; font-size: 10pt; }}
 .sign .who span {{ font-size: 8.6pt; color: {MUTED}; }}
-.sign .line {{ width: 62mm; border-bottom: 1px solid {INK}; height: 26px; }}
-.sign .line span {{ display: block; margin-top: 3px; font-size: 7.4pt; color: {SUBTLE}; }}
+.sign .line {{ width: 62mm; }}
+/* Росчерк лежит на линейке, а подпись с датой — под ней: внутри одной коробки
+   картинка накрывала бы строку. */
+.sign .line .rule {{ position: relative; height: 15mm; border-bottom: 1px solid {INK}; }}
+.sign .line .rule img {{ position: absolute; left: 5mm; bottom: -2px; width: 46mm; }}
+.sign .line span {{ display: block; margin-top: 4px; font-size: 7.4pt; color: {SUBTLE}; }}
 
 footer.blank {{
   margin-top: 10mm; padding-top: 7px; border-top: 1px solid #d8d8d2;
@@ -466,7 +473,10 @@ footer.blank b {{ color: {MUTED}; }}
       <b>Егор Максимов</b>
       <span>DevUz Studio · t.me/Devuz_studio_bot</span>
     </div>
-    <div class="line"><span>Подпись и дата</span></div>
+    <div class="line">
+      <div class="rule"><img src="data:image/png;base64,{SIGN}" alt="Подпись"></div>
+      <span>Подпись · {SIGN_DATE}</span>
+    </div>
   </div>
 
   <footer class="blank">
