@@ -3,17 +3,18 @@
 import { useEffect, useSyncExternalStore } from "react";
 
 import {
-  defaultPalette,
-  isPalette,
+  defaultOf,
+  isPaletteOf,
   paletteById,
-  palettes,
+  paletteSets,
   sectionLabel,
   type PaletteId,
+  type PaletteSet,
 } from "@/content/mavera/palettes";
 import { cn } from "@/lib/cn";
 
 /**
- * Палитра «Премиума»: свет всего сайта и свет отдельного раздела.
+ * Палитра «Премиума» и «Noir»: свет (или тьма) всего сайта и отдельного раздела.
  *
  * Механика держится на одном: страница нигде не знает конкретного цвета,
  * она собрана на переменных мира. Поэтому смена палитры — это смена одного
@@ -29,6 +30,8 @@ import { cn } from "@/lib/cn";
  */
 
 type State = {
+  /** Какой набор сейчас на странице: светлый «Премиум» или тёмный «Noir». */
+  set: PaletteSet;
   /** Палитра всего сайта. */
   global: PaletteId;
   /** Разделы, которым выбрали своё. Пусто — все живут общей. */
@@ -38,7 +41,8 @@ type State = {
   open: boolean;
 };
 
-const empty: State = { global: defaultPalette, sections: {}, perSection: false, open: false };
+const emptyOf = (set: PaletteSet): State => ({ set, global: defaultOf(set), sections: {}, perSection: false, open: false });
+const empty: State = emptyOf("light");
 
 let state: State = empty;
 const listeners = new Set<() => void>();
@@ -77,7 +81,7 @@ function patch(next: Partial<State>) {
 function save() {
   try {
     const url = new URL(window.location.href);
-    if (state.global === defaultPalette) url.searchParams.delete(PARAM);
+    if (state.global === defaultOf(state.set)) url.searchParams.delete(PARAM);
     else url.searchParams.set(PARAM, state.global);
 
     const pairs = Object.entries(state.sections).map(([id, palette]) => `${id}:${palette}`);
@@ -100,12 +104,12 @@ function adopt() {
     const sections: Record<string, PaletteId> = {};
     for (const pair of (raw ?? "").split(",")) {
       const [id, value] = pair.split(":");
-      if (id && isPalette(value)) sections[id] = value;
+      if (id && isPaletteOf(state.set, value)) sections[id] = value;
     }
 
     const next: State = {
       ...state,
-      global: isPalette(global) ? global : state.global,
+      global: isPaletteOf(state.set, global) ? global : state.global,
       sections,
     };
     // Разделы со своим цветом видны только в режиме «по разделам», иначе
@@ -127,12 +131,21 @@ function usePalette() {
 /* Корень: палитра всего сайта                                         */
 /* ------------------------------------------------------------------ */
 
-export function PaletteRoot({ children }: { children: React.ReactNode }) {
-  const { global } = usePalette();
+export function PaletteRoot({ set = "light", children }: { set?: PaletteSet; children: React.ReactNode }) {
+  const snapshot = usePalette();
+  // Хранилище одно на вкладку, а страницы у наборов разные: пришли с
+  // «Премиума» на «Noir» — светлая палитра тут не годится, берём первую
+  // тёмную. До эффекта (и на сервере) корень тоже стоит в палитре своего
+  // набора, иначе тёмная страница на миг вспыхнула бы слоновой костью.
+  const global = snapshot.set === set ? snapshot.global : defaultOf(set);
 
   useEffect(() => {
+    if (state.set !== set) {
+      state = emptyOf(set);
+      emit();
+    }
     adopt();
-  }, []);
+  }, [set]);
 
   return (
     <div data-palette={global} className="w-slab w-slab-flat bg-[var(--w-bg)] text-[var(--w-ink)]">
@@ -188,6 +201,7 @@ export function PaletteSection({
 /** Три образца в углу раздела и крестик «вернуть общую». */
 function SectionChips({ id, own, global }: { id: string; own?: PaletteId; global: PaletteId }) {
   const label = sectionLabel(id);
+  const palettes = paletteSets[state.set];
 
   return (
     <div className="pointer-events-none absolute right-3 top-3 z-30 flex justify-end sm:right-5 sm:top-5">
@@ -248,7 +262,8 @@ function omit(source: Record<string, PaletteId>, key: string): Record<string, Pa
 /* ------------------------------------------------------------------ */
 
 export function PaletteBar() {
-  const { global, sections, perSection, open } = usePalette();
+  const { set, global, sections, perSection, open } = usePalette();
+  const palettes = paletteSets[set];
   const current = paletteById(global);
   const tuned = Object.keys(sections).length;
 
@@ -307,7 +322,7 @@ export function PaletteBar() {
       <header className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#ffd166]">Палитра</p>
-          <h2 className="mt-1 font-sans text-base font-medium">Свет всего сайта</h2>
+          <h2 className="mt-1 font-sans text-base font-medium">{set === "dark" ? "Тьма всего сайта" : "Свет всего сайта"}</h2>
         </div>
         <button
           type="button"
@@ -355,8 +370,9 @@ export function PaletteBar() {
         <span className="min-w-0 flex-1">
           <span className="block text-sm">Своя палитра у раздела</span>
           <span className="mt-0.5 block text-xs leading-relaxed text-[#f2efe9]/50">
-            На каждом разделе появятся образцы. Генплан можно оставить в песке,
-            а подбор перевести в жемчуг.
+            {set === "dark"
+              ? "На каждом разделе появятся образцы. Генплан можно оставить в чёрном, а подбор перевести в тёмно-синий."
+              : "На каждом разделе появятся образцы. Генплан можно оставить в песке, а подбор перевести в жемчуг."}
           </span>
         </span>
         <button

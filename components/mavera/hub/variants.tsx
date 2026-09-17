@@ -28,6 +28,12 @@ const cards: Record<TierId, { href: string; photo: string; school: string; motio
     school: "Светлый зал",
     motion: "Движение: сцены, слои, счётчики, рабочие экраны",
   },
+  noir: {
+    href: "/mavera/noir",
+    photo: "/images/mavera/noir-hero.jpg",
+    school: "Люкс-сегмент · как в США",
+    motion: "Движение: параллакс на компьютере и на телефоне, тёмные палитры",
+  },
 };
 
 export function VariantCards() {
@@ -59,7 +65,7 @@ export function VariantCards() {
         </div>
       </div>
 
-      <ul className="mt-10 grid gap-8 lg:grid-cols-3">
+      <ul className="mt-10 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
         {tiers.map((tier, index) => {
           const card = cards[tier.id];
           const price = moneyParts(tier.priceUsd, currency);
@@ -76,7 +82,7 @@ export function VariantCards() {
                     src={card.photo}
                     alt=""
                     fill
-                    sizes="(min-width: 1024px) 33vw, 100vw"
+                    sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 motion-reduce:transform-none"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/30 to-transparent" />

@@ -103,6 +103,23 @@ export const included: Record<TierId, AddonId[]> = {
     "metrika",
     "audit",
   ],
+  // Noir — тот же пакет, что «Премиум»: различается оформлением, не составом.
+  noir: [
+    "langs",
+    "map",
+    "motion",
+    "magnetic",
+    "hero",
+    "promo",
+    "calc",
+    "chess",
+    "progress",
+    "booking",
+    "roles",
+    "crm",
+    "metrika",
+    "audit",
+  ],
 };
 
 export function addonById(id: AddonId): Addon {

@@ -29,7 +29,7 @@ import { area, filterFlats, type Flat } from "@/lib/mavera/catalog";
  * фильтр, выбор и расчёт платежа. Как квартиры получаются — браузер не знает.
  */
 
-type Variant = "standard" | "lux" | "premium";
+type Variant = "standard" | "lux" | "premium" | "noir";
 
 /** До какого числа держится бронь: пять дней от момента нажатия. Считается в обработчике, не при отрисовке. */
 function bookedUntilLabel(): string {
@@ -121,14 +121,15 @@ export function ObjectInteractive({
   const toggleRoom = (n: number) =>
     setRooms((prev) => (prev.includes(n) ? prev.filter((r) => r !== n) : [...prev, n]));
 
-  // Уровень подбора по пакету: см. описание вверху файла.
+  // Уровень подбора по пакету: см. описание вверху файла. «Noir» — тот же пакет, что «Премиум».
+  const top = variant === "premium" || variant === "noir";
   const simple = variant === "standard";
-  const withDrawing = variant === "premium";
+  const withDrawing = top;
 
   const chip = (active: boolean) =>
     cn(
       "px-4 py-2 text-sm transition-colors duration-200",
-      variant === "premium" ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
+      top ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
       active
         ? "bg-[var(--w-accent)] text-[var(--w-accent-ink)]"
         : "border border-[var(--w-line)] text-[var(--w-muted)] hover:text-[var(--w-ink)]",
@@ -136,7 +137,7 @@ export function ObjectInteractive({
 
   const surface = cn(
     "border border-[var(--w-line)] bg-[var(--w-surface)]",
-    variant === "premium" ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
+    top ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
   );
 
   return (
@@ -351,7 +352,7 @@ export function ObjectInteractive({
                     onClick={() => toggleSaved(selected.id)}
                     className={cn(
                       "inline-flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-200",
-                      variant === "premium" ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
+                      top ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
                       saved.includes(selected.id)
                         ? "bg-[var(--w-accent)] text-[var(--w-accent-ink)]"
                         : "border border-[var(--w-line)] text-[var(--w-muted)] hover:text-[var(--w-ink)]",
@@ -408,7 +409,7 @@ export function ObjectInteractive({
                   }}
                   className={cn(
                     "px-3 py-1.5 text-xs transition-colors duration-200",
-                    variant === "premium" ? "rounded-full" : "rounded-none",
+                    top ? "rounded-full" : "rounded-none",
                     item.id === bankId
                       ? "bg-[var(--w-accent)] text-[var(--w-accent-ink)]"
                       : "border border-[var(--w-line)] text-[var(--w-muted)] hover:text-[var(--w-ink)]",
@@ -517,7 +518,7 @@ export function ObjectInteractive({
                 }}
                 className={cn(
                   "w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
-                  variant === "premium" ? "w-glow rounded-full" : "rounded-none",
+                  top ? "w-glow rounded-full" : "rounded-none",
                 )}
               >
                 {booking && selected?.status === "free" ? "Забронировать на 5 дней" : "Оставить заявку"}
