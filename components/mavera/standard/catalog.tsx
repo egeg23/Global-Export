@@ -9,15 +9,6 @@ import type { Project } from "@/content/mavera/data";
 import { cn } from "@/lib/cn";
 
 const segments = ["Все", "Эконом", "Комфорт", "Бизнес"] as const;
-const states = ["Все", "Строится", "Сдан", "Продаётся"] as const;
-
-type Sort = "price" | "due" | "area";
-
-const sorters: Record<Sort, (a: Project, b: Project) => number> = {
-  price: (a, b) => a.priceUsd - b.priceUsd,
-  due: (a, b) => a.due.localeCompare(b.due, "ru"),
-  area: (a, b) => Number(b.area.replace(/\D/g, "")) - Number(a.area.replace(/\D/g, "")),
-};
 
 /**
  * Каталог «Стандарта»: фильтр, который действительно фильтрует.
@@ -26,16 +17,15 @@ const sorters: Record<Sort, (a: Project, b: Project) => number> = {
  * состояние живёт прямо здесь и отклик мгновенный: ни перезагрузки, ни
  * ожидания сервера. Оформление швейцарское — сетка, волосяные линии,
  * нулевой радиус, единственный акцент на выбранном фильтре.
+ *
+ * Фильтр один — по сегменту, ровно как в смете «Стандарта». Статусы,
+ * сортировка и поиск по нескольким параметрам — уже «Люкс»: за $5 900 сайт
+ * должен и выглядеть, и уметь проще, чем за $8 900.
  */
 export function StandardCatalog({ claims, projects }: { claims: Record<string, string>; projects: Project[] }) {
   const [segment, setSegment] = useState<(typeof segments)[number]>("Все");
-  const [state, setState] = useState<(typeof states)[number]>("Все");
-  const [sort, setSort] = useState<Sort>("price");
 
-  const list = projects
-    .filter((p) => segment === "Все" || p.segment === segment)
-    .filter((p) => state === "Все" || p.status === state)
-    .sort(sorters[sort]);
+  const list = projects.filter((p) => segment === "Все" || p.segment === segment);
 
   const chip = (active: boolean) =>
     cn(
@@ -47,7 +37,7 @@ export function StandardCatalog({ claims, projects }: { claims: Record<string, s
 
   return (
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-[var(--w-line)] pb-6">
+      <div className="flex flex-wrap items-center justify-between gap-6 border-b border-[var(--w-line)] pb-6">
         <div className="flex flex-wrap gap-2">
           {segments.map((item) => (
             <button key={item} type="button" onClick={() => setSegment(item)} className={chip(segment === item)}>
@@ -55,48 +45,12 @@ export function StandardCatalog({ claims, projects }: { claims: Record<string, s
             </button>
           ))}
         </div>
-
-        <div className="flex flex-wrap gap-2">
-          {states.map((item) => (
-            <button key={item} type="button" onClick={() => setState(item)} className={chip(state === item)}>
-              {item}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center justify-between gap-4 py-5 text-sm">
-        <p className="text-[var(--w-muted)]">
+        <p className="text-sm text-[var(--w-muted)]">
           Найдено: <span className="font-medium text-[var(--w-ink)]">{list.length}</span> из {projects.length}
         </p>
-
-        <div className="flex items-center gap-4">
-          <span className="text-[0.7rem] uppercase tracking-[0.18em] text-[var(--w-muted)]">Сортировка</span>
-          {(
-            [
-              ["price", "по цене"],
-              ["due", "по сроку"],
-              ["area", "по площади"],
-            ] as const
-          ).map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setSort(id)}
-              className={cn(
-                "border-b py-0.5 transition-colors duration-200",
-                sort === id
-                  ? "border-[var(--w-accent)] text-[var(--w-ink)]"
-                  : "border-transparent text-[var(--w-muted)] hover:text-[var(--w-ink)]",
-              )}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
       </div>
 
-      <ul className="grid gap-px border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-5 grid gap-px border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-2 lg:grid-cols-3">
         {list.map((project) => (
           <li key={project.slug} className="group bg-[var(--w-surface)]">
             <Link href={`/mavera/standard/${project.slug}`} prefetch={false} className="block">
@@ -155,7 +109,7 @@ export function StandardCatalog({ claims, projects }: { claims: Record<string, s
 
       {list.length === 0 ? (
         <p className="border border-t-0 border-[var(--w-line)] px-6 py-16 text-center text-sm text-[var(--w-muted)]">
-          По этим условиям ничего нет. Снимите один из фильтров.
+          В этом сегменте пока ничего нет. Выберите другой.
         </p>
       ) : null}
     </div>

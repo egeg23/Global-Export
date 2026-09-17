@@ -18,8 +18,11 @@ import { area, filterFlats, type Flat } from "@/lib/mavera/catalog";
  * попадает в калькулятор, и посетитель видит платёж по конкретной квартире, а
  * не по «средней цене». Ради этого состояние живёт здесь, а не в двух местах.
  *
- * Показ различается по вариантам: «Стандарт» получает таблицу, которую можно
- * сортировать глазами, «Люкс» — карточки, «Премиум» — шахматку этажей. Данные
+ * Показ различается по вариантам, и различие — в наполнении, а не только в
+ * оформлении: цена пакета должна быть видна в возможностях. «Стандарт» —
+ * таблица квартир с выбором комнатности, без ползунков и без чертежа; «Люкс» —
+ * фильтры по корпусу, этажу и бюджету и карточки; «Премиум» — то же плюс
+ * чертёж планировки, а шахматка, калькулятор и бронь у него в пакете. Данные
  * при этом одни и те же.
  *
  * Список квартир, чертежи и подписи приходят с сервера готовыми: здесь только
@@ -118,6 +121,10 @@ export function ObjectInteractive({
   const toggleRoom = (n: number) =>
     setRooms((prev) => (prev.includes(n) ? prev.filter((r) => r !== n) : [...prev, n]));
 
+  // Уровень подбора по пакету: см. описание вверху файла.
+  const simple = variant === "standard";
+  const withDrawing = variant === "premium";
+
   const chip = (active: boolean) =>
     cn(
       "px-4 py-2 text-sm transition-colors duration-200",
@@ -142,17 +149,22 @@ export function ObjectInteractive({
               {n}-комн.
             </button>
           ))}
-          <span className="mx-1 h-6 w-px bg-[var(--w-line)]" />
-          <button type="button" onClick={() => setCorpus(null)} className={chip(corpus === null)}>
-            Все корпуса
-          </button>
-          {Array.from({ length: corpuses }, (_, i) => i + 1).map((n) => (
-            <button key={n} type="button" onClick={() => setCorpus(n)} className={chip(corpus === n)}>
-              Корпус {n}
-            </button>
-          ))}
+          {simple ? null : (
+            <>
+              <span className="mx-1 h-6 w-px bg-[var(--w-line)]" />
+              <button type="button" onClick={() => setCorpus(null)} className={chip(corpus === null)}>
+                Все корпуса
+              </button>
+              {Array.from({ length: corpuses }, (_, i) => i + 1).map((n) => (
+                <button key={n} type="button" onClick={() => setCorpus(n)} className={chip(corpus === n)}>
+                  Корпус {n}
+                </button>
+              ))}
+            </>
+          )}
         </div>
 
+        {simple ? null : (
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <label className="block">
             <span className="flex items-baseline justify-between text-sm">
@@ -190,17 +202,22 @@ export function ObjectInteractive({
             />
           </label>
         </div>
+        )}
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-y border-[var(--w-line)] py-4">
-          <label className="flex cursor-pointer items-center gap-2.5 text-sm">
-            <input
-              type="checkbox"
-              checked={onlyFree}
-              onChange={(e) => setOnlyFree(e.target.checked)}
-              className="h-4 w-4 accent-[var(--w-accent)]"
-            />
-            Только свободные
-          </label>
+          {simple ? (
+            <span className="text-sm text-[var(--w-muted)]">Свободные квартиры всех корпусов</span>
+          ) : (
+            <label className="flex cursor-pointer items-center gap-2.5 text-sm">
+              <input
+                type="checkbox"
+                checked={onlyFree}
+                onChange={(e) => setOnlyFree(e.target.checked)}
+                className="h-4 w-4 accent-[var(--w-accent)]"
+              />
+              Только свободные
+            </label>
+          )}
           <p className="text-sm text-[var(--w-muted)]">
             Найдено:{" "}
             <span key={found.length} className="mv-fade font-medium text-[var(--w-ink)] tabular-nums">
@@ -305,12 +322,15 @@ export function ObjectInteractive({
                 Корпус {selected.corpus} · {selected.floor} этаж · {selected.view.toLowerCase()}
               </p>
 
-              <div className="mt-5 aspect-[320/232] border border-[var(--w-line)] p-2.5">
-                {drawing ? (
-                  <FlatPlan key={selected.id} plan={drawing} areas={selected.roomAreas} area={selected.area} />
-                ) : null}
-              </div>
-              {plan ? (
+              {/* Чертёж планировки — «Премиум»; «Люкс» называет планировку словами, «Стандарт» — нет. */}
+              {withDrawing ? (
+                <div className="mt-5 aspect-[320/232] border border-[var(--w-line)] p-2.5">
+                  {drawing ? (
+                    <FlatPlan key={selected.id} plan={drawing} areas={selected.roomAreas} area={selected.area} />
+                  ) : null}
+                </div>
+              ) : null}
+              {plan && !simple ? (
                 <p key={`${plan.name}-note`} className="mv-fade mt-3 text-xs leading-relaxed text-[var(--w-muted)]">
                   <span className="font-medium text-[var(--w-ink)]">{plan.name}. </span>
                   {plan.note}
