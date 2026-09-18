@@ -69,6 +69,19 @@
     background: linear-gradient(90deg, var(--gh-gold), transparent);
   }
 
+  /* Слой сцены: берёт доли у раздела (--p, --mx, --my) и умножает их на
+     свою глубину. Чем больше --gh-depth по модулю, тем дальше слой уезжает;
+     положительное значение отстаёт от прокрутки (слой дальше), отрицательное
+     обгоняет её (слой ближе к зрителю). */
+  .gh-layer {
+    transform: translate3d(
+      calc(var(--mx, 0) * var(--gh-pull, 0px)),
+      calc(var(--p, 0) * var(--gh-depth, 0px) + var(--my, 0) * var(--gh-pull, 0px)),
+      0
+    );
+    will-change: transform;
+  }
+
   /* Слой глубины: сдвигается прокруткой и уводится от курсора.
      Переменные пишет useDepth без перерисовки React. */
   .gh-depth {
@@ -314,7 +327,8 @@
     transition: none;
   }
 
-  .gh-depth {
+  .gh-depth,
+  .gh-layer {
     transform: none;
   }
 }

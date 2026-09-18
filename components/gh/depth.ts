@@ -69,3 +69,69 @@ export function useDepth<T extends HTMLElement = HTMLDivElement>(depth: number) 
 
   return ref;
 }
+
+/**
+ * Сцена с несколькими слоями глубины.
+ *
+ * `useDepth` держит один слой и пишет ему готовый сдвиг в пикселях. Когда
+ * слоёв в кадре четыре, четыре подписки на прокрутку — расточительство, да и
+ * считают они одно и то же. Здесь подписка одна, на весь раздел, и в него
+ * пишутся три доли: `--p` — насколько раздел уехал вверх, `--mx` и `--my` —
+ * где курсор. Переменные наследуются, поэтому каждый слой внутри берёт их
+ * сам и умножает на свою глубину (`--gh-depth`) и свой снос (`--gh-pull`).
+ *
+ * Так же решается и старый конфликт: вход первого экрана (`gh-enter`) тоже
+ * правит `transform`, и если повесить оба класса на один узел, побеждает
+ * тот, что описан ниже. Разнести их по вложенным узлам — единственный
+ * надёжный способ, transform не складывается сам по себе.
+ */
+export function useStage<T extends HTMLElement = HTMLElement>() {
+  const ref = useRef<T>(null);
+  const frame = useRef(0);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const update = () => {
+      frame.current = 0;
+      const box = node.getBoundingClientRect();
+      const progress = Math.min(Math.max(-box.top / Math.max(box.height, 1), -1), 1);
+      node.style.setProperty("--p", progress.toFixed(4));
+    };
+
+    const onScroll = () => {
+      if (frame.current) return;
+      frame.current = requestAnimationFrame(update);
+    };
+
+    // Только мышь: палец на экране двигает страницу, а не кадр.
+    const onPointer = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return;
+      const box = node.getBoundingClientRect();
+      node.style.setProperty("--mx", ((event.clientX - box.left) / box.width - 0.5).toFixed(3));
+      node.style.setProperty("--my", ((event.clientY - box.top) / box.height - 0.5).toFixed(3));
+    };
+    const onLeave = () => {
+      node.style.setProperty("--mx", "0");
+      node.style.setProperty("--my", "0");
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    node.addEventListener("pointermove", onPointer);
+    node.addEventListener("pointerleave", onLeave);
+
+    return () => {
+      cancelAnimationFrame(frame.current);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      node.removeEventListener("pointermove", onPointer);
+      node.removeEventListener("pointerleave", onLeave);
+    };
+  }, []);
+
+  return ref;
+}

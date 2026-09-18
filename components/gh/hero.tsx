@@ -3,9 +3,10 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-import { useDepth } from "@/components/gh/depth";
+import { useStage } from "@/components/gh/depth";
 import { replayIntro, useIntroDone } from "@/components/gh/intro";
 import { company, contacts, stats } from "@/content/gh/company";
+import { photo } from "@/content/gh/photos";
 import { cn } from "@/lib/cn";
 
 /**
@@ -17,99 +18,160 @@ import { cn } from "@/lib/cn";
  * общее состояние `useIntroDone`: два независимых куска должны сойтись в
  * один кадр.
  *
- * Дом — их собственный рендер O`Z MAKON с вырезанным небом. Он живёт на
- * своём слое глубины: отстаёт от прокрутки и уводится от курсора, а фасад
- * за ним уходит в другую сторону — так половина экрана перестаёт быть
- * картинкой и становится видом из окна.
+ * Глубина здесь в четыре слоя, и она настоящая, а не «фон чуть медленнее».
+ * Дальше всех — квартал с высоты, почти растворённый в бумаге; за ним знак
+ * водяным пятном и тёплое свечение; ближе всех дом, который обгоняет
+ * прокрутку. Текст идёт своим темпом между ними. На компьютере к прокрутке
+ * добавляется курсор: дом уходит от него в одну сторону, текст в другую.
+ *
+ * Считает это одна подписка на весь раздел (`useStage`), а слои только
+ * умножают её доли на свою глубину. Вход (`gh-enter`) и глубина (`gh-layer`)
+ * живут на разных узлах: оба правят `transform`, и на одном узле побеждал бы
+ * кто-то один — именно из-за этого дом сначала не двигался вовсе.
  */
 export function Hero() {
   const done = useIntroDone();
-  const house = useDepth<HTMLDivElement>(-90);
-  const glow = useDepth<HTMLDivElement>(46);
+  const stage = useStage<HTMLElement>();
 
   return (
     <section
+      ref={stage}
       id="hero"
       className="relative isolate min-h-[100svh] overflow-hidden pt-24 lg:pt-20"
     >
-      {/* Тёплое свечение за домом: у слоновой кости нет собственной глубины,
-            и без подсветки дом лежит на листе, а не стоит в воздухе. */}
+      {/* Самый дальний слой: их квартал с высоты, почти выцветший. Он не
+          читается как фотография — он даёт первому экрану дно, от которого
+          отсчитывается всё остальное. */}
       <div
-        ref={glow}
-        className="gh-depth pointer-events-none absolute inset-0 -z-10"
-        style={{ "--gh-pull": "14px" } as React.CSSProperties}
+        aria-hidden
+        className="gh-layer pointer-events-none absolute inset-x-0 -top-[12%] -z-20 h-[112%] opacity-[0.09]"
+        style={
+          { "--gh-depth": "150px", "--gh-pull": "8px" } as React.CSSProperties
+        }
+      >
+        {/* Маска гасит слой и сверху тоже: под липкой шапкой город
+            проступал грязной полосой. */}
+        <Image
+          src={photo("aerial")}
+          alt=""
+          fill
+          sizes="100vw"
+          className="scale-110 object-cover [mask-image:linear-gradient(to_bottom,transparent,black_22%,black_46%,transparent_82%)]"
+        />
+      </div>
+
+      {/* Знак водяным пятном — второй по дальности. */}
+      <div
+        aria-hidden
+        className="gh-layer pointer-events-none absolute -right-[6%] top-[14%] -z-10 hidden w-[42vw] max-w-[640px] opacity-[0.05] lg:block"
+        style={
+          { "--gh-depth": "110px", "--gh-pull": "12px" } as React.CSSProperties
+        }
+      >
+        <Image
+          src="/images/gh/logo.svg"
+          alt=""
+          width={469}
+          height={57}
+          className="h-auto w-full"
+        />
+      </div>
+
+      {/* Тёплое свечение за домом: у слоновой кости нет собственной глубины,
+          и без подсветки дом лежит на листе, а не стоит в воздухе. */}
+      <div
+        aria-hidden
+        className="gh-layer pointer-events-none absolute inset-0 -z-10"
+        style={
+          { "--gh-depth": "64px", "--gh-pull": "18px" } as React.CSSProperties
+        }
       >
         <div className="absolute -left-[10%] bottom-0 h-[86%] w-[78%] rounded-full bg-[radial-gradient(closest-side,var(--w-accent-soft),transparent)] blur-2xl" />
       </div>
 
       <div className="mx-auto grid w-full max-w-[1560px] grid-cols-1 items-end gap-0 px-0 lg:grid-cols-[1.02fr_1fr]">
-        {/* Дом */}
+        {/* Дом. Вход снаружи, глубина внутри: на одном узле они спорят за
+            transform, и побеждает вход — дом замирает. */}
         <div
-          ref={house}
           className={cn(
-            "gh-depth relative order-1 h-[46svh] w-full self-end lg:h-[86svh]",
+            "order-1 h-[46svh] w-full self-end lg:h-[86svh]",
             "gh-enter",
             done && "gh-enter-in",
           )}
           style={
             {
-              "--gh-pull": "26px",
               "--gh-from-x": "-46px",
               "--gh-from-y": "0px",
             } as React.CSSProperties
           }
         >
-          <Image
-            src="/images/gh/house.webp"
-            alt="Жилой комплекс O`Z MAKON, вид с бульвара"
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 52vw"
-            className="object-contain object-bottom"
-          />
+          <div
+            className="gh-layer relative h-full w-full"
+            style={
+              {
+                "--gh-depth": "-170px",
+                "--gh-pull": "30px",
+              } as React.CSSProperties
+            }
+          >
+            <Image
+              src="/images/gh/house.webp"
+              alt="Жилой комплекс O`Z MAKON, вид с бульвара"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 52vw"
+              className="object-contain object-bottom"
+            />
+          </div>
         </div>
 
         {/* Слово */}
         <div
-          className={cn(
-            "order-2 px-5 pb-16 pt-10 sm:px-8 lg:pb-[12svh] lg:pl-10 lg:pr-12",
-            "gh-enter",
-            done && "gh-enter-in",
-          )}
+          className={cn("order-2", "gh-enter", done && "gh-enter-in")}
           style={{ "--gh-delay": "260ms" } as React.CSSProperties}
         >
-          <p className="text-[0.68rem] uppercase tracking-[0.42em] text-[var(--w-accent)]">
-            Golden House · Ташкент
-          </p>
-          <h1 className="mt-6 text-[clamp(2.4rem,6.2vw,4.6rem)] leading-[0.98]">
-            <span className="gh-gold-text">{company.slogan}</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-[1.02rem] leading-relaxed text-[var(--w-muted)]">
-            {company.lead}
-          </p>
+          <div
+            className="gh-layer px-5 pb-16 pt-10 sm:px-8 lg:pb-[12svh] lg:pl-10 lg:pr-12"
+            style={
+              {
+                "--gh-depth": "-58px",
+                "--gh-pull": "-16px",
+              } as React.CSSProperties
+            }
+          >
+            <p className="text-[0.68rem] uppercase tracking-[0.42em] text-[var(--w-accent)]">
+              Golden House · Ташкент
+            </p>
+            <h1 className="mt-6 text-[clamp(2.4rem,6.2vw,4.6rem)] leading-[0.98]">
+              <span className="gh-gold-text">{company.slogan}</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-[1.02rem] leading-relaxed text-[var(--w-muted)]">
+              {company.lead}
+            </p>
 
-          <Counters />
+            <Counters />
 
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            <a
-              href="#picker"
-              className="w-glow rounded-full bg-[var(--w-accent)] px-6 py-3 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90"
-            >
-              Подобрать квартиру
-            </a>
-            <a
-              href={contacts.phoneHref}
-              className="rounded-full border border-[var(--w-line)] px-6 py-3 text-sm transition-colors hover:border-[var(--w-accent)]"
-            >
-              {contacts.phone}
-            </a>
-            <button
-              type="button"
-              onClick={replayIntro}
-              className="rounded-full px-4 py-3 text-sm text-[var(--w-muted)] underline decoration-[var(--gh-gold)] decoration-1 underline-offset-4 transition-colors hover:text-[var(--w-ink)]"
-            >
-              Смотреть заставку
-            </button>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <a
+                href="#picker"
+                className="w-glow rounded-full bg-[var(--w-accent)] px-6 py-3 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90"
+              >
+                Подобрать квартиру
+              </a>
+              <a
+                href={contacts.phoneHref}
+                className="rounded-full border border-[var(--w-line)] px-6 py-3 text-sm transition-colors hover:border-[var(--w-accent)]"
+              >
+                {contacts.phone}
+              </a>
+              <button
+                type="button"
+                onClick={replayIntro}
+                className="rounded-full px-4 py-3 text-sm text-[var(--w-muted)] underline decoration-[var(--gh-gold)] decoration-1 underline-offset-4 transition-colors hover:text-[var(--w-ink)]"
+              >
+                Смотреть заставку
+              </button>
+            </div>
           </div>
         </div>
       </div>
