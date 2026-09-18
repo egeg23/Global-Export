@@ -117,6 +117,7 @@ export function Intro() {
   const live = useIntroLive();
   const root = useRef<HTMLDivElement>(null);
   const alt = useRef<HTMLSpanElement>(null);
+  const place = useRef<HTMLParagraphElement>(null);
 
   const skip = useCallback(() => finish(), []);
 
@@ -189,10 +190,15 @@ export function Intro() {
       if (t > 6250) reveal();
 
       // Высота: от орбиты до крыши. Считается из тех же долей, что и камера.
+      const km = 6400 - accel(span(t, 3650, 6100)) * 6399.8;
       if (alt.current) {
-        const km = 6400 - accel(span(t, 3650, 6100)) * 6399.8;
         alt.current.textContent =
           km >= 10 ? `${Math.round(km)} км` : km >= 1 ? `${km.toFixed(1)} км` : `${Math.round(km * 1000)} м`;
+      }
+      // Подпись сужается вместе с кадром: страна, город, улица.
+      if (place.current) {
+        const label = km > 1200 ? "Узбекистан" : km > 60 ? "Узбекистан · Ташкент" : "Ташкент · 5-й проезд Садыка Азимова";
+        if (place.current.textContent !== label) place.current.textContent = label;
       }
 
       if (t < TOTAL) {
@@ -253,8 +259,8 @@ export function Intro() {
         <div className="gh-intro__hud">
           <div className="gh-intro__cross" />
           <div className="absolute bottom-[clamp(1.5rem,6vh,3.5rem)] left-[clamp(1.25rem,5vw,3rem)]">
-            <p className="text-[0.62rem] uppercase tracking-[0.42em] text-[#e6c391]">
-              Ташкент · Яшнабадский район
+            <p ref={place} className="text-[0.62rem] uppercase tracking-[0.42em] text-[#e6c391]">
+              Узбекистан
             </p>
             <p className="mt-2 text-[0.72rem] tracking-[0.14em] text-[#e6c391]/75">
               41°17′49″ с.ш. · 69°18′32″ в.д.
