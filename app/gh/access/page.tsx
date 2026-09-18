@@ -4,9 +4,9 @@ import { redirect } from "next/navigation";
 import { Gate } from "@/components/showcase/gate";
 import { accessCode, safeNext, showcaseById } from "@/lib/showcase/access";
 
-export const metadata: Metadata = { title: "Доступ к витрине" };
+export const metadata: Metadata = { title: "Доступ к макету" };
 
-const showcase = showcaseById("mavera");
+const showcase = showcaseById("gh");
 
 export default async function AccessPage({
   searchParams,
@@ -17,5 +17,5 @@ export default async function AccessPage({
   const next = safeNext(showcase, params.next);
   if (!accessCode(showcase)) redirect(next);
 
-  return <Gate id="mavera" next={next} error={Boolean(params.error)} />;
+  return <Gate id="gh" next={next} error={Boolean(params.error)} />;
 }

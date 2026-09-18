@@ -60,6 +60,10 @@ export type AppMode = {
   exitHref: string;
   /** Название пакета для шапки: «Премиум». */
   tierLabel: string;
+  /** Чья это панель: над меню. По умолчанию MAVERA. */
+  brand?: string;
+  /** Подпись выхода: у витрины без презентации она другая. */
+  exitLabel?: string;
 };
 
 export type Admin = {
@@ -119,23 +123,37 @@ export function useAdmin(): Admin {
   return value;
 }
 
+/**
+ * Чем наполнить панель. По умолчанию — данные MAVERA; витрина Golden House
+ * передаёт свои, потому что панель у неё та же, а жилые комплексы другие.
+ */
+export type AdminSeed = {
+  projects?: Project[];
+  leads?: Lead[];
+  media?: MediaFile[];
+  audit?: AuditEntry[];
+};
+
 export function AdminProvider({
   app = null,
+  seed,
   children,
 }: {
   app?: AppMode | null;
+  seed?: AdminSeed;
   children: React.ReactNode;
 }) {
+  const start = seed?.projects ?? initialProjects;
   const [screen, setScreenState] = useState<AdminScreenId>("overview");
   const [pickedAt, setPickedAt] = useState(0);
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
-  const [projectId, setProjectId] = useState(initialProjects[0].id);
-  const [flats, setFlats] = useState<Flat[]>(() => buildFlats(initialProjects));
-  const [leads, setLeads] = useState<Lead[]>(initialLeads);
+  const [projects, setProjects] = useState<Project[]>(start);
+  const [projectId, setProjectId] = useState(start[0].id);
+  const [flats, setFlats] = useState<Flat[]>(() => buildFlats(start));
+  const [leads, setLeads] = useState<Lead[]>(seed?.leads ?? initialLeads);
   const [staff, setStaff] = useState<Staff[]>(initialStaff);
   const [rights, setRights] = useState<Rights>(initialRights);
-  const [media, setMedia] = useState<MediaFile[]>(initialMedia);
-  const [audit, setAudit] = useState<AuditEntry[]>(initialAudit);
+  const [media, setMedia] = useState<MediaFile[]>(seed?.media ?? initialMedia);
+  const [audit, setAudit] = useState<AuditEntry[]>(seed?.audit ?? initialAudit);
   const [query, setQuery] = useState("");
 
   const value = useMemo<Admin>(() => {

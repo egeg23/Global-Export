@@ -115,6 +115,7 @@ export function ConfiguratorProvider({
   page,
   hrefs,
   frame = "none",
+  dock = true,
   children,
 }: {
   catalog: Catalog;
@@ -124,6 +125,12 @@ export function ConfiguratorProvider({
   hrefs: Record<string, string>;
   /** «world» — корень мира сайта (data-world); «studio» — наша тёмная витрина; «none» — без атрибута. */
   frame?: "world" | "studio" | "none";
+  /**
+   * Показывать ли док с тумблерами. Экраны панели спрашивают у конструктора,
+   * включены ли отдельные блоки, и провайдер им нужен, — но сам разговор о
+   * тарифе идёт не везде, и тогда док в углу только сбивает.
+   */
+  dock?: boolean;
   children: React.ReactNode;
 }) {
   const router = useRouter();
@@ -224,7 +231,7 @@ export function ConfiguratorProvider({
             <ChatButton text={catalog.chat.text} site={catalog.chat.site} />
           </Addon>
         ) : null}
-        <Dock />
+        {dock ? <Dock /> : null}
       </div>
     </Context.Provider>
   );

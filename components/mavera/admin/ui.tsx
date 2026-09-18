@@ -53,7 +53,9 @@ export function Chrome({
   const menu = (
     <>
       <div className="px-[1em] py-[1.1em]">
-        <p className="text-[0.5em] font-semibold uppercase tracking-[0.18em] text-forest-600">MAVERA</p>
+        <p className="text-[0.5em] font-semibold uppercase tracking-[0.18em] text-forest-600">
+          {app?.brand ?? "MAVERA"}
+        </p>
         <p className="mt-[0.2em] text-[0.62em] font-medium">Панель управления</p>
       </div>
 
@@ -94,7 +96,7 @@ export function Chrome({
             prefetch={false}
             className="mt-[0.5em] inline-block text-[0.45em] font-medium text-forest-700 underline decoration-forest-700/40 underline-offset-2 transition-colors hover:text-forest-900"
           >
-            Выйти → к презентации
+            {app.exitLabel ?? "Выйти → к презентации"}
           </Link>
         ) : null}
       </div>

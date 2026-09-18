@@ -106,16 +106,17 @@ export type Project = {
   name: Record<Lang, string>;
   desc: Record<Lang, string>;
   district: string;
-  segment: "Эконом" | "Комфорт" | "Бизнес";
+  segment: "Эконом" | "Комфорт" | "Бизнес" | "Премиум";
   published: boolean;
   /** Порядок на сайте: меньше — выше. */
   order: number;
   corpuses: Corpus[];
 };
 
-export const segments: Project["segment"][] = ["Эконом", "Комфорт", "Бизнес"];
+export const segments: Project["segment"][] = ["Эконом", "Комфорт", "Бизнес", "Премиум"];
 
-const corpusSet = (...rows: [number, number, string, Corpus["state"]][]): Corpus[] =>
+/** Корпуса строкой: этажей, квартир на этаже, срок, состояние. */
+export const corpusSet = (...rows: [number, number, string, Corpus["state"]][]): Corpus[] =>
   rows.map(([floors, perFloor, due, state], index) => ({
     id: index + 1,
     floors,

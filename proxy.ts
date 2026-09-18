@@ -2,12 +2,11 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { locales, matchLocale } from "@/lib/i18n";
 import {
-  ACCESS_COOKIE,
   accessCode,
   accessCookie,
   accessToken,
-  isGated,
   sameSecret,
+  showcaseFor,
   verifyToken,
 } from "@/lib/showcase/access";
 import { refreshSession } from "@/lib/supabase/session";
@@ -22,7 +21,7 @@ const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webman
  * Three routes sit outside that rule. The admin panel is a single-language tool
  * and needs its Supabase session refreshed on the way through. The showcase at
  * `/present` belongs to the pitch rather than to the company's site, and
- * `/adar` and `/mavera` are pitches for other companies altogether.
+ * `/adar`, `/mavera` and `/gh` are pitches for other companies altogether.
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -46,12 +45,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Витрина MAVERA закрыта кодом. Ключ в адресе (?key=…) ставит куки и
-  // убирает себя из адреса — так ссылку отправляют заказчику. Без куки —
-  // страница ввода кода. Граница стоит здесь, до отдачи разметки: то, что уже
-  // попало в браузер, скопировать можно всегда.
-  if (isGated(pathname)) {
-    const code = accessCode();
+  // Витрины MAVERA и Golden House закрыты кодом — у каждой своим. Ключ в
+  // адресе (?key=…) ставит куки и убирает себя из адреса: так ссылку
+  // отправляют заказчику. Без куки — страница ввода кода. Граница стоит
+  // здесь, до отдачи разметки: то, что уже попало в браузер, скопировать
+  // можно всегда.
+  const showcase = showcaseFor(pathname);
+  if (showcase) {
+    const code = accessCode(showcase);
     if (!code) return NextResponse.next();
 
     const key = request.nextUrl.searchParams.get("key");
@@ -59,15 +60,15 @@ export async function proxy(request: NextRequest) {
       const url = request.nextUrl.clone();
       url.searchParams.delete("key");
       const response = NextResponse.redirect(url, 307);
-      response.cookies.set(accessCookie(await accessToken(code)));
+      response.cookies.set(accessCookie(showcase, await accessToken(showcase, code)));
       return response;
     }
 
-    if (!(await verifyToken(request.cookies.get(ACCESS_COOKIE)?.value, code))) {
+    if (!(await verifyToken(showcase, request.cookies.get(showcase.cookie)?.value, code))) {
       const target = request.nextUrl.clone();
       target.searchParams.delete("key");
       const url = request.nextUrl.clone();
-      url.pathname = "/mavera/access";
+      url.pathname = showcase.gate;
       url.search = "";
       url.searchParams.set("next", `${target.pathname}${target.search}`);
       const response = NextResponse.redirect(url, 307);
@@ -80,9 +81,15 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  // Третий проект витрины — три варианта сайта для застройщика. Языкового
-  // префикса нет: предложение одноязычное, а три языка показаны внутри макетов.
-  if (pathname === "/mavera" || pathname.startsWith("/mavera/")) {
+  // Витрины застройщиков без языкового префикса: предложение одноязычное, а
+  // языки показаны внутри макетов. Сюда попадают только страницы ввода кода —
+  // всё остальное уже разобрано выше.
+  if (
+    pathname === "/mavera" ||
+    pathname.startsWith("/mavera/") ||
+    pathname === "/gh" ||
+    pathname.startsWith("/gh/")
+  ) {
     return NextResponse.next();
   }
 
