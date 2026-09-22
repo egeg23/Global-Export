@@ -93,6 +93,13 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Макет фабрики мебели. Единственная витрина без кода доступа — так
+  // решил заказчик показа, — поэтому она просто пропускается мимо
+  // языкового префикса.
+  if (pathname === "/namuna" || pathname.startsWith("/namuna/")) {
+    return NextResponse.next();
+  }
+
   // Второй проект витрины — концепции сайта для другой компании. Языкового
   // префикса у него нет: предложение одноязычное.
   if (pathname === "/adar" || pathname.startsWith("/adar/")) {

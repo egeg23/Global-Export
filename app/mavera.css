@@ -282,6 +282,23 @@
 }
 
 @layer utilities {
+  /* Слой сцены: берёт у раздела доли прокрутки (--p) и курсора (--mx, --my)
+     и умножает их на свою глубину. Положительный --w-depth отстаёт от
+     прокрутки (слой дальше), отрицательный обгоняет её (слой ближе).
+     Доли пишет useStage из components/showcase/depth.ts.
+
+     У Golden House есть своя копия под именем .gh-layer — она появилась
+     раньше этой и осталась, чтобы не перетряхивать выкаченный макет.
+     Новым мирам брать эту. */
+  .w-layer {
+    transform: translate3d(
+      calc(var(--mx, 0) * var(--w-pull, 0px)),
+      calc(var(--p, 0) * var(--w-depth, 0px) + var(--my, 0) * var(--w-pull, 0px)),
+      0
+    );
+    will-change: transform;
+  }
+
   /* Появление снизу — общий приём, но длительность у каждого мира своя. */
   .w-rise {
     opacity: 0;
@@ -556,6 +573,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .w-layer {
+    transform: none;
+  }
+
   .w-rise {
     opacity: 1;
     transform: none;
