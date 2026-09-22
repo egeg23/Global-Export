@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Addon, ConfiguratorProvider } from "@/components/configurator/context";
 import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { DemoSubmit } from "@/components/mavera/demo-submit";
@@ -36,6 +37,7 @@ const voice = voices.premium;
 export default function MaveraPremium() {
   return (
     <ConfiguratorProvider catalog={maveraCatalog} tier="premium" page="main" hrefs={maveraHrefs("premium", projects[0].slug)} frame="world">
+      <DevuzIntro project="mavera" />
       <VariantBar current="premium" />
 
       <PaletteRoot>

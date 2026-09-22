@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { ProjectSwitcher } from "@/components/adar/showcase/project-switcher";
 import { Shell } from "@/components/adar/ui/shell";
 import { Wordmark } from "@/components/adar/ui/wordmark";
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
 export default function AdarShowcase() {
   return (
     <main className="pb-24">
+      <DevuzIntro project="adar" />
       <section className="relative isolate overflow-hidden bg-adar-green-950 text-adar-cream-50">
         <Image
           src="/adar/photos/tree-ornaments.webp"

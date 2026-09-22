@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { AboutIntro } from "@/components/sections/about-intro";
 import { Advantages } from "@/components/sections/advantages";
 import { CategoriesGrid } from "@/components/sections/categories-grid";
@@ -42,6 +43,7 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <>
+      <DevuzIntro project="globalex" />
       <Hero locale={locale} dict={dict} />
       <AboutIntro locale={locale} dict={dict} />
       <StatsBand locale={locale} dict={dict} />

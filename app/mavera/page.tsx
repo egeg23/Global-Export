@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { ProjectSwitcher } from "@/components/adar/showcase/project-switcher";
 import { tiers } from "@/components/present/mavera/theme";
 import { VariantCards } from "@/components/mavera/hub/variants";
@@ -39,6 +40,7 @@ const benchmarks = [
 export default function MaveraHub() {
   return (
     <main className="pb-24 text-sand-50">
+      <DevuzIntro project="mavera" />
       <Container className="pt-10">
         <ProjectSwitcher active="mavera" tone="dark" />
       </Container>

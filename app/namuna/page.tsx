@@ -1,3 +1,4 @@
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Hero, ReadingProgress } from "@/components/nm/hero";
 import { Chat } from "@/components/nm/chat";
 import { Configurator, PriceBar } from "@/components/nm/configurator";
@@ -33,6 +34,7 @@ import {
 export default function NamunaPage() {
   return (
     <>
+      <DevuzIntro project="nm" />
       <ReadingProgress />
       <Header />
 

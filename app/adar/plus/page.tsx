@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Advantages } from "@/components/adar/base/advantages";
 import { ThemesGrid } from "@/components/adar/base/themes-grid";
 import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
@@ -60,6 +61,7 @@ export default function AdarPlusConcept() {
 
   return (
     <AdarConfigurator tier="plus">
+      <DevuzIntro project="adar" />
       <SkipLink />
       {showcaseChrome ? <ConceptBar current="plus" /> : null}
       <div data-concept="shop">

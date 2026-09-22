@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 
+import { whenDevuzIntroDone } from "@/lib/brand/intro";
+
 /**
  * Заставка Golden House: из темноты — в их квартал.
  *
@@ -134,7 +136,11 @@ export function Intro() {
       finish();
       return;
     }
-    begin();
+    // Перед главной играет заставка студии — свой пролог ждёт её конца.
+    // Два кино подряд никто смотреть не станет, но внахлёст они и не идут:
+    // студийный кадр начинает расходиться как раз к тому моменту, когда
+    // здесь из черноты проступает знак, а чернота у обоих одна и та же.
+    return whenDevuzIntroDone(begin);
   }, []);
 
   useEffect(() => {

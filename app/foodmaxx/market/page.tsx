@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { MarketHeader } from "@/components/foodmaxx/market/header";
 import { MarketHero } from "@/components/foodmaxx/market/hero";
 import { MarketLead } from "@/components/foodmaxx/market/lead";
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
 export default function FoodmaxxMarketPage() {
   return (
     <div className="bg-white font-mk text-mk-ink">
+      <DevuzIntro project="foodmaxx" />
       <VariantSwitch current="market" />
       <MarketHeader />
       <main>

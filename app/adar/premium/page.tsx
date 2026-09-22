@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Advantages } from "@/components/adar/base/advantages";
 import { ThemesGrid } from "@/components/adar/base/themes-grid";
 import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
@@ -59,6 +60,7 @@ export default function AdarPremiumConcept() {
 
   return (
     <CartProvider>
+      <DevuzIntro project="adar" />
       {/*
         Разметка для поиска. Она повторяет то, что и так написано на странице,
         — адрес, часы, телефоны, цены каталога, — но в виде, который Google

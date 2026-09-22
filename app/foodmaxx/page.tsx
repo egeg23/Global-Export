@@ -1,3 +1,4 @@
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { VariantSwitch } from "@/components/foodmaxx/market/variant-switch";
 import { FoodmaxxHeader } from "@/components/foodmaxx/ui/header";
 import { FoodmaxxHero } from "@/components/foodmaxx/hero";
@@ -18,6 +19,7 @@ import { FoodmaxxFooter } from "@/components/foodmaxx/ui/footer";
 export default function FoodmaxxPage() {
   return (
     <>
+      <DevuzIntro project="foodmaxx" />
       <VariantSwitch current="cinema" />
       <FoodmaxxHeader />
       <main id="content">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Advantages } from "@/components/adar/base/advantages";
 import { Hero } from "@/components/adar/base/hero";
 import { PopularSets } from "@/components/adar/base/popular-sets";
@@ -49,6 +50,7 @@ export default function AdarBaseConcept() {
 
   return (
     <AdarConfigurator tier="base">
+      <DevuzIntro project="adar" />
       <SkipLink />
       {showcaseChrome ? <ConceptBar current="base" /> : null}
       <SiteHeader />
