@@ -1,3 +1,4 @@
+import { VariantSwitch } from "@/components/foodmaxx/market/variant-switch";
 import { FoodmaxxHeader } from "@/components/foodmaxx/ui/header";
 import { FoodmaxxHero } from "@/components/foodmaxx/hero";
 import { JarOpening } from "@/components/foodmaxx/scenes/jar-opening";
@@ -17,6 +18,7 @@ import { FoodmaxxFooter } from "@/components/foodmaxx/ui/footer";
 export default function FoodmaxxPage() {
   return (
     <>
+      <VariantSwitch current="cinema" />
       <FoodmaxxHeader />
       <main id="content">
         <FoodmaxxHero />

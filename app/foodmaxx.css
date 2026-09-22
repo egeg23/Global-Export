@@ -137,3 +137,72 @@
     }
   }
 }
+
+/* ------------------------------------------------------------------
+   Вариант 02 «Полка» — другое оформление на тех же данных.
+
+   Первый вариант тёмный и кинематографичный: банка живёт в студии, и
+   смотреть его надо медленно. Второй устроен как инфографика карточки
+   маркетплейса: светло, плотно, каждое утверждение подписано и обведено,
+   суть читается за три секунды. Отсюда и палитра — свежая зелень со
+   спелым оранжевым, — и округлый шрифт вместо заголовочного гротеска.
+   ------------------------------------------------------------------ */
+
+@theme {
+  --color-mk-green-50: #edfbf4;
+  --color-mk-green-100: #d6f5e6;
+  --color-mk-green-200: #a9e9c8;
+  --color-mk-green-400: #34c383;
+  --color-mk-green-500: #12a06a;
+  --color-mk-green-600: #0c855a;
+  --color-mk-green-700: #0a6848;
+  --color-mk-green-900: #0f2b20;
+
+  /* Оранжевый взят у самого бренда — буквы на его логотипе. */
+  --color-mk-orange-100: #fdeacf;
+  --color-mk-orange-300: #f7bd77;
+  --color-mk-orange-500: #e8912d;
+  --color-mk-orange-600: #cc7415;
+
+  --color-mk-ink: #0f1b14;
+  --color-mk-ink-muted: #46584d;
+  --color-mk-ink-subtle: #667a6e;
+  --color-mk-line: #d9ece2;
+
+  --font-mk: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-mk-display: var(--font-rubik), var(--font-nunito), ui-sans-serif, sans-serif;
+
+  --radius-mk: 1.4rem;
+  --radius-mk-lg: 2rem;
+}
+
+@layer components {
+  /* Пунктирная выноска от плашки к товару — приём карточки маркетплейса */
+  .mk-leader {
+    background-image: linear-gradient(
+      to right,
+      var(--color-mk-green-200) 0 6px,
+      transparent 6px 12px
+    );
+    background-size: 12px 2px;
+    background-repeat: repeat-x;
+  }
+
+  /* Мягкое пятно под товаром вместо тени: теней в этом варианте нет */
+  .mk-halo {
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      color-mix(in oklab, var(--color-mk-green-200) 70%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  /* Лента-заголовок: как «плашка» на инфографике товара */
+  .mk-ribbon {
+    background: linear-gradient(
+      100deg,
+      var(--color-mk-green-500) 0%,
+      var(--color-mk-green-600) 100%
+    );
+  }
+}

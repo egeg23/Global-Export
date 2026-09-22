@@ -33,7 +33,9 @@ export function FoodmaxxHeader() {
   }, []);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+    // Шапка в потоке, а не поверх страницы: над ней стоит переключатель
+    // вариантов, и вынутая из потока плашка ложилась прямо на него.
+    <header className="pointer-events-none sticky top-0 z-40">
       <Shell size="wide" className="pt-3 sm:pt-4">
         <div
           className={cn(
