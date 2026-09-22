@@ -3,15 +3,15 @@
  *
  * Панель здесь не та, что показывали застройщикам: у фабрики мебели другая
  * работа. Вместо жилых комплексов и шахматки квартир — заявки из
- * конфигуратора, заказы в производстве и таблица материалов, из которой
- * конфигуратор берёт цены.
+ * калькулятора, заказы в производстве и таблица материалов, из которой
+ * калькулятор берёт цены.
  *
  * Телефоны закрыты серединой: панель показывают на встрече и снимают на
  * экран, а полностью набранный номер рано или поздно окажется чьим-то
  * настоящим.
  */
 
-import type { Choice } from "@/content/nm/kitchen";
+import type { Choice } from "@/content/nm/calc";
 
 export type LeadState = "Новая" | "Замер назначен" | "Смета согласована" | "В производстве" | "Сдан";
 
@@ -29,20 +29,56 @@ export type Lead = {
   name: string;
   contact: string;
   city: "Ташкент" | "Самарканд";
-  /** Состав из конфигуратора — ровно то, что человек выбрал на сайте. */
+  /** Состав из калькулятора — ровно то, что человек выбрал на сайте. */
   choice: Choice;
+  /** Откуда пришла: собрал состав сам или спросил в чате. */
+  source: "Калькулятор" | "Чат";
   state: LeadState;
   manager: string;
 };
 
 export const initialLeads: Lead[] = [
   {
+    id: "z-1042",
+    at: "22.09, 11:47",
+    name: "Камола Т.",
+    contact: "+998 94 •••-15-60",
+    city: "Ташкент",
+    choice: {
+      kind: "wardrobe",
+      amount: 2.8,
+      layout: "corner",
+      front: "mirror",
+      top: "quartz",
+      fill: "carousel",
+      hardware: "cinetto",
+      light: "domus",
+      rush: "fast",
+      install: "full",
+    },
+    source: "Чат",
+    state: "Новая",
+    manager: "Нигора",
+  },
+  {
     id: "z-1041",
     at: "22.09, 10:14",
     name: "Дилшод А.",
     contact: "+998 90 •••-32-18",
     city: "Ташкент",
-    choice: { layout: "island", front: "veneer", top: "stone", hardware: "full", light: "domus" },
+    choice: {
+      kind: "kitchen",
+      amount: 5.4,
+      layout: "island",
+      front: "veneer",
+      top: "stone",
+      fill: "boxes",
+      hardware: "full",
+      light: "domus",
+      rush: "normal",
+      install: "full",
+    },
+    source: "Калькулятор",
     state: "Новая",
     manager: "Нигора",
   },
@@ -52,7 +88,19 @@ export const initialLeads: Lead[] = [
     name: "Зухра К.",
     contact: "@zuhra_k",
     city: "Ташкент",
-    choice: { layout: "corner", front: "matt", top: "quartz", hardware: "blum", light: "domus" },
+    choice: {
+      kind: "kitchen",
+      amount: 4.6,
+      layout: "corner",
+      front: "matt",
+      top: "quartz",
+      fill: "boxes",
+      hardware: "blum",
+      light: "domus",
+      rush: "fast",
+      install: "full",
+    },
+    source: "Калькулятор",
     state: "Замер назначен",
     manager: "Нигора",
   },
@@ -62,7 +110,19 @@ export const initialLeads: Lead[] = [
     name: "Отабек Р.",
     contact: "+998 93 •••-77-05",
     city: "Самарканд",
-    choice: { layout: "line", front: "film", top: "post", hardware: "base", light: "none" },
+    choice: {
+      kind: "hall",
+      amount: 2.4,
+      layout: "line",
+      front: "mirror",
+      top: "post",
+      fill: "shelves",
+      hardware: "cinetto",
+      light: "none",
+      rush: "normal",
+      install: "full",
+    },
+    source: "Калькулятор",
     state: "Смета согласована",
     manager: "Жасур",
   },
@@ -72,7 +132,19 @@ export const initialLeads: Lead[] = [
     name: "Мадина Т.",
     contact: "madina@•••.uz",
     city: "Ташкент",
-    choice: { layout: "u", front: "milled", top: "quartz", hardware: "full", light: "domus" },
+    choice: {
+      kind: "flat",
+      amount: 3,
+      layout: "u",
+      front: "milled",
+      top: "quartz",
+      fill: "show",
+      hardware: "full",
+      light: "domus",
+      rush: "normal",
+      install: "full",
+    },
+    source: "Калькулятор",
     state: "В производстве",
     manager: "Сардор",
   },
@@ -82,7 +154,19 @@ export const initialLeads: Lead[] = [
     name: "Бахтиёр У.",
     contact: "+998 97 •••-14-60",
     city: "Самарканд",
-    choice: { layout: "corner", front: "graphite", top: "stone", hardware: "blum", light: "none" },
+    choice: {
+      kind: "wardrobe",
+      amount: 3.6,
+      layout: "corner",
+      front: "graphite",
+      top: "stone",
+      fill: "carousel",
+      hardware: "cinetto",
+      light: "domus",
+      rush: "normal",
+      install: "self",
+    },
+    source: "Калькулятор",
     state: "Сдан",
     manager: "Жасур",
   },

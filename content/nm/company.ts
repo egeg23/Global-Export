@@ -142,10 +142,11 @@ export const contacts = {
 };
 
 export const nav = [
-  ["Конфигуратор", "#configurator"],
-  ["Проекты", "#projects"],
-  ["Материалы", "#materials"],
+  ["Калькулятор", "#configurator"],
+  ["Работы", "#projects"],
   ["Производство", "#production"],
+  ["Что внутри", "#inside"],
+  ["Материалы", "#materials"],
   ["Сроки", "#timeline"],
   ["Вопросы", "#faq"],
   ["Контакты", "#contacts"],

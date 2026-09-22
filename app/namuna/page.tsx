@@ -1,5 +1,7 @@
 import { Hero, ReadingProgress } from "@/components/nm/hero";
+import { Chat } from "@/components/nm/chat";
 import { Configurator, PriceBar } from "@/components/nm/configurator";
+import { Inside } from "@/components/nm/inside";
 import {
   Chapter,
   Compare,
@@ -39,13 +41,13 @@ export default function NamunaPage() {
 
         <Chapter
           id="configurator"
-          number="02 — Конфигуратор"
+          number="02 — Калькулятор"
           title={
             <>
-              Соберите свою кухню и <span className="nm-accent">увидите цену</span> сразу
+              Соберите свою мебель и <span className="nm-accent">увидите цену</span> сразу
             </>
           }
-          lead="Планировка, фасады, столешница и фурнитура. Вилка сметы и срок пересчитываются на каждом нажатии — звонить, чтобы узнать порядок цифр, не нужно."
+          lead="Кухня, гардеробная, гостиная или квартира целиком: объём, материалы и фурнитура. Вилка сметы и срок пересчитываются на каждом нажатии — звонить, чтобы узнать порядок цифр, не нужно."
         >
           <Configurator />
         </Chapter>
@@ -87,8 +89,21 @@ export default function NamunaPage() {
         </Chapter>
 
         <Chapter
+          id="inside"
+          number="06 — Что внутри"
+          title={
+            <>
+              Половина цены — <span className="nm-accent">там, где не видно</span>
+            </>
+          }
+          lead="Тыкните в узел на кадре: что за ним стоит и почему оно столько стоит. Ящик, петля, подсветка и ниша под технику — то, из-за чего мебель либо служит десять лет, либо начинает провисать на второй."
+        >
+          <Inside />
+        </Chapter>
+
+        <Chapter
           id="materials"
-          number="06 — Материалы"
+          number="07 — Материалы"
           title={
             <>
               Работают с теми, чьё имя <span className="nm-accent">стоит на петле</span>
@@ -101,7 +116,7 @@ export default function NamunaPage() {
 
         <Chapter
           id="timeline"
-          number="07 — Сроки"
+          number="08 — Сроки"
           title={
             <>
               Пять шагов от заявки <span className="nm-accent">до ключей от кухни</span>
@@ -114,7 +129,7 @@ export default function NamunaPage() {
 
         <Chapter
           id="faq"
-          number="08 — Вопросы"
+          number="09 — Вопросы"
           title={
             <>
               О чём спрашивают <span className="nm-accent">чаще всего</span>
@@ -126,7 +141,7 @@ export default function NamunaPage() {
 
         <Chapter
           id="contacts"
-          number="09 — Контакты"
+          number="10 — Контакты"
           title={
             <>
               Приезжайте в салон — <span className="nm-accent">материал надо трогать</span>
@@ -140,6 +155,7 @@ export default function NamunaPage() {
 
       <Footer />
       <PriceBar />
+      <Chat />
     </>
   );
 }

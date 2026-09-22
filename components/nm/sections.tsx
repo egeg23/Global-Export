@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useStage } from "@/components/showcase/depth";
 import { Rise } from "@/components/mavera/reveal";
 import { contacts, faq, nav, partners, steps, virtues } from "@/content/nm/company";
-import { days } from "@/content/nm/kitchen";
+import { days } from "@/content/nm/calc";
 import { compare, kinds, projects, type Kind } from "@/content/nm/projects";
 import { cn } from "@/lib/cn";
 
@@ -108,22 +108,45 @@ export function Chapter({
   tone?: "deep";
   children: React.ReactNode;
 }) {
+  const stage = useStage<HTMLElement>();
+
   return (
     <section
+      ref={stage}
       id={id}
       data-tone={tone}
-      className={cn("scroll-mt-24 py-20 sm:py-28", tone === "deep" && "py-24 sm:py-32")}
+      className={cn(
+        "relative isolate scroll-mt-24 overflow-x-clip py-20 sm:py-28",
+        tone === "deep" && "py-24 sm:py-32",
+      )}
     >
+      {/* Номер главы водяным знаком в самой глубине: он и даёт понять,
+          что страница не плоская, — цифра едет медленнее текста. */}
+      <span
+        aria-hidden
+        className="w-layer pointer-events-none absolute -right-[3%] top-[6%] -z-10 hidden select-none font-[family-name:var(--w-display)] text-[16vw] leading-none text-[var(--nm-teal)] opacity-[0.045] md:block"
+        style={{ "--w-depth": "190px", "--w-pull": "18px" } as React.CSSProperties}
+      >
+        {number.slice(0, 2)}
+      </span>
+
       <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-8">
-        <Rise className="max-w-3xl">
-          <p className="nm-chapter">{number}</p>
-          <h2 className="nm-rule mt-5 text-[clamp(1.8rem,3.6vw,2.9rem)] leading-[1.08] text-[var(--nm-teal)]">
-            {title}
-          </h2>
-          {lead ? (
-            <p className="mt-6 text-[1rem] leading-relaxed text-[var(--w-muted)]">{lead}</p>
-          ) : null}
-        </Rise>
+        {/* Вход и глубина — на разных узлах: оба правят transform, и на
+            одном узле побеждал бы тот, что описан ниже. */}
+        <div
+          className="w-layer max-w-3xl"
+          style={{ "--w-depth": "-58px", "--w-pull": "-12px" } as React.CSSProperties}
+        >
+          <Rise>
+            <p className="nm-chapter">{number}</p>
+            <h2 className="nm-rule mt-5 text-[clamp(1.8rem,3.6vw,2.9rem)] leading-[1.08] text-[var(--nm-teal)]">
+              {title}
+            </h2>
+            {lead ? (
+              <p className="mt-6 text-[1rem] leading-relaxed text-[var(--w-muted)]">{lead}</p>
+            ) : null}
+          </Rise>
+        </div>
 
         <div className="mt-12">{children}</div>
       </div>
@@ -285,7 +308,8 @@ export function Compare() {
           alt={compare.beforeLabel}
           fill
           sizes="(max-width: 1024px) 100vw, 80vw"
-          className="object-cover"
+          style={{ "--w-depth": "70px" } as React.CSSProperties}
+          className="w-layer scale-110 object-cover"
         />
         <div className="nm-compare__after">
           <Image
@@ -293,7 +317,8 @@ export function Compare() {
             alt={compare.afterLabel}
             fill
             sizes="(max-width: 1024px) 100vw, 80vw"
-            className="object-cover"
+            style={{ "--w-depth": "70px" } as React.CSSProperties}
+            className="w-layer scale-110 object-cover"
           />
         </div>
 
@@ -359,7 +384,8 @@ export function Production() {
           alt="Салон фабрики: витрины, фурнитура и образцы материалов"
           fill
           sizes="(max-width: 1024px) 100vw, 46vw"
-          className="object-cover"
+          style={{ "--w-depth": "90px", "--w-pull": "12px" } as React.CSSProperties}
+          className="w-layer scale-110 object-cover"
         />
       </Rise>
     </div>
@@ -396,7 +422,10 @@ export function Timeline() {
 
   return (
     <div>
-      <ol className="relative grid border-l border-[var(--w-line)] pl-7 sm:pl-9">
+      <ol
+        className="w-layer relative grid border-l border-[var(--w-line)] pl-7 sm:pl-9"
+        style={{ "--w-depth": "-34px", "--w-pull": "-8px" } as React.CSSProperties}
+      >
         {steps.map((step, index) => (
           <Rise as="li" key={step.title} delay={index * 80} className="relative pb-10 last:pb-0">
             <span className="absolute -left-[calc(1.75rem+4px)] top-2 size-2 rounded-full bg-[var(--w-accent)] sm:-left-[calc(2.25rem+4px)]" />
@@ -445,6 +474,52 @@ function fillers(count: number) {
   return Array.from({ length: rest }, (_, index) => `filler-${index}`);
 }
 
+/**
+ * Волна: содержимое проявляется по очереди, а не всё разом.
+ *
+ * Наблюдатель один на всю сетку, а очередь держит CSS — каждой ячейке
+ * достаётся свой номер в `--nm-i`, из него считается задержка. Двадцать
+ * четыре наблюдателя ради двадцати четырёх логотипов были бы расточительством.
+ */
+function Wave({
+  children,
+  className,
+  label,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  label?: string;
+}) {
+  const [shown, setShown] = useState(false);
+
+  const attach = useCallback((node: HTMLUListElement | null) => {
+    if (!node) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setShown(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setShown(true);
+            observer.disconnect();
+          }
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.08 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <ul ref={attach} aria-label={label} data-wave={shown ? "in" : undefined} className={className}>
+      {children}
+    </ul>
+  );
+}
+
 export function Partners() {
   return (
     <div className="grid gap-12">
@@ -452,10 +527,11 @@ export function Partners() {
         <h3 className="text-[0.72rem] uppercase tracking-[0.22em] text-[var(--w-accent)]">
           Фурнитура, плита и техника
         </h3>
-        <ul className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-3 lg:grid-cols-6">
-          {partners.supply.map((brand) => (
+        <Wave className="nm-wave mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-3 lg:grid-cols-6">
+          {partners.supply.map((brand, index) => (
             <li
               key={brand.file}
+              style={{ "--nm-i": index } as React.CSSProperties}
               className="flex min-h-[6.5rem] items-center justify-center bg-[var(--w-surface)] p-5"
             >
               <Image
@@ -467,20 +543,26 @@ export function Partners() {
               />
             </li>
           ))}
-          {fillers(partners.supply.length).map((key) => (
-            <li key={key} aria-hidden className="bg-[var(--w-surface)]" />
+          {fillers(partners.supply.length).map((key, index) => (
+            <li
+              key={key}
+              aria-hidden
+              style={{ "--nm-i": partners.supply.length + index } as React.CSSProperties}
+              className="bg-[var(--w-surface)]"
+            />
           ))}
-        </ul>
+        </Wave>
       </div>
 
       <div>
         <h3 className="text-[0.72rem] uppercase tracking-[0.22em] text-[var(--w-accent)]">
           Меблированные жилые комплексы
         </h3>
-        <ul className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-3 lg:grid-cols-6">
-          {partners.housing.map((brand) => (
+        <Wave className="nm-wave mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-line)] sm:grid-cols-3 lg:grid-cols-6">
+          {partners.housing.map((brand, index) => (
             <li
               key={brand.file}
+              style={{ "--nm-i": index } as React.CSSProperties}
               className="flex min-h-[8rem] items-center justify-center bg-[var(--w-surface)] p-6"
             >
               <Image
@@ -492,7 +574,7 @@ export function Partners() {
               />
             </li>
           ))}
-        </ul>
+        </Wave>
       </div>
     </div>
   );

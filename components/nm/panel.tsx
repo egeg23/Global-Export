@@ -7,11 +7,14 @@ import {
   days,
   estimate,
   groups,
+  kindOf,
   layoutOf,
   optionOf,
   sums,
+  volume,
   type Group,
-} from "@/content/nm/kitchen";
+  type GroupId,
+} from "@/content/nm/calc";
 import {
   initialLeads,
   initialLog,
@@ -163,13 +166,15 @@ export function PanelApp() {
 /** Смета заявки с учётом цен, поправленных в панели. */
 function leadTotal(lead: Lead, prices: Record<string, number>) {
   const base = estimate(lead.choice);
-  const layout = layoutOf(lead.choice);
-  const delta = groups.reduce((sum, group) => {
-    const option = optionOf(group.id, lead.choice[group.id]);
-    const override = prices[option.id];
-    return override === undefined ? sum : sum + (override - option.perMetre);
-  }, 0);
-  const shift = delta * layout.metres;
+  const kind = kindOf(lead.choice.kind);
+  const delta = kind.groups
+    .filter((id: GroupId) => id !== "layout")
+    .reduce((sum: number, id: GroupId) => {
+      const option = optionOf(id, lead.choice[id], kind.id);
+      const override = prices[option.id];
+      return override === undefined ? sum : sum + (override - option.perUnit);
+    }, 0);
+  const shift = delta * base.metres;
   return { low: base.low + shift * 0.88, high: base.high + shift * 1.12, days: base.days };
 }
 
@@ -184,16 +189,17 @@ function Leads({
 }) {
   return (
     <div>
-      <h2 className="text-[1.2rem]">Заявки из конфигуратора</h2>
+      <h2 className="text-[1.2rem]">Заявки из калькулятора</h2>
       <p className="mt-2 text-[0.86rem] text-[var(--w-muted)]">
         Каждая заявка приходит с составом: менеджеру не нужно выяснять по
-        телефону, о какой кухне речь.
+        телефону, о какой мебели речь. Источник видно сразу — человек собрал
+        состав сам или спросил в чате.
       </p>
 
       <ul className="mt-6 grid gap-4">
         {leads.map((lead) => {
           const total = leadTotal(lead, prices);
-          const layout = layoutOf(lead.choice);
+          const kind = kindOf(lead.choice.kind);
           return (
             <li
               key={lead.id}
@@ -208,7 +214,8 @@ function Leads({
                     </span>
                   </p>
                   <p className="mt-1 text-[0.78rem] text-[var(--w-muted)]">
-                    {lead.id} · {lead.at} · {lead.city} · менеджер {lead.manager}
+                    {lead.id} · {lead.at} · {lead.city} · менеджер {lead.manager} ·{" "}
+                    <span className="text-[var(--w-accent)]">{lead.source}</span>
                   </p>
                 </div>
                 <p className="text-right text-[1.05rem] text-[var(--nm-teal)]">
@@ -218,10 +225,14 @@ function Leads({
               </div>
 
               <ul className="mt-4 flex flex-wrap gap-2 border-t border-[var(--w-line)] pt-4">
-                <Tag>{layout.label}, {layout.metres} п.м.</Tag>
-                {groups.map((group) => (
-                  <Tag key={group.id}>{optionOf(group.id, lead.choice[group.id]).label}</Tag>
-                ))}
+                <Tag>{kind.label}</Tag>
+                <Tag>{volume(kind, lead.choice.amount)}</Tag>
+                {kind.groups.includes("layout") ? <Tag>{layoutOf(lead.choice).label}</Tag> : null}
+                {kind.groups
+                  .filter((id: GroupId) => id !== "layout")
+                  .map((id: GroupId) => (
+                    <Tag key={id}>{optionOf(id, lead.choice[id], kind.id).label}</Tag>
+                  ))}
                 <Tag>{days(total.days)}</Tag>
               </ul>
 
@@ -346,7 +357,7 @@ function Prices({
           </thead>
           <tbody>
             {rows.map(({ group, option }) => {
-              const value = prices[option.id] ?? option.perMetre;
+              const value = prices[option.id] ?? option.perUnit;
               const changed = prices[option.id] !== undefined;
               return (
                 <tr key={option.id} className="border-b border-[var(--w-line)]">
