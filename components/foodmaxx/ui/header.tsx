@@ -57,7 +57,7 @@ export function FoodmaxxHeader() {
               <a
                 key={item.href}
                 href={item.href}
-                className="link-underline text-sm text-fm-cream-50/75 transition-colors hover:text-fm-cream-50"
+                className="link-underline -my-1 py-1 text-sm text-fm-cream-50/75 transition-colors hover:text-fm-cream-50"
               >
                 {item.label}
               </a>
@@ -67,7 +67,7 @@ export function FoodmaxxHeader() {
           <div className="ml-auto flex items-center gap-3">
             <a
               href={`tel:${company.contacts.phones[0].replace(/\s/g, "")}`}
-              className="hidden text-sm tabular-nums text-fm-cream-50/80 transition-colors hover:text-fm-amber-400 md:block"
+              className="-my-1 hidden py-1 text-sm tabular-nums text-fm-cream-50/80 transition-colors hover:text-fm-amber-400 md:block"
             >
               {company.contacts.phones[0]}
             </a>

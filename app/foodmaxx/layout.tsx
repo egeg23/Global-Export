@@ -35,6 +35,7 @@ export const metadata: Metadata = {
   description:
     "Консервация под брендом FOODMAXX: огурцы и ассорти в стекле, тушёное мясо и готовые блюда. Производство ООО «Global Food Exclusive», Ташкентская область.",
   robots: { index: false, follow: false, nocache: true },
+  icons: { icon: "/foodmaxx/favicon.svg" },
 };
 
 export default function FoodmaxxLayout({ children }: { children: React.ReactNode }) {

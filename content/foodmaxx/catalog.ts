@@ -1,4 +1,4 @@
-import type { Product } from "@/lib/foodmaxx/types";
+import type { Product, Shelf } from "@/lib/foodmaxx/types";
 
 /**
  * Каталог FOODMAXX.
@@ -11,7 +11,6 @@ import type { Product } from "@/lib/foodmaxx/types";
 export const products: Product[] = [
   // ─── Овощная консервация ────────────────────────────────────────────────
   { slug: "ogurcy", name: "Огурцы маринованные", shelf: "ovoshi", image: "jar-ogurcy", pack: "steklo", note: "фирменная банка 1,7 л" },
-  { slug: "ogurcy-2", name: "Огурцы маринованные", shelf: "ovoshi", image: "jar-ogurcy-2", pack: "steklo" },
   { slug: "kornishony", name: "Корнишоны маринованные", shelf: "ovoshi", image: "kornishony", pack: "steklo" },
   { slug: "ogurcy-slaysy", name: "Огурцы нарезанные слайсами", shelf: "ovoshi", image: "ogurcy-slaysy", pack: "steklo" },
   { slug: "assorti", name: "Ассорти маринованное", shelf: "ovoshi", image: "jar-assorti", pack: "steklo", note: "огурцы и томаты в одной банке" },
@@ -64,11 +63,11 @@ export const products: Product[] = [
   { slug: "uksus-stolovyj", name: "Уксус столовый 9%", shelf: "blyuda", image: "uksus-stolovyj", pack: "butylka" },
 ];
 
-export const shelves = [
+export const shelves: { id: Shelf; label: string; note: string }[] = [
   { id: "ovoshi", label: "Овощная консервация", note: "Огурцы, ассорти, грибы и икра в стекле" },
   { id: "myaso", label: "Мясная консервация", note: "Говядина, баранина, конина и национальные блюда" },
   { id: "blyuda", label: "Готовые блюда", note: "Плов, халим, заправки и ветчина" },
-] as const;
+];
 
 /**
  * Снимки для сцен: лежат в `/public/foodmaxx/scene`, а не среди товаров.
