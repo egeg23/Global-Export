@@ -1,0 +1,139 @@
+/* ------------------------------------------------------------------
+   FOODMAXX — токены оформления третьего проекта.
+
+   Палитра снята с их собственной банки: чёрная жесть этикетки, янтарь
+   логотипа и зелень рассола. Соседние проекты в этом репозитории уже
+   заняли тёмно-зелёный с золотом и песок с терракотой, поэтому здесь
+   свой набор — и удаляется он одним файлом вместе с папкой /foodmaxx.
+   ------------------------------------------------------------------ */
+
+@theme {
+  /* Уголь — фон этикетки «Мясо быка ЭКСТРА» и подложка логотипа. */
+  --color-fm-ink-950: #0c0a08;
+  --color-fm-ink-900: #14110d;
+  --color-fm-ink-800: #1f1a14;
+  --color-fm-ink-700: #2e2721;
+  --color-fm-ink-600: #443b32;
+  --color-fm-ink-400: #6f6357;
+  --color-fm-ink-300: #93867a;
+
+  /* Янтарь — буквы FOODMAXX и кант вокруг них. */
+  --color-fm-amber-200: #fbe3bf;
+  --color-fm-amber-300: #f6cc8e;
+  --color-fm-amber-400: #f0ad55;
+  --color-fm-amber-500: #e8912d;
+  --color-fm-amber-600: #c4711c;
+  --color-fm-amber-700: #96540f;
+
+  /* Рассол — зелень огурца в банке. */
+  --color-fm-green-300: #9ecfa5;
+  --color-fm-green-500: #479257;
+  --color-fm-green-600: #35773f;
+  --color-fm-green-700: #2a5c33;
+  --color-fm-green-900: #16301c;
+
+  /* Томат — ассорти и лечо. */
+  --color-fm-tomato-400: #e35a4a;
+  --color-fm-tomato-500: #c93a2b;
+  --color-fm-tomato-600: #a52a1e;
+
+  --color-fm-cream-50: #fdfbf7;
+  --color-fm-cream-100: #f7f1e6;
+  --color-fm-cream-200: #ece2d1;
+
+  --font-fm: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-fm-display: var(--font-unbounded), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+
+  --radius-fm: 1.1rem;
+  --radius-fm-lg: 1.75rem;
+
+  --ease-fm: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer components {
+  /* ------------------------------------------------------------------
+     Жидкое стекло.
+
+     Не «полупрозрачная плашка с блюром», а материал: за размытием идёт
+     подцветка и подъём насыщенности, сверху — светлая кромка, снизу —
+     тень внутрь. Именно кромка и внутренняя тень дают толщину, без них
+     стекло читается как запотевшее окно.
+     ------------------------------------------------------------------ */
+  .fm-glass {
+    position: relative;
+    background: color-mix(in oklab, var(--color-fm-ink-900) 42%, transparent);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid color-mix(in oklab, white 14%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, white 22%, transparent),
+      inset 0 -14px 24px -18px color-mix(in oklab, black 80%, transparent),
+      0 18px 40px -28px color-mix(in oklab, black 90%, transparent);
+  }
+
+  /* На светлой подложке стекло должно светлеть, а не темнеть. */
+  .fm-glass-light {
+    background: color-mix(in oklab, white 58%, transparent);
+    border-color: color-mix(in oklab, var(--color-fm-ink-900) 8%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, white 85%, transparent),
+      0 18px 40px -30px color-mix(in oklab, var(--color-fm-ink-900) 45%, transparent);
+  }
+
+  /* Блик, который ведёт себя как отражение: узкая полоса поперёк стекла. */
+  .fm-glass-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      color-mix(in oklab, white 16%, transparent) 46%,
+      transparent 56%
+    );
+  }
+
+  /* Тёплое свечение под банкой — «прожектор» студийной съёмки. */
+  .fm-spot {
+    background: radial-gradient(
+      60% 55% at 50% 45%,
+      color-mix(in oklab, var(--color-fm-amber-500) 26%, transparent) 0%,
+      transparent 72%
+    );
+  }
+
+  /* Зерно: снимает баннерность у больших заливок. */
+  .fm-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Золотая надпись тем же приёмом, что кант на банке. */
+  .fm-amber-text {
+    background: linear-gradient(
+      96deg,
+      var(--color-fm-amber-300) 8%,
+      var(--color-fm-amber-500) 42%,
+      var(--color-fm-amber-200) 72%,
+      var(--color-fm-amber-600) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fm-glass-sheen::after {
+      display: none;
+    }
+  }
+}

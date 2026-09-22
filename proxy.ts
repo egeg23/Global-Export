@@ -92,6 +92,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Четвёртый проект витрины — сайт производителя консервации. Тоже без
+  // языкового префикса.
+  if (pathname === "/foodmaxx" || pathname.startsWith("/foodmaxx/")) {
+    return NextResponse.next();
+  }
+
   // On the demo deployment the root is the showcase; on the live site it stays
   // the language redirect. One variable rather than two builds of the app.
   if (pathname === "/" && process.env.SHOWCASE_ROOT === "true") {
