@@ -145,21 +145,27 @@ export function Chat() {
 
   return (
     <>
+      {/* Имя для доступности постоянное, а надпись на телефоне короче:
+          полная фраза съедала треть экрана и лезла на карточки. */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-controls="nm-chat"
+        aria-label={open ? "Свернуть чат" : "Ответим за 10 секунд"}
         className={cn(
-          "fixed bottom-20 right-4 z-50 flex cursor-pointer items-center gap-2.5 rounded-full bg-[var(--nm-teal)] py-3 pl-4 pr-5 text-white shadow-[0_18px_40px_-18px_rgba(7,40,46,0.9)] transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:right-6 lg:bottom-6",
+          "fixed bottom-20 right-4 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-[var(--nm-teal)] py-2.5 pl-3.5 pr-4 text-white shadow-[0_18px_40px_-18px_rgba(7,40,46,0.9)] transition-transform hover:-translate-y-0.5 motion-reduce:transform-none sm:right-6 sm:gap-2.5 sm:py-3 sm:pl-4 sm:pr-5 lg:bottom-6",
         )}
       >
         <span className="relative flex size-2.5">
           <span className="nm-pulse absolute inline-flex size-full rounded-full bg-[var(--nm-champagne)] opacity-70" />
           <span className="relative inline-flex size-2.5 rounded-full bg-[var(--nm-champagne)]" />
         </span>
-        <span className="text-[0.86rem] font-medium">
-          {open ? "Свернуть чат" : "Ответим за 10 секунд"}
+        <span aria-hidden className="text-[0.8rem] font-medium sm:text-[0.86rem]">
+          <span className="sm:hidden">{open ? "Свернуть" : "Ответ за 10 сек"}</span>
+          <span className="hidden sm:inline">
+            {open ? "Свернуть чат" : "Ответим за 10 секунд"}
+          </span>
         </span>
       </button>
 
