@@ -25,7 +25,7 @@ import { sets } from "@/content/adar/catalog";
 import { getConcept } from "@/content/adar/concepts";
 import { CartProvider } from "@/lib/adar/cart";
 import { adarIndexable, adarMetadata, businessJsonLd, catalogJsonLd, websiteJsonLd } from "@/lib/adar/seo";
-import { showcaseChrome } from "@/lib/adar/showcase";
+import { showcaseChrome, showcasePricing } from "@/lib/adar/showcase";
 import { growthStages } from "@/lib/adar/catalog";
 
 /**
@@ -125,7 +125,7 @@ export default function AdarPremiumConcept() {
           <SiteFooter />
         </div>
         <CartPanel />
-        {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
+        {showcasePricing ? <EstimatePanel concept={concept} /> : null}
       </AdarConfigurator>
     </CartProvider>
   );

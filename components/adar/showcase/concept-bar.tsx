@@ -1,12 +1,13 @@
 import Link from "next/link";
 
 import { concepts } from "@/content/adar/concepts";
+import { showcasePricing } from "@/lib/adar/showcase";
 import { cn } from "@/lib/cn";
 import type { Concept } from "@/lib/adar/types";
 
 /**
- * Полоса поверх каждой концепции: где мы находимся, сколько это стоит и как
- * перейти к соседнему варианту.
+ * Полоса поверх каждой концепции: где мы находимся и как перейти к соседнему
+ * варианту. Сумма у варианта — только при включённых ценах (`showcasePricing`).
  *
  * Не закреплена сверху намеренно — уезжает при первой же прокрутке и
  * оставляет первый экран концепции таким, каким его увидит посетитель сайта.
@@ -49,7 +50,9 @@ export function ConceptBar({ current }: { current: Concept["id"] }) {
               >
                 <span className="mr-1.5 text-[0.7rem] opacity-60">{concept.index}</span>
                 {concept.name}
-                <span className="ml-2 tabular-nums opacity-70">${concept.estimate.total}</span>
+                {showcasePricing ? (
+                  <span className="ml-2 tabular-nums opacity-70">${concept.estimate.total}</span>
+                ) : null}
               </Link>
             );
           })}

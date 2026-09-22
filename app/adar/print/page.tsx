@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { PrintButton } from "@/components/adar/print/print-button";
 import { printStyles } from "@/app/adar/print/styles";
@@ -6,6 +7,7 @@ import { comparison, concepts } from "@/content/adar/concepts";
 import { sets } from "@/content/adar/catalog";
 import { priceRange } from "@/lib/adar/catalog";
 import { formatNumber } from "@/lib/adar/format";
+import { showcasePricing } from "@/lib/adar/showcase";
 
 export const metadata: Metadata = {
   title: "Предложение для печати",
@@ -40,6 +42,9 @@ function SheetFoot({ n, children }: { n: number; children?: React.ReactNode }) {
  * этого отведена собственная колонка напротив каждой строки.
  */
 export default function AdarPrintSheet() {
+  // Каждый лист здесь несёт цену: без включённых цен документа нет вовсе.
+  if (!showcasePricing) notFound();
+
   return (
     <>
       <style>{printStyles}</style>
