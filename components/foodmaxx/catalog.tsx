@@ -5,9 +5,19 @@ import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { Shell } from "@/components/foodmaxx/ui/shell";
-import { byShelf, shelves } from "@/content/foodmaxx/catalog";
+import { byShelf, products, shelves } from "@/content/foodmaxx/catalog";
 import { cn } from "@/lib/cn";
 import type { Shelf } from "@/lib/foodmaxx/types";
+
+/** Русское склонение для «позиция»: 1 позиция, 2 позиции, 5 позиций. */
+function plural(count: number): string {
+  const tens = count % 100;
+  const ones = count % 10;
+  if (tens > 10 && tens < 20) return "ий";
+  if (ones === 1) return "ия";
+  if (ones >= 2 && ones <= 4) return "ии";
+  return "ий";
+}
 
 /**
  * Каталог.
@@ -31,8 +41,13 @@ export function FoodmaxxCatalog() {
             <p className="text-[0.68rem] font-medium uppercase tracking-[0.3em] text-fm-amber-600">
               Каталог
             </p>
+            {/*
+              Число берётся из самого каталога, а не пишется словами: стоит
+              добавить или убрать банку — и подпись разойдётся с сеткой под
+              ней, причём заметит это не автор, а заказчик.
+            */}
             <h2 className="mt-4 max-w-xl font-fm-display text-[2rem] font-600 leading-[1.05] sm:text-5xl">
-              Сорок восемь позиций
+              {products.length} позиц{plural(products.length)} в каталоге
             </h2>
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-fm-ink-400">
