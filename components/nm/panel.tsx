@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import {
+  days,
   estimate,
   groups,
   layoutOf,
@@ -221,7 +222,7 @@ function Leads({
                 {groups.map((group) => (
                   <Tag key={group.id}>{optionOf(group.id, lead.choice[group.id]).label}</Tag>
                 ))}
-                <Tag>{total.days} дней</Tag>
+                <Tag>{days(total.days)}</Tag>
               </ul>
 
               <div className="mt-4 flex flex-wrap gap-1.5">

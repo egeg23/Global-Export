@@ -275,6 +275,21 @@ export function sums(value: number): string {
     .replace(/\s/g, " ");
 }
 
+/**
+ * «32 дня», «46 дней», «21 день».
+ *
+ * Число здесь считается, а не написано руками, поэтому окончание тоже
+ * приходится считать: одиннадцать — двадцать один в русском ведут себя
+ * не так, как их последние цифры.
+ */
+export function days(count: number): string {
+  const last = count % 10;
+  const teen = count % 100 >= 11 && count % 100 <= 14;
+  if (!teen && last === 1) return `${count} день`;
+  if (!teen && last >= 2 && last <= 4) return `${count} дня`;
+  return `${count} дней`;
+}
+
 /** Дата готовности от сегодняшнего дня, словами. */
 export function readyBy(days: number, from = new Date()): string {
   const date = new Date(from);

@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useStage } from "@/components/showcase/depth";
 import { Rise } from "@/components/mavera/reveal";
 import { contacts, faq, nav, partners, steps, virtues } from "@/content/nm/company";
+import { days } from "@/content/nm/kitchen";
 import { compare, kinds, projects, type Kind } from "@/content/nm/projects";
 import { cn } from "@/lib/cn";
 
@@ -419,7 +420,7 @@ export function Timeline() {
       </ol>
 
       <p className="mt-8 border-t border-[var(--w-line)] pt-6 text-[0.86rem] text-[var(--w-muted)]">
-        Всего около <b className="text-[var(--w-ink)]">{total} дней</b> от заявки до
+        Всего около <b className="text-[var(--w-ink)]">{days(total)}</b> от заявки до
         установки при среднем объёме. Их собственный диапазон изготовления —
         15–45 дней в зависимости от материалов; точный срок фиксируется вместе
         со сметой.

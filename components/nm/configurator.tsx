@@ -7,6 +7,7 @@ import {
   defaultChoice,
   estimate,
   groups,
+  days,
   layoutOf,
   layouts,
   optionOf,
@@ -246,7 +247,7 @@ function Summary({
             <span ref={ready}>—</span>
           </p>
           <p className="mt-2.5 text-[0.84rem] text-[var(--w-muted)]">
-            {plan.days} дней от заявки
+            {days(plan.days)} от заявки
           </p>
         </div>
       </div>
