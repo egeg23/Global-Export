@@ -53,38 +53,208 @@
   --w-duration: 600ms;
 }
 
+/* ------------------------------------------------------------------
+   Премиум — светлый зал.
+
+   Тёмного кадра здесь больше нет: заказчику ближе светлое, и премиальность
+   набирается не глубиной фона, а воздухом, крупным радиусом и одним
+   приглушённым акцентом. В этом блоке — характер мира: ритм, шрифт,
+   скругления, скорость. Цвет приходит отдельно, палитрой.
+   ------------------------------------------------------------------ */
 [data-world="premium"] {
-  --w-bg: #050506;
-  --w-surface: rgba(255, 255, 255, 0.05);
-  --w-paper: #0a0a0c;
-  --w-ink: #ededef;
-  --w-muted: #8a8f98;
-  --w-line: rgba(255, 255, 255, 0.1);
-  --w-accent: #6f7bea;
-  --w-accent-soft: rgba(111, 123, 234, 0.18);
-  --w-accent-ink: #050506;
-  --w-radius: 16px;
-  --w-radius-lg: 24px;
-  --w-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+  /* Плавные линии: радиус крупный и на карточках, и на стыке разделов. */
+  --w-radius: 20px;
+  --w-radius-lg: 30px;
+  --w-radius-xl: 46px;
   --w-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --w-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --w-display-weight: 600;
-  --w-display-tracking: -0.04em;
+  --w-display: var(--font-spectral), Georgia, "Times New Roman", serif;
+  --w-display-weight: 500;
+  --w-display-tracking: -0.02em;
   --w-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --w-duration: 700ms;
+}
+
+/* ------------------------------------------------------------------
+   Три палитры «Премиума».
+
+   Переключаются на любом уровне: на корне — меняется весь сайт, на
+   разделе — только он. Работает это потому, что страница целиком собрана
+   на этих переменных и нигде не знает конкретного цвета; раздел со своим
+   `data-palette` просто переопределяет их для своего поддерева.
+
+   Набор одинаковый у всех трёх, разная только температура. Краска
+   образцов в панели продублирована в content/mavera/palettes.ts.
+   ------------------------------------------------------------------ */
+[data-world="premium"],
+[data-palette="ivory"] {
+  --w-bg: #faf8f4;
+  --w-surface: #ffffff;
+  --w-paper: #f1ece2;
+  --w-ink: #1c1a16;
+  --w-muted: #6e685d;
+  --w-line: #e3dccf;
+  --w-accent: #9a7b4f;
+  --w-accent-soft: rgba(154, 123, 79, 0.16);
+  --w-accent-ink: #ffffff;
+  --w-shadow: 0 30px 70px -45px rgba(60, 48, 30, 0.45);
 
   /* Генплан и шахматка написаны под витрину и читают свои переменные —
-     здесь они просто получают премиальную палитру, а не копию компонента. */
-  --mv-bg: #050506;
-  --mv-surface: #0a0a0c;
-  --mv-raised: #101013;
+     здесь они просто получают палитру, а не копию компонента. */
+  --mv-bg: #faf8f4;
+  --mv-surface: #ffffff;
+  --mv-raised: #f1ece2;
+  --mv-line: #e3dccf;
+  --mv-text: #1c1a16;
+  --mv-muted: #6e685d;
+  --mv-faint: rgba(28, 26, 22, 0.1);
+  --mv-accent: #9a7b4f;
+  --mv-accent-ink: #ffffff;
+  --mv-accent-soft: rgba(154, 123, 79, 0.16);
+}
+
+[data-palette="sand"] {
+  --w-bg: #f4ede1;
+  --w-surface: #fdfaf4;
+  --w-paper: #e8ddca;
+  --w-ink: #241e16;
+  --w-muted: #6f6454;
+  --w-line: #dacdb6;
+  --w-accent: #a2643c;
+  --w-accent-soft: rgba(162, 100, 60, 0.16);
+  --w-accent-ink: #fdfaf4;
+  --w-shadow: 0 30px 70px -45px rgba(78, 58, 36, 0.45);
+
+  --mv-bg: #f4ede1;
+  --mv-surface: #fdfaf4;
+  --mv-raised: #e8ddca;
+  --mv-line: #dacdb6;
+  --mv-text: #241e16;
+  --mv-muted: #6f6454;
+  --mv-faint: rgba(36, 30, 22, 0.1);
+  --mv-accent: #a2643c;
+  --mv-accent-ink: #fdfaf4;
+  --mv-accent-soft: rgba(162, 100, 60, 0.16);
+}
+
+[data-palette="pearl"] {
+  --w-bg: #f7f7f4;
+  --w-surface: #ffffff;
+  --w-paper: #ecece7;
+  --w-ink: #191a18;
+  --w-muted: #6a6e69;
+  --w-line: #dfe0d9;
+  --w-accent: #5f7a63;
+  --w-accent-soft: rgba(95, 122, 99, 0.15);
+  --w-accent-ink: #ffffff;
+  --w-shadow: 0 30px 70px -45px rgba(30, 40, 32, 0.4);
+
+  --mv-bg: #f7f7f4;
+  --mv-surface: #ffffff;
+  --mv-raised: #ecece7;
+  --mv-line: #dfe0d9;
+  --mv-text: #191a18;
+  --mv-muted: #6a6e69;
+  --mv-faint: rgba(25, 26, 24, 0.1);
+  --mv-accent: #5f7a63;
+  --mv-accent-ink: #ffffff;
+  --mv-accent-soft: rgba(95, 122, 99, 0.15);
+}
+
+/* ------------------------------------------------------------------
+   Вариант 04 — «Премиум Noir». Люкс-сегмент по американской модели.
+
+   Тот же пакет и те же рабочие экраны, что у «Премиума», но тёмный:
+   почти чёрный фон, ночной кадр, латунь вместо бронзы, засечный заголовок
+   светлым начертанием и небольшие, а не крупные, скругления — так
+   продают резиденции в Нью-Йорке и Майами. Движение медленнее, чем у
+   светлого «Премиума»: в темноте спешка выглядит дёшево.
+   ------------------------------------------------------------------ */
+[data-world="noir"] {
+  --w-radius: 6px;
+  --w-radius-lg: 12px;
+  --w-radius-xl: 28px;
+  --w-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display: var(--font-spectral), Georgia, "Times New Roman", serif;
+  --w-display-weight: 400;
+  --w-display-tracking: -0.015em;
+  --w-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --w-duration: 900ms;
+}
+
+/* Три тёмные палитры: чёрный, тёмно-синий, мокрый асфальт. Механика та же,
+   что у светлых, — переключаются на корне и на разделе. Краска образцов
+   продублирована в content/mavera/palettes.ts. */
+[data-world="noir"],
+[data-palette="onyx"] {
+  --w-bg: #08080a;
+  --w-surface: #121215;
+  --w-paper: #101013;
+  --w-ink: #f1ede4;
+  --w-muted: #9b968b;
+  --w-line: rgba(255, 255, 255, 0.09);
+  --w-accent: #c8a96a;
+  --w-accent-soft: rgba(200, 169, 106, 0.16);
+  --w-accent-ink: #0b0a08;
+  --w-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9);
+
+  --mv-bg: #08080a;
+  --mv-surface: #121215;
+  --mv-raised: #1a1a1e;
   --mv-line: rgba(255, 255, 255, 0.1);
-  --mv-text: #ededef;
-  --mv-muted: #8a8f98;
+  --mv-text: #f1ede4;
+  --mv-muted: #9b968b;
   --mv-faint: rgba(255, 255, 255, 0.12);
-  --mv-accent: #6f7bea;
-  --mv-accent-ink: #050506;
-  --mv-accent-soft: rgba(111, 123, 234, 0.18);
+  --mv-accent: #c8a96a;
+  --mv-accent-ink: #0b0a08;
+  --mv-accent-soft: rgba(200, 169, 106, 0.18);
+}
+
+[data-palette="midnight"] {
+  --w-bg: #070b16;
+  --w-surface: #111a2e;
+  --w-paper: #0d1324;
+  --w-ink: #eef0f7;
+  --w-muted: #8f98b0;
+  --w-line: rgba(255, 255, 255, 0.09);
+  --w-accent: #d2b57d;
+  --w-accent-soft: rgba(210, 181, 125, 0.16);
+  --w-accent-ink: #0a0d17;
+  --w-shadow: 0 40px 90px -40px rgba(0, 4, 20, 0.9);
+
+  --mv-bg: #070b16;
+  --mv-surface: #111a2e;
+  --mv-raised: #182238;
+  --mv-line: rgba(255, 255, 255, 0.1);
+  --mv-text: #eef0f7;
+  --mv-muted: #8f98b0;
+  --mv-faint: rgba(255, 255, 255, 0.12);
+  --mv-accent: #d2b57d;
+  --mv-accent-ink: #0a0d17;
+  --mv-accent-soft: rgba(210, 181, 125, 0.18);
+}
+
+[data-palette="asphalt"] {
+  --w-bg: #141618;
+  --w-surface: #1f2226;
+  --w-paper: #1b1e21;
+  --w-ink: #ecebe6;
+  --w-muted: #9ca2a8;
+  --w-line: rgba(255, 255, 255, 0.1);
+  --w-accent: #c98a5b;
+  --w-accent-soft: rgba(201, 138, 91, 0.16);
+  --w-accent-ink: #141210;
+  --w-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.85);
+
+  --mv-bg: #141618;
+  --mv-surface: #1f2226;
+  --mv-raised: #272b30;
+  --mv-line: rgba(255, 255, 255, 0.11);
+  --mv-text: #ecebe6;
+  --mv-muted: #9ca2a8;
+  --mv-faint: rgba(255, 255, 255, 0.13);
+  --mv-accent: #c98a5b;
+  --mv-accent-ink: #141210;
+  --mv-accent-soft: rgba(201, 138, 91, 0.18);
 }
 
 @layer base {
@@ -112,6 +282,23 @@
 }
 
 @layer utilities {
+  /* Слой сцены: берёт у раздела доли прокрутки (--p) и курсора (--mx, --my)
+     и умножает их на свою глубину. Положительный --w-depth отстаёт от
+     прокрутки (слой дальше), отрицательный обгоняет её (слой ближе).
+     Доли пишет useStage из components/showcase/depth.ts.
+
+     У Golden House есть своя копия под именем .gh-layer — она появилась
+     раньше этой и осталась, чтобы не перетряхивать выкаченный макет.
+     Новым мирам брать эту. */
+  .w-layer {
+    transform: translate3d(
+      calc(var(--mx, 0) * var(--w-pull, 0px)),
+      calc(var(--p, 0) * var(--w-depth, 0px) + var(--my, 0) * var(--w-pull, 0px)),
+      0
+    );
+    will-change: transform;
+  }
+
   /* Появление снизу — общий приём, но длительность у каждого мира своя. */
   .w-rise {
     opacity: 0;
@@ -251,6 +438,32 @@
     }
   }
 
+  /* ----------------------------------------------------------------
+     Плавный стык разделов «Премиума».
+
+     Каждый раздел кладётся на предыдущий скруглённым краем — отсюда
+     мягкая линия вместо канцелярской границы в один пиксель. Он же
+     делает видимой границу палитры: раздел со своим цветом читается
+     как отдельный лист, а не как случайная полоса на странице.
+     ---------------------------------------------------------------- */
+  .w-slab {
+    position: relative;
+    border-top-left-radius: var(--w-radius-xl);
+    border-top-right-radius: var(--w-radius-xl);
+    /* Переход по цвету: смена палитры должна выглядеть как смена света в
+       зале, а не как перезагрузка страницы. */
+    transition:
+      background-color 420ms var(--w-ease),
+      color 420ms var(--w-ease),
+      border-color 420ms var(--w-ease);
+  }
+
+  /* Последний лист внизу страницы скруглять не за что — под ним ничего нет. */
+  .w-slab-flat {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
   /* Призрак выключенного блока: видно место и цену, а не пустоту. */
   .w-ghost {
     border: 1px dashed rgba(255, 209, 102, 0.75);
@@ -360,6 +573,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .w-layer {
+    transform: none;
+  }
+
   .w-rise {
     opacity: 1;
     transform: none;
@@ -380,5 +597,9 @@
   .w-word {
     animation: none;
     opacity: 1;
+  }
+
+  .w-slab {
+    transition: none;
   }
 }

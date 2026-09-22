@@ -32,6 +32,11 @@ export function BriefForm({ onBack }: { onBack: () => void }) {
 
   if (!ctx) return null;
 
+  // Цена одной строкой: «от $31 900 + $550/мес».
+  const priceLine = `${ctx.fromPrice ? "от " : ""}${money(ctx.totalUsd, ctx.currency)}${
+    ctx.monthlyUsd ? ` + ${money(ctx.monthlyUsd, ctx.currency)}/мес` : ""
+  }`;
+
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (busy) return;
@@ -95,7 +100,7 @@ export function BriefForm({ onBack }: { onBack: () => void }) {
           )}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-[#f2efe9]/70">
-          Состав и цена — {money(ctx.totalUsd, ctx.currency)} — уже у студии.
+          Состав и цена — {priceLine} — уже у студии.
           {sent.botUrl
             ? " Продолжите в Telegram: ассистент уточнит сроки и материалы, а дальше подключится менеджер."
             : ` Мы напишем вам: ${sent.contact}.`}
@@ -128,7 +133,7 @@ export function BriefForm({ onBack }: { onBack: () => void }) {
     <form onSubmit={submit} className="px-5 py-4" noValidate>
       <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#ffd166]">Бриф на разработку</p>
       <p className="mt-1 text-xs leading-relaxed text-[#f2efe9]/55">
-        Уйдёт набор с ценой — {money(ctx.totalUsd, ctx.currency)}. Мы ответим в тот контакт, который оставите.
+        Уйдёт набор с ценой — {priceLine}. Мы ответим в тот контакт, который оставите.
       </p>
 
       <label className="mt-3 block text-xs text-[#f2efe9]/60">

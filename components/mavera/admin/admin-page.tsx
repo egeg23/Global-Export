@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AdminGallery } from "@/components/mavera/admin/gallery";
+import { AdminGallery, PanelButton } from "@/components/mavera/admin/gallery";
 import { ConfiguratorProvider } from "@/components/configurator/context";
 import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { VariantBar } from "@/components/mavera/variant-bar";
@@ -43,6 +43,20 @@ export function AdminPage({ variant }: { variant: TierId }) {
             . Остальное включается в конструкторе внизу справа: экран переключится
             сам, а у нового блока появится «было / стало».
           </p>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-sand-200/75">
+            Это рабочий прототип, а не скриншоты. Все девять разделов нажимаются:
+            выделяйте квартиры и меняйте цены, заводите проекты и сотрудников,
+            ведите заявки по воронке, ищите через строку поиска. Панель считает
+            одно и то же во всех разделах, а спорную правку возвращает кнопкой в
+            журнале действий. Изменения живут до обновления страницы — базы за
+            прототипом нет, она в составе работ.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <PanelButton />
+            <p className="text-sm text-sand-300/55">
+              Откроется на весь экран, как у вас в работе. Внизу — та же рамка для обзора.
+            </p>
+          </div>
         </Container>
 
         <Container className="pt-10">

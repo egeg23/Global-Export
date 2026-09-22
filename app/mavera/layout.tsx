@@ -4,6 +4,7 @@ import { IBM_Plex_Sans, Inter, Spectral } from "next/font/google";
 import "../globals.css";
 
 import { Guard } from "@/components/mavera/guard";
+import { OpenAtTop } from "@/components/mavera/open-at-top";
 
 /** «Стандарт» — гротеск швейцарской школы: техничный, спокойный, без характера. */
 const plex = IBM_Plex_Sans({
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     template: "%s · MAVERA",
   },
   description:
-    "Три рабочих сайта для застройщика: строгий каталог, журнальный разворот и кинематографичный премиум с генпланом и подбором квартиры. Со сметой по каждому.",
+    "Три рабочих сайта для застройщика: строгий каталог, журнальный разворот и светлый премиум с генпланом и подбором квартиры. Со сметой по каждому.",
   robots: { index: false, follow: false, nocache: true },
   icons: { icon: "/favicon.svg" },
   other: {
@@ -59,6 +60,7 @@ export default function MaveraLayout({ children }: { children: React.ReactNode }
       </head>
       <body className="min-h-screen bg-[#0b0d10] antialiased">
         <Guard />
+        <OpenAtTop />
         {children}
       </body>
     </html>

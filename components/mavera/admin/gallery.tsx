@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 
 import { AdminScreen, adminSections, type AdminScreenId } from "@/components/mavera/admin/screens";
 import { useConfigurator } from "@/components/configurator/context";
+import { panelHref } from "@/components/mavera/admin/model";
+import { AdminProvider, useAdmin } from "@/components/mavera/admin/store";
 import { BrowserFrame } from "@/components/present/mavera/frames";
 import { cn } from "@/lib/cn";
 
@@ -46,21 +47,70 @@ const screenOf: Partial<Record<string, AdminScreenId>> = {
   audit: "audit",
 };
 
+/**
+ * Панель со своим состоянием.
+ *
+ * Провайдер стоит здесь, а не на странице: галерею показывают в двух местах —
+ * на странице панели и в перечне вариантов, — и каждый показ должен получать
+ * рабочую панель без отдельной обвязки на вызывающей стороне.
+ */
 export function AdminGallery() {
+  return (
+    <AdminProvider>
+      <Gallery />
+    </AdminProvider>
+  );
+}
+
+/**
+ * Какой экран открыт. Свежий допник конструктора открывает свой экран, но
+ * более поздний клик по разделу важнее. Отметка времени клика запоминается
+ * рядом с экраном: пока допник тот же — выбор за человеком, появился новый —
+ * за допником. Общий для рамки и для панели на весь экран.
+ */
+export function useActiveScreen() {
   const ctx = useConfigurator();
-  // Свежий допник конструктора открывает свой экран, но более поздний клик по
-  // вкладке важнее. Клик запоминает, какой допник был свежим в тот момент:
-  // пока он тот же — выбор за кликом, появился новый — за допником.
-  const [choice, setChoice] = useState<{ id: AdminScreenId; after: number }>({ id: "project-form", after: 0 });
+  const admin = useAdmin();
   const freshAt = ctx?.fresh?.at ?? 0;
   const target = ctx?.fresh ? screenOf[ctx.fresh.id] : undefined;
-  const activeId = target && freshAt > choice.after ? target : choice.id;
-  const setActiveId = (id: AdminScreenId) => setChoice({ id, after: freshAt });
+  const activeId = target && freshAt > admin.pickedAt ? target : admin.screen;
+  const setActiveId = (id: AdminScreenId) => admin.setScreen(id, freshAt);
+  return { activeId, setActiveId };
+}
+
+/** Кнопка входа: панель открывается страницей на весь экран. */
+export function PanelButton({ className }: { className?: string }) {
+  const ctx = useConfigurator();
+  return (
+    <Link
+      href={panelHref(ctx?.tier ?? "premium")}
+      prefetch={false}
+      className={cn(
+        "inline-flex items-center justify-center gap-2 rounded-full bg-harvest-300 px-6 py-3 text-sm font-semibold text-forest-950 transition-colors hover:bg-harvest-200",
+        className,
+      )}
+    >
+      Войти в панель
+      <span aria-hidden="true">→</span>
+    </Link>
+  );
+}
+
+function Gallery() {
+  const { activeId, setActiveId } = useActiveScreen();
   const groups = [...new Set(adminSections.map((s) => s.group))];
   const active = adminSections.find((s) => s.id === activeId) ?? adminSections[0];
 
   return (
     <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+      {/* На телефоне рамка тесная: сразу зовём в панель на весь экран. */}
+      <div className="rounded-xl border border-harvest-300/25 bg-harvest-300/8 p-5 lg:hidden">
+        <p className="text-sm leading-relaxed text-sand-200/85">
+          Ниже — панель в рамке для обзора. Работать в ней удобнее на весь экран.
+        </p>
+        <PanelButton className="mt-4 w-full" />
+      </div>
+
       {/* Разделы — как меню самой панели */}
       <div className="lg:col-span-3">
         <div role="tablist" aria-label="Разделы панели" className="space-y-6">
@@ -95,16 +145,10 @@ export function AdminGallery() {
         </div>
 
         <div className="mt-8 border-t border-sand-50/10 pt-6">
-          <Link
-            href="/admin"
-            prefetch={false}
-            className="inline-flex items-center gap-2 text-sm font-medium text-harvest-300 transition-colors hover:text-harvest-200"
-          >
-            Открыть рабочую панель
-            <span aria-hidden="true">↗</span>
-          </Link>
-          <p className="mt-2 text-xs leading-relaxed text-sand-300/45">
-            Не макет: действующая админка Global Export, на которой это собрано.
+          <PanelButton className="w-full" />
+          <p className="mt-3 text-xs leading-relaxed text-sand-300/45">
+            Та же панель отдельной страницей, на весь экран: меню, поиск и все
+            девять разделов. Правки живут до обновления страницы.
           </p>
         </div>
       </div>
@@ -123,6 +167,12 @@ export function AdminGallery() {
         <p key={`${activeId}-text`} className="mv-fade mt-5 max-w-3xl text-sm leading-relaxed text-sand-200/75">
           <span className="font-medium text-sand-50">{active.label}. </span>
           {captions[activeId]}
+        </p>
+
+        <p className="mt-2 text-sm text-sand-300/55">
+          Панель рабочая: меню внутри окна переключает разделы, поиск ищет по
+          проектам, квартирам и заявкам, а всё, что вы измените, пересчитается
+          на остальных экранах и попадёт в журнал действий.
         </p>
       </div>
     </div>

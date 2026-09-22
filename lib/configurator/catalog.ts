@@ -27,6 +27,17 @@ export type CatalogAddon = {
   effect: string;
   /** Страница, где живёт блок, либо `everywhere` каталога. */
   where: string;
+  /**
+   * Подписка: цена в месяц. В разовый итог не входит — показывается
+   * отдельной строкой «+ $550/мес», чтобы не смешивать с разработкой.
+   */
+  monthly?: boolean;
+  /** Цена «от»: точную назовём после разговора. Итог тогда тоже «от». */
+  from?: boolean;
+  /** Цена по запросу: в итог не входит, тумблер только отмечает интерес. */
+  onRequest?: boolean;
+  /** Ключ взаимоисключающей группы: включил один тариф — остальные выключились. */
+  exclusive?: string;
 };
 
 export type CatalogPage = {
@@ -38,6 +49,12 @@ export type CatalogPage = {
    * панель управления MAVERA — нет: там сайт заказчика не показывается.
    */
   shared?: boolean;
+  /**
+   * Не страница, а группа услуг сверх сайта: интеграции, ИИ-агенты,
+   * продвижение. Блока на макете нет, тумблер никуда не переводит и
+   * «было / стало» не показывает — только цена и бриф.
+   */
+  virtual?: boolean;
 };
 
 export type Catalog = {
@@ -91,13 +108,53 @@ export function firstSharedPage(catalog: Catalog): CatalogPage | undefined {
   return catalog.pages.find((page) => page.shared !== false);
 }
 
-/** Сумма допников сверх пакета. */
+/** Включённые допники, за которые платят сверх пакета. */
+function paidAddons(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): CatalogAddon[] {
+  return catalog.addons.filter((addon) => enabled.has(addon.id) && !isIncluded(catalog, tier, addon.id));
+}
+
+/** Разовая сумма допников сверх пакета: подписки и «по запросу» не считаются. */
 export function extrasUsd(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): number {
-  return catalog.addons
-    .filter((addon) => enabled.has(addon.id) && !isIncluded(catalog, tier, addon.id))
+  return paidAddons(catalog, tier, enabled)
+    .filter((addon) => !addon.monthly && !addon.onRequest)
     .reduce((sum, addon) => sum + addon.priceUsd, 0);
 }
 
 export function totalUsd(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): number {
   return tierOf(catalog, tier).priceUsd + extrasUsd(catalog, tier, enabled);
+}
+
+/** Подписки в месяц — отдельной суммой рядом с разовой. */
+export function monthlyUsd(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): number {
+  return paidAddons(catalog, tier, enabled)
+    .filter((addon) => addon.monthly && !addon.onRequest)
+    .reduce((sum, addon) => sum + addon.priceUsd, 0);
+}
+
+/** Есть ли в наборе цена «от» — тогда и итог «от». */
+export function hasFromPrice(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): boolean {
+  return paidAddons(catalog, tier, enabled).some((addon) => addon.from && !addon.onRequest);
+}
+
+/** Что отмечено «по запросу»: в цену не входит, в бриф — да. */
+export function onRequestAddons(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): CatalogAddon[] {
+  return paidAddons(catalog, tier, enabled).filter((addon) => addon.onRequest);
+}
+
+/**
+ * Набор после нажатия тумблера. Включение тарифа из взаимоисключающей
+ * группы гасит соседей: подписка на статьи бывает только одна.
+ */
+export function withToggled(catalog: Catalog, enabled: ReadonlySet<string>, id: string): Set<string> {
+  const next = new Set(enabled);
+  if (next.has(id)) {
+    next.delete(id);
+    return next;
+  }
+  const group = addonOf(catalog, id).exclusive;
+  if (group) {
+    for (const addon of catalog.addons) if (addon.exclusive === group) next.delete(addon.id);
+  }
+  next.add(id);
+  return next;
 }

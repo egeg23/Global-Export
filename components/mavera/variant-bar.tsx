@@ -7,6 +7,7 @@ const hrefs: Record<TierId, string> = {
   standard: "/mavera/standard",
   lux: "/mavera/lux",
   premium: "/mavera/premium",
+  noir: "/mavera/noir",
 };
 
 /**

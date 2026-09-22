@@ -4,23 +4,25 @@ import { news, reviews } from "@/content/mavera/extras";
 import { cn } from "@/lib/cn";
 
 /**
- * Блоки-допники главной, общие для трёх миров.
+ * Блоки-допники главной, общие для всех миров.
  *
  * Оформление берётся из токенов мира: в «Стандарте» это строгие карточки без
- * радиуса, в «Люксе» — засечные заголовки на бумаге, в «Премиуме» — стекло на
- * тёмном. Разметка одна.
+ * радиуса, в «Люксе» — засечные заголовки на бумаге, в «Премиуме» — крупные
+ * скругления и цвет выбранной палитры. Разметка одна.
  */
 
 const width: Record<TierId, string> = {
   standard: "max-w-[1400px]",
   lux: "max-w-[1500px]",
   premium: "max-w-[1500px]",
+  noir: "max-w-[1500px]",
 };
 
 const radius: Record<TierId, string> = {
   standard: "",
   lux: "rounded-[2px]",
   premium: "rounded-[var(--w-radius-lg)]",
+  noir: "rounded-[var(--w-radius-lg)]",
 };
 
 function Eyebrow({ children }: { children: React.ReactNode }) {

@@ -1,0 +1,334 @@
+/* ------------------------------------------------------------------
+   Golden House — макет для gh.uz.
+
+   Мир строится на той же механике, что «Премиум» MAVERA: вся страница
+   собрана на переменных `--w-*`, и утилиты (.w-rise, .w-rail, .w-glow)
+   приходят из mavera.css. Отличается краска и характер: слоновая кость
+   как основа, но золото и графит взяты у них — #d29f66 с логотипа и
+   #927549 с кнопок, тёмный #403e3d со шрифта надписи GOLDEN HOUSE.
+
+   Здесь же живёт заставка. Её кадры не расписаны ключевыми кадрами:
+   сценарий считает JS и кладёт в переменные --gh-* готовые значения
+   каждого слоя, а CSS только их применяет. Так сцену можно перемотать,
+   пропустить и остановить на любом кадре, чего keyframes не позволяют.
+   ------------------------------------------------------------------ */
+
+[data-world="gh"] {
+  --w-bg: #faf8f4;
+  --w-surface: #ffffff;
+  --w-paper: #f3efe6;
+  --w-ink: #262320;
+  --w-muted: #6f675c;
+  --w-line: #e6dfd1;
+  --w-accent: #927549;
+  --w-accent-soft: rgba(210, 159, 102, 0.18);
+  --w-accent-ink: #ffffff;
+  --w-shadow: 0 32px 70px -45px rgba(64, 62, 61, 0.5);
+
+  /* Золото с их логотипа: слишком светлое для текста, но незаменимое в
+     градиентах, кромках и свечении. */
+  --gh-gold: #d29f66;
+  --gh-gold-soft: rgba(210, 159, 102, 0.34);
+  --gh-graphite: #403e3d;
+  --gh-night: #0a0908;
+
+  --w-radius: 18px;
+  --w-radius-lg: 28px;
+  --w-radius-xl: 44px;
+  --w-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display-weight: 700;
+  --w-display-tracking: -0.03em;
+  --w-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --w-duration: 760ms;
+}
+
+@layer utilities {
+  /* Золотая заливка крупного текста. Один цвет на светлом читается жёлтым,
+     два стопа — тиснением. */
+  .gh-gold-text {
+    background-image: linear-gradient(
+      96deg,
+      #8a6a36 0%,
+      var(--gh-gold) 42%,
+      #b98a4e 70%,
+      #e6c391 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Тонкая золотая линейка под заголовком раздела. */
+  .gh-rule::after {
+    content: "";
+    display: block;
+    width: 3.2rem;
+    height: 2px;
+    margin-top: 1.1rem;
+    background: linear-gradient(90deg, var(--gh-gold), transparent);
+  }
+
+  /* Слой сцены: берёт доли у раздела (--p, --mx, --my) и умножает их на
+     свою глубину. Чем больше --gh-depth по модулю, тем дальше слой уезжает;
+     положительное значение отстаёт от прокрутки (слой дальше), отрицательное
+     обгоняет её (слой ближе к зрителю). */
+  .gh-layer {
+    transform: translate3d(
+      calc(var(--mx, 0) * var(--gh-pull, 0px)),
+      calc(var(--p, 0) * var(--gh-depth, 0px) + var(--my, 0) * var(--gh-pull, 0px)),
+      0
+    );
+    will-change: transform;
+  }
+
+  /* Слой глубины: сдвигается прокруткой и уводится от курсора.
+     Переменные пишет useDepth без перерисовки React. */
+  .gh-depth {
+    transform: translate3d(
+      calc(var(--mx, 0) * var(--gh-pull, 0px)),
+      calc(var(--shift, 0px) + var(--my, 0) * var(--gh-pull, 0px)),
+      0
+    );
+    will-change: transform;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Заставка: темнота, логотип, планета, снижение к Ташкенту.
+   ------------------------------------------------------------------ */
+
+.gh-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  overflow: hidden;
+  background: transparent;
+  opacity: var(--gh-veil, 1);
+  /* Пока сцена идёт, страница под ней не должна прокручиваться от касания. */
+  touch-action: none;
+}
+
+.gh-intro[data-done="true"] {
+  pointer-events: none;
+}
+
+.gh-intro__void {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 45%, #14110d 0%, var(--gh-night) 55%, #000 100%);
+  opacity: var(--gh-void, 1);
+}
+
+/* Звёзды — три сетки точек с разным шагом: чем мельче шаг, тем дальше
+   слой. Размер плитки в пикселях, а не в процентах: проценты считаются от
+   растянутого слоя, и на крупном масштабе плитка становится видна
+   прямоугольником. */
+.gh-intro__stars {
+  position: absolute;
+  inset: -25%;
+  opacity: var(--gh-stars, 0);
+  background-image:
+    radial-gradient(1.6px 1.6px at 30px 44px, rgba(255, 246, 230, 0.95), rgba(255, 246, 230, 0) 100%),
+    radial-gradient(1.2px 1.2px at 128px 22px, rgba(255, 246, 230, 0.7), rgba(255, 246, 230, 0) 100%),
+    radial-gradient(1px 1px at 76px 150px, rgba(255, 246, 230, 0.55), rgba(255, 246, 230, 0) 100%);
+  background-size: 190px 190px, 260px 260px, 320px 320px;
+  background-repeat: repeat;
+  transform: scale(var(--gh-stars-s, 1));
+}
+
+.gh-intro__globe {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(86vmin, 900px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  opacity: var(--gh-globe, 0);
+  transform: scale(var(--gh-globe-s, 0.4));
+  filter: blur(calc(var(--gh-globe-blur, 0) * 1px));
+  will-change: transform, opacity;
+}
+
+/* Атмосфера: холодный ореол вокруг диска. Раньше это была тень с большим
+   растушёвыванием, и на масштабе в четыре раза Chromium растеризовал её
+   плитками — по кадру шла сетка прямоугольников. Градиент рисуется как
+   обычный фон и такого не делает. */
+.gh-intro__globe::before {
+  content: "";
+  position: absolute;
+  inset: -9%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(130, 185, 255, 0) 78%,
+    rgba(130, 185, 255, 0.34) 87%,
+    rgba(60, 110, 200, 0.16) 94%,
+    rgba(60, 110, 200, 0) 100%
+  );
+}
+
+.gh-intro__globe img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.gh-intro__aerial {
+  position: absolute;
+  inset: 0;
+  opacity: var(--gh-aerial, 0);
+  transform: scale(var(--gh-aerial-s, 1.3));
+  filter: blur(calc(var(--gh-aerial-blur, 0) * 1px));
+  will-change: transform, opacity;
+}
+
+.gh-intro__aerial img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Прицел и цифры снижения. Подписи стоят в углу на затемнении, а не по
+   центру: к концу снижения планета занимает весь кадр, и золото по светлой
+   поверхности материков не читается. */
+.gh-intro__hud {
+  position: absolute;
+  inset: 0;
+  opacity: var(--gh-hud, 0);
+  color: var(--gh-gold);
+  font-family: var(--w-font);
+}
+
+.gh-intro__hud::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  background: linear-gradient(to top, rgba(6, 6, 8, 0.72), transparent);
+  pointer-events: none;
+}
+
+.gh-intro__cross {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(120px, 18vmin, 220px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 1px solid var(--gh-gold-soft);
+  border-radius: 50%;
+  transform: scale(var(--gh-cross-s, 1));
+}
+
+.gh-intro__cross::before,
+.gh-intro__cross::after {
+  content: "";
+  position: absolute;
+  background: var(--gh-gold-soft);
+}
+
+.gh-intro__cross::before {
+  left: 50%;
+  top: -18%;
+  width: 1px;
+  height: 136%;
+}
+
+.gh-intro__cross::after {
+  top: 50%;
+  left: -18%;
+  height: 1px;
+  width: 136%;
+}
+
+.gh-intro__logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: min(74vw, 760px);
+  opacity: var(--gh-logo, 0);
+  /* Камера идёт в просвет знака, поэтому начало координат — сам знак,
+     а не середина надписи: знак занимает первые 6% ширины файла. */
+  transform-origin: 6% 50%;
+  transform: scale(var(--gh-logo-s, 0.9));
+  will-change: transform, opacity;
+}
+
+.gh-intro__logo img {
+  width: 100%;
+  height: auto;
+}
+
+/* Свечение вокруг знака — отдельным слоем, а не тенью на самой картинке.
+   drop-shadow растеризуется по рамке элемента, и когда знак вырастает в
+   тридцать раз, по кадру идёт прямоугольник размером с эту рамку. Градиент
+   такого не делает и живёт своей жизнью, не увеличиваясь вместе со знаком. */
+.gh-intro__flare {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(120vw, 1100px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  opacity: var(--gh-flare, 0);
+  background: radial-gradient(
+    closest-side,
+    rgba(210, 159, 102, 0.3) 0%,
+    rgba(210, 159, 102, 0.12) 38%,
+    rgba(210, 159, 102, 0) 70%
+  );
+  transform: scale(var(--gh-flare-s, 1));
+  pointer-events: none;
+}
+
+.gh-intro__skip {
+  position: absolute;
+  right: clamp(1rem, 4vw, 2.5rem);
+  bottom: clamp(1rem, 4vh, 2.5rem);
+  z-index: 2;
+  border: 1px solid rgba(210, 159, 102, 0.35);
+  border-radius: 999px;
+  padding: 0.6rem 1.15rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: rgba(246, 236, 220, 0.75);
+  background: rgba(10, 9, 8, 0.4);
+  backdrop-filter: blur(6px);
+  transition: color 200ms, border-color 200ms;
+}
+
+.gh-intro__skip:hover {
+  color: #fff;
+  border-color: var(--gh-gold);
+}
+
+/* Первый экран ждёт конца заставки: до него дом и текст стоят за кадром. */
+.gh-enter {
+  opacity: 0;
+  transform: translate3d(var(--gh-from-x, 0), var(--gh-from-y, 28px), 0);
+  transition:
+    opacity 1100ms var(--w-ease),
+    transform 1300ms var(--w-ease);
+  transition-delay: var(--gh-delay, 0ms);
+}
+
+.gh-enter-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gh-enter {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .gh-depth,
+  .gh-layer {
+    transform: none;
+  }
+}

@@ -12,6 +12,7 @@ import { Rise } from "@/components/mavera/reveal";
 import { VariantBar } from "@/components/mavera/variant-bar";
 import { money, type TierId } from "@/components/present/mavera/theme";
 import { projects } from "@/content/mavera/data";
+import { noirCover } from "@/content/mavera/noir";
 import { plans } from "@/content/mavera/plans";
 import { voices } from "@/content/mavera/voice";
 import { cn } from "@/lib/cn";
@@ -54,7 +55,13 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
     "/images/mavera/park.jpg",
     "/images/mavera/construction.jpg",
   ];
-  const rounded = variant === "premium" ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "";
+  // «Премиум» и «Noir» — один пакет: скругления, стеклянная карточка на кадре, чертёж планировки.
+  const top = variant === "premium" || variant === "noir";
+  const rounded = top ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "";
+  // «Noir» — ночной вариант: дневная обложка проекта на чёрном смотрелась бы чужой,
+  // а «ЖК» в люкс-сегменте не говорят — там резиденции.
+  const cover = variant === "noir" ? noirCover(slug, project.photo) : project.photo;
+  const kind = variant === "noir" ? "Резиденция" : "ЖК";
 
   return (
     <ConfiguratorProvider catalog={maveraCatalog} tier={variant} page="object" hrefs={maveraHrefs(variant, slug)} frame="world">
@@ -78,7 +85,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
               <span
                 className={cn(
                   "hidden border border-[var(--w-line)] px-2.5 py-1 text-[0.7rem] tracking-[0.12em] text-[var(--w-muted)] sm:inline-block",
-                  variant === "premium" ? "rounded-full" : rounded,
+                  top ? "rounded-full" : rounded,
                 )}
               >
                 RU <span className="opacity-40">EN UZ</span>
@@ -104,10 +111,10 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
                   <Link href={home} prefetch={false} className="hover:text-[var(--w-ink)]">
                     Каталог
                   </Link>{" "}
-                  / ЖК «{project.name}»
+                  / {kind} «{project.name}»
                 </p>
                 <h1 className="mt-5 text-[clamp(2rem,4vw,3.4rem)] leading-[1.06]">
-                  ЖК «{project.name}»
+                  {kind} «{project.name}»
                 </h1>
                 <p className="mt-4 text-lg text-[var(--w-muted)]">{project.district}</p>
                 <p className="mt-6 max-w-lg text-lg leading-relaxed text-[var(--w-muted)]">
@@ -122,12 +129,12 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
               </Rise>
             </div>
             <div className="relative min-h-[300px] border-t border-[var(--w-line)] lg:border-l lg:border-t-0">
-              <Image src={project.photo} alt="" fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+              <Image src={cover} alt="" fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
             </div>
           </div>
         ) : (
           <>
-            <Image src={project.photo} alt="" fill priority sizes="100vw" className="-z-20 object-cover" />
+            <Image src={cover} alt="" fill priority sizes="100vw" className="-z-20 object-cover" />
             <div
               aria-hidden="true"
               className="absolute inset-0 -z-10 bg-gradient-to-t from-[var(--w-bg)] via-[var(--w-bg)]/55 to-[var(--w-bg)]/10"
@@ -146,10 +153,10 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
                   <Link href={home} prefetch={false} className="hover:text-[var(--w-ink)]">
                     Проекты
                   </Link>{" "}
-                  / ЖК «{project.name}»
+                  / {kind} «{project.name}»
                 </p>
                 <h1 className="mt-4 text-[clamp(2rem,4.6vw,3.8rem)] leading-[1.04]">
-                  ЖК «{project.name}»
+                  {kind} «{project.name}»
                 </h1>
                 <p className="mt-4 text-base leading-relaxed text-[var(--w-muted)] sm:text-lg">
                   {voice.claims[slug]}
@@ -219,8 +226,11 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
               {summary.free} квартир от {area(summary.minArea)} до {area(summary.maxArea)} м²
             </h2>
             <p className="mt-4 text-base leading-relaxed text-[var(--w-muted)]">
-              Фильтруйте по комнатности, корпусу, этажу и бюджету. Выбранная квартира
-              сразу попадает в расчёт платежа справа.
+              {variant === "standard"
+                ? "Все свободные квартиры одной таблицей: корпус, этаж, площадь, цена. Нажмите на строку — и оставьте заявку, менеджер подтвердит наличие."
+                : variant === "lux"
+                  ? "Фильтруйте по комнатности, корпусу, этажу и бюджету. Выбранная квартира — в карточке справа: площадь, этаж, цена за метр."
+                  : "Фильтруйте по комнатности, корпусу, этажу и бюджету. Выбранная квартира сразу попадает в расчёт платежа справа."}
             </p>
           </Rise>
 
@@ -232,6 +242,8 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
               corpuses={corpuses}
               plans={plans}
               projectName={project.name}
+              district={project.district}
+              due={project.due}
             />
           </Rise>
         </div>
@@ -269,7 +281,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
             <Rise delay={100}>
               <div className={cn("relative aspect-[16/9] overflow-hidden bg-[var(--w-paper)]", rounded)}>
                 <iframe
-                  title={`ЖК «${project.name}» на карте`}
+                  title={`${kind} «${project.name}» на карте`}
                   src={`https://www.openstreetmap.org/export/embed.html?bbox=${project.lng - 0.022}%2C${project.lat - 0.012}%2C${project.lng + 0.022}%2C${project.lat + 0.012}&layer=mapnik&marker=${project.lat}%2C${project.lng}`}
                   loading="lazy"
                   referrerPolicy="no-referrer"
@@ -333,7 +345,7 @@ export function ObjectPage({ variant, slug }: { variant: TierId; slug: string })
                     done="Заявка принята. Менеджер перезвонит в течение 15 минут."
                     className={cn(
                       "w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
-                      variant === "premium" ? "w-glow rounded-full" : rounded,
+                      top ? "w-glow rounded-full" : rounded,
                     )}
                   />
                 </Magnetic>

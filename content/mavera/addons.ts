@@ -32,9 +32,14 @@ export type AddonId =
   | "crm"
   | "import"
   | "metrika"
-  | "audit";
+  | "audit"
+  | "cabinet"
+  | "partners"
+  | "pay"
+  | "commerce-calc"
+  | "forecast";
 
-export type AddonWhere = "main" | "object" | "both" | "admin";
+export type AddonWhere = "main" | "object" | "both" | "admin" | "integrations";
 
 export type Addon = {
   id: AddonId;
@@ -57,6 +62,7 @@ export const addons: Addon[] = [
   { id: "promo", label: "Строка условий покупки", priceUsd: 200, effect: "Ипотека, рассрочка, скидка над первым экраном", where: "main" },
   { id: "reviews", label: "Отзывы жильцов", priceUsd: 350, effect: "Три отзыва с оценкой перед формой заявки", where: "main" },
   { id: "news", label: "Новости и пресс-центр", priceUsd: 600, effect: "Лента новостей компании на главной", where: "main" },
+  { id: "commerce-calc", label: "Калькулятор доходности и заявка в банк", priceUsd: 600, effect: "Взнос, срок, аренда — расчёт по объекту коммерции и заявка банку-партнёру", where: "main" },
 
   /* Карточка ЖК */
   { id: "map", label: "Интерактивная карта", priceUsd: 0, effect: "Расположение с картой в карточке ЖК", where: "object" },
@@ -66,13 +72,19 @@ export const addons: Addon[] = [
   { id: "progress", label: "Ход строительства", priceUsd: 350, effect: "Фотоотчёт по месяцам в карточке ЖК", where: "object" },
   { id: "booking", label: "Онлайн-бронирование", priceUsd: 900, effect: "Бронь на 5 дней вместо заявки", where: "object" },
   { id: "tour", label: "3D-тур по квартире", priceUsd: 900, effect: "Панорама 360° в карточке ЖК", where: "object" },
+  { id: "forecast", label: "Прогноз стоимости квартиры", priceUsd: 350, effect: "График роста цены выбранной квартиры по годам в карточке ЖК", where: "object" },
 
   /* Панель управления */
   { id: "roles", label: "Роли и права", priceUsd: 400, effect: "Матрица прав по ролям в разделе «Пользователи»", where: "admin" },
-  { id: "crm", label: "Интеграция с CRM", priceUsd: 700, effect: "Заявки уходят в amoCRM / Bitrix24, статус в списке", where: "admin" },
+  { id: "crm", label: "Интеграция с вашей CRM", priceUsd: 1300, effect: "Заявки уходят в вашу CRM, статус сделки виден в списке", where: "admin" },
   { id: "import", label: "Импорт квартир из Excel", priceUsd: 350, effect: "Прайс XLSX с предпросмотром изменений", where: "admin" },
   { id: "metrika", label: "Яндекс.Метрика в панели", priceUsd: 250, effect: "Источники, цели и вебвизор внутри панели", where: "admin" },
   { id: "audit", label: "Журнал действий", priceUsd: 300, effect: "Кто и когда поменял цену или статус", where: "admin" },
+
+  /* Сверх сайта — то, что застройщику нужно рядом с ним. Блока на макете нет. */
+  { id: "cabinet", label: "Личный кабинет дольщика", priceUsd: 2400, effect: "Договор, график платежей и ход стройки по своей квартире", where: "integrations" },
+  { id: "partners", label: "Партнёрский кабинет для риелторов", priceUsd: 1800, effect: "Агентство фиксирует клиента, видит статус сделки и свою комиссию", where: "integrations" },
+  { id: "pay", label: "Онлайн-оплата брони", priceUsd: 700, effect: "Payme, Click и Uzum прямо в бронировании квартиры", where: "integrations" },
 ];
 
 /** Что уже входит в пакет — за это тумблер денег не просит. */
@@ -87,6 +99,27 @@ export const included: Record<TierId, AddonId[]> = {
     "hero",
     "promo",
     "calc",
+    "commerce-calc",
+    "forecast",
+    "chess",
+    "progress",
+    "booking",
+    "roles",
+    "crm",
+    "metrika",
+    "audit",
+  ],
+  // Noir — тот же пакет, что «Премиум»: различается оформлением, не составом.
+  noir: [
+    "langs",
+    "map",
+    "motion",
+    "magnetic",
+    "hero",
+    "promo",
+    "calc",
+    "commerce-calc",
+    "forecast",
     "chess",
     "progress",
     "booking",

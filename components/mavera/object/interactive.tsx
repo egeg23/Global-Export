@@ -4,9 +4,11 @@ import { useMemo, useState } from "react";
 
 import { Addon, useAddon } from "@/components/configurator/context";
 import { useCountUp, useMotionPreferred } from "@/components/mavera/motion";
+import { PriceForecast } from "@/components/mavera/forecast/chart";
 import { FlatPlan } from "@/components/mavera/object/flat-plan";
 import { money } from "@/components/present/mavera/theme";
 import { banks, monthlyPayment } from "@/content/mavera/banks";
+import { forecastOf } from "@/content/mavera/forecast";
 import type { Plan } from "@/content/mavera/plans";
 import { cn } from "@/lib/cn";
 import { area, filterFlats, type Flat } from "@/lib/mavera/catalog";
@@ -18,15 +20,18 @@ import { area, filterFlats, type Flat } from "@/lib/mavera/catalog";
  * попадает в калькулятор, и посетитель видит платёж по конкретной квартире, а
  * не по «средней цене». Ради этого состояние живёт здесь, а не в двух местах.
  *
- * Показ различается по вариантам: «Стандарт» получает таблицу, которую можно
- * сортировать глазами, «Люкс» — карточки, «Премиум» — шахматку этажей. Данные
+ * Показ различается по вариантам, и различие — в наполнении, а не только в
+ * оформлении: цена пакета должна быть видна в возможностях. «Стандарт» —
+ * таблица квартир с выбором комнатности, без ползунков и без чертежа; «Люкс» —
+ * фильтры по корпусу, этажу и бюджету и карточки; «Премиум» — то же плюс
+ * чертёж планировки, а шахматка, калькулятор и бронь у него в пакете. Данные
  * при этом одни и те же.
  *
  * Список квартир, чертежи и подписи приходят с сервера готовыми: здесь только
  * фильтр, выбор и расчёт платежа. Как квартиры получаются — браузер не знает.
  */
 
-type Variant = "standard" | "lux" | "premium";
+type Variant = "standard" | "lux" | "premium" | "noir";
 
 /** До какого числа держится бронь: пять дней от момента нажатия. Считается в обработчике, не при отрисовке. */
 function bookedUntilLabel(): string {
@@ -46,12 +51,17 @@ export function ObjectInteractive({
   corpuses,
   plans,
   projectName,
+  district,
+  due,
 }: {
   variant: Variant;
   flats: Flat[];
   corpuses: number;
   plans: Plan[];
   projectName: string;
+  /** Район и срок сдачи — для прогноза цены по годам. */
+  district: string;
+  due: string;
 }) {
   const [rooms, setRooms] = useState<number[]>([]);
   const [corpus, setCorpus] = useState<number | null>(null);
@@ -118,10 +128,15 @@ export function ObjectInteractive({
   const toggleRoom = (n: number) =>
     setRooms((prev) => (prev.includes(n) ? prev.filter((r) => r !== n) : [...prev, n]));
 
+  // Уровень подбора по пакету: см. описание вверху файла. «Noir» — тот же пакет, что «Премиум».
+  const top = variant === "premium" || variant === "noir";
+  const simple = variant === "standard";
+  const withDrawing = top;
+
   const chip = (active: boolean) =>
     cn(
       "px-4 py-2 text-sm transition-colors duration-200",
-      variant === "premium" ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
+      top ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
       active
         ? "bg-[var(--w-accent)] text-[var(--w-accent-ink)]"
         : "border border-[var(--w-line)] text-[var(--w-muted)] hover:text-[var(--w-ink)]",
@@ -129,7 +144,7 @@ export function ObjectInteractive({
 
   const surface = cn(
     "border border-[var(--w-line)] bg-[var(--w-surface)]",
-    variant === "premium" ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
+    top ? "rounded-[var(--w-radius-lg)]" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
   );
 
   return (
@@ -142,17 +157,22 @@ export function ObjectInteractive({
               {n}-комн.
             </button>
           ))}
-          <span className="mx-1 h-6 w-px bg-[var(--w-line)]" />
-          <button type="button" onClick={() => setCorpus(null)} className={chip(corpus === null)}>
-            Все корпуса
-          </button>
-          {Array.from({ length: corpuses }, (_, i) => i + 1).map((n) => (
-            <button key={n} type="button" onClick={() => setCorpus(n)} className={chip(corpus === n)}>
-              Корпус {n}
-            </button>
-          ))}
+          {simple ? null : (
+            <>
+              <span className="mx-1 h-6 w-px bg-[var(--w-line)]" />
+              <button type="button" onClick={() => setCorpus(null)} className={chip(corpus === null)}>
+                Все корпуса
+              </button>
+              {Array.from({ length: corpuses }, (_, i) => i + 1).map((n) => (
+                <button key={n} type="button" onClick={() => setCorpus(n)} className={chip(corpus === n)}>
+                  Корпус {n}
+                </button>
+              ))}
+            </>
+          )}
         </div>
 
+        {simple ? null : (
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <label className="block">
             <span className="flex items-baseline justify-between text-sm">
@@ -190,17 +210,22 @@ export function ObjectInteractive({
             />
           </label>
         </div>
+        )}
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-y border-[var(--w-line)] py-4">
-          <label className="flex cursor-pointer items-center gap-2.5 text-sm">
-            <input
-              type="checkbox"
-              checked={onlyFree}
-              onChange={(e) => setOnlyFree(e.target.checked)}
-              className="h-4 w-4 accent-[var(--w-accent)]"
-            />
-            Только свободные
-          </label>
+          {simple ? (
+            <span className="text-sm text-[var(--w-muted)]">Свободные квартиры всех корпусов</span>
+          ) : (
+            <label className="flex cursor-pointer items-center gap-2.5 text-sm">
+              <input
+                type="checkbox"
+                checked={onlyFree}
+                onChange={(e) => setOnlyFree(e.target.checked)}
+                className="h-4 w-4 accent-[var(--w-accent)]"
+              />
+              Только свободные
+            </label>
+          )}
           <p className="text-sm text-[var(--w-muted)]">
             Найдено:{" "}
             <span key={found.length} className="mv-fade font-medium text-[var(--w-ink)] tabular-nums">
@@ -305,12 +330,15 @@ export function ObjectInteractive({
                 Корпус {selected.corpus} · {selected.floor} этаж · {selected.view.toLowerCase()}
               </p>
 
-              <div className="mt-5 aspect-[320/232] border border-[var(--w-line)] p-2.5">
-                {drawing ? (
-                  <FlatPlan key={selected.id} plan={drawing} areas={selected.roomAreas} area={selected.area} />
-                ) : null}
-              </div>
-              {plan ? (
+              {/* Чертёж планировки — «Премиум»; «Люкс» называет планировку словами, «Стандарт» — нет. */}
+              {withDrawing ? (
+                <div className="mt-5 aspect-[320/232] border border-[var(--w-line)] p-2.5">
+                  {drawing ? (
+                    <FlatPlan key={selected.id} plan={drawing} areas={selected.roomAreas} area={selected.area} />
+                  ) : null}
+                </div>
+              ) : null}
+              {plan && !simple ? (
                 <p key={`${plan.name}-note`} className="mv-fade mt-3 text-xs leading-relaxed text-[var(--w-muted)]">
                   <span className="font-medium text-[var(--w-ink)]">{plan.name}. </span>
                   {plan.note}
@@ -322,6 +350,16 @@ export function ObjectInteractive({
                 {money(Math.round(selected.priceUsd / selected.area), "uzs")} за м²
               </p>
 
+              {/* Допник «Прогноз стоимости»: что будет с ценой этой квартиры через пять лет. */}
+              <Addon id="forecast" compact className="mt-5 border-t border-[var(--w-line)] pt-5">
+                <PriceForecast
+                  key={selected.id}
+                  compact
+                  title={`${selected.typeName}, ${area(selected.area)} м² · прогноз цены`}
+                  points={forecastOf({ priceUsd: selected.priceUsd, district, due })}
+                />
+              </Addon>
+
               {/* Допник «Избранное и подборка»: сердечко и подборка, которая уходит ссылкой. */}
               <Addon id="favorites" compact className="mt-4">
                 <div className="flex flex-wrap items-center gap-3">
@@ -331,7 +369,7 @@ export function ObjectInteractive({
                     onClick={() => toggleSaved(selected.id)}
                     className={cn(
                       "inline-flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-200",
-                      variant === "premium" ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
+                      top ? "rounded-full" : variant === "lux" ? "rounded-[2px]" : "rounded-none",
                       saved.includes(selected.id)
                         ? "bg-[var(--w-accent)] text-[var(--w-accent-ink)]"
                         : "border border-[var(--w-line)] text-[var(--w-muted)] hover:text-[var(--w-ink)]",
@@ -388,7 +426,7 @@ export function ObjectInteractive({
                   }}
                   className={cn(
                     "px-3 py-1.5 text-xs transition-colors duration-200",
-                    variant === "premium" ? "rounded-full" : "rounded-none",
+                    top ? "rounded-full" : "rounded-none",
                     item.id === bankId
                       ? "bg-[var(--w-accent)] text-[var(--w-accent-ink)]"
                       : "border border-[var(--w-line)] text-[var(--w-muted)] hover:text-[var(--w-ink)]",
@@ -497,7 +535,7 @@ export function ObjectInteractive({
                 }}
                 className={cn(
                   "w-full bg-[var(--w-accent)] px-6 py-3.5 text-sm font-medium text-[var(--w-accent-ink)] transition-opacity hover:opacity-90",
-                  variant === "premium" ? "w-glow rounded-full" : "rounded-none",
+                  top ? "w-glow rounded-full" : "rounded-none",
                 )}
               >
                 {booking && selected?.status === "free" ? "Забронировать на 5 дней" : "Оставить заявку"}

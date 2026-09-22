@@ -126,12 +126,6 @@ export const stats = [
   { value: "14", label: "лет на рынке" },
 ];
 
-export const commercial = [
-  { name: "Бизнес-центр на Амира Темура", kind: "Бизнес-центр", area: "4 200 м²", deal: "Аренда", status: "Свободно", photo: "/images/mavera/business-center.jpg" },
-  { name: "Торговая галерея «Чинор»", kind: "Торговый центр", area: "1 850 м²", deal: "Продажа", status: "Бронь", photo: "/images/mavera/mall.jpg" },
-  { name: "Отдельно стоящее здание", kind: "Здание", area: "960 м²", deal: "Продажа", status: "Свободно", photo: "/images/mavera/office.jpg" },
-];
-
 /** Условия покупки — то, с чего начинают сайты крупных девелоперов. */
 export const terms = [
   { value: "от 4,9%", label: "ипотека банков-партнёров" },

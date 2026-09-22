@@ -41,3 +41,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# КП собирается скриптом: docs/kp/build-kp-mavera.py
+docs/kp/.fonts/
+docs/kp/*.html
+docs/kp/*.pdf
