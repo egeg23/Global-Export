@@ -16,18 +16,13 @@ import {
   subscribe,
   write,
 } from "@/components/configurator/store";
-import { money, type CurrencyId } from "@/components/present/mavera/theme";
 import { cn } from "@/lib/cn";
 import {
   addonOf,
-  extrasUsd as extrasOf,
+  extrasOf,
   firstSharedPage,
-  hasFromPrice,
   isIncluded as includedIn,
-  monthlyUsd as monthlyOf,
-  onRequestAddons,
   pageOf,
-  tierOf,
   withToggled,
   type Catalog,
 } from "@/lib/configurator/catalog";
@@ -37,22 +32,26 @@ import {
  *
  * Механики, одно состояние:
  *
- *  1. Док внизу справа — допники с ценой и итогом. Тумблер включён — блок
+ *  1. Док внизу справа — блоки с тумблерами. Тумблер включён — блок
  *     смонтирован, страница подъезжает к нему и он пульсирует; выключен —
  *     блока нет. Никакой перезагрузки: это обычное состояние React.
  *  2. Метки на странице. Пока док открыт, каждый включённый блок носит ярлык
- *     с названием и ценой (и крестиком), а на месте выключенного стоит
- *     пунктирный «призрак» с кнопкой «включить». Закрыл док — сайт чистый.
+ *     с названием (и крестиком), а на месте выключенного стоит пунктирный
+ *     «призрак» с кнопкой «включить». Закрыл док — сайт чистый.
  *  3. «Было / стало». У только что включённого блока — переключатель:
- *     «было» временно прячет его, не меняя цену, «стало» возвращает и заново
- *     проигрывает появление. Так сравнивают, не трогая тумблер.
+ *     «было» временно прячет его, не трогая набор, «стало» возвращает и
+ *     заново проигрывает появление. Так сравнивают, не трогая тумблер.
  *  4. Перенос. Если блок живёт на другой странице (карточка ЖК, панель
  *     управления, соседняя концепция), конструктор сам переводит туда,
  *     оставляет док открытым и подъезжает к блоку.
  *  5. Ссылка. Набор лежит в адресе и в хранилище браузера: его можно
  *     отправить коллеге, и он переживает переходы между страницами.
- *  6. Бриф. Кнопка в доке отправляет собранный набор с ценой нам в
- *     Telegram и ведёт клиента к ассистенту в боте.
+ *  6. Бриф. Кнопка в доке отправляет собранный набор нам в Telegram и
+ *     ведёт клиента к ассистенту в боте.
+ *
+ * Денег на странице нет нигде: витрина — публичное портфолио. Сумму брифа
+ * сервер считает сам по прайсу, которого в браузере нет
+ * (lib/configurator/prices.ts), и отдаёт её только студии.
  *
  * Проект описывается каталогом (lib/configurator/catalog.ts): один и тот же
  * док работает у MAVERA, ADAR и Global Export. Провайдер сам рисует корень
@@ -65,32 +64,22 @@ export type Configurator = {
   tier: string;
   page: string;
   hrefs: Record<string, string>;
-  /** Что включено по тумблерам — от этого считается цена. */
+  /** Что включено по тумблерам — это и уходит в бриф и в ссылку. */
   enabled: ReadonlySet<string>;
   /** Что показывается: то же, минус свежий допник, пока смотрим «было». */
   shown: ReadonlySet<string>;
   fresh: { id: string; at: number } | null;
   peek: boolean;
   open: boolean;
-  currency: CurrencyId;
-  packageUsd: number;
-  extrasUsd: number;
-  /** Разовый итог: пакет и допники без подписок. */
-  totalUsd: number;
-  /** Подписки в месяц — отдельной суммой. */
-  monthlyUsd: number;
-  /** В наборе есть цена «от» — итог тоже «от». */
-  fromPrice: boolean;
-  /** Что отмечено «по запросу»: названия для итога и брифа. */
-  onRequest: string[];
+  /** Сколько включено сверх варианта. */
+  extras: number;
   setOpen: (open: boolean) => void;
   setPeek: (peek: boolean) => void;
-  setCurrency: (currency: CurrencyId) => void;
   toggle: (id: string) => void;
   reset: () => void;
   isIncluded: (id: string) => boolean;
-  /** «в пакете» или «+$500» — одной строкой для ярлыков и дока. */
-  priceLabel: (id: string) => string;
+  /** «в варианте» или «дополнительно» — одной строкой для ярлыков и дока. */
+  statusLabel: (id: string) => string;
   /** Куда переводит тумблер, если блок живёт не на этой странице. */
   destination: (where: string) => string | null;
   /** Заголовок группы: «Главная», «Главная и карточка». */
@@ -143,14 +132,10 @@ export function ConfiguratorProvider({
     next.delete(session.fresh.id);
     return next;
   }, [enabled, session.peek, session.fresh]);
-  const currency = useSyncExternalStore(subscribe, readCurrency, () => "usd" as CurrencyId);
 
   useEffect(() => adopt(catalog.project, tier), [catalog.project, tier]);
 
-  const packageUsd = tierOf(catalog, tier).priceUsd;
   const isIncluded = (id: string) => includedIn(catalog, tier, id);
-  const extrasUsd = extrasOf(catalog, tier, enabled);
-  const monthlyUsd = monthlyOf(catalog, tier, enabled);
 
   const destination = (where: string): string | null => {
     if (catalog.crossMounted) return null;
@@ -179,28 +164,13 @@ export function ConfiguratorProvider({
     fresh: session.fresh,
     peek: session.peek,
     open: session.open,
-    currency,
-    packageUsd,
-    extrasUsd,
-    totalUsd: packageUsd + extrasUsd,
-    monthlyUsd,
-    fromPrice: hasFromPrice(catalog, tier, enabled),
-    onRequest: onRequestAddons(catalog, tier, enabled).map((addon) => addon.label),
+    extras: extrasOf(catalog, tier, enabled).length,
     setOpen: (open) => patchSession({ open }),
     setPeek: (peek) => patchSession({ peek }),
-    setCurrency: writeCurrency,
     isIncluded,
     destination,
     placeLabel,
-    priceLabel: (id) => {
-      const addon = addonOf(catalog, id);
-      if (isIncluded(id)) return "в пакете";
-      if (addon.onRequest) return "по запросу";
-      if (addon.priceUsd === 0) return "в пакете";
-      if (addon.monthly) return `+${money(addon.priceUsd, currency)}/мес`;
-      if (addon.from) return `от ${money(addon.priceUsd, currency)}`;
-      return `+${money(addon.priceUsd, currency)}`;
-    },
+    statusLabel: (id) => (isIncluded(id) ? "в варианте" : "дополнительно"),
     toggle: (id) => {
       const next = withToggled(catalog, enabled, id);
       if (!next.has(id)) {
@@ -235,16 +205,6 @@ export function ConfiguratorProvider({
       </div>
     </Context.Provider>
   );
-}
-
-/* Валюта дока — тоже в памяти модуля: переживает переход между страницами. */
-let currencyState: CurrencyId = "usd";
-function readCurrency() {
-  return currencyState;
-}
-function writeCurrency(currency: CurrencyId) {
-  currencyState = currency;
-  patchSession({});
 }
 
 /** Последняя подсветка, которую уже показали: повторно к блоку не едем. */
@@ -342,7 +302,7 @@ export function Addon({
   const label = (
     <>
       <span className="min-w-0 truncate">{spec.label}</span>
-      <span className="shrink-0 tabular-nums text-[#ffd166]">{ctx.priceLabel(id)}</span>
+      <span className="shrink-0 text-[#ffd166]">{ctx.statusLabel(id)}</span>
     </>
   );
 
@@ -419,7 +379,7 @@ export function Addon({
           className="m-2 inline-flex max-w-full flex-wrap items-center justify-center gap-x-2.5 gap-y-1 rounded-full bg-[#0b0d10] px-4 py-2 text-sm font-normal normal-case tracking-normal text-[#f2efe9] shadow-lg ring-1 ring-white/10 transition-transform duration-200 hover:scale-[1.03] motion-reduce:transform-none"
         >
           <span>+ {spec.label}</span>
-          <span className="tabular-nums text-[#ffd166]">{ctx.priceLabel(id)}</span>
+          <span className="text-[#ffd166]">{ctx.statusLabel(id)}</span>
           <span className="text-xs text-[#f2efe9]/55">— включить</span>
         </button>
       </Tag>
@@ -472,7 +432,7 @@ function Off({ id, label }: { id: string; label: string }) {
 /**
  * «Было / стало» — сравнение на месте.
  *
- * «Было» прячет свежий блок, не трогая тумблер и цену; «стало» возвращает и
+ * «Было» прячет свежий блок, не трогая тумблер и набор; «стало» возвращает и
  * заново проигрывает появление. Одна и та же кнопка стоит на ярлыке блока,
  * на его заглушке и в строке дока — куда бы ни смотрел заказчик.
  */

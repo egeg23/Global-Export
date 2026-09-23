@@ -11,9 +11,9 @@ const hrefs: Record<TierId, string> = {
 };
 
 /**
- * Полоса поверх каждого варианта: где мы, сколько стоит, как перейти к
- * соседнему. Не прилипает к верху — уезжает при первой прокрутке и оставляет
- * первый экран таким, каким его увидит посетитель сайта.
+ * Полоса поверх каждого варианта: где мы и как перейти к соседнему. Не
+ * прилипает к верху — уезжает при первой прокрутке и оставляет первый экран
+ * таким, каким его увидит посетитель сайта.
  */
 export function VariantBar({ current, admin = false }: { current: TierId; admin?: boolean }) {
   const tier = tiers.find((entry) => entry.id === current) ?? tiers[0];
@@ -36,7 +36,7 @@ export function VariantBar({ current, admin = false }: { current: TierId; admin?
           {tier.label} · {tier.mood} · {tier.duration}
         </p>
 
-        {/* Панель управления в составе пакета: одна на всех, различается допниками. */}
+        {/* Панель управления в составе варианта: одна на всех, различается блоками. */}
         <Link
           href={admin ? hrefs[current] : `${hrefs[current]}/admin`}
           prefetch={false}

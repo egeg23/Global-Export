@@ -1,21 +1,20 @@
-import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { Gate } from "@/components/showcase/gate";
-import { accessCode, safeNext, showcaseById } from "@/lib/showcase/access";
-
-export const metadata: Metadata = { title: "Доступ к макету" };
+import { returnTo, showcaseById } from "@/lib/showcase/access";
 
 const showcase = showcaseById("gh");
 
+/**
+ * Бывшая страница ввода кода. Витрина открыта без кода, но ссылки вида
+ * `/gh/access?next=…` уже разошлись по переписке — они ведут туда, куда
+ * вели. Обычно до этой страницы дело не доходит: переадресует прокси
+ * (proxy.ts), а это запасной путь на случай, если его обошли.
+ */
 export default async function AccessPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string; error?: string }>;
+  searchParams: Promise<{ next?: string | string[] }>;
 }) {
-  const params = await searchParams;
-  const next = safeNext(showcase, params.next);
-  if (!accessCode(showcase)) redirect(next);
-
-  return <Gate id="gh" next={next} error={Boolean(params.error)} />;
+  const { next } = await searchParams;
+  redirect(returnTo(showcase, Array.isArray(next) ? next[0] : next));
 }

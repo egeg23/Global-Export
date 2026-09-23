@@ -1,15 +1,8 @@
 import { NextResponse } from "next/server";
 
-import {
-  addonOf,
-  hasFromPrice,
-  isIncluded,
-  monthlyUsd as monthlyOf,
-  tierOf,
-  totalUsd as totalOf,
-  type Catalog,
-} from "@/lib/configurator/catalog";
+import { isIncluded, tierOf, type Catalog } from "@/lib/configurator/catalog";
 import { catalogOf } from "@/lib/configurator/catalogs";
+import { addonPrice, quote } from "@/lib/configurator/prices";
 
 export const runtime = "nodejs";
 
@@ -17,8 +10,12 @@ export const runtime = "nodejs";
  * Бриф из конструктора.
  *
  * Клиент собрал сайт из пакета и допников и нажал «отправить». Из браузера
- * приходят только идентификаторы — пакет, список допников, контакт; цену и
- * названия сервер берёт из каталога сам: цифру в брифе подделать нельзя.
+ * приходят только идентификаторы — пакет, список допников, контакт; названия
+ * сервер берёт из каталога, а цену — из прайса (lib/configurator/prices.ts),
+ * которого в браузере нет вовсе: цифру в брифе подделать нельзя.
+ *
+ * Сумма уходит только студии и менеджеру. Посетителю в ответ — номер заявки
+ * и ссылка на бота, без денег: витрина — публичное портфолио.
  *
  * Дальше два пути. Основной — студия: бриф уходит на devuz.studio, где
  * становится заявкой, попадает в Telegram (дороже порога — только
@@ -298,24 +295,28 @@ export async function POST(request: Request) {
     (Array.isArray(body.addons) ? body.addons : []).filter((id): id is string => typeof id === "string" && known.has(id)),
   );
   const tier = tierOf(catalog, tierId);
+  const sum = quote(catalog, tier.id, requested);
 
   const order: Order = {
     catalog,
-    tier: { id: tier.id, label: tier.label, priceUsd: tier.priceUsd },
+    tier: { id: tier.id, label: tier.label, priceUsd: sum.tierUsd },
     addons: catalog.addons
       .filter((addon) => requested.has(addon.id))
-      .map((addon) => ({
-        id: addon.id,
-        label: addonOf(catalog, addon.id).label,
-        priceUsd: addon.priceUsd,
-        included: isIncluded(catalog, tier.id, addon.id),
-        ...(addon.monthly ? { monthly: true } : {}),
-        ...(addon.from ? { from: true } : {}),
-        ...(addon.onRequest ? { onRequest: true } : {}),
-      })),
-    totalUsd: totalOf(catalog, tier.id, requested),
-    monthlyUsd: monthlyOf(catalog, tier.id, requested),
-    fromPrice: hasFromPrice(catalog, tier.id, requested),
+      .map((addon) => {
+        const price = addonPrice(catalog, addon.id);
+        return {
+          id: addon.id,
+          label: addon.label,
+          priceUsd: price.usd,
+          included: isIncluded(catalog, tier.id, addon.id),
+          ...(price.monthly ? { monthly: true } : {}),
+          ...(price.from ? { from: true } : {}),
+          ...(price.onRequest ? { onRequest: true } : {}),
+        };
+      }),
+    totalUsd: sum.totalUsd,
+    monthlyUsd: sum.monthlyUsd,
+    fromPrice: sum.fromPrice,
     name: clean(body.name, 120),
     contact,
     comment: clean(body.comment, 1500),
@@ -331,8 +332,6 @@ export async function POST(request: Request) {
       requestNo: studio.requestNo,
       botUrl: studio.botUrl,
       delivered: studio.delivered,
-      totalUsd: order.totalUsd,
-      monthlyUsd: order.monthlyUsd,
     });
   }
 
@@ -350,5 +349,5 @@ export async function POST(request: Request) {
     console.warn("[showcase brief] канал доставки не настроен — бриф не отправлен");
   }
 
-  return NextResponse.json({ ok: true, via: "telegram", delivered, totalUsd: order.totalUsd, monthlyUsd: order.monthlyUsd });
+  return NextResponse.json({ ok: true, via: "telegram", delivered });
 }

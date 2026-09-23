@@ -6,30 +6,29 @@ import { useEffect, useState } from "react";
 import { BriefForm } from "@/components/configurator/brief-form";
 import { Compare, useConfigurator } from "@/components/configurator/context";
 import { shareUrl, write } from "@/components/configurator/store";
-import { useCountUp, useMotionPreferred } from "@/components/mavera/motion";
-import { currencies, money, rateNote } from "@/components/present/mavera/theme";
 import { cn } from "@/lib/cn";
-import { firstSharedPage, pageOf, tierOf, type CatalogAddon } from "@/lib/configurator/catalog";
+import { blocks, firstSharedPage, pageOf, tierOf, type CatalogAddon } from "@/lib/configurator/catalog";
 
 /**
- * Док конструктора: свёрнут — пилюля с итогом, развёрнут — тумблеры.
+ * Док конструктора: свёрнут — пилюля со счётчиком, развёрнут — тумблеры.
  *
- * Оформление намеренно не из мира сайта: тёмная плашка с жёлтой ценой одна и
- * та же на белом «Стандарте», бумажном «Люксе» и светлом «Премиуме» — и на
+ * Оформление намеренно не из мира сайта: тёмная плашка с жёлтым акцентом одна
+ * и та же на белом «Стандарте», бумажном «Люксе» и светлом «Премиуме» — и на
  * кремовом ADAR, и на тёмной концепции Global Export. Это наш инструмент,
  * а не часть сайта, и выглядеть он должен как инструмент.
  *
- * Допники сгруппированы по месту: сначала то, что живёт на этой странице,
+ * Блоки сгруппированы по месту: сначала то, что живёт на этой странице,
  * потом остальное. Тумблер из другой группы сам переводит на нужную страницу.
  * Последними идут услуги сверх сайта — интеграции, ИИ, статьи по подписке:
- * у них нет блока на макете, только цена. Внизу — итог (разовый и подписка
- * отдельно), ссылка и «Отправить бриф»: набор с ценой уходит в студию.
+ * у них нет блока на макете. Внизу — сколько выбрано, ссылка и «Отправить
+ * бриф»: набор уходит в студию.
+ *
+ * Денег в доке нет: витрина — публичное портфолио, и цены студии посетитель
+ * не видит. Сумму брифа считает сервер (lib/configurator/prices.ts).
  */
 
 export function Dock() {
   const ctx = useConfigurator();
-  const motion = useMotionPreferred();
-  const total = useCountUp(ctx?.totalUsd ?? 0, motion, 600);
   const [copied, setCopied] = useState(false);
   const [view, setView] = useState<"list" | "brief">("list");
   // На телефоне пилюля закрывала главную кнопку первого экрана. Пока не
@@ -61,7 +60,8 @@ export function Dock() {
 
   const { catalog } = ctx;
   const tier = tierOf(catalog, ctx.tier);
-  const extrasOn = catalog.addons.filter((addon) => ctx.enabled.has(addon.id) && !ctx.isIncluded(addon.id)).length;
+  const extrasOn = ctx.extras;
+  const inTier = ctx.enabled.size - extrasOn;
 
   if (!ctx.open) {
     return (
@@ -77,12 +77,8 @@ export function Dock() {
         <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#ffd166]" />
         <span>Конструктор</span>
         <span className="tabular-nums text-[#ffd166]">
-          {ctx.fromPrice ? "от " : ""}
-          {money(total, ctx.currency)}
+          {ctx.enabled.size ? blocks(ctx.enabled.size) : "выбрать блоки"}
         </span>
-        {ctx.monthlyUsd ? (
-          <span className="tabular-nums text-xs text-[#ffd166]/80">+{money(ctx.monthlyUsd, ctx.currency)}/мес</span>
-        ) : null}
         {extrasOn ? (
           <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-[#f2efe9]/70">
             +{extrasOn}
@@ -119,9 +115,8 @@ export function Dock() {
           <h2 className="mt-1 font-sans text-base font-medium">Что войдёт в сайт «{tier.label}»</h2>
           {view === "list" ? (
             <p className="mt-1 hidden text-xs leading-relaxed text-[#f2efe9]/55 sm:block">
-              Включите — блок появится на странице, а цена пересчитается. Если
-              блок живёт на другой странице, откроется она. У свежего блока есть
-              «было / стало».
+              Включите — блок появится на странице. Если блок живёт на другой
+              странице, откроется она. У свежего блока есть «было / стало».
             </p>
           ) : null}
         </div>
@@ -141,28 +136,7 @@ export function Dock() {
         </div>
       ) : (
         <>
-          <div className="mt-3 flex items-center justify-between gap-4 border-y border-white/10 px-5 py-2.5">
-            <span className="text-xs text-[#f2efe9]/55">Валюта</span>
-            <div role="group" aria-label="Валюта" className="flex rounded-full bg-white/5 p-0.5">
-              {currencies.map((entry) => (
-                <button
-                  key={entry.id}
-                  type="button"
-                  aria-pressed={ctx.currency === entry.id}
-                  aria-label={entry.name}
-                  onClick={() => ctx.setCurrency(entry.id)}
-                  className={cn(
-                    "rounded-full px-3 py-1 text-xs font-medium transition-colors duration-200",
-                    ctx.currency === entry.id ? "bg-[#f2efe9] text-[#0b0d10]" : "text-[#f2efe9]/65 hover:text-[#f2efe9]",
-                  )}
-                >
-                  {entry.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="min-h-0 flex-1 overflow-y-auto px-5 py-3">
+          <div className="mt-3 min-h-0 flex-1 overflow-y-auto border-t border-white/10 px-5 py-3">
             {order.map((where) => (
               <Group key={where} where={where} />
             ))}
@@ -170,27 +144,11 @@ export function Dock() {
 
           <footer className="border-t border-white/10 px-5 py-4">
             <div className="flex items-baseline justify-between gap-4">
-              <span className="text-sm text-[#f2efe9]/60">Итого</span>
-              <span className="text-2xl font-semibold tabular-nums">
-                {ctx.fromPrice ? <span className="text-base font-normal text-[#f2efe9]/60">от </span> : null}
-                {money(total, ctx.currency)}
-              </span>
+              <span className="text-sm text-[#f2efe9]/60">Выбрано</span>
+              <span className="text-2xl font-semibold tabular-nums">{blocks(ctx.enabled.size)}</span>
             </div>
-            {ctx.monthlyUsd ? (
-              <div className="mt-0.5 flex items-baseline justify-between gap-4">
-                <span className="text-xs text-[#f2efe9]/60">Подписка</span>
-                <span className="text-sm font-medium tabular-nums text-[#ffd166]">
-                  +{money(ctx.monthlyUsd, ctx.currency)}/мес
-                </span>
-              </div>
-            ) : null}
             <p className="mt-1 text-xs leading-relaxed text-[#f2efe9]/45">
-              Пакет {money(ctx.packageUsd, ctx.currency)}
-              {ctx.extrasUsd ? <> + допники {money(ctx.extrasUsd, ctx.currency)}</> : null}
-              {ctx.fromPrice ? <>. Точную цену по позициям «от» назовём после разговора</> : null}
-              {ctx.onRequest.length ? <>. По запросу: {ctx.onRequest.join(", ").toLowerCase()}</> : null}
-              {ctx.currency === "usd" ? null : <>. {rateNote}</>}
-              {catalog.pricingNote ? <>. {catalog.pricingNote}</> : null}
+              {summary(tier.label, inTier, extrasOn)} Набор уходит в ссылку и в бриф.
             </p>
             <button
               type="button"
@@ -220,6 +178,17 @@ export function Dock() {
       )}
     </aside>
   );
+}
+
+/** Одна строка под счётчиком: сколько из варианта и сколько сверху. */
+function summary(tierLabel: string, inTier: number, extras: number): string {
+  if (!inTier && !extras) return "Пока ничего не включено — включите блоки выше.";
+  const parts = [
+    inTier ? `в варианте «${tierLabel}» — ${inTier}` : null,
+    extras ? `дополнительно — ${extras}` : null,
+  ].filter(Boolean);
+  const line = parts.join(", ");
+  return `${line.charAt(0).toUpperCase()}${line.slice(1)}.`;
 }
 
 /**
@@ -280,7 +249,7 @@ function Row({ addon, target, virtual }: { addon: CatalogAddon; target: string |
   const on = ctx.enabled.has(addon.id);
   // У услуги нет блока на странице — сравнивать «было / стало» нечего.
   const isFresh = !virtual && ctx.fresh?.id === addon.id;
-  const free = ctx.isIncluded(addon.id) || (addon.priceUsd === 0 && !addon.onRequest);
+  const inTier = ctx.isIncluded(addon.id);
   const { catalog } = ctx;
   const openLabel =
     catalog.everywhere && addon.where === catalog.everywhere
@@ -312,8 +281,8 @@ function Row({ addon, target, virtual }: { addon: CatalogAddon; target: string |
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-3">
           <span className={cn("text-sm", on ? "text-[#f2efe9]" : "text-[#f2efe9]/75")}>{addon.label}</span>
-          <span className={cn("shrink-0 text-xs tabular-nums", free ? "text-[#f2efe9]/40" : "text-[#ffd166]")}>
-            {ctx.priceLabel(addon.id)}
+          <span className={cn("shrink-0 text-xs", inTier ? "text-[#f2efe9]/40" : "text-[#ffd166]")}>
+            {ctx.statusLabel(addon.id)}
           </span>
         </div>
         <p className="mt-0.5 text-xs leading-relaxed text-[#f2efe9]/50">{addon.effect}</p>
