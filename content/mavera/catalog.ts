@@ -6,17 +6,17 @@ import type { Catalog } from "@/lib/configurator/catalog";
 /**
  * MAVERA в терминах общего конструктора.
  *
- * Допники и пакеты остаются в своих файлах — на них ссылается смета и
- * страницы; здесь только то, что нужно доку: страницы, где живут блоки,
- * и что считать «везде». Услуги студии (content/services.ts) добавляются
- * в конец: они общие для всех проектов витрины.
+ * Блоки и варианты остаются в своих файлах — на них ссылаются страницы;
+ * здесь только то, что нужно доку: страницы, где живут блоки, и что
+ * считать «везде». Услуги студии (content/services.ts) добавляются в
+ * конец: они общие для всех проектов витрины.
  */
 export const maveraCatalog: Catalog = {
   project: "mavera",
   label: "MAVERA — сайт застройщика",
   niche: "девелопмент, продажа квартир в новостройках",
   nicheTier: 1,
-  tiers: tiers.map((tier) => ({ id: tier.id, label: tier.label, priceUsd: tier.priceUsd })),
+  tiers: tiers.map((tier) => ({ id: tier.id, label: tier.label })),
   // Интеграция с CRM у MAVERA уже есть тумблером в панели (crm) — общий дубль убираем.
   addons: [...addons, ...studioServices.filter((service) => service.id !== "crm-link")],
   included,

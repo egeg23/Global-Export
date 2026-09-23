@@ -26,7 +26,7 @@ const inter = Inter({
  *
  * Свой корень документа, а не раздел внутри витрины MAVERA: у макета своя
  * типографика, своя палитра и своя заставка во весь экран, и делить их с
- * соседом незачем. Закрыт отдельным кодом — см. lib/showcase/access.ts.
+ * соседом незачем. Открыт без кода, но закрыт от поиска — см. proxy.ts.
  */
 export const metadata: Metadata = {
   title: {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
   icons: { icon: "/favicon.svg" },
   other: {
-    copyright: "© 2026 Maximov Tech. Закрытый показ для Golden House; копирование запрещено.",
+    copyright: "© 2026 Maximov Tech. Макет для Golden House; копирование запрещено.",
   },
 };
 

@@ -2,11 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 import { Rise } from "@/components/mavera/reveal";
-import { currencies, moneyParts, rateNote, tiers, type CurrencyId, type TierId } from "@/components/present/mavera/theme";
-import { cn } from "@/lib/cn";
+import { tiers, type TierId } from "@/components/present/mavera/theme";
 
 /** Как выглядит вариант на превью и куда ведёт. */
 const cards: Record<TierId, { href: string; photo: string; school: string; motion: string }> = {
@@ -37,38 +35,15 @@ const cards: Record<TierId, { href: string; photo: string; school: string; motio
 };
 
 export function VariantCards() {
-  const [currency, setCurrency] = useState<CurrencyId>("usd");
-
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="text-sm text-sand-300/60">
-          Цена, срок и состав работ — по каждому варианту. Валюта переключается.
-        </p>
-
-        <div role="group" aria-label="Валюта" className="flex rounded-full border border-sand-50/12 p-1">
-          {currencies.map((entry) => (
-            <button
-              key={entry.id}
-              type="button"
-              aria-pressed={currency === entry.id}
-              aria-label={entry.name}
-              onClick={() => setCurrency(entry.id)}
-              className={cn(
-                "rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-300",
-                currency === entry.id ? "bg-sand-50 text-forest-950" : "text-sand-200/70 hover:text-sand-50",
-              )}
-            >
-              {entry.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <p className="text-sm text-sand-300/60">
+        Срок и состав работ — по каждому варианту. Каждый открывается целиком.
+      </p>
 
       <ul className="mt-10 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
         {tiers.map((tier, index) => {
           const card = cards[tier.id];
-          const price = moneyParts(tier.priceUsd, currency);
 
           return (
             <Rise as="li" key={tier.id} delay={index * 90}>
@@ -92,17 +67,9 @@ export function VariantCards() {
                 </div>
 
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <h3 className="font-display text-2xl text-sand-50">{tier.label}</h3>
-                    <p className="flex items-baseline gap-1.5">
-                      <span className="font-display text-2xl text-sand-50">{price.value}</span>
-                      <span className="text-xs text-sand-200/70">{price.unit}</span>
-                    </p>
-                  </div>
+                  <h3 className="font-display text-2xl text-sand-50">{tier.label}</h3>
 
-                  <p className="mt-2 text-xs text-sand-300/55">
-                    {tier.duration} · {tier.hours}
-                  </p>
+                  <p className="mt-2 text-xs text-sand-300/55">Срок — {tier.duration}</p>
 
                   <p className="mt-4 text-sm leading-relaxed text-sand-200/75">{tier.note}</p>
 
@@ -130,10 +97,6 @@ export function VariantCards() {
         })}
       </ul>
 
-      <p className="mt-6 text-xs leading-relaxed text-sand-300/45">
-        Цены пакетов без допников.{currency === "usd" ? null : <> Договор считается в долларах. {rateNote}.</>}
-      </p>
-
       <Rise delay={120} className="mt-8 flex flex-col gap-4 rounded-card border border-harvest-300/30 bg-forest-950 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-7">
         <span
           aria-hidden="true"
@@ -141,16 +104,16 @@ export function VariantCards() {
         >
           <span className="h-2 w-2 rounded-full bg-[#ffd166]" />
           Конструктор
-          <span className="tabular-nums text-[#ffd166]">$6 400</span>
+          <span className="tabular-nums text-[#ffd166]">+3</span>
         </span>
         <div>
           <p className="text-sm font-medium text-sand-50">
-            Допники включаются тумблерами прямо на сайте
+            Дополнительные блоки включаются тумблерами прямо на сайте
           </p>
           <p className="mt-1.5 text-sm leading-relaxed text-sand-200/70">
             Внизу справа на каждом варианте — конструктор. Включили калькулятор,
-            шахматку или 3D-тур — блок появился на странице, итог пересчитался,
-            ссылку с набором можно отправить. Без перезагрузок.
+            шахматку или 3D-тур — блок появился на странице, у него есть «было /
+            стало», а ссылку с набором можно отправить. Без перезагрузок.
           </p>
         </div>
       </Rise>
