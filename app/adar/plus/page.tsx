@@ -14,7 +14,7 @@ import { Addon } from "@/components/configurator/context";
 import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { AdarConfigurator, Extra } from "@/components/adar/showcase/configurator";
-import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
+import { ScopePanel } from "@/components/adar/showcase/scope-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
 import { ContactSection } from "@/components/adar/ui/contact-section";
 import { SetShowcase } from "@/components/adar/ui/set-showcase";
@@ -97,7 +97,7 @@ export default function AdarPlusConcept() {
           <ContactSection />
         </main>
         <SiteFooter />
-        {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
+        {showcaseChrome ? <ScopePanel concept={concept} /> : null}
       </div>
     </AdarConfigurator>
   );

@@ -13,7 +13,7 @@ import { formatNumber } from "@/lib/adar/format";
 import { cn } from "@/lib/cn";
 
 /**
- * Страница нашей витрины, а не сайта компании: здесь варианты и сметы.
+ * Страница нашей витрины, а не сайта компании: здесь варианты и их состав.
  * Из поиска закрыта всегда — и у нас, и на сервере заказчика.
  */
 export const metadata: Metadata = {
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
 /**
  * Витрина проекта ADAR.
  *
- * Одна страница, с которой заказчик открывает три варианта своей будущей
- * главной, сравнивает их построчно и видит смету по каждому. Решение от него
- * нужно ровно одно — выбрать вариант.
+ * Одна страница, с которой открываются три варианта будущей главной, их
+ * построчное сравнение и состав работ по каждому. Цен студии здесь нет:
+ * витрина — публичное портфолио.
  */
 export default function AdarShowcase() {
   return (
@@ -102,12 +102,7 @@ export default function AdarShowcase() {
                   {concept.tagline}
                 </p>
 
-                <p className="mt-7 flex items-baseline gap-3">
-                  <span className="font-adar-display text-5xl leading-none text-adar-green-900 tabular-nums">
-                    ${concept.estimate.total}
-                  </span>
-                  <span className="text-sm text-adar-ink-subtle">{concept.estimate.days}</span>
-                </p>
+                <p className="mt-7 text-sm text-adar-ink-subtle">Срок — {concept.scope.days}</p>
 
                 <ul className="mt-7 grid gap-2.5 border-t border-adar-green-900/10 pt-6 text-sm text-adar-ink-muted">
                   {concept.highlights.map((item) => (
@@ -129,11 +124,11 @@ export default function AdarShowcase() {
                     Открыть вариант
                   </Link>
                   <Link
-                    href={`${concept.href}#smeta`}
+                    href={`${concept.href}#sostav`}
                     prefetch={false}
                     className="rounded-full border border-adar-green-900/15 px-6 py-3 text-sm font-medium text-adar-green-900 transition-colors duration-300 hover:border-adar-green-900/35"
                   >
-                    Смета
+                    Состав работ
                   </Link>
                 </div>
               </article>
@@ -159,9 +154,6 @@ export default function AdarShowcase() {
                   <th key={concept.id} scope="col" className="pb-5 text-center">
                     <span className="block font-adar-display text-xl text-adar-green-950">
                       «{concept.name}»
-                    </span>
-                    <span className="mt-1 block text-adar-ink-subtle tabular-nums">
-                      ${concept.estimate.total}
                     </span>
                   </th>
                 ))}
@@ -192,19 +184,6 @@ export default function AdarShowcase() {
                   ))}
                 </tr>
               ))}
-              <tr className="border-t-2 border-adar-green-900/25">
-                <th scope="row" className="py-5 text-left font-medium text-adar-ink">
-                  Стоимость
-                </th>
-                {concepts.map((concept) => (
-                  <td
-                    key={concept.id}
-                    className="py-5 text-center font-adar-display text-2xl text-adar-green-900 tabular-nums"
-                  >
-                    ${concept.estimate.total}
-                  </td>
-                ))}
-              </tr>
             </tbody>
           </table>
         </div>
@@ -223,8 +202,8 @@ export default function AdarShowcase() {
             </span>
             <span className="mt-1 block text-sm text-adar-ink-muted">
               Четыре листа A4 в чёрно-белом: варианты, построчное сравнение с
-              колонкой для отметок заказчика и сметы. Печатается из браузера
-              или сохраняется в PDF.
+              колонкой для отметок заказчика и состав работ. Печатается из
+              браузера или сохраняется в PDF.
             </span>
           </span>
           <span className="inline-flex items-center gap-2 text-sm font-medium text-adar-green-900">
