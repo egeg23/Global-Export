@@ -1,6 +1,5 @@
 import { Playground } from "@/components/delta/playground";
 import { school } from "@/content/delta/school";
-import { cn } from "@/lib/cn";
 
 /**
  * Первый экран: одна мысль для родителя и песочница рядом.
@@ -119,10 +118,10 @@ function Backdrop() {
       <svg className="absolute -right-10 top-10 h-[30rem] w-[30rem] text-white/[0.07]" viewBox="0 0 100 100">
         <path d="M50 6 L95 88 H5 Z" fill="none" stroke="currentColor" strokeWidth="5" strokeLinejoin="round" />
       </svg>
-      {squares.map((sq, i) => (
+      {squares.map((sq) => (
         <span
-          key={i}
-          className={cn("dl-float absolute rounded-md border-[3px] border-dl-ink", i % 2 === 0 && "hidden lg:block")}
+          key={sq.x + sq.y}
+          className="dl-float absolute hidden rounded-md border-[3px] border-dl-ink lg:block"
           style={
             {
               left: sq.x,
