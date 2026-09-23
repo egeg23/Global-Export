@@ -112,6 +112,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Пятый проект витрины — сайт детской IT-школы Delta. Одноязычный, без
+  // кода доступа: как и FOODMAXX, пропускается мимо языкового префикса.
+  if (pathname === "/delta" || pathname.startsWith("/delta/")) {
+    return NextResponse.next();
+  }
+
   // On the demo deployment the root is the showcase; on the live site it stays
   // the language redirect. One variable rather than two builds of the app.
   if (pathname === "/" && process.env.SHOWCASE_ROOT === "true") {

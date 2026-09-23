@@ -1,0 +1,265 @@
+/* ------------------------------------------------------------------
+   Delta IT-School — токены мира.
+
+   Краска снята с их знака: синий круг #004AAD и глобус из четырёх
+   квадратов — жёлтого, зелёного, красного и голубого. Жёлтый фон
+   рекламных плакатов стал вторым фоном страницы.
+
+   Стиль — «пластилин» (claymorphism): толстая обводка, мягкие двойные
+   тени, крупные скругления. Для детской школы это язык игрушки, а для
+   родителя — аккуратность: ничего острого и ничего мелкого.
+   ------------------------------------------------------------------ */
+
+@theme {
+  --color-dl-blue: #004aad;
+  --color-dl-blue-600: #003d91;
+  --color-dl-blue-800: #0a2a66;
+  --color-dl-sky: #5ba8ff;
+  --color-dl-sky-100: #e6f0ff;
+  --color-dl-yellow: #ffd84a;
+  --color-dl-yellow-100: #fff6d1;
+  --color-dl-lemon: #fce93a;
+  --color-dl-green: #04bd62;
+  --color-dl-green-700: #037a41;
+  --color-dl-red: #e5322d;
+  --color-dl-ink: #10214a;
+  --color-dl-ink-muted: #45557a;
+  --color-dl-paper: #f5f8ff;
+  --color-dl-line: #d7e2f7;
+
+  --font-dl: var(--font-delta-body), ui-sans-serif, system-ui, sans-serif;
+  --font-dl-display: var(--font-delta-display), ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  --font-dl-mono: var(--font-delta-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-dl: 1.5rem;
+  --radius-dl-lg: 2rem;
+}
+
+@layer components {
+  /* Пластилиновая карточка: обводка + внешняя тень «вниз» + внутренний блик. */
+  .dl-clay {
+    border: 3px solid var(--color-dl-ink);
+    border-radius: var(--radius-dl);
+    background: #fff;
+    box-shadow:
+      0 6px 0 0 var(--color-dl-ink),
+      inset 0 -6px 0 0 rgb(16 33 74 / 0.06);
+  }
+
+  .dl-clay-soft {
+    border: 2px solid var(--color-dl-line);
+    border-radius: var(--radius-dl);
+    background: #fff;
+    box-shadow: 0 10px 30px -18px rgb(16 33 74 / 0.35);
+  }
+
+  /* Кнопка, которая «нажимается»: тень уходит, кнопка садится на место. */
+  .dl-press {
+    border: 3px solid var(--color-dl-ink);
+    box-shadow: 0 5px 0 0 var(--color-dl-ink);
+    transition:
+      transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.16s ease-out,
+      background-color 0.2s;
+  }
+
+  .dl-press:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0 0 var(--color-dl-ink);
+  }
+
+  .dl-press:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 0 var(--color-dl-ink);
+  }
+
+  /* Сетка в клетку — тетрадь и экран программиста одновременно. */
+  .dl-grid-paper {
+    background-image:
+      linear-gradient(to right, rgb(0 74 173 / 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(0 74 173 / 0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* Поле формы: толстая рамка, крупный текст — пальцем и без очков. */
+  .dl-input {
+    width: 100%;
+    min-height: 3rem;
+    border: 3px solid var(--color-dl-line);
+    border-radius: 1rem;
+    background: var(--color-dl-paper);
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    color: var(--color-dl-ink);
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+
+  .dl-input::placeholder {
+    color: rgb(69 85 122 / 0.6);
+  }
+
+  .dl-input:focus {
+    outline: none;
+    border-color: var(--color-dl-blue);
+    background: #fff;
+  }
+
+  /* Подсветка ссылки/кнопки с клавиатуры — толстая и видимая. */
+  .dl-focus:focus-visible {
+    outline: 3px solid var(--color-dl-sky);
+    outline-offset: 3px;
+  }
+
+  /* Блок «команды» в песочнице: плашка с выемкой, как в Scratch. */
+  .dl-block {
+    position: relative;
+    border: 3px solid var(--color-dl-ink);
+    border-radius: 0.9rem;
+    box-shadow: 0 4px 0 0 var(--color-dl-ink);
+  }
+
+  .dl-block::before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: 1.1rem;
+    width: 1.4rem;
+    height: 0.45rem;
+    border: 3px solid var(--color-dl-ink);
+    border-top: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+    background: var(--color-dl-paper);
+  }
+}
+
+/* Ползунок копилки: толстая дорожка с заливкой и монета вместо бегунка. */
+.dl-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1.1rem;
+  border: 3px solid var(--color-dl-ink);
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--color-dl-yellow) var(--fill, 0%), var(--color-dl-paper) var(--fill, 0%));
+  cursor: pointer;
+}
+
+.dl-range:focus-visible {
+  outline: 3px solid var(--color-dl-sky);
+  outline-offset: 4px;
+}
+
+.dl-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 3px solid var(--color-dl-ink);
+  border-radius: 50%;
+  background: var(--color-dl-yellow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 6.5 L16.5 15.5 H7.5 Z' fill='none' stroke='%23004AAD' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat;
+  box-shadow: 0 3px 0 0 var(--color-dl-ink);
+}
+
+.dl-range::-moz-range-thumb {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--color-dl-ink);
+  border-radius: 50%;
+  background: var(--color-dl-yellow);
+  box-shadow: 0 3px 0 0 var(--color-dl-ink);
+}
+
+/* Появление при прокрутке (components/delta/reveal.tsx). */
+[data-reveal] {
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-reveal="wait"] {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+}
+
+@keyframes dl-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes dl-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--r, 0deg));
+  }
+}
+
+/* Конфетти: квадрат вылетает из центра по своему вектору и тает. */
+@keyframes dl-burst {
+  0% {
+    transform: translate(0, 0) rotate(0) scale(0.4);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--bx), var(--by)) rotate(var(--br)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Полоса прогресса дорастает до своего значения. */
+@keyframes dl-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes dl-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-6deg);
+  }
+  75% {
+    transform: rotate(6deg);
+  }
+}
+
+@layer utilities {
+  .dl-pop {
+    animation: dl-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .dl-float {
+    animation: dl-float 5s ease-in-out infinite;
+  }
+
+  .dl-wiggle {
+    animation: dl-wiggle 0.5s ease-in-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-pop,
+  .dl-float,
+  .dl-wiggle {
+    animation: none;
+  }
+
+  .dl-press,
+  .dl-press:hover,
+  .dl-press:active {
+    transition: none;
+    transform: none;
+  }
+}
