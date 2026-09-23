@@ -498,7 +498,7 @@ export function Footer() {
       <p className="mx-auto mt-10 w-full max-w-[1560px] px-5 text-[0.72rem] leading-relaxed text-[var(--w-muted)]/70 sm:px-8">
         Макет подготовлен студией DevUz для Golden House. Логотип, фотографии и
         тексты принадлежат Golden House; снимок планеты — мозаика NASA Blue Marble.
-        Закрытый показ, копирование и передача третьим лицам запрещены.
+        Копирование и передача третьим лицам без согласия студии запрещены.
       </p>
     </footer>
   );
