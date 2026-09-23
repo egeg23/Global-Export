@@ -42,11 +42,11 @@ export const metadata: Metadata = {
     template: "%s · MAVERA",
   },
   description:
-    "Три рабочих сайта для застройщика: строгий каталог, журнальный разворот и светлый премиум с генпланом и подбором квартиры. Со сметой по каждому.",
+    "Три рабочих сайта для застройщика: строгий каталог, журнальный разворот и светлый премиум с генпланом и подбором квартиры.",
   robots: { index: false, follow: false, nocache: true },
   icons: { icon: "/favicon.svg" },
   other: {
-    copyright: "© 2026 Maximov Tech. Закрытый показ для MAVERA; копирование запрещено.",
+    copyright: "© 2026 Maximov Tech. Макеты для MAVERA; копирование запрещено.",
   },
 };
 

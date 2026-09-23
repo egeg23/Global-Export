@@ -57,20 +57,20 @@ export type Client = {
   logo: string;
 };
 
-/** Строка сметы: работа и её стоимость в долларах. */
-export type EstimateLine = {
+/**
+ * Строка состава работ: что делается и что это даёт. Без сумм — витрина
+ * стала публичным портфолио, и цены студии на ней не показываются.
+ */
+export type ScopeLine = {
   title: string;
   detail: string;
-  price: number;
 };
 
-export type Estimate = {
-  /** Итог, который видит заказчик. Совпадает с суммой строк. */
-  total: number;
+export type Scope = {
   /** Рабочих дней до сдачи. */
   days: string;
-  lines: EstimateLine[];
-  /** Что в эту сумму не входит — чтобы вопрос не всплыл после подписания. */
+  lines: ScopeLine[];
+  /** Что в вариант не входит — чтобы вопрос не всплыл посреди работы. */
   excluded: string[];
 };
 
@@ -84,5 +84,5 @@ export type Concept = {
   summary: string;
   /** Короткие тезисы для сравнительной таблицы на витрине. */
   highlights: string[];
-  estimate: Estimate;
+  scope: Scope;
 };

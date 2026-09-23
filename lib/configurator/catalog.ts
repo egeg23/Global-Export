@@ -1,13 +1,18 @@
 /**
- * Каталог конструктора: что у проекта можно включить и сколько это стоит.
+ * Каталог конструктора: что у проекта можно включить и где это живёт.
  *
  * Конструктор один на все проекты витрины — MAVERA, ADAR, Global Export, —
- * а различаются они ровно этим описанием: пакеты, допники, страницы, где
- * допники живут. Компоненты (док, обёртка блока, хранилище набора) читают
+ * а различаются они ровно этим описанием: варианты, блоки, страницы, где
+ * блоки живут. Компоненты (док, обёртка блока, хранилище набора) читают
  * каталог из контекста и про конкретный проект ничего не знают.
  *
+ * Цен здесь нет намеренно. Витрина — публичное портфолио, а каталог уходит
+ * в браузер целиком (его получает клиентский провайдер). Прайс студии лежит
+ * только на сервере, в lib/configurator/prices.ts: по нему маршрут брифа
+ * считает сумму для менеджера, а посетитель её не видит нигде.
+ *
  * Здесь нет React и нет `window`: каталог читает и сервер — маршрут брифа
- * пересчитывает по нему цену, не веря цифрам из браузера.
+ * проверяет по нему присланный набор.
  */
 
 export type NicheTier = 1 | 2 | 3;
@@ -16,27 +21,16 @@ export type CatalogTier = {
   id: string;
   /** Подпись в доке: «Люкс», «Каталог», «Концепция A». */
   label: string;
-  priceUsd: number;
 };
 
 export type CatalogAddon = {
   id: string;
   label: string;
-  priceUsd: number;
   /** Что изменится на странице — одной строкой. */
   effect: string;
   /** Страница, где живёт блок, либо `everywhere` каталога. */
   where: string;
-  /**
-   * Подписка: цена в месяц. В разовый итог не входит — показывается
-   * отдельной строкой «+ $550/мес», чтобы не смешивать с разработкой.
-   */
-  monthly?: boolean;
-  /** Цена «от»: точную назовём после разговора. Итог тогда тоже «от». */
-  from?: boolean;
-  /** Цена по запросу: в итог не входит, тумблер только отмечает интерес. */
-  onRequest?: boolean;
-  /** Ключ взаимоисключающей группы: включил один тариф — остальные выключились. */
+  /** Ключ взаимоисключающей группы: включил один вариант — остальные выключились. */
   exclusive?: string;
 };
 
@@ -52,7 +46,7 @@ export type CatalogPage = {
   /**
    * Не страница, а группа услуг сверх сайта: интеграции, ИИ-агенты,
    * продвижение. Блока на макете нет, тумблер никуда не переводит и
-   * «было / стало» не показывает — только цена и бриф.
+   * «было / стало» не показывает — только отмечает услугу для брифа.
    */
   virtual?: boolean;
 };
@@ -67,7 +61,7 @@ export type Catalog = {
   nicheTier: NicheTier;
   tiers: CatalogTier[];
   addons: CatalogAddon[];
-  /** Что уже входит в пакет — за это тумблер денег не просит. */
+  /** Что уже входит в вариант — с этим набором страница открывается. */
   included: Record<string, string[]>;
   pages: CatalogPage[];
   /**
@@ -81,10 +75,8 @@ export type Catalog = {
   everywhereLabel?: string;
   /** Допник, который переключает `data-motion` на корне. */
   motionAddon?: string;
-  /** Плавающая кнопка мессенджера — тоже допник. */
+  /** Плавающая кнопка мессенджера — тоже блок с тумблером. */
   chat?: { id: string; text: string; site: string };
-  /** Одна строка под итогом в доке, если цены ещё ориентировочные. */
-  pricingNote?: string;
 };
 
 export function tierOf(catalog: Catalog, tier: string): CatalogTier {
@@ -108,41 +100,13 @@ export function firstSharedPage(catalog: Catalog): CatalogPage | undefined {
   return catalog.pages.find((page) => page.shared !== false);
 }
 
-/** Включённые допники, за которые платят сверх пакета. */
-function paidAddons(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): CatalogAddon[] {
+/** Включённые блоки сверх варианта — сколько добавлено к тому, что уже входит. */
+export function extrasOf(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): CatalogAddon[] {
   return catalog.addons.filter((addon) => enabled.has(addon.id) && !isIncluded(catalog, tier, addon.id));
 }
 
-/** Разовая сумма допников сверх пакета: подписки и «по запросу» не считаются. */
-export function extrasUsd(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): number {
-  return paidAddons(catalog, tier, enabled)
-    .filter((addon) => !addon.monthly && !addon.onRequest)
-    .reduce((sum, addon) => sum + addon.priceUsd, 0);
-}
-
-export function totalUsd(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): number {
-  return tierOf(catalog, tier).priceUsd + extrasUsd(catalog, tier, enabled);
-}
-
-/** Подписки в месяц — отдельной суммой рядом с разовой. */
-export function monthlyUsd(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): number {
-  return paidAddons(catalog, tier, enabled)
-    .filter((addon) => addon.monthly && !addon.onRequest)
-    .reduce((sum, addon) => sum + addon.priceUsd, 0);
-}
-
-/** Есть ли в наборе цена «от» — тогда и итог «от». */
-export function hasFromPrice(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): boolean {
-  return paidAddons(catalog, tier, enabled).some((addon) => addon.from && !addon.onRequest);
-}
-
-/** Что отмечено «по запросу»: в цену не входит, в бриф — да. */
-export function onRequestAddons(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): CatalogAddon[] {
-  return paidAddons(catalog, tier, enabled).filter((addon) => addon.onRequest);
-}
-
 /**
- * Набор после нажатия тумблера. Включение тарифа из взаимоисключающей
+ * Набор после нажатия тумблера. Включение блока из взаимоисключающей
  * группы гасит соседей: подписка на статьи бывает только одна.
  */
 export function withToggled(catalog: Catalog, enabled: ReadonlySet<string>, id: string): Set<string> {
@@ -157,4 +121,14 @@ export function withToggled(catalog: Catalog, enabled: ReadonlySet<string>, id: 
   }
   next.add(id);
   return next;
+}
+
+/** «1 блок», «3 блока», «12 блоков» — для дока и брифа. */
+export function blocks(count: number): string {
+  const tens = count % 100;
+  const ones = count % 10;
+  if (tens > 10 && tens < 20) return `${count} блоков`;
+  if (ones === 1) return `${count} блок`;
+  if (ones > 1 && ones < 5) return `${count} блока`;
+  return `${count} блоков`;
 }

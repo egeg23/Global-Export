@@ -123,7 +123,7 @@ export function shareUrl(catalog: Catalog, enabled: Iterable<string>): string {
 export type Session = {
   /** Что включили последним — его блок подъезжает, пульсирует и умеет «было / стало». */
   fresh: { id: string; at: number } | null;
-  /** Смотрим «было»: свежий допник временно считается выключенным, цена не меняется. */
+  /** Смотрим «было»: свежий допник временно считается выключенным, набор не меняется. */
   peek: boolean;
   open: boolean;
 };
