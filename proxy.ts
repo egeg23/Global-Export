@@ -89,6 +89,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Шестой проект витрины — сайт фабрики дверей Akbar Rich. Одноязычный
+  // прототип, без кода доступа: пропускается мимо языкового префикса.
+  if (pathname === "/akbar" || pathname.startsWith("/akbar/")) {
+    return noindex(NextResponse.next());
+  }
+
   // On the demo deployment the root is the showcase; on the live site it stays
   // the language redirect. One variable rather than two builds of the app.
   if (pathname === "/" && process.env.SHOWCASE_ROOT === "true") {
