@@ -8,7 +8,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const src = join(here, "kp-mavera-etap-1.html");
+const src = process.env.SRC ? join(process.cwd(), process.env.SRC) : join(here, "kp-mavera-etap-1.html");
 const out = process.env.OUT ?? join(here, "KP-MAVERA-etap-1.pdf");
 
 const { chromium } = await import("playwright").catch(async () => {
