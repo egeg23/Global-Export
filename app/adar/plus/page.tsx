@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Advantages } from "@/components/adar/base/advantages";
 import { ThemesGrid } from "@/components/adar/base/themes-grid";
 import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
@@ -14,7 +15,7 @@ import { Addon } from "@/components/configurator/context";
 import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { AdarConfigurator, Extra } from "@/components/adar/showcase/configurator";
-import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
+import { ScopePanel } from "@/components/adar/showcase/scope-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
 import { ContactSection } from "@/components/adar/ui/contact-section";
 import { SetShowcase } from "@/components/adar/ui/set-showcase";
@@ -60,6 +61,7 @@ export default function AdarPlusConcept() {
 
   return (
     <AdarConfigurator tier="plus">
+      <DevuzIntro project="adar" />
       <SkipLink />
       {showcaseChrome ? <ConceptBar current="plus" /> : null}
       <div data-concept="shop">
@@ -97,7 +99,7 @@ export default function AdarPlusConcept() {
           <ContactSection />
         </main>
         <SiteFooter />
-        {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
+        {showcaseChrome ? <ScopePanel concept={concept} /> : null}
       </div>
     </AdarConfigurator>
   );

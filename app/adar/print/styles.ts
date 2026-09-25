@@ -61,8 +61,7 @@ export const printStyles = `
   .pl-num { font-size: 8pt; letter-spacing: 0.2em; color: var(--ink-faint); }
   .pl-name { font-size: 15pt; margin: 2mm 0 1mm; }
   .pl-tag { font-size: 8.2pt; color: var(--ink-soft); min-height: 11mm; }
-  .pl-price { font-size: 22pt; line-height: 1; margin-top: 2.5mm; font-variant-numeric: tabular-nums; }
-  .pl-days { font-size: 8.4pt; color: var(--ink-faint); margin-top: 1.5mm; }
+  .pl-days { font-size: 8.4pt; color: var(--ink-faint); margin-top: 2.5mm; }
   .pl-list { list-style: none; margin: 3mm 0 0; padding: 2.5mm 0 0; border-top: 0.6pt solid var(--rule-soft);
     display: grid; gap: 1.5mm; font-size: 8.2pt; }
   .pl-list li { padding-left: 4mm; position: relative; }
@@ -89,14 +88,12 @@ export const printStyles = `
   .pl-table thead th { font-size: 7.6pt; text-transform: uppercase; letter-spacing: 0.14em;
     color: var(--ink-faint); border-bottom: 1pt solid var(--ink); font-weight: 600; }
   .pl-center { text-align: center; }
-  .pl-right { text-align: right; font-variant-numeric: tabular-nums; }
   .pl-mark { width: 52mm; border-left: 0.6pt solid var(--rule); }
-  .pl-total td, .pl-total th { border-top: 1.2pt solid var(--ink); border-bottom: none;
-    padding-top: 2.5mm; font-weight: 600; font-size: 9.6pt; }
 
   .pl-h2 { font-size: 14pt; margin-top: 7mm; }
   .pl-h2:first-of-type { margin-top: 6mm; }
   .pl-sub { font-size: 8.6pt; color: var(--ink-soft); margin-top: 2mm; max-width: 150mm; }
+  .pl-detail { display: block; margin-top: 0.8mm; font-size: 7.6pt; line-height: 1.35; color: var(--ink-soft); }
   .pl-excluded { font-size: 8.2pt; color: var(--ink-faint); margin-top: 2.5mm; }
 
   /* Подвал листа */

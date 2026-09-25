@@ -1,0 +1,3096 @@
+{
+ "categories": [
+  {
+   "id": "1",
+   "name": "Межкомнатные двери",
+   "nameUz": "Eshiklar",
+   "cover": "/akbar/c/cat-1.webp",
+   "subcategories": [
+    {
+     "id": "8",
+     "name": "Двери эконом класса",
+     "group": null,
+     "cover": "/akbar/c/sub-8.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-8-0",
+       "name": "«Лайт»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-8-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/8-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-8-1",
+       "name": "«Стандарт»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-8-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/8-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "9",
+     "name": "Эксклюзивные двери",
+     "group": null,
+     "cover": "/akbar/c/sub-9.webp",
+     "realCount": 54,
+     "items": [
+      {
+       "id": "174",
+       "name": "№ 139 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "174-0",
+         "color": "Ясень, насыщенное золото",
+         "swatch": "#d9c29a",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/174-0-t.webp"
+        },
+        {
+         "id": "174-1",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/174-1-t.webp"
+        },
+        {
+         "id": "174-2",
+         "color": "Белый с золотом",
+         "swatch": "#efe6d2",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/174-2-t.webp"
+        },
+        {
+         "id": "174-3",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/174-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "188",
+       "name": "№ 212 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "188-0",
+         "color": "Белый с золотом",
+         "swatch": "#efe6d2",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/188-0-t.webp"
+        },
+        {
+         "id": "188-1",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/188-1-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "227",
+       "name": "№ 178 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "227-0",
+         "color": "Белый с золотом",
+         "swatch": "#efe6d2",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/227-0-t.webp"
+        },
+        {
+         "id": "227-1",
+         "color": "Чёрный с золотом",
+         "swatch": "#1c1a18",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/227-1-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "229",
+       "name": "№ 180 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "229-0",
+         "color": "Ясень, насыщенное золото",
+         "swatch": "#d9c29a",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/229-0-t.webp"
+        },
+        {
+         "id": "229-1",
+         "color": "Ясень, насыщенное золото",
+         "swatch": "#d9c29a",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/229-1-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "184",
+       "name": "№ 214 Олимп",
+       "popular": true,
+       "variants": [
+        {
+         "id": "184-0",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Орех",
+         "glazing": "glass",
+         "thumb": "/akbar/m/184-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "192",
+       "name": "№ 152 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "192-0",
+         "color": "Ясень, насыщенное золото",
+         "swatch": "#d9c29a",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/192-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "193",
+       "name": "№ 153 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "193-0",
+         "color": "Белый с золотом",
+         "swatch": "#efe6d2",
+         "material": "Эмаль",
+         "glazing": null,
+         "thumb": "/akbar/m/193-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "195",
+       "name": "№ 155 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "195-0",
+         "color": "Ясень, насыщенное золото",
+         "swatch": "#d9c29a",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/195-0-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "4",
+     "name": "Двери в стиле \"Hi-Tech\"",
+     "group": null,
+     "cover": "/akbar/c/sub-4.webp",
+     "realCount": 65,
+     "items": [
+      {
+       "id": "173",
+       "name": "№ 138 Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "173-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "glass",
+         "thumb": "/akbar/m/173-0-t.webp"
+        },
+        {
+         "id": "173-1",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Ясень",
+         "glazing": "glass",
+         "thumb": "/akbar/m/173-1-t.webp"
+        },
+        {
+         "id": "173-2",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/173-2-t.webp"
+        },
+        {
+         "id": "173-3",
+         "color": "Серый",
+         "swatch": "#8d8f92",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/173-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "210",
+       "name": "№ 166 Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "210-0",
+         "color": "Зелёный с белым",
+         "swatch": "#6f8f78",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/210-0-t.webp"
+        },
+        {
+         "id": "210-1",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/210-1-t.webp"
+        },
+        {
+         "id": "210-2",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/210-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "101",
+       "name": "№ 237 Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "101-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/101-0-t.webp"
+        },
+        {
+         "id": "101-1",
+         "color": "Синий",
+         "swatch": "#27406e",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/101-1-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "104",
+       "name": "№ 234 Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "104-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/104-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "141",
+       "name": "№ 230 Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "141-0",
+         "color": "Тёмно-синий с золотом",
+         "swatch": "#1e2b4a",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/141-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "164",
+       "name": "№ 216 Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "164-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/164-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "180",
+       "name": "№ 145 Солид",
+       "popular": true,
+       "variants": [
+        {
+         "id": "180-0",
+         "color": "Бело-серый",
+         "swatch": "#d7d6d2",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/180-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "215",
+       "name": "№ 204 Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "215-0",
+         "color": "Белый с золотом",
+         "swatch": "#efe6d2",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/215-0-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "5",
+     "name": "Конус фреза",
+     "group": null,
+     "cover": "/akbar/c/sub-5.webp",
+     "realCount": 3,
+     "items": [
+      {
+       "id": "183",
+       "name": "№ 148 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "183-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/183-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "232",
+       "name": "№ 195 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "232-0",
+         "color": "Чёрный",
+         "swatch": "#1c1c1c",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/232-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "148",
+       "name": "№ 223 Конус Т-8",
+       "popular": false,
+       "variants": [
+        {
+         "id": "148-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/148-0-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2",
+     "name": "Мембранные (Филенчатые) двери",
+     "group": null,
+     "cover": "/akbar/c/sub-2.webp",
+     "realCount": 4,
+     "items": [
+      {
+       "id": "38",
+       "name": "№ 31 Император",
+       "popular": false,
+       "variants": [
+        {
+         "id": "38-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/38-0-t.webp"
+        },
+        {
+         "id": "38-1",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/38-1-t.webp"
+        },
+        {
+         "id": "38-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/38-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "84",
+       "name": "№ 76 Барокко",
+       "popular": false,
+       "variants": [
+        {
+         "id": "84-0",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/84-0-t.webp"
+        },
+        {
+         "id": "84-1",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/84-1-t.webp"
+        },
+        {
+         "id": "84-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/84-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "140",
+       "name": "№ 120 Классика",
+       "popular": false,
+       "variants": [
+        {
+         "id": "140-0",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/140-0-t.webp"
+        },
+        {
+         "id": "140-1",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/140-1-t.webp"
+        },
+        {
+         "id": "140-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/140-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "207",
+       "name": "№ 164 Классика",
+       "popular": false,
+       "variants": [
+        {
+         "id": "207-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/207-0-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "3",
+     "name": "Фрезерованные двери",
+     "group": null,
+     "cover": "/akbar/c/sub-3.webp",
+     "realCount": 46,
+     "items": [
+      {
+       "id": "225",
+       "name": "№ 176 Модерн",
+       "popular": true,
+       "variants": [
+        {
+         "id": "225-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/225-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "85",
+       "name": "№ 77 Водопад",
+       "popular": false,
+       "variants": [
+        {
+         "id": "85-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/85-0-t.webp"
+        },
+        {
+         "id": "85-1",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/85-1-t.webp"
+        },
+        {
+         "id": "85-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "glass",
+         "thumb": "/akbar/m/85-2-t.webp"
+        },
+        {
+         "id": "85-3",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/85-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "75",
+       "name": "№ 67 Наполеон",
+       "popular": false,
+       "variants": [
+        {
+         "id": "75-0",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/75-0-t.webp"
+        },
+        {
+         "id": "75-1",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/75-1-t.webp"
+        },
+        {
+         "id": "75-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/75-2-t.webp"
+        },
+        {
+         "id": "75-3",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "glass",
+         "thumb": "/akbar/m/75-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "126",
+       "name": "№ 106 Классика",
+       "popular": false,
+       "variants": [
+        {
+         "id": "126-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/126-0-t.webp"
+        },
+        {
+         "id": "126-1",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/126-1-t.webp"
+        },
+        {
+         "id": "126-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/126-2-t.webp"
+        },
+        {
+         "id": "126-3",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/126-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "19",
+       "name": "№ 9 Классика",
+       "popular": false,
+       "variants": [
+        {
+         "id": "19-0",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/19-0-t.webp"
+        },
+        {
+         "id": "19-1",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/19-1-t.webp"
+        },
+        {
+         "id": "19-2",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/19-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "20",
+       "name": "№ 10 «Рюмка»",
+       "popular": false,
+       "variants": [
+        {
+         "id": "20-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/20-0-t.webp"
+        },
+        {
+         "id": "20-1",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "glass",
+         "thumb": "/akbar/m/20-1-t.webp"
+        },
+        {
+         "id": "20-2",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Американский орех",
+         "glazing": "glass",
+         "thumb": "/akbar/m/20-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "23",
+       "name": "№ 13 Доллар",
+       "popular": false,
+       "variants": [
+        {
+         "id": "23-0",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "glass",
+         "thumb": "/akbar/m/23-0-t.webp"
+        },
+        {
+         "id": "23-1",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/23-1-t.webp"
+        },
+        {
+         "id": "23-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "glass",
+         "thumb": "/akbar/m/23-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "24",
+       "name": "№ 14 Олимпия",
+       "popular": false,
+       "variants": [
+        {
+         "id": "24-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "glass",
+         "thumb": "/akbar/m/24-0-t.webp"
+        },
+        {
+         "id": "24-1",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "glass",
+         "thumb": "/akbar/m/24-1-t.webp"
+        },
+        {
+         "id": "24-2",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/24-2-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "1",
+     "name": "Обкладные",
+     "group": null,
+     "cover": "/akbar/c/sub-1.webp",
+     "realCount": 78,
+     "items": [
+      {
+       "id": "9",
+       "name": "№ 138 Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "9-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "glass",
+         "thumb": "/akbar/m/9-0-t.webp"
+        },
+        {
+         "id": "9-1",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Ясень",
+         "glazing": "glass",
+         "thumb": "/akbar/m/9-1-t.webp"
+        },
+        {
+         "id": "9-2",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/9-2-t.webp"
+        },
+        {
+         "id": "9-3",
+         "color": "Серый",
+         "swatch": "#8d8f92",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/9-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "52",
+       "name": "№ 45 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "52-0",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/52-0-t.webp"
+        },
+        {
+         "id": "52-1",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/52-1-t.webp"
+        },
+        {
+         "id": "52-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/52-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "92",
+       "name": "№ 83 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "92-0",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "Ясень",
+         "glazing": "solid",
+         "thumb": "/akbar/m/92-0-t.webp"
+        },
+        {
+         "id": "92-1",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/92-1-t.webp"
+        },
+        {
+         "id": "92-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/92-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "145",
+       "name": "№ 226 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "145-0",
+         "color": "Белый с золотом",
+         "swatch": "#efe6d2",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/145-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "146",
+       "name": "№ 225 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "146-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/146-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "147",
+       "name": "№ 224 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "147-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/147-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "159",
+       "name": "№ 221 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "159-0",
+         "color": "Жёлтый",
+         "swatch": "#e8c77a",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/159-0-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "160",
+       "name": "№ 220 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "160-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "solid",
+         "thumb": "/akbar/m/160-0-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "7",
+     "name": "Трехметровые Двери",
+     "group": null,
+     "cover": "/akbar/c/sub-7.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-7-0",
+       "name": "«Монолит 3000»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-7-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/7-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-7-1",
+       "name": "«Колонна 3000»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-7-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/7-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "6",
+     "name": "Скрытые двери",
+     "group": null,
+     "cover": "/akbar/c/sub-6.webp",
+     "realCount": 2,
+     "items": [
+      {
+       "id": "283",
+       "name": "№ 273 «Invisible»",
+       "popular": false,
+       "variants": [
+        {
+         "id": "283-0",
+         "color": "Ясень с золотом",
+         "swatch": "#e3d4b4",
+         "material": "—",
+         "glazing": "solid",
+         "thumb": "/akbar/m/283-0-t.webp"
+        },
+        {
+         "id": "283-1",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "—",
+         "glazing": "solid",
+         "thumb": "/akbar/m/283-1-t.webp"
+        },
+        {
+         "id": "283-2",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "—",
+         "glazing": "solid",
+         "thumb": "/akbar/m/283-2-t.webp"
+        },
+        {
+         "id": "283-3",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "—",
+         "glazing": "solid",
+         "thumb": "/akbar/m/283-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "89",
+       "name": "Корень",
+       "popular": false,
+       "variants": [
+        {
+         "id": "89-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/89-0-t.webp"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "2",
+   "name": "Окна",
+   "nameUz": "Oyna",
+   "cover": "/akbar/c/cat-2.webp",
+   "subcategories": [
+    {
+     "id": "10",
+     "name": "Эксклюзивные окна",
+     "group": null,
+     "cover": "/akbar/c/sub-10.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-10-0",
+       "name": "«Версаль»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-10-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/10-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-10-1",
+       "name": "«Корона»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-10-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/10-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "11",
+     "name": "Фрезерование Окна",
+     "group": null,
+     "cover": "/akbar/c/sub-11.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-11-0",
+       "name": "«Решётка»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-11-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/11-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-11-1",
+       "name": "«Арка»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-11-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/11-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "12",
+     "name": "Обкладные Окна",
+     "group": null,
+     "cover": "/akbar/c/sub-12.webp",
+     "realCount": 10,
+     "items": [
+      {
+       "id": "247",
+       "name": "№ 1 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "247-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/247-0-t.webp"
+        },
+        {
+         "id": "247-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/247-1-t.webp"
+        },
+        {
+         "id": "247-2",
+         "color": "Ясень бежевый",
+         "swatch": "#dccab0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/247-2-t.webp"
+        },
+        {
+         "id": "247-3",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/247-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "256",
+       "name": "№ 13 Классика",
+       "popular": true,
+       "variants": [
+        {
+         "id": "256-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/256-0-t.webp"
+        },
+        {
+         "id": "256-1",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/256-1-t.webp"
+        },
+        {
+         "id": "256-2",
+         "color": "Ясень бежевый",
+         "swatch": "#dccab0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/256-2-t.webp"
+        },
+        {
+         "id": "256-3",
+         "color": "Ясень бежевый с золотом",
+         "swatch": "#d6c19e",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/256-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "249",
+       "name": "№ 4 Классика",
+       "popular": false,
+       "variants": [
+        {
+         "id": "249-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/249-0-t.webp"
+        },
+        {
+         "id": "249-1",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/249-1-t.webp"
+        },
+        {
+         "id": "249-2",
+         "color": "Ясень бежевый",
+         "swatch": "#dccab0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/249-2-t.webp"
+        },
+        {
+         "id": "249-3",
+         "color": "Ясень бежевый с золотом",
+         "swatch": "#d6c19e",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/249-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "250",
+       "name": "№ 5 Классика",
+       "popular": false,
+       "variants": [
+        {
+         "id": "250-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/250-0-t.webp"
+        },
+        {
+         "id": "250-1",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/250-1-t.webp"
+        },
+        {
+         "id": "250-2",
+         "color": "Ясень бежевый",
+         "swatch": "#dccab0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/250-2-t.webp"
+        },
+        {
+         "id": "250-3",
+         "color": "Ясень бежевый с золотом",
+         "swatch": "#d6c19e",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/250-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "251",
+       "name": "№ 6 Модерн",
+       "popular": false,
+       "variants": [
+        {
+         "id": "251-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/251-0-t.webp"
+        },
+        {
+         "id": "251-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/251-1-t.webp"
+        },
+        {
+         "id": "251-2",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/251-2-t.webp"
+        },
+        {
+         "id": "251-3",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/251-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "252",
+       "name": "№ 7 Модерн",
+       "popular": false,
+       "variants": [
+        {
+         "id": "252-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/252-0-t.webp"
+        },
+        {
+         "id": "252-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/252-1-t.webp"
+        },
+        {
+         "id": "252-2",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/252-2-t.webp"
+        },
+        {
+         "id": "252-3",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/252-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "253",
+       "name": "№ 8 Классика",
+       "popular": false,
+       "variants": [
+        {
+         "id": "253-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/253-0-t.webp"
+        },
+        {
+         "id": "253-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/253-1-t.webp"
+        },
+        {
+         "id": "253-2",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/253-2-t.webp"
+        },
+        {
+         "id": "253-3",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/253-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "254",
+       "name": "№ 9 Эксклюзивные",
+       "popular": false,
+       "variants": [
+        {
+         "id": "254-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/254-0-t.webp"
+        },
+        {
+         "id": "254-1",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/254-1-t.webp"
+        },
+        {
+         "id": "254-2",
+         "color": "Ясень бежевый",
+         "swatch": "#dccab0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/254-2-t.webp"
+        },
+        {
+         "id": "254-3",
+         "color": "Ясень бежевый с золотом",
+         "swatch": "#d6c19e",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/254-3-t.webp"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "3",
+   "name": "Плинтусы",
+   "nameUz": "Plintuslar",
+   "cover": "/akbar/c/cat-3.webp",
+   "subcategories": [
+    {
+     "id": "13",
+     "name": "Эксклюзивный плинтус",
+     "group": null,
+     "cover": "/akbar/c/sub-13.webp",
+     "realCount": 4,
+     "items": [
+      {
+       "id": "259",
+       "name": "№ 1 Эксклюзивные",
+       "popular": true,
+       "variants": [
+        {
+         "id": "259-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/259-0-t.webp"
+        },
+        {
+         "id": "259-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/259-1-t.webp"
+        },
+        {
+         "id": "259-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/259-2-t.webp"
+        },
+        {
+         "id": "259-3",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/259-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "266",
+       "name": "№ 10 Эксклюзивные",
+       "popular": false,
+       "variants": [
+        {
+         "id": "266-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/266-0-t.webp"
+        },
+        {
+         "id": "266-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/266-1-t.webp"
+        },
+        {
+         "id": "266-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/266-2-t.webp"
+        },
+        {
+         "id": "266-3",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/266-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "267",
+       "name": "№ 11 Эксклюзивные",
+       "popular": false,
+       "variants": [
+        {
+         "id": "267-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/267-0-t.webp"
+        },
+        {
+         "id": "267-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/267-1-t.webp"
+        },
+        {
+         "id": "267-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/267-2-t.webp"
+        },
+        {
+         "id": "267-3",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/267-3-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "261",
+       "name": "№ 5 Эксклюзивные",
+       "popular": false,
+       "variants": [
+        {
+         "id": "261-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/261-0-t.webp"
+        },
+        {
+         "id": "261-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/261-1-t.webp"
+        },
+        {
+         "id": "261-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/261-2-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "14",
+     "name": "Хайтек плинтус",
+     "group": null,
+     "cover": "/akbar/c/sub-14.webp",
+     "realCount": 1,
+     "items": [
+      {
+       "id": "265",
+       "name": "№ Hi-tech",
+       "popular": true,
+       "variants": [
+        {
+         "id": "265-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/265-0-t.webp"
+        },
+        {
+         "id": "265-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/265-1-t.webp"
+        },
+        {
+         "id": "265-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/265-2-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "15",
+     "name": "Премиум плинтус",
+     "group": null,
+     "cover": "/akbar/c/sub-15.webp",
+     "realCount": 5,
+     "items": [
+      {
+       "id": "262",
+       "name": "№ 6 Модерн",
+       "popular": true,
+       "variants": [
+        {
+         "id": "262-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/262-0-t.webp"
+        },
+        {
+         "id": "262-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/262-1-t.webp"
+        },
+        {
+         "id": "262-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/262-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "263",
+       "name": "№ 7 Модерн",
+       "popular": true,
+       "variants": [
+        {
+         "id": "263-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/263-0-t.webp"
+        },
+        {
+         "id": "263-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/263-1-t.webp"
+        },
+        {
+         "id": "263-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/263-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "258",
+       "name": "№ 2 Модерн",
+       "popular": false,
+       "variants": [
+        {
+         "id": "258-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/258-0-t.webp"
+        },
+        {
+         "id": "258-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/258-1-t.webp"
+        },
+        {
+         "id": "258-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/258-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "260",
+       "name": "№ 4 Модерн",
+       "popular": false,
+       "variants": [
+        {
+         "id": "260-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/260-0-t.webp"
+        },
+        {
+         "id": "260-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/260-1-t.webp"
+        },
+        {
+         "id": "260-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/260-2-t.webp"
+        }
+       ]
+      },
+      {
+       "id": "264",
+       "name": "№ 8 Модерн",
+       "popular": false,
+       "variants": [
+        {
+         "id": "264-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": null,
+         "thumb": "/akbar/m/264-0-t.webp"
+        },
+        {
+         "id": "264-1",
+         "color": "Ясень белый",
+         "swatch": "#efeae0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/264-1-t.webp"
+        },
+        {
+         "id": "264-2",
+         "color": "Ясень белый с золотом",
+         "swatch": "#ece3d0",
+         "material": "Ясень",
+         "glazing": null,
+         "thumb": "/akbar/m/264-2-t.webp"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "4",
+   "name": "Обрешетки из МДФ",
+   "nameUz": "MDF dan Panjaralar",
+   "cover": "/akbar/c/cat-4.webp",
+   "subcategories": [
+    {
+     "id": "16",
+     "name": "Батарейная обрешетка",
+     "group": null,
+     "cover": "/akbar/c/sub-16.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-16-0",
+       "name": "«Ромб»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-16-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/16-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-16-1",
+       "name": "«Классика»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-16-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/16-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "17",
+     "name": "Потолочная обрешетка",
+     "group": null,
+     "cover": "/akbar/c/sub-17.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-17-0",
+       "name": "«Кессон»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-17-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/17-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-17-1",
+       "name": "«Соты»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-17-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/17-1.webp"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "5",
+   "name": "Обшивочные изделия",
+   "nameUz": "Zamonaviy devor qoplamalari",
+   "cover": "/akbar/c/cat-5.webp",
+   "subcategories": [
+    {
+     "id": "26",
+     "name": "Эксклюзивные Стеновые Панели",
+     "group": "Стеновые Панели",
+     "cover": "/akbar/c/sub-26.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-26-0",
+       "name": "«Эксклюзив 01»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-26-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/26-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-26-1",
+       "name": "«Эксклюзив 02»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-26-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/26-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "29",
+     "name": "Эксклюзивные Проёмы",
+     "group": "Проемы",
+     "cover": "/akbar/c/sub-29.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-29-0",
+       "name": "«Портал»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-29-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/29-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-29-1",
+       "name": "«Арка-проём»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-29-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/29-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "30",
+     "name": "Колонны",
+     "group": "Колонны",
+     "cover": "/akbar/c/sub-30.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-30-0",
+       "name": "«Дорика»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-30-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/30-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-30-1",
+       "name": "«Ионика»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-30-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/30-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "27",
+     "name": "Конус Фреза",
+     "group": "Стеновые Панели",
+     "cover": "/akbar/c/sub-27.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-27-0",
+       "name": "«Конус 01»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-27-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/27-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-27-1",
+       "name": "«Конус 02»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-27-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/27-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "23",
+     "name": "Фрезерованные Стеновые Панели",
+     "group": "Стеновые Панели",
+     "cover": "/akbar/c/sub-23.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-23-0",
+       "name": "«Волна»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-23-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/23-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-23-1",
+       "name": "«Шеврон»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-23-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/23-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "25",
+     "name": "Мембранные (Филенчатые) Панели",
+     "group": "Стеновые Панели",
+     "cover": "/akbar/c/sub-25.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-25-0",
+       "name": "«Филёнка Люкс»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-25-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/25-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-25-1",
+       "name": "«Модерн»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-25-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/25-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "24",
+     "name": "Обкладные Обшивки",
+     "group": "Стеновые Панели",
+     "cover": "/akbar/c/sub-24.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-24-0",
+       "name": "«Рамка»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-24-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/24-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-24-1",
+       "name": "«Бордюр»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-24-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/24-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "28",
+     "name": "Премиум",
+     "group": "Проемы",
+     "cover": "/akbar/c/sub-28.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-28-0",
+       "name": "«Премиум 01»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-28-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/28-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-28-1",
+       "name": "«Премиум 02»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-28-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/28-1.webp"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "6",
+   "name": "Мебельные створки",
+   "nameUz": "Mebel eshiklari",
+   "cover": "/akbar/c/cat-6.webp",
+   "subcategories": [
+    {
+     "id": "21",
+     "name": "Мембранные (Филенчатые) Створки",
+     "group": null,
+     "cover": "/akbar/c/sub-21.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-21-0",
+       "name": "«Филёнка»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-21-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/21-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-21-1",
+       "name": "«Прованс»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-21-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/21-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "22",
+     "name": "Конус",
+     "group": null,
+     "cover": "/akbar/c/sub-22.webp",
+     "realCount": 0,
+     "items": [
+      {
+       "id": "demo-22-0",
+       "name": "«Конус 01»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-22-0-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/22-0.webp"
+        }
+       ]
+      },
+      {
+       "id": "demo-22-1",
+       "name": "«Конус 02»",
+       "demo": true,
+       "variants": [
+        {
+         "id": "demo-22-1-0",
+         "color": "По вашему образцу",
+         "swatch": "#c9b28a",
+         "material": "МДФ",
+         "glazing": null,
+         "thumb": "/akbar/d/22-1.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "19",
+     "name": "Обкладные",
+     "group": null,
+     "cover": "/akbar/c/sub-19.webp",
+     "realCount": 1,
+     "items": [
+      {
+       "id": "144",
+       "name": "№ 227 Классика",
+       "popular": false,
+       "variants": [
+        {
+         "id": "144-0",
+         "color": "Белый",
+         "swatch": "#f4f1ea",
+         "material": "Эмаль",
+         "glazing": "glass",
+         "thumb": "/akbar/m/144-0-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "18",
+     "name": "Фрезерованные",
+     "group": null,
+     "cover": "/akbar/c/sub-18.webp",
+     "realCount": 1,
+     "items": [
+      {
+       "id": "280",
+       "name": "№ 268 «Неоклассика»",
+       "popular": false,
+       "variants": [
+        {
+         "id": "280-0",
+         "color": "Чёрный с золотом",
+         "swatch": "#1c1a18",
+         "material": "—",
+         "glazing": "solid",
+         "thumb": "/akbar/m/280-0-t.webp"
+        },
+        {
+         "id": "280-1",
+         "color": "Белый с золотом",
+         "swatch": "#efe6d2",
+         "material": "—",
+         "glazing": "solid",
+         "thumb": "/akbar/m/280-1-t.webp"
+        },
+        {
+         "id": "280-2",
+         "color": "Орех с золотом",
+         "swatch": "#7a4a2a",
+         "material": "—",
+         "glazing": "solid",
+         "thumb": "/akbar/m/280-2-t.webp"
+        },
+        {
+         "id": "280-3",
+         "color": "Ясень, лёгкое золото",
+         "swatch": "#e7dcc6",
+         "material": "—",
+         "glazing": "solid",
+         "thumb": "/akbar/m/280-3-t.webp"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "20",
+     "name": "Хайтек",
+     "group": null,
+     "cover": "/akbar/c/sub-20.webp",
+     "realCount": 1,
+     "items": [
+      {
+       "id": "89",
+       "name": "Корень",
+       "popular": false,
+       "variants": [
+        {
+         "id": "89-0",
+         "color": "Орех",
+         "swatch": "#6b3f26",
+         "material": "Американский орех",
+         "glazing": "solid",
+         "thumb": "/akbar/m/89-0-t.webp"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "configurator": [
+  {
+   "id": "52",
+   "name": "№ 45 Классика",
+   "sub": "1",
+   "description": "Еще одна дверь в классическом стиле для любителей классики.",
+   "variants": [
+    {
+     "id": "52-0",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/52-0-t.webp",
+     "image": "/akbar/m/52-0.webp"
+    },
+    {
+     "id": "52-1",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/52-1-t.webp",
+     "image": "/akbar/m/52-1.webp"
+    },
+    {
+     "id": "52-2",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/52-2-t.webp",
+     "image": "/akbar/m/52-2.webp"
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "name": "№ 1 «Полумесяц»",
+   "sub": "1",
+   "description": "Эти двери в модели «полумесяц», относящиеся к стилю модерн, обязательно придутся по вкусу представителям утонченного вкуса.",
+   "variants": [
+    {
+     "id": "11-0",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "glass",
+     "thumb": "/akbar/m/11-0-t.webp",
+     "image": "/akbar/m/11-0.webp"
+    },
+    {
+     "id": "11-1",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/11-1-t.webp",
+     "image": "/akbar/m/11-1.webp"
+    },
+    {
+     "id": "11-2",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/11-2-t.webp",
+     "image": "/akbar/m/11-2.webp"
+    },
+    {
+     "id": "11-3",
+     "color": "Ясень",
+     "swatch": "#e6ddcb",
+     "material": "Ясень",
+     "glazing": "glass",
+     "thumb": "/akbar/m/11-3-t.webp",
+     "image": "/akbar/m/11-3.webp"
+    },
+    {
+     "id": "11-4",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "glass",
+     "thumb": "/akbar/m/11-4-t.webp",
+     "image": "/akbar/m/11-4.webp"
+    },
+    {
+     "id": "11-5",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/11-5-t.webp",
+     "image": "/akbar/m/11-5.webp"
+    },
+    {
+     "id": "11-6",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "glass",
+     "thumb": "/akbar/m/11-6-t.webp",
+     "image": "/akbar/m/11-6.webp"
+    },
+    {
+     "id": "11-7",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/11-7-t.webp",
+     "image": "/akbar/m/11-7.webp"
+    }
+   ]
+  },
+  {
+   "id": "14",
+   "name": "№ 3 Модерн",
+   "sub": "1",
+   "description": "Модель «Модерн» , относящаяся к стилю модерн, – лучший выбор для стройных людей.",
+   "variants": [
+    {
+     "id": "14-0",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "glass",
+     "thumb": "/akbar/m/14-0-t.webp",
+     "image": "/akbar/m/14-0.webp"
+    },
+    {
+     "id": "14-1",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "glass",
+     "thumb": "/akbar/m/14-1-t.webp",
+     "image": "/akbar/m/14-1.webp"
+    },
+    {
+     "id": "14-2",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "glass",
+     "thumb": "/akbar/m/14-2-t.webp",
+     "image": "/akbar/m/14-2.webp"
+    },
+    {
+     "id": "14-3",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": null,
+     "thumb": "/akbar/m/14-3-t.webp",
+     "image": "/akbar/m/14-3.webp"
+    },
+    {
+     "id": "14-4",
+     "color": "Орех с золотом",
+     "swatch": "#7a4a2a",
+     "material": "Американский орех",
+     "glazing": null,
+     "thumb": "/akbar/m/14-4-t.webp",
+     "image": "/akbar/m/14-4.webp"
+    },
+    {
+     "id": "14-5",
+     "color": "Ясень бежевый",
+     "swatch": "#dccab0",
+     "material": "Ясень",
+     "glazing": null,
+     "thumb": "/akbar/m/14-5-t.webp",
+     "image": "/akbar/m/14-5.webp"
+    },
+    {
+     "id": "14-6",
+     "color": "Ясень бежевый с золотом",
+     "swatch": "#d6c19e",
+     "material": "Ясень",
+     "glazing": null,
+     "thumb": "/akbar/m/14-6-t.webp",
+     "image": "/akbar/m/14-6.webp"
+    },
+    {
+     "id": "14-7",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": null,
+     "thumb": "/akbar/m/14-7-t.webp",
+     "image": "/akbar/m/14-7.webp"
+    }
+   ]
+  },
+  {
+   "id": "130",
+   "name": "№ 110 Классика",
+   "sub": "9",
+   "description": "Эта дверь, выполненная в эксклюзивном стиле, привнесет в ваш дом особую красоту.",
+   "variants": [
+    {
+     "id": "130-0",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/130-0-t.webp",
+     "image": "/akbar/m/130-0.webp"
+    },
+    {
+     "id": "130-1",
+     "color": "Белый с золотом",
+     "swatch": "#efe6d2",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/130-1-t.webp",
+     "image": "/akbar/m/130-1.webp"
+    },
+    {
+     "id": "130-2",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/130-2-t.webp",
+     "image": "/akbar/m/130-2.webp"
+    },
+    {
+     "id": "130-3",
+     "color": "Ясень, насыщенное золото",
+     "swatch": "#d9c29a",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/130-3-t.webp",
+     "image": "/akbar/m/130-3.webp"
+    },
+    {
+     "id": "130-4",
+     "color": "Орех-корень с золотом",
+     "swatch": "#83502c",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/130-4-t.webp",
+     "image": "/akbar/m/130-4.webp"
+    },
+    {
+     "id": "130-5",
+     "color": "Орех с золотом",
+     "swatch": "#7a4a2a",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/130-5-t.webp",
+     "image": "/akbar/m/130-5.webp"
+    },
+    {
+     "id": "130-6",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/130-6-t.webp",
+     "image": "/akbar/m/130-6.webp"
+    }
+   ]
+  },
+  {
+   "id": "86",
+   "name": "№ 78 Грация",
+   "sub": "1",
+   "description": "Нозик дидли мижозларимизга \"Грация\" моделируя современные услуги тайёрланган эшикларини тавсия кыламиз.",
+   "variants": [
+    {
+     "id": "86-0",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "glass",
+     "thumb": "/akbar/m/86-0-t.webp",
+     "image": "/akbar/m/86-0.webp"
+    },
+    {
+     "id": "86-1",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/86-1-t.webp",
+     "image": "/akbar/m/86-1.webp"
+    },
+    {
+     "id": "86-2",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/86-2-t.webp",
+     "image": "/akbar/m/86-2.webp"
+    },
+    {
+     "id": "86-3",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "glass",
+     "thumb": "/akbar/m/86-3-t.webp",
+     "image": "/akbar/m/86-3.webp"
+    },
+    {
+     "id": "86-4",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/86-4-t.webp",
+     "image": "/akbar/m/86-4.webp"
+    },
+    {
+     "id": "86-5",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "glass",
+     "thumb": "/akbar/m/86-5-t.webp",
+     "image": "/akbar/m/86-5.webp"
+    }
+   ]
+  },
+  {
+   "id": "88",
+   "name": "№ 80 Маркиз",
+   "sub": "9",
+   "description": "Надеемся, что нашим ценителям роскоши понравится эта дверь в модели «Маркиз», выполненная в эксклюзивном стиле.",
+   "variants": [
+    {
+     "id": "88-0",
+     "color": "Ясень, насыщенное золото",
+     "swatch": "#d9c29a",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/88-0-t.webp",
+     "image": "/akbar/m/88-0.webp"
+    },
+    {
+     "id": "88-1",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/88-1-t.webp",
+     "image": "/akbar/m/88-1.webp"
+    },
+    {
+     "id": "88-2",
+     "color": "Орех с золотом",
+     "swatch": "#7a4a2a",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/88-2-t.webp",
+     "image": "/akbar/m/88-2.webp"
+    },
+    {
+     "id": "88-3",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/88-3-t.webp",
+     "image": "/akbar/m/88-3.webp"
+    },
+    {
+     "id": "88-4",
+     "color": "Белый с золотом",
+     "swatch": "#efe6d2",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/88-4-t.webp",
+     "image": "/akbar/m/88-4.webp"
+    },
+    {
+     "id": "88-5",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/88-5-t.webp",
+     "image": "/akbar/m/88-5.webp"
+    }
+   ]
+  },
+  {
+   "id": "176",
+   "name": "№ 141 «Паутина»",
+   "sub": "4",
+   "description": "Эти двери нашей модели \"Паутина\" - прекрасный образец стиля Hi-tech.",
+   "variants": [
+    {
+     "id": "176-0",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/176-0-t.webp",
+     "image": "/akbar/m/176-0.webp"
+    },
+    {
+     "id": "176-1",
+     "color": "Бело-серый",
+     "swatch": "#d7d6d2",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/176-1-t.webp",
+     "image": "/akbar/m/176-1.webp"
+    },
+    {
+     "id": "176-2",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/176-2-t.webp",
+     "image": "/akbar/m/176-2.webp"
+    },
+    {
+     "id": "176-3",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/176-3-t.webp",
+     "image": "/akbar/m/176-3.webp"
+    },
+    {
+     "id": "176-4",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/176-4-t.webp",
+     "image": "/akbar/m/176-4.webp"
+    },
+    {
+     "id": "176-5",
+     "color": "Орех с золотом",
+     "swatch": "#7a4a2a",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/176-5-t.webp",
+     "image": "/akbar/m/176-5.webp"
+    }
+   ]
+  },
+  {
+   "id": "85",
+   "name": "№ 77 Водопад",
+   "sub": "3",
+   "description": "Эта дверь-водопад выполнена в современном стиле и придаст вашей комнате очень элегантный вид.",
+   "variants": [
+    {
+     "id": "85-0",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/85-0-t.webp",
+     "image": "/akbar/m/85-0.webp"
+    },
+    {
+     "id": "85-1",
+     "color": "Ясень, лёгкое золото",
+     "swatch": "#e7dcc6",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/85-1-t.webp",
+     "image": "/akbar/m/85-1.webp"
+    },
+    {
+     "id": "85-2",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "glass",
+     "thumb": "/akbar/m/85-2-t.webp",
+     "image": "/akbar/m/85-2.webp"
+    },
+    {
+     "id": "85-3",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/85-3-t.webp",
+     "image": "/akbar/m/85-3.webp"
+    },
+    {
+     "id": "85-4",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "glass",
+     "thumb": "/akbar/m/85-4-t.webp",
+     "image": "/akbar/m/85-4.webp"
+    }
+   ]
+  },
+  {
+   "id": "174",
+   "name": "№ 139 Классика",
+   "sub": "9",
+   "description": "Эти двери, выполненные в эксклюзивном стиле, выделяются на фоне других дверей, подстраиваясь под любой дизайн помещения.",
+   "variants": [
+    {
+     "id": "174-0",
+     "color": "Ясень, насыщенное золото",
+     "swatch": "#d9c29a",
+     "material": "Ясень",
+     "glazing": "solid",
+     "thumb": "/akbar/m/174-0-t.webp",
+     "image": "/akbar/m/174-0.webp"
+    },
+    {
+     "id": "174-1",
+     "color": "Орех с золотом",
+     "swatch": "#7a4a2a",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/174-1-t.webp",
+     "image": "/akbar/m/174-1.webp"
+    },
+    {
+     "id": "174-2",
+     "color": "Белый с золотом",
+     "swatch": "#efe6d2",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/174-2-t.webp",
+     "image": "/akbar/m/174-2.webp"
+    },
+    {
+     "id": "174-3",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "solid",
+     "thumb": "/akbar/m/174-3-t.webp",
+     "image": "/akbar/m/174-3.webp"
+    },
+    {
+     "id": "174-4",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "solid",
+     "thumb": "/akbar/m/174-4-t.webp",
+     "image": "/akbar/m/174-4.webp"
+    }
+   ]
+  },
+  {
+   "id": "173",
+   "name": "№ 138 Hi-tech",
+   "sub": "4",
+   "description": "Вам нравится роскошь? Тогда эти двери в стиле хай-тек для вас",
+   "variants": [
+    {
+     "id": "173-0",
+     "color": "Орех",
+     "swatch": "#6b3f26",
+     "material": "Американский орех",
+     "glazing": "glass",
+     "thumb": "/akbar/m/173-0-t.webp",
+     "image": "/akbar/m/173-0.webp"
+    },
+    {
+     "id": "173-1",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Ясень",
+     "glazing": "glass",
+     "thumb": "/akbar/m/173-1-t.webp",
+     "image": "/akbar/m/173-1.webp"
+    },
+    {
+     "id": "173-2",
+     "color": "Белый",
+     "swatch": "#f4f1ea",
+     "material": "Эмаль",
+     "glazing": "glass",
+     "thumb": "/akbar/m/173-2-t.webp",
+     "image": "/akbar/m/173-2.webp"
+    },
+    {
+     "id": "173-3",
+     "color": "Серый",
+     "swatch": "#8d8f92",
+     "material": "Эмаль",
+     "glazing": "glass",
+     "thumb": "/akbar/m/173-3-t.webp",
+     "image": "/akbar/m/173-3.webp"
+    }
+   ]
+  }
+ ]
+}

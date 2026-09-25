@@ -16,9 +16,9 @@ import { scene } from "@/content/foodmaxx/catalog";
  * себя за характеристику.
  */
 const NOTES = [
-  { at: 0.21, title: "Натурально", note: "Без консервантов — только пастеризация", side: "left" as const, top: "22%" },
-  { at: 0.25, title: "Проверенные поставщики", note: "Сырьё приезжает с отобранных хозяйств", side: "right" as const, top: "40%" },
-  { at: 0.29, title: "Вкус из детства", note: "Рецепт не меняется от партии к партии", side: "left" as const, top: "62%" },
+  { at: 0.21, from: 0.18, to: 0.25, title: "Натурально", note: "Без консервантов — только пастеризация", side: "left" as const, top: "22%" },
+  { at: 0.25, from: 0.25, to: 0.31, title: "Проверенные поставщики", note: "Сырьё приезжает с отобранных хозяйств", side: "right" as const, top: "40%" },
+  { at: 0.29, from: 0.31, to: 0.39, title: "Вкус из детства", note: "Рецепт не меняется от партии к партии", side: "left" as const, top: "62%" },
 ];
 
 /** Цифры, которые видны, пока огурцы в воздухе. */
@@ -160,6 +160,18 @@ export function JarOpening() {
             {FACTS.map((f) => (
               <Fact key={f.label} f={f} q={q} ink={ink} reduced={!!reduced} />
             ))}
+
+            {/*
+              Телефон. Раскладывать сноски по краям кадра здесь негде, поэтому
+              они идут по очереди лентой внизу, а цифры — сеткой: то же
+              содержание, другая витрина.
+            */}
+            <div className="absolute inset-x-0 bottom-[8%] h-24 sm:hidden">
+              {NOTES.map((n) => (
+                <MobileNote key={n.title} n={n} q={q} reduced={!!reduced} />
+              ))}
+            </div>
+            <MobileFacts q={q} ink={ink} reduced={!!reduced} />
           </div>
         </Shell>
       </div>
@@ -242,5 +254,41 @@ function Fact({
       <p className="font-fm-display text-4xl font-600 leading-none tabular-nums lg:text-5xl">{f.value}</p>
       <p className="mt-2 text-xs leading-relaxed opacity-70">{f.label}</p>
     </motion.div>
+  );
+}
+
+
+function MobileNote({ n, q, reduced }: { n: (typeof NOTES)[number]; q: MotionValue<number>; reduced: boolean }) {
+  const opacity = useTransform(q, [n.from - 0.02, n.from + 0.01, n.to - 0.01, n.to], [0, 1, 1, 0]);
+  const y = useTransform(q, [n.from - 0.02, n.from + 0.02], [16, 0]);
+
+  return (
+    <motion.div
+      style={reduced ? undefined : { opacity, y }}
+      className="fm-glass fm-glass-sheen absolute inset-x-4 rounded-2xl px-5 py-4 text-center"
+    >
+      <p className="font-fm-display text-sm font-500 text-fm-amber-300">{n.title}</p>
+      <p className="mt-1.5 text-xs leading-relaxed text-fm-cream-50/75">{n.note}</p>
+    </motion.div>
+  );
+}
+
+function MobileFacts({ q, ink, reduced }: { q: MotionValue<number>; ink: MotionValue<string>; reduced: boolean }) {
+  const opacity = useTransform(q, [0.56, 0.62, 0.88, 0.94], [0, 1, 1, 0]);
+  const y = useTransform(q, [0.56, 0.64], [18, 0]);
+
+  return (
+    <motion.dl
+      style={reduced ? undefined : { opacity, y, color: ink }}
+      className="absolute inset-x-4 bottom-[7%] grid grid-cols-2 gap-x-4 gap-y-5 sm:hidden"
+    >
+      {FACTS.map((f) => (
+        <div key={f.label}>
+          <dt className="sr-only">{f.label}</dt>
+          <dd className="font-fm-display text-3xl font-600 leading-none tabular-nums">{f.value}</dd>
+          <p className="mt-1.5 text-[0.68rem] leading-snug opacity-70">{f.label}</p>
+        </div>
+      ))}
+    </motion.dl>
   );
 }

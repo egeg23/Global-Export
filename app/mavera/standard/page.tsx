@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Addon, ConfiguratorProvider } from "@/components/configurator/context";
 import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
@@ -31,6 +32,7 @@ const voice = voices.standard;
 export default function MaveraStandard() {
   return (
     <ConfiguratorProvider catalog={maveraCatalog} tier="standard" page="main" hrefs={maveraHrefs("standard", projects[0].slug)} frame="world">
+      <DevuzIntro project="mavera" />
       <VariantBar current="standard" />
 
       {/* Шапка — тонкая, липкая, без теней. */}

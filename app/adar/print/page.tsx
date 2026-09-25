@@ -32,12 +32,15 @@ function SheetFoot({ n, children }: { n: number; children?: React.ReactNode }) {
  * Лист, который менеджер увозит на встречу.
  *
  * Собирается из тех же данных, что и сами концепции, поэтому не устаревает:
- * поменялась строка в смете — поменялась и распечатка. Печатать её можно из
- * браузера в PDF, отдельного файла держать не нужно.
+ * поменялась строка в составе работ — поменялась и распечатка. Печатать её
+ * можно из браузера в PDF, отдельного файла держать не нужно.
  *
- * Три листа A4: обзор с выбором варианта, построчное сравнение и сметы.
- * На каждом оставлено место, куда заказчик пишет от руки — в сравнении для
- * этого отведена собственная колонка напротив каждой строки.
+ * Четыре листа A4: обзор с выбором варианта, построчное сравнение и состав
+ * работ. На каждом оставлено место, куда заказчик пишет от руки — в
+ * сравнении для этого отведена собственная колонка напротив каждой строки.
+ *
+ * Сумм нет: страница открыта всем, у кого есть ссылка на портфолио, и цены
+ * студии на ней не показываются. Деньги обсуждаются на встрече.
  */
 export default function AdarPrintSheet() {
   return (
@@ -54,7 +57,7 @@ export default function AdarPrintSheet() {
               ADAR<span>SINCE 2011</span>
             </div>
             <div style={{ textAlign: "right" }}>
-              <div className="pl-kicker">Коммерческое предложение</div>
+              <div className="pl-kicker">Варианты сайта</div>
               <div style={{ fontSize: "8.4pt", marginTop: "1.5mm" }}>
                 Новый сайт adar.uz · три варианта
               </div>
@@ -87,8 +90,7 @@ export default function AdarPrintSheet() {
                 <div className="pl-num">ВАРИАНТ {concept.index}</div>
                 <h2 className="pl-name pl-serif">«{concept.name}»</h2>
                 <p className="pl-tag">{concept.tagline}</p>
-                <div className="pl-price pl-serif">${concept.estimate.total}</div>
-                <div className="pl-days">{concept.estimate.days}</div>
+                <div className="pl-days">Срок — {concept.scope.days}</div>
                 <ul className="pl-list">
                   {concept.highlights.map((item) => (
                     <li key={item}>{item}</li>
@@ -151,7 +153,6 @@ export default function AdarPrintSheet() {
                 {concepts.map((concept) => (
                   <th key={concept.id} className="pl-center">
                     {concept.index} «{concept.name}»
-                    <br />${concept.estimate.total}
                   </th>
                 ))}
                 <th className="pl-mark">Отметки заказчика</th>
@@ -171,15 +172,6 @@ export default function AdarPrintSheet() {
                   <td className="pl-mark" />
                 </tr>
               ))}
-              <tr className="pl-total">
-                <th scope="row">Стоимость</th>
-                {concepts.map((concept) => (
-                  <td key={concept.id} className="pl-center">
-                    ${concept.estimate.total}
-                  </td>
-                ))}
-                <td className="pl-mark" />
-              </tr>
             </tbody>
           </table>
 
@@ -193,8 +185,8 @@ export default function AdarPrintSheet() {
           <SheetFoot n={2} />
         </section>
 
-        {/* ЛИСТЫ 3 И 4 — сметы; третий вариант уезжает на отдельный лист
-            вместе с итогом встречи: втроём они на A4 не помещаются. */}
+        {/* ЛИСТЫ 3 И 4 — состав работ; третий вариант уезжает на отдельный
+            лист вместе с итогом встречи: втроём они на A4 не помещаются. */}
         {[concepts.slice(0, 2), concepts.slice(2)].map((group, sheet) => (
           <section key={sheet} className="pl-sheet">
             <header className="pl-head">
@@ -202,36 +194,30 @@ export default function AdarPrintSheet() {
                 ADAR<span>SINCE 2011</span>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div className="pl-kicker">Сметы по вариантам</div>
+                <div className="pl-kicker">Состав работ по вариантам</div>
               </div>
             </header>
 
             {group.map((concept) => (
               <div key={concept.id}>
                 <h2 className="pl-h2 pl-serif">
-                  Вариант {concept.index} · «{concept.name}» · ${concept.estimate.total} ·{" "}
-                  {concept.estimate.days}
+                  Вариант {concept.index} · «{concept.name}» · {concept.scope.days}
                 </h2>
                 <table className="pl-table">
                   <tbody>
-                    {concept.estimate.lines.map((line) => (
+                    {concept.scope.lines.map((line) => (
                       <tr key={line.title}>
-                        <th scope="row" style={{ fontWeight: 400, width: "110mm" }}>
+                        <th scope="row" style={{ fontWeight: 400 }}>
                           {line.title}
+                          <span className="pl-detail">{line.detail}</span>
                         </th>
-                        <td className="pl-right">${line.price}</td>
                         <td className="pl-mark" />
                       </tr>
                     ))}
-                    <tr className="pl-total">
-                      <th scope="row">Итого</th>
-                      <td className="pl-right">${concept.estimate.total}</td>
-                      <td className="pl-mark" />
-                    </tr>
                   </tbody>
                 </table>
                 <p className="pl-excluded">
-                  В сумму не входит: {concept.estimate.excluded.join(", ").toLowerCase()}.
+                  В вариант не входит: {concept.scope.excluded.join(", ").toLowerCase()}.
                 </p>
               </div>
             ))}
@@ -246,7 +232,7 @@ export default function AdarPrintSheet() {
                 </div>
 
                 <div className="pl-fill" style={{ marginTop: "7mm" }}>
-                  <div>Согласованная сумма</div>
+                  <div>Выбранный вариант</div>
                   <div>Срок</div>
                   <div>Подпись</div>
                 </div>

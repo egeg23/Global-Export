@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Addon, ConfiguratorProvider } from "@/components/configurator/context";
 import { maveraCatalog, maveraHrefs } from "@/content/mavera/catalog";
 import { Live, Magnetic, Words } from "@/components/mavera/configurator/live";
@@ -32,6 +33,7 @@ const voice = voices.lux;
 export default function MaveraLux() {
   return (
     <ConfiguratorProvider catalog={maveraCatalog} tier="lux" page="main" hrefs={maveraHrefs("lux", projects[0].slug)} frame="world">
+      <DevuzIntro project="mavera" />
       <VariantBar current="lux" />
 
       {/* Шапка-масthead: тонкие линейки, засечный логотип по центру. */}

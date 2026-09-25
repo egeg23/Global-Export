@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { ProjectSwitcher } from "@/components/adar/showcase/project-switcher";
 import { tiers } from "@/components/present/mavera/theme";
 import { VariantCards } from "@/components/mavera/hub/variants";
@@ -33,12 +34,13 @@ const benchmarks = [
  *
  * Не галерея скриншотов, а четыре входа: каждый вариант — работающий сайт,
  * который листают, а не разглядывают. Здесь остаётся то, что к сайтам не
- * относится: смета, панель управления и честный список того, откуда взяты
- * фотографии.
+ * относится: состав вариантов, панель управления и честный список того,
+ * откуда взяты фотографии. Цен студии на витрине нет — это портфолио.
  */
 export default function MaveraHub() {
   return (
     <main className="pb-24 text-sand-50">
+      <DevuzIntro project="mavera" />
       <Container className="pt-10">
         <ProjectSwitcher active="mavera" tone="dark" />
       </Container>
@@ -71,7 +73,7 @@ export default function MaveraHub() {
         </Container>
       </section>
 
-      {/* Четыре входа со сметой. */}
+      {/* Четыре входа с составом работ. */}
       <Container className="pt-16 lg:pt-20">
         <VariantCards />
       </Container>
@@ -112,8 +114,8 @@ export default function MaveraHub() {
           </div>
 
           <p className="mt-8 text-sm leading-relaxed text-sand-300/60">
-            Здесь панель показана целиком. Что из неё входит в пакет, а что —
-            допник, видно в конструкторе на странице панели:{" "}
+            Здесь панель показана целиком. Что из неё входит в каждый вариант, а
+            что включается дополнительно, видно в конструкторе на странице панели:{" "}
             {tiers.map((tier, index) => (
               <span key={tier.id}>
                 {index ? " · " : null}
@@ -188,9 +190,9 @@ export default function MaveraHub() {
       {/* Кому и на каких условиях показывается. */}
       <Container className="pt-16">
         <p className="border-t border-sand-50/10 pt-8 text-xs leading-relaxed text-sand-300/45">
-          © 2026 Maximov Tech. Закрытый показ для MAVERA: макеты, тексты и код
-          защищены авторским правом, копирование и передача третьим лицам без
-          согласия студии запрещены.
+          © 2026 Maximov Tech. Макеты для MAVERA: макеты, тексты и код защищены
+          авторским правом, копирование и передача третьим лицам без согласия
+          студии запрещены.
         </p>
       </Container>
 

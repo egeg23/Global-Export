@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="FOODMAXX">
+  <rect width="32" height="32" rx="8" fill="#14110d"/>
+  <rect x="3.5" y="3.5" width="25" height="25" rx="6" fill="none" stroke="#e8912d" stroke-width="1.6"/>
+  <path d="M10 10h5.4v2.4h-3v2.2h2.7v2.4h-2.7V22H10zM17.6 10h2.6l1.5 3.1 1.5-3.1H26l-2.9 5.7L26 22h-2.7l-1.6-3.4L20.1 22h-2.6l2.9-6.2z" fill="#e8912d"/>
+</svg>

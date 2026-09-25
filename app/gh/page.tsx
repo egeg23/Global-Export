@@ -1,3 +1,4 @@
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Hero } from "@/components/gh/hero";
 import { Intro } from "@/components/gh/intro";
 import {
@@ -29,6 +30,7 @@ import { Picker } from "@/components/gh/tools";
 export default function GoldenHousePage() {
   return (
     <>
+      <DevuzIntro project="gh" />
       {/* Заставка живёт на верхнем уровне, а не внутри первого экрана: у
           секции свой контекст наложения, и полноэкранный слой из него не
           перекрыл бы липкую шапку. */}

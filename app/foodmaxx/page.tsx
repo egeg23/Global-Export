@@ -1,6 +1,14 @@
+import { DevuzIntro } from "@/components/brand/devuz-intro";
+import { VariantSwitch } from "@/components/foodmaxx/market/variant-switch";
 import { FoodmaxxHeader } from "@/components/foodmaxx/ui/header";
 import { FoodmaxxHero } from "@/components/foodmaxx/hero";
 import { JarOpening } from "@/components/foodmaxx/scenes/jar-opening";
+import { CanRolling } from "@/components/foodmaxx/scenes/can-rolling";
+import { FoodmaxxCatalog } from "@/components/foodmaxx/catalog";
+import { FoodmaxxAbout } from "@/components/foodmaxx/about";
+import { FoodmaxxClients } from "@/components/foodmaxx/clients";
+import { FoodmaxxContact } from "@/components/foodmaxx/contact";
+import { FoodmaxxFooter } from "@/components/foodmaxx/ui/footer";
 
 /**
  * Сайт FOODMAXX.
@@ -11,11 +19,19 @@ import { JarOpening } from "@/components/foodmaxx/scenes/jar-opening";
 export default function FoodmaxxPage() {
   return (
     <>
+      <DevuzIntro project="foodmaxx" />
+      <VariantSwitch current="cinema" />
       <FoodmaxxHeader />
       <main id="content">
         <FoodmaxxHero />
         <JarOpening />
+        <CanRolling />
+        <FoodmaxxCatalog />
+        <FoodmaxxClients />
+        <FoodmaxxAbout />
+        <FoodmaxxContact />
       </main>
+      <FoodmaxxFooter />
     </>
   );
 }

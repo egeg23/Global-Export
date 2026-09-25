@@ -33,7 +33,9 @@ export function FoodmaxxHeader() {
   }, []);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+    // Шапка в потоке, а не поверх страницы: над ней стоит переключатель
+    // вариантов, и вынутая из потока плашка ложилась прямо на него.
+    <header className="pointer-events-none sticky top-0 z-40">
       <Shell size="wide" className="pt-3 sm:pt-4">
         <div
           className={cn(
@@ -57,7 +59,7 @@ export function FoodmaxxHeader() {
               <a
                 key={item.href}
                 href={item.href}
-                className="link-underline text-sm text-fm-cream-50/75 transition-colors hover:text-fm-cream-50"
+                className="link-underline -my-1 py-1 text-sm text-fm-cream-50/75 transition-colors hover:text-fm-cream-50"
               >
                 {item.label}
               </a>
@@ -67,7 +69,7 @@ export function FoodmaxxHeader() {
           <div className="ml-auto flex items-center gap-3">
             <a
               href={`tel:${company.contacts.phones[0].replace(/\s/g, "")}`}
-              className="hidden text-sm tabular-nums text-fm-cream-50/80 transition-colors hover:text-fm-amber-400 md:block"
+              className="-my-1 hidden py-1 text-sm tabular-nums text-fm-cream-50/80 transition-colors hover:text-fm-amber-400 md:block"
             >
               {company.contacts.phones[0]}
             </a>

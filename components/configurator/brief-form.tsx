@@ -4,18 +4,20 @@ import { useState } from "react";
 
 import { useConfigurator } from "@/components/configurator/context";
 import { shareUrl } from "@/components/configurator/store";
-import { money } from "@/components/present/mavera/theme";
 import { cn } from "@/lib/cn";
+import { blocks, tierOf } from "@/lib/configurator/catalog";
 
 /**
  * «Отправить бриф» — форма в доке.
  *
- * Уходит не набор галочек, а заказ с ценой: сервер витрины пересчитывает
- * сумму по каталогу и передаёт бриф в студию, где он становится заявкой и
- * попадает в Telegram. В ответ приходит номер и ссылка на бота — там
- * ассистент уточняет сроки и контент, зная состав заказа. Ссылка рисуется
- * обычной кнопкой-ссылкой, а не открывается скриптом: окно после запроса
- * браузер считает всплывающим и режет.
+ * Из браузера уходит только набор: вариант, блоки и контакт. Сумму сервер
+ * витрины считает сам по прайсу, которого в браузере нет, и передаёт бриф в
+ * студию, где он становится заявкой и попадает в Telegram. Посетителю сумма
+ * не показывается ни здесь, ни в ответе: витрина — публичное портфолио.
+ * В ответ приходит номер и ссылка на бота — там ассистент уточняет сроки и
+ * контент, зная состав заказа. Ссылка рисуется обычной кнопкой-ссылкой, а не
+ * открывается скриптом: окно после запроса браузер считает всплывающим и
+ * режет.
  */
 
 type Sent = { requestNo?: string; botUrl?: string; contact: string };
@@ -32,10 +34,9 @@ export function BriefForm({ onBack }: { onBack: () => void }) {
 
   if (!ctx) return null;
 
-  // Цена одной строкой: «от $31 900 + $550/мес».
-  const priceLine = `${ctx.fromPrice ? "от " : ""}${money(ctx.totalUsd, ctx.currency)}${
-    ctx.monthlyUsd ? ` + ${money(ctx.monthlyUsd, ctx.currency)}/мес` : ""
-  }`;
+  // Состав одной строкой: «вариант «Премиум» и ещё 2 блока».
+  const tier = tierOf(ctx.catalog, ctx.tier);
+  const setLine = `вариант «${tier.label}»${ctx.extras ? ` и ещё ${blocks(ctx.extras)}` : ""}`;
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -100,7 +101,7 @@ export function BriefForm({ onBack }: { onBack: () => void }) {
           )}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-[#f2efe9]/70">
-          Состав и цена — {priceLine} — уже у студии.
+          Выбранный состав — {setLine} — уже у студии.
           {sent.botUrl
             ? " Продолжите в Telegram: ассистент уточнит сроки и материалы, а дальше подключится менеджер."
             : ` Мы напишем вам: ${sent.contact}.`}
@@ -133,7 +134,7 @@ export function BriefForm({ onBack }: { onBack: () => void }) {
     <form onSubmit={submit} className="px-5 py-4" noValidate>
       <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#ffd166]">Бриф на разработку</p>
       <p className="mt-1 text-xs leading-relaxed text-[#f2efe9]/55">
-        Уйдёт набор с ценой — {priceLine}. Мы ответим в тот контакт, который оставите.
+        Уйдёт выбранный набор — {setLine}. Мы ответим в тот контакт, который оставите.
       </p>
 
       <label className="mt-3 block text-xs text-[#f2efe9]/60">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Advantages } from "@/components/adar/base/advantages";
 import { ThemesGrid } from "@/components/adar/base/themes-grid";
 import { CatalogBrowser } from "@/components/adar/plus/catalog-browser";
@@ -15,7 +16,7 @@ import { CartPanel } from "@/components/adar/ui/cart-panel";
 import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { AdarConfigurator } from "@/components/adar/showcase/configurator";
-import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
+import { ScopePanel } from "@/components/adar/showcase/scope-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
 import { ContactSection } from "@/components/adar/ui/contact-section";
 import { SetShowcase } from "@/components/adar/ui/set-showcase";
@@ -59,6 +60,7 @@ export default function AdarPremiumConcept() {
 
   return (
     <CartProvider>
+      <DevuzIntro project="adar" />
       {/*
         Разметка для поиска. Она повторяет то, что и так написано на странице,
         — адрес, часы, телефоны, цены каталога, — но в виде, который Google
@@ -123,7 +125,7 @@ export default function AdarPremiumConcept() {
           <SiteFooter />
         </div>
         <CartPanel />
-        {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
+        {showcaseChrome ? <ScopePanel concept={concept} /> : null}
       </AdarConfigurator>
     </CartProvider>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Advantages } from "@/components/adar/base/advantages";
 import { Hero } from "@/components/adar/base/hero";
 import { PopularSets } from "@/components/adar/base/popular-sets";
@@ -15,7 +16,7 @@ import { CorporateBlock } from "@/components/adar/premium/corporate-block";
 import { SkipLink } from "@/components/adar/ui/skip-link";
 import { ConceptBar } from "@/components/adar/showcase/concept-bar";
 import { AdarConfigurator, Extra } from "@/components/adar/showcase/configurator";
-import { EstimatePanel } from "@/components/adar/showcase/estimate-panel";
+import { ScopePanel } from "@/components/adar/showcase/scope-panel";
 import { ClientsWall } from "@/components/adar/ui/clients-wall";
 import { ContactSection } from "@/components/adar/ui/contact-section";
 import { SetShowcase } from "@/components/adar/ui/set-showcase";
@@ -49,6 +50,7 @@ export default function AdarBaseConcept() {
 
   return (
     <AdarConfigurator tier="base">
+      <DevuzIntro project="adar" />
       <SkipLink />
       {showcaseChrome ? <ConceptBar current="base" /> : null}
       <SiteHeader />
@@ -87,7 +89,7 @@ export default function AdarBaseConcept() {
         <ContactSection />
       </main>
       <SiteFooter />
-      {showcaseChrome ? <EstimatePanel concept={concept} /> : null}
+      {showcaseChrome ? <ScopePanel concept={concept} /> : null}
     </AdarConfigurator>
   );
 }

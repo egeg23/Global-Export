@@ -59,7 +59,7 @@ export function FoodmaxxHero() {
         px.set(0);
         py.set(0);
       }}
-      className="fm-grain relative flex min-h-svh flex-col justify-center overflow-hidden bg-fm-ink-950 pb-24 pt-32"
+      className="fm-grain relative flex min-h-[calc(100svh-5rem)] flex-col justify-center overflow-hidden bg-fm-ink-950 pb-24 pt-12"
     >
       <div aria-hidden="true" className="fm-spot pointer-events-none absolute inset-0" />
 
