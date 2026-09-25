@@ -51,8 +51,11 @@ export function Hero() {
       </div>
 
       <div className="mx-auto grid w-full max-w-[1500px] items-start gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:gap-16">
+        {/* min-w-0: у ячейки сетки ширина по умолчанию «по содержимому», и
+            нерастяжимая цифра счётчика раздвигала колонку шире экрана —
+            первый экран это обрезал, и абзац терял правый край. */}
         <div
-          className="w-layer"
+          className="w-layer min-w-0"
           style={{ "--w-depth": "-88px", "--w-pull": "-18px" } as React.CSSProperties}
         >
           <p className="tr-eyebrow">Инвестиционный меморандум · {company.tagline}</p>
@@ -89,7 +92,7 @@ export function Hero() {
 
         {/* Терм-шит */}
         <div
-          className="w-layer"
+          className="w-layer min-w-0"
           style={{ "--w-depth": "-180px", "--w-pull": "30px" } as React.CSSProperties}
         >
           <div className="overflow-hidden rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-surface)] shadow-[var(--w-shadow)]">

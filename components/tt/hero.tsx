@@ -52,8 +52,10 @@ export function Hero() {
       </div>
 
       <div className="mx-auto grid w-full max-w-[1500px] items-start gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+        {/* min-w-0 по той же причине, что у Tranio: нерастяжимая цифра не
+            должна раздвигать колонку шире экрана. */}
         <div
-          className="w-layer"
+          className="w-layer min-w-0"
           style={{ "--w-depth": "-86px", "--w-pull": "-16px" } as React.CSSProperties}
         >
           <p className="tt-signal">{t(company.tagline)}</p>
@@ -95,7 +97,7 @@ export function Hero() {
 
         {/* Миссия и история — то, что у них на главной первым абзацем. */}
         <div
-          className="w-layer"
+          className="w-layer min-w-0"
           style={{ "--w-depth": "-170px", "--w-pull": "28px" } as React.CSSProperties}
         >
           <div className="rounded-[var(--w-radius-lg)] border border-[var(--w-line)] bg-[var(--w-surface)] p-6 shadow-[var(--w-shadow)] sm:p-8">
