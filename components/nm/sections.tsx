@@ -184,7 +184,7 @@ export function Projects() {
           компьютере — колесо с shift и стрелки: фокус ходит по карточкам. */}
       <ul
         className="w-rail mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-6"
-        aria-label="Работы фабрики"
+        aria-label="Наши работы"
       >
         {shown.map((project, index) => (
           <ProjectCard key={project.slug} project={project} index={index} />
@@ -343,7 +343,7 @@ export function Compare() {
           max={100}
           value={split}
           onChange={(event) => setSplit(Number(event.target.value))}
-          aria-label="Сдвиньте, чтобы сравнить: комната от застройщика и после работы фабрики"
+          aria-label="Сдвиньте, чтобы сравнить: комната от застройщика и после нашей работы"
           className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
         />
       </div>
@@ -450,9 +450,8 @@ export function Timeline() {
 
       <p className="mt-8 border-t border-[var(--w-line)] pt-6 text-[0.86rem] text-[var(--w-muted)]">
         Всего около <b className="text-[var(--w-ink)]">{days(total)}</b> от заявки до
-        установки при среднем объёме. Их собственный диапазон изготовления —
-        15–45 дней в зависимости от материалов; точный срок фиксируется вместе
-        со сметой.
+        установки при среднем объёме. Изготовление занимает 15–45 дней в
+        зависимости от материалов; точный срок фиксируем вместе со сметой.
       </p>
     </div>
   );
@@ -691,8 +690,7 @@ export function Footer() {
 
       <p className="mx-auto mt-10 w-full max-w-[1500px] px-5 text-[0.72rem] leading-relaxed text-[var(--w-muted)]/70 sm:px-8">
         Макет подготовлен студией DevUz для фабрики Namuna. Логотип,
-        фотографии и тексты принадлежат Namuna; образцы материалов вырезаны из
-        их собственных съёмок.
+        фотографии и тексты принадлежат Namuna.
       </p>
     </footer>
   );

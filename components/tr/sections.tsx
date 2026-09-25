@@ -181,7 +181,7 @@ export function Capital() {
         </dl>
 
         <p className="mt-8 border-t border-[var(--w-line)] pt-5 text-[0.8rem] leading-relaxed text-[var(--w-muted)]">
-          Цифры портфеля — с их собственной страницы обзора Tranio Capital.
+          Соинвестируем вместе с клиентами: минимальный вход в проект — €70 тыс.
         </p>
       </div>
 
@@ -219,7 +219,7 @@ export function Capital() {
           ))}
         </ul>
         <p className="mt-4 text-[0.78rem] leading-relaxed text-[var(--w-muted)]">
-          Объекты, цены и доходности — те, что они сами вывели в «Топ-3» на главной.
+          Три объекта из текущей подборки: цена и доходность годовая, до налогов.
         </p>
       </div>
     </div>
@@ -262,8 +262,8 @@ export function Analytics() {
           </p>
         </div>
         <p className="mt-4 text-[0.78rem] leading-relaxed text-[var(--w-muted)]">
-          У них 4 144 публикации и 108 аналитических материалов. На нынешнем
-          сайте это список ссылок; здесь — довод, который читается.
+          В нашей базе знаний 4 144 публикации и 108 аналитических материалов:
+          по странам, налогам и стратегиям.
         </p>
       </div>
     </div>
@@ -316,9 +316,7 @@ export function Footer() {
             <span className="text-[1rem] font-semibold text-[var(--w-ink)]">Tranio</span>
           </div>
           <p className="mt-3 max-w-2xl text-[0.8rem] leading-relaxed text-[var(--w-muted)]">
-            Макет главной страницы, сделанный Maximov Tech для tranio.ru. Цифры,
-            страны и объекты взяты с их сайта; пороги входа по направлениям —
-            ориентир по рынку, а не их прайс.
+            Макет главной страницы, сделанный Maximov Tech для tranio.ru.
           </p>
         </div>
         <PaletteSwitch world="tr" palettes={trPalettes} className="lg:justify-end" />

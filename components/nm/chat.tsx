@@ -275,13 +275,13 @@ export function Chat() {
 
           <footer className="border-t border-[var(--w-line)] bg-[var(--w-paper)] px-4 py-3">
             <p className="text-[0.74rem] leading-relaxed text-[var(--w-muted)]">
-              Это макет: отвечает не человек, а заготовленные ответы.{" "}
+              Не успеем за 10 секунд — скидка 15% на весь заказ.{" "}
               <button
                 type="button"
                 onClick={showMiss}
                 className="cursor-pointer text-[var(--nm-teal)] underline underline-offset-2"
               >
-                Показать, что будет, если не ответят
+                Показать, что будет, если не успеем
               </button>
             </p>
           </footer>

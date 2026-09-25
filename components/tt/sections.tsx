@@ -24,7 +24,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--w-line)] bg-[var(--w-bg)]/92 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-[1500px] items-center gap-5 px-5 py-3.5 sm:px-8">
+      <div className="mx-auto flex w-full max-w-[1500px] items-center gap-3 px-5 py-3.5 sm:gap-5 sm:px-8">
         <Link href="/ttc" className="flex shrink-0 items-center gap-2.5">
           <Image
             src="/images/tt/logo.svg"
@@ -59,9 +59,11 @@ export function Header() {
           >
             {company.phone}
           </a>
+          {/* На 320 px логотип, язык, кабинет и бургер в строку не влезали —
+              кабинет уходит в меню, как и разделы. */}
           <Link
             href="/ttc/panel"
-            className="rounded-[var(--w-radius)] border border-[var(--w-line)] px-3.5 py-2 text-[0.82rem] transition-colors hover:border-[var(--w-accent)]"
+            className="hidden rounded-[var(--w-radius)] border border-[var(--w-line)] px-3.5 py-2 text-[0.82rem] transition-colors hover:border-[var(--w-accent)] sm:block"
           >
             {t({ ru: "Кабинет", kk: "Кабинет" })}
           </Link>
@@ -93,6 +95,15 @@ export function Header() {
                 </a>
               </li>
             ))}
+            <li className="sm:hidden">
+              <Link
+                href="/ttc/panel"
+                onClick={() => setOpen(false)}
+                className="block py-2 text-[0.94rem] text-[var(--w-accent)]"
+              >
+                {t({ ru: "Кабинет", kk: "Кабинет" })}
+              </Link>
+            </li>
           </ul>
           <PaletteSwitch world="tt" palettes={ttPalettesFor(lang)} className="mt-4" />
         </nav>
@@ -276,8 +287,8 @@ export function Footer() {
           />
           <p className="mt-3 max-w-2xl text-[0.8rem] leading-relaxed text-[var(--w-muted)]">
             {t({
-              ru: "Макет главной страницы, сделанный Maximov Tech для ttc.kz. Цифры, услуги, проекты и филиалы взяты с их сайта; цены в конструкторе — ориентир по рынку, а не их тариф.",
-              kk: "Maximov Tech ttc.kz үшін жасаған басты бет макеті. Сандар, қызметтер, жобалар және филиалдар олардың сайтынан алынған; конструктордағы бағалар — нарық бағдары, олардың тарифі емес.",
+              ru: "Макет главной страницы, сделанный Maximov Tech для ttc.kz.",
+              kk: "Maximov Tech ttc.kz үшін жасаған басты бет макеті.",
             })}
           </p>
         </div>

@@ -107,7 +107,7 @@ export const countries: Country[] = [
       { name: "Корфу", photo: "greece-corfu" },
       { name: "Пелопоннес", photo: "greece-peloponnese" },
     ],
-    note: "Золотая виза Греции — отдельный раздел на их сайте.",
+    note: "Золотая виза Греции: статус сразу на всю семью.",
   },
   {
     id: "spain",
@@ -128,7 +128,7 @@ export const countries: Country[] = [
       { name: "Тенерифе", photo: "spain-tenerife" },
       { name: "Торревьеха", photo: "spain-torrevieja" },
     ],
-    note: "Один из их самых частых запросов: «купить квартиру в Испании».",
+    note: "Один из самых частых запросов: «купить квартиру в Испании».",
   },
   {
     id: "thailand",
@@ -145,7 +145,7 @@ export const countries: Country[] = [
       { name: "Паттайя", photo: "thailand-pattaya" },
       { name: "Самуи", photo: "thailand-ko-samui" },
     ],
-    note: "Фрихолд в кондоминиумах; у них отдельный разбор дефицита земли на Пхукете.",
+    note: "Фрихолд в кондоминиумах; на Пхукете свободной земли почти не осталось.",
   },
   {
     id: "turkey",
@@ -157,7 +157,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent", "permit"],
     kinds: ["flat", "villa"],
     cities: [{ name: "Стамбул" }, { name: "Анталья" }, { name: "Бодрум" }],
-    note: "Гражданство за инвестиции — программа есть в их списке.",
+    note: "Гражданство за инвестиции — от $400 тыс.",
   },
   {
     id: "portugal",
@@ -169,7 +169,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent", "permit"],
     kinds: ["flat", "villa"],
     cities: [{ name: "Лиссабон" }, { name: "Порту" }, { name: "Алгарве" }],
-    note: "Из их списка стран присутствия.",
+    note: "Лиссабон и Алгарве; ВНЖ для финансово независимых.",
   },
   {
     id: "germany",
@@ -181,7 +181,7 @@ export const countries: Country[] = [
     purposes: ["rent", "build"],
     kinds: ["flat", "commercial"],
     cities: [{ name: "Берлин" }, { name: "Мюнхен" }, { name: "Франкфурт-на-Майне" }],
-    note: "Супермаркет в Баварии — один из их «топ-3» с доходностью 6,4%.",
+    note: "Супермаркет в Баварии — один из наших топ-объектов, 6,4% годовых.",
   },
   {
     id: "italy",
@@ -193,7 +193,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent"],
     kinds: ["flat", "villa"],
     cities: [{ name: "Тоскана" }, { name: "Рим" }, { name: "Сицилия" }, { name: "Калабрия" }],
-    note: "Из их списка популярных локаций.",
+    note: "Для жизни — озёра и юг, для аренды — Милан.",
   },
   {
     id: "france",
@@ -205,7 +205,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent"],
     kinds: ["flat", "villa"],
     cities: [{ name: "Париж" }, { name: "Лазурный Берег" }, { name: "Канны" }],
-    note: "У них отдельный разбор: цены во Франции от 3 500 €/м².",
+    note: "Цены во Франции — от 3 500 €/м².",
   },
   {
     id: "montenegro",
@@ -217,7 +217,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent"],
     kinds: ["flat", "villa"],
     cities: [{ name: "Будва" }, { name: "Тиват" }, { name: "Котор" }],
-    note: "Из их списка популярных локаций.",
+    note: "Адриатика с недорогим входом; ВНЖ при покупке.",
   },
   {
     id: "oman",
@@ -229,7 +229,7 @@ export const countries: Country[] = [
     purposes: ["rent", "permit"],
     kinds: ["flat", "villa"],
     cities: [{ name: "Маскат" }, { name: "Салала" }],
-    note: "У них есть разбор ВНЖ и налогов Омана.",
+    note: "Разбираем ВНЖ и налоги Омана под конкретную сделку.",
   },
   {
     id: "indonesia",
@@ -241,7 +241,7 @@ export const countries: Country[] = [
     purposes: ["rent", "build"],
     kinds: ["villa"],
     cities: [{ name: "Семиньяк" }, { name: "Чангу" }, { name: "Убуд" }, { name: "Ломбок" }],
-    note: "Из их разбора: ВНЖ и ипотека в Индонезии для россиян.",
+    note: "ВНЖ и ипотека в Индонезии для россиян — разбираем отдельно.",
   },
   {
     id: "uk",
@@ -253,7 +253,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent"],
     kinds: ["flat", "commercial"],
     cities: [{ name: "Лондон" }],
-    note: "Из их списка стран.",
+    note: "Рынок для сохранения капитала, а не для высокой доходности.",
   },
   {
     id: "usa",
@@ -265,7 +265,7 @@ export const countries: Country[] = [
     purposes: ["rent", "build"],
     kinds: ["flat", "villa", "commercial"],
     cities: [{ name: "Нью-Йорк" }, { name: "Майами" }, { name: "Нью-Джерси" }],
-    note: "Из их списка популярных локаций.",
+    note: "Доходная коммерция и готовые арендные объекты.",
   },
   {
     id: "austria",
@@ -277,7 +277,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent"],
     kinds: ["flat"],
     cities: [{ name: "Вена" }],
-    note: "Из их списка стран.",
+    note: "Правила для нерезидентов строгие — считаем структуру сделки.",
   },
   {
     id: "switzerland",
@@ -289,7 +289,7 @@ export const countries: Country[] = [
     purposes: ["rent"],
     kinds: ["commercial"],
     cities: [{ name: "Цюрих" }],
-    note: "Отель в Цюрихе — первый в их «топ-3» с доходностью 4,7%.",
+    note: "Отель в Цюрихе — наш топ-объект с доходностью 4,7%.",
   },
   {
     id: "hungary",
@@ -301,7 +301,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent"],
     kinds: ["flat"],
     cities: [{ name: "Будапешт" }],
-    note: "Из их списка стран.",
+    note: "Будапешт: недорогой вход, растущая аренда.",
   },
   {
     id: "croatia",
@@ -313,7 +313,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent"],
     kinds: ["flat", "villa"],
     cities: [{ name: "Дубровник" }, { name: "Сплит" }],
-    note: "Из их списка стран.",
+    note: "Адриатическое побережье; ВНЖ цифрового кочевника.",
   },
   {
     id: "czechia",
@@ -325,7 +325,7 @@ export const countries: Country[] = [
     purposes: ["live", "rent"],
     kinds: ["flat"],
     cities: [{ name: "Прага" }],
-    note: "Из их списка стран.",
+    note: "Прага: стабильный арендный спрос круглый год.",
   },
   {
     id: "israel",
@@ -337,7 +337,7 @@ export const countries: Country[] = [
     purposes: ["live"],
     kinds: ["flat"],
     cities: [{ name: "Тель-Авив" }],
-    note: "Из их списка стран.",
+    note: "Тель-Авив и Хайфа: дорогой вход, устойчивый спрос.",
   },
 ];
 

@@ -12,13 +12,13 @@ export const trPalettes: Palette[] = [
   {
     id: "capital",
     label: "Капитал",
-    note: "Банковская записка: белая бумага и их синий",
+    note: "Банковская записка: белая бумага и фирменный синий",
     swatch: { bg: "#f6f7f9", paper: "#eceff4", accent: "#0358b2" },
   },
   {
     id: "mediterranean",
     label: "Средиземноморье",
-    note: "Тёплая бумага и бирюза с их знака",
+    note: "Тёплая бумага и бирюза со знака",
     swatch: { bg: "#f7f4ee", paper: "#efe9dd", accent: "#0f6f5c" },
   },
   {

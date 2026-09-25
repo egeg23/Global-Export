@@ -49,7 +49,7 @@ export const permits: Permit[] = [
     months: 8,
     goals: ["move", "family", "business"],
     flags: ["gr", "pt", "es"],
-    note: "В недвижимость и другие активы — формулировка их сайта",
+    note: "Вложение в недвижимость или другие активы",
   },
   {
     id: "greece-golden",
@@ -60,7 +60,7 @@ export const permits: Permit[] = [
     months: 6,
     goals: ["move", "mobility", "family"],
     flags: ["gr"],
-    note: "У них это отдельный раздел в главном меню",
+    note: "Право жить в Греции и въезд в Шенген",
   },
   {
     id: "cyprus-pr",
@@ -71,7 +71,7 @@ export const permits: Permit[] = [
     months: 4,
     goals: ["move", "family", "business"],
     flags: ["cy"],
-    note: "Их проект в Лимасоле от €232 тыс. подходит под ПМЖ",
+    note: "Наш проект в Лимасоле от €232 тыс. подходит под ПМЖ",
   },
   {
     id: "uae-golden",
@@ -82,7 +82,7 @@ export const permits: Permit[] = [
     months: 2,
     goals: ["business", "mobility", "family"],
     flags: ["ae"],
-    note: "Золотая виза ОАЭ — у них есть отдельный разбор, что она даёт",
+    note: "Золотая виза ОАЭ — на десять лет, с семьёй",
   },
   {
     id: "eu-independent",
@@ -104,7 +104,7 @@ export const permits: Permit[] = [
     months: 3,
     goals: ["move", "business"],
     flags: ["pt", "hr", "es"],
-    note: "Отдельное основание в их списке",
+    note: "Основание — удалённый доход, без покупки жилья",
   },
   {
     id: "eu-startup",
@@ -115,7 +115,7 @@ export const permits: Permit[] = [
     months: 6,
     goals: ["business", "move"],
     flags: ["pt", "es", "fr"],
-    note: "Отдельное основание в их списке",
+    note: "Основание — бизнес-план и вложение в компанию",
   },
   {
     id: "turkey-citizen",
@@ -126,7 +126,7 @@ export const permits: Permit[] = [
     months: 7,
     goals: ["mobility", "family"],
     flags: ["tr"],
-    note: "Из их списка программ гражданства за инвестиции",
+    note: "Гражданство за инвестиции, паспорт на всю семью",
   },
   {
     id: "caribbean",
@@ -137,7 +137,7 @@ export const permits: Permit[] = [
     months: 6,
     goals: ["mobility", "family"],
     flags: [],
-    note: "Страны Карибского бассейна — из их списка",
+    note: "Программы стран Карибского бассейна",
   },
   {
     id: "vanuatu",
@@ -148,7 +148,7 @@ export const permits: Permit[] = [
     months: 2,
     goals: ["mobility"],
     flags: [],
-    note: "Самая быстрая программа в их списке",
+    note: "Самая быстрая из программ гражданства",
   },
 ];
 

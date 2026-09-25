@@ -79,7 +79,7 @@ export function Strategies() {
             </output>
           </div>
           <p className="mt-2 text-[0.78rem] text-[var(--w-muted)]">
-            Нижняя граница — €70 тыс., их собственный порог входа в стратегии.
+            Нижняя граница — €70 тыс., наш порог входа в стратегии.
             У выбранной стратегии минимум €{strategy.from} тыс.
           </p>
         </fieldset>
@@ -131,10 +131,10 @@ export function Strategies() {
           <Payback low={result.profitLow} high={result.profitHigh} capital={Math.max(capital, strategy.from)} />
 
           <p className="mt-7 text-[0.78rem] leading-relaxed text-[var(--w-muted)]">
-            Доходности — их, с главной: строительство в Европе 10—15%, в Дубае
+            Доходности наших стратегий: строительство в Европе 10—15%, в Дубае
             8%, реновация 2—12%, аренда 7%. Счёт сложным процентом по границам
             вилки. Это прогноз, а не обещание: у конкретного проекта своя
-            экономика, и её считают после разбора.
+            экономика, и её считаем после разбора.
           </p>
         </div>
       </div>
@@ -193,14 +193,26 @@ function Row({
   plain?: boolean;
   yield?: boolean;
 }) {
+  // Отбивка точками — приём финансовой таблицы, и работает она только с
+  // цифрой справа: нерастяжимая строка прозы в той же строке уезжала за
+  // край телефона и обрезалась. Поэтому у прозы подпись сверху, значение
+  // под ней, и переносится оно как обычный текст.
+  if (plain) {
+    return (
+      <div>
+        <dt className="text-[0.86rem] text-[var(--w-muted)]">{label}</dt>
+        <dd className="mt-1 text-[0.92rem] leading-relaxed text-[var(--w-ink)]">{value}</dd>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-baseline gap-3">
-      <dt className="text-[0.86rem] text-[var(--w-muted)]">{label}</dt>
+      <dt className="min-w-0 text-[0.86rem] text-[var(--w-muted)]">{label}</dt>
       <span className="tr-dots" aria-hidden />
       <dd
         className={cn(
-          "shrink-0 text-[0.92rem] text-[var(--w-ink)]",
-          !plain && "tr-figure",
+          "tr-figure shrink-0 text-[0.92rem] text-[var(--w-ink)]",
           isYield && "tr-yield",
         )}
       >

@@ -116,7 +116,7 @@ export function Hero() {
                     />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[0.94rem] text-[var(--w-ink)]">
+                    <span className="block text-[0.94rem] leading-snug text-[var(--w-ink)]">
                       {item.title}
                     </span>
                     <span className="tr-figure mt-1 block text-[0.8rem] text-[var(--w-muted)]">
@@ -130,7 +130,7 @@ export function Hero() {
               ))}
             </ul>
             <p className="border-t border-[var(--w-line)] bg-[var(--w-paper)] px-6 py-3.5 text-[0.76rem] leading-relaxed text-[var(--w-muted)]">
-              Объекты и цифры — с их главной, без правок.
+              Доходность указана годовая, до налогов страны объекта.
             </p>
           </div>
         </div>
