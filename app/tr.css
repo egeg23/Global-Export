@@ -1,0 +1,295 @@
+/* ------------------------------------------------------------------
+   Tranio — макет для tranio.ru, зарубежная недвижимость и инвестиции.
+
+   Механика мира общая с MAVERA, Golden House и Namuna: страница собрана
+   на переменных `--w-*`, утилиты (.w-layer, .w-rise) приходят из
+   mavera.css. Отличается краска, типографика и жанр.
+
+   Жанр выбран не «портал недвижимости», а инвестиционный меморандум.
+   Причина простая: к ним приходят не смотреть картинки, а считать. На
+   их собственном сайте доходности («строительство в Европе 10—15%»,
+   «аренда 7%») лежат мелким текстом между баннерами, хотя это и есть
+   товар. Здесь цифра — главный типографический объект: моноширинный
+   набор, табличные нули, линейки как в печатном отчёте.
+
+   Краска их: синий #0358B2 и коралловый #F36666 сняты с их же сайта,
+   бирюза #129A7E — из их разноцветного знака. Три палитры отличаются не
+   оттенком фона, а тем, чей это документ: банковская записка, южная
+   сделка, ночной терминал.
+
+   Контраст проверен числами до кода. В каждой палитре: текст на фоне не
+   ниже 14:1, приглушённый не ниже 5,4:1, акцент не ниже 4,5:1. Белый на
+   синей заливке 6,9:1, на зелёной 6,1:1 — поэтому заливка кнопок всегда
+   `--w-accent`, а не фирменный цвет: на #129A7E белый даёт 3,5:1 и годится
+   только крупным кеглем.
+   ------------------------------------------------------------------ */
+
+[data-world="tr"] {
+  --w-radius: 3px;
+  --w-radius-lg: 6px;
+  --w-radius-xl: 10px;
+  --w-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  --w-figure: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+  --w-display-weight: 600;
+  --w-display-tracking: -0.02em;
+  --w-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --w-duration: 760ms;
+}
+
+/* ---- Палитра 1: «Капитал». Банковская записка на белой бумаге. ---- */
+[data-world="tr"],
+[data-world="tr"][data-palette="capital"] {
+  --w-bg: #f6f7f9;
+  --w-surface: #ffffff;
+  --w-paper: #eceff4;
+  --w-ink: #0e1726;
+  --w-muted: #586176;
+  --w-line: #dde2ea;
+  --w-accent: #0358b2;
+  --w-accent-soft: rgba(3, 88, 178, 0.1);
+  --w-accent-ink: #ffffff;
+  --w-figure-color: #0358b2;
+  --w-yield: #c2453f;
+  --w-shadow: 0 34px 80px -50px rgba(14, 23, 38, 0.4);
+  --tr-brand: #0358b2;
+  --tr-veil: rgba(14, 23, 38, 0.55);
+}
+
+/* ---- Палитра 2: «Средиземноморье». Сделка на юге, тёплая бумага. ---- */
+[data-world="tr"][data-palette="mediterranean"] {
+  --w-bg: #f7f4ee;
+  --w-surface: #fffdf8;
+  --w-paper: #efe9dd;
+  --w-ink: #17251f;
+  --w-muted: #5c6660;
+  --w-line: #e2dbcb;
+  --w-accent: #0f6f5c;
+  --w-accent-soft: rgba(18, 154, 126, 0.14);
+  --w-accent-ink: #fffdf8;
+  --w-figure-color: #0f6f5c;
+  --w-yield: #a85a34;
+  --w-shadow: 0 34px 80px -50px rgba(23, 37, 31, 0.42);
+  --tr-brand: #129a7e;
+  --tr-veil: rgba(23, 37, 31, 0.52);
+}
+
+/* ---- Палитра 3: «Ночной терминал». Тёмная, для показа с проектора. ---- */
+[data-world="tr"][data-palette="terminal"] {
+  --w-bg: #0c1017;
+  --w-surface: #141a24;
+  --w-paper: #1b2230;
+  --w-ink: #eef1f6;
+  --w-muted: #9aa5b8;
+  --w-line: #26303f;
+  --w-accent: #7fb2ea;
+  --w-accent-soft: rgba(127, 178, 234, 0.16);
+  /* На светлом акценте текст тёмный: белый дал бы 3,3:1. */
+  --w-accent-ink: #0c1017;
+  --w-figure-color: #7fb2ea;
+  --w-yield: #e0a04e;
+  --w-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.85);
+  --tr-brand: #4a90e2;
+  --tr-veil: rgba(5, 8, 12, 0.66);
+  color-scheme: dark;
+}
+
+[data-world="tr"] {
+  background-color: var(--w-bg);
+  color: var(--w-ink);
+}
+
+@layer utilities {
+  /* Цифра меморандума: моноширинная, с табличными нулями. Доходность,
+     срок, сумма и площадь набраны ею — колонки сходятся по разряду. */
+  .tr-figure {
+    font-family: var(--w-figure);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Доходность — единственное место, где живёт второй акцент. */
+  .tr-yield {
+    color: var(--w-yield);
+  }
+
+  /* Шапка раздела меморандума: номер, линейка, заголовок. */
+  .tr-eyebrow {
+    font-family: var(--w-figure);
+    font-size: 0.7rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--w-accent);
+  }
+
+  /* Линейка под заголовком: две толщины, как в печатном отчёте. */
+  .tr-rule {
+    position: relative;
+    padding-bottom: 1.1rem;
+  }
+
+  .tr-rule::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 4.5rem;
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      var(--w-accent) 0 1.6rem,
+      var(--w-line) 1.6rem 100%
+    );
+  }
+
+  /* Табличная строка меморандума: точки между названием и цифрой. */
+  .tr-dots {
+    flex: 1;
+    border-bottom: 1px dotted var(--w-line);
+    margin-bottom: 0.32em;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Ползунок: бюджет и капитал.
+   ------------------------------------------------------------------ */
+
+.tr-range {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 1.5rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tr-range::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--w-line);
+}
+
+.tr-range::-moz-range-track {
+  height: 2px;
+  background: var(--w-line);
+}
+
+.tr-range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-top: -0.62rem;
+  border-radius: 999px;
+  background: var(--w-accent);
+  border: 3px solid var(--w-surface);
+  box-shadow: 0 3px 12px -3px rgba(0, 0, 0, 0.45);
+}
+
+.tr-range::-moz-range-thumb {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: var(--w-accent);
+  border: 3px solid var(--w-surface);
+  box-shadow: 0 3px 12px -3px rgba(0, 0, 0, 0.45);
+}
+
+.tr-range:focus-visible::-webkit-slider-thumb,
+.tr-range:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--w-accent);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------
+   Полоса окупаемости: доля приходит из rAF в --tr-fill.
+   ------------------------------------------------------------------ */
+
+.tr-bar {
+  width: calc(var(--tr-fill, 0) * 100%);
+  transition: width 520ms var(--w-ease);
+}
+
+/* ------------------------------------------------------------------
+   Карта офисов.
+
+   Суша — один путь, красится currentColor. Дуги и точки ждут, пока карта
+   доедет до кадра: тогда на <svg> появляется data-shown, и очередь
+   раздаётся задержками из --tr-i. Рисовать дугу линией длиной 1000
+   единиц нельзя — у каждой своя длина, поэтому появление сделано
+   прозрачностью, а не штрихом.
+   ------------------------------------------------------------------ */
+
+.tr-map__land {
+  fill: var(--w-muted);
+  opacity: 0.32;
+}
+
+.tr-map__arc {
+  fill: none;
+  stroke: var(--w-accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+.tr-map[data-shown] .tr-map__arc {
+  opacity: 0.5;
+  transition: opacity 900ms var(--w-ease);
+  transition-delay: calc(360ms + var(--tr-i, 0) * 110ms);
+}
+
+.tr-map__dot {
+  fill: var(--w-accent);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: 0.2;
+}
+
+.tr-map[data-shown] .tr-map__dot {
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity 420ms var(--w-ease),
+    scale 520ms var(--w-ease);
+  transition-delay: calc(var(--tr-i, 0) * 90ms);
+}
+
+.tr-map__halo {
+  fill: var(--w-accent);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.tr-map__pin.is-on .tr-map__halo {
+  opacity: 0.22;
+  transition: opacity 260ms var(--w-ease);
+}
+
+.tr-map__pin.is-on .tr-map__dot {
+  scale: 1.35;
+}
+
+/* ------------------------------------------------------------------
+   Движение.
+   ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-map__arc,
+  .tr-map[data-shown] .tr-map__arc {
+    opacity: 0.5;
+    transition: none;
+  }
+
+  .tr-map__dot,
+  .tr-map[data-shown] .tr-map__dot {
+    opacity: 1;
+    scale: 1;
+    transition: none;
+  }
+
+  .tr-bar {
+    transition: none;
+  }
+}

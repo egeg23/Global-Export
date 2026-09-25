@@ -93,10 +93,19 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Макет фабрики мебели. Единственная витрина без кода доступа — так
-  // решил заказчик показа, — поэтому она просто пропускается мимо
-  // языкового префикса.
-  if (pathname === "/namuna" || pathname.startsWith("/namuna/")) {
+  // Открытые витрины: мебельная фабрика, зарубежная недвижимость и
+  // оператор связи. Кода доступа у них нет — так решил заказчик показа, —
+  // поэтому они просто пропускаются мимо языкового префикса. У каждой
+  // свой язык внутри: у Namuna и Tranio русский, у Транстелекома русский
+  // и казахский, и переключает их сама страница.
+  if (
+    pathname === "/namuna" ||
+    pathname.startsWith("/namuna/") ||
+    pathname === "/tranio" ||
+    pathname.startsWith("/tranio/") ||
+    pathname === "/ttc" ||
+    pathname.startsWith("/ttc/")
+  ) {
     return NextResponse.next();
   }
 

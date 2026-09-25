@@ -1,0 +1,322 @@
+/* ------------------------------------------------------------------
+   TTC — макет для ttc.kz, АО «Транстелеком».
+
+   Механика мира общая с остальными витринами: переменные `--w-*` и
+   утилиты из mavera.css. Отличается краска, типографика и то, что здесь
+   два языка: русский и казахский, оба полные.
+
+   Жанр — пульт оператора связи. Причина: их главный актив не услуга из
+   списка, а 15 000 км волокна, проложенного вдоль железной дороги (сама
+   компания в 1999 году отделилась от КТЖ). На их сайте этого не видно
+   вовсе — восемнадцать услуг лежат плоским списком иконок 60×60. Здесь
+   сеть показана картой, а услуги собираются конструктором со сметой.
+
+   Краска снята с их логотипа: он собран из зелёного #2CA449 и трёх
+   осветлений до лайма #99CA3C. Тёмная палитра стоит первой намеренно —
+   карта сети на ней читается как диспетчерский экран, а не как баннер.
+
+   Контраст проверен числами до кода. Во всех трёх палитрах текст на фоне
+   не ниже 15:1, приглушённый не ниже 5,6:1, акцент не ниже 4,5:1.
+   Фирменный #2CA449 на светлом фоне даёт 2,9:1 — поэтому текстом он не
+   бывает никогда, только заливкой знака; в светлых палитрах акцент
+   затемнён до #1C7A37 и #2A6B2F, где белый даёт 5,4:1 и 6,5:1.
+   ------------------------------------------------------------------ */
+
+[data-world="tt"] {
+  --w-radius: 4px;
+  --w-radius-lg: 8px;
+  --w-radius-xl: 14px;
+  --w-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display: var(--font-golos), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-figure: var(--font-jetbrains), ui-monospace, "SF Mono", monospace;
+  --w-display-weight: 700;
+  --w-display-tracking: -0.025em;
+  --w-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --w-duration: 700ms;
+}
+
+/* ---- Палитра 1: «Магистраль». Диспетчерский экран. ---- */
+[data-world="tt"],
+[data-world="tt"][data-palette="trunk"] {
+  --w-bg: #0b1113;
+  --w-surface: #121a1d;
+  --w-paper: #182326;
+  --w-ink: #eaf2ee;
+  --w-muted: #95a8a0;
+  --w-line: #222f33;
+  --w-accent: #7ed957;
+  --w-accent-soft: rgba(126, 217, 87, 0.14);
+  /* На ярком акценте текст тёмный: белый дал бы 1,7:1. */
+  --w-accent-ink: #0b1113;
+  --w-signal: #b4e226;
+  --w-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.9);
+  --tt-brand: #2ca449;
+  --tt-grid: rgba(126, 217, 87, 0.09);
+  color-scheme: dark;
+}
+
+/* ---- Палитра 2: «Дневная смена». Светлая, для печати и презентаций. ---- */
+[data-world="tt"][data-palette="day"] {
+  --w-bg: #f4f7f4;
+  --w-surface: #ffffff;
+  --w-paper: #e8efe8;
+  --w-ink: #0f1a14;
+  --w-muted: #53635a;
+  --w-line: #dbe4dc;
+  --w-accent: #1c7a37;
+  --w-accent-soft: rgba(44, 164, 73, 0.12);
+  --w-accent-ink: #ffffff;
+  --w-signal: #5c7a10;
+  --w-shadow: 0 34px 80px -50px rgba(15, 26, 20, 0.4);
+  --tt-brand: #2ca449;
+  --tt-grid: rgba(28, 122, 55, 0.08);
+}
+
+/* ---- Палитра 3: «Степь». Тёплая светлая: известняк и медь. ---- */
+[data-world="tt"][data-palette="steppe"] {
+  --w-bg: #f7f4ec;
+  --w-surface: #fffdf7;
+  --w-paper: #ece5d6;
+  --w-ink: #1a1d14;
+  --w-muted: #5d6350;
+  --w-line: #e0d8c4;
+  --w-accent: #2a6b2f;
+  --w-accent-soft: rgba(42, 107, 47, 0.12);
+  --w-accent-ink: #fffdf7;
+  --w-signal: #96601f;
+  --w-shadow: 0 34px 80px -50px rgba(26, 29, 20, 0.42);
+  --tt-brand: #2ca449;
+  --tt-grid: rgba(42, 107, 47, 0.08);
+}
+
+[data-world="tt"] {
+  background-color: var(--w-bg);
+  color: var(--w-ink);
+}
+
+@layer utilities {
+  /* Цифра пульта: скорость, задержка, SLA, километры. */
+  .tt-figure {
+    font-family: var(--w-figure);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* Сигнальная подпись: то, что на пульте мигало бы. */
+  .tt-signal {
+    color: var(--w-signal);
+    font-family: var(--w-figure);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Координатная сетка пульта: подложка карты и тёмных блоков. */
+  .tt-grid {
+    background-image:
+      linear-gradient(to right, var(--tt-grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--tt-grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Волокно: светящаяся нить магистрали. Толщина одна, светимость — от
+     того, живой ли участок. */
+  .tt-fibre {
+    fill: none;
+    stroke: var(--w-accent);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    opacity: 0.35;
+    transition: opacity 420ms var(--w-ease);
+  }
+
+  .tt-fibre[data-live] {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px var(--w-accent));
+  }
+}
+
+/* ------------------------------------------------------------------
+   Ползунок рабочих мест.
+   ------------------------------------------------------------------ */
+
+.tt-range {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 1.5rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tt-range::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--w-line);
+}
+
+.tt-range::-moz-range-track {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--w-line);
+}
+
+.tt-range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: -0.65rem;
+  border-radius: 999px;
+  background: var(--w-accent);
+  border: 3px solid var(--w-surface);
+}
+
+.tt-range::-moz-range-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: var(--w-accent);
+  border: 3px solid var(--w-surface);
+}
+
+.tt-range:focus-visible::-webkit-slider-thumb,
+.tt-range:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--w-accent);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------
+   Схема сети: волокно зажигается по очереди, узлы проступают следом.
+   ------------------------------------------------------------------ */
+
+.tt-net .tt-fibre {
+  opacity: 0;
+}
+
+.tt-net[data-shown] .tt-fibre {
+  opacity: 0.35;
+  transition: opacity 560ms var(--w-ease);
+  transition-delay: calc(var(--tt-i, 0) * 70ms);
+}
+
+.tt-net[data-shown] .tt-fibre[data-live] {
+  opacity: 1;
+}
+
+.tt-net__km {
+  fill: var(--w-muted);
+  font-family: var(--w-figure);
+  font-size: 11px;
+  opacity: 0;
+}
+
+.tt-net[data-shown] .tt-net__km {
+  opacity: 0.55;
+  transition: opacity 500ms var(--w-ease);
+  transition-delay: calc(700ms + var(--tt-i, 0) * 40ms);
+}
+
+.tt-net__dot {
+  fill: var(--w-accent);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: 0.3;
+}
+
+.tt-net[data-shown] .tt-net__dot {
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity 380ms var(--w-ease),
+    scale 460ms var(--w-ease);
+  transition-delay: calc(240ms + var(--tt-i, 0) * 55ms);
+}
+
+.tt-net__node.is-on .tt-net__dot {
+  scale: 1.4;
+  filter: drop-shadow(0 0 8px var(--w-accent));
+}
+
+.tt-net__label {
+  fill: var(--w-ink);
+  font-family: var(--w-font);
+  font-size: 15px;
+  opacity: 0;
+}
+
+.tt-net[data-shown] .tt-net__label {
+  opacity: 0.8;
+  transition: opacity 420ms var(--w-ease);
+  transition-delay: calc(420ms + var(--tt-i, 0) * 55ms);
+}
+
+.tt-net__node.is-on .tt-net__label {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------
+   Схема ЦОД.
+   ------------------------------------------------------------------ */
+
+.tt-dc__room {
+  fill: none;
+  stroke: var(--w-line);
+  stroke-width: 0.6;
+}
+
+.tt-dc__rack {
+  fill: var(--w-accent);
+  opacity: 0.16;
+}
+
+.tt-dc__bus {
+  fill: none;
+  stroke: var(--w-accent);
+  stroke-width: 0.5;
+  opacity: 0.35;
+  stroke-dasharray: 2 2;
+}
+
+.tt-dc__dot {
+  fill: var(--w-accent);
+}
+
+.tt-dc__halo {
+  fill: var(--w-accent);
+  opacity: 0.12;
+  transition: opacity 260ms var(--w-ease);
+}
+
+.tt-dc__node.is-on .tt-dc__halo {
+  opacity: 0.32;
+}
+
+.tt-dc__node.is-on .tt-dc__dot {
+  filter: drop-shadow(0 0 2px var(--w-accent));
+}
+
+/* ------------------------------------------------------------------
+   Движение.
+   ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-net .tt-fibre,
+  .tt-net[data-shown] .tt-fibre,
+  .tt-net__km,
+  .tt-net[data-shown] .tt-net__km,
+  .tt-net__dot,
+  .tt-net[data-shown] .tt-net__dot,
+  .tt-net__label,
+  .tt-net[data-shown] .tt-net__label {
+    opacity: 1;
+    scale: 1;
+    transition: none;
+  }
+
+  .tt-net .tt-fibre {
+    opacity: 0.5;
+  }
+}
