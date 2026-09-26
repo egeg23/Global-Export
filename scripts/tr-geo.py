@@ -2,15 +2,16 @@
 """
 Карта присутствия Tranio: настоящие контуры стран в кадре региона.
 
-Прежняя карта была всем миром в точку — красиво, но бесполезно: Тихий
-океан и обе Америки занимали половину кадра, а Кипр, на котором у
-компании сделки, был меньше точки. И подсветить страну на точечном поле
-нельзя: точки не знают, в какой они стране.
+Карта школьная: все страны кадра нарисованы полигонами из Natural Earth
+(пакет world-atlas, 1:50 млн) и обведены по границам, как в атласе. Так
+она и читается — сразу видно, где Турция, а где Иран, — и любую страну
+можно зажечь по контуру, чего на точечном поле сделать нельзя: точки не
+знают, в какой они стране.
 
-Поэтому здесь два слоя. Страны, где компания работает, — настоящие
-полигоны из Natural Earth (пакет world-atlas, 1:50 млн): их можно
-залить, обвести и зажечь по наведению. Вся остальная суша в кадре —
-точечное поле, как было: фон, а не предмет разговора.
+Слоя два. Страны присутствия идут отдельным списком и с мелким допуском
+упрощения: их зажигают, и силуэт должен быть точным. Все прочие страны
+кадра — фон: тот же контур, но упрощён грубее, потому что по нему никто
+не кликает.
 
 Кадр — не весь мир, а прямоугольник, в который попадают все офисы и все
 направления каталога, кроме США. Компания сама пишет «10 офисов в
@@ -50,11 +51,6 @@ KY = 10.0
 VIEW_W = round((LON1 - LON0) * KX, 1)
 VIEW_H = round((LAT1 - LAT0) * KY, 1)
 
-# --- точечный фон ----------------------------------------------------
-
-STEP = 1.5  # градусов на точку
-DOT = 3.4  # радиус точки в единицах кадра, он же половина толщины штриха
-
 # --- страны ----------------------------------------------------------
 
 # id в макете → имя в Natural Earth. США в кадр не входят: офиса там нет,
@@ -91,8 +87,14 @@ MIN_AREA = 6.0
 
 # Допуск упрощения контура в единицах кадра. Кадр шириной 1143 единицы
 # на экране редко шире полутора тысяч точек, поэтому полторы единицы —
-# это примерно один экранный пиксель.
+# это примерно один экранный пиксель. У фоновых стран допуск грубее: по
+# ним не кликают, а весят они вместе больше всех.
 EPS = 1.5
+EPS_WORLD = 3.2
+
+# Фоновая страна меньше этой площади в кадр не попадает: в атласе её
+# всё равно не подписать, а путь она раздувает.
+MIN_WORLD = 40.0
 
 
 # --- топология -------------------------------------------------------
@@ -233,8 +235,8 @@ def path_of(rings: list[list[tuple[float, float]]]) -> str:
     return "".join(parts)
 
 
-def shape(geom: dict, arcs: list) -> tuple[str, list[list[tuple[float, float]]]]:
-    """Путь страны в кадре и её кольца в единицах кадра — для маски."""
+def shape(geom: dict, arcs: list, limit: float, floor: float) -> str:
+    """Путь страны в кадре: `limit` — допуск упрощения, `floor` — отсев."""
     kept: list[list[tuple[float, float]]] = []
     for poly in polygons(geom, arcs):
         for points in poly:
@@ -243,61 +245,14 @@ def shape(geom: dict, arcs: list) -> tuple[str, list[list[tuple[float, float]]]]
                 continue
             flat = [project(lat, lon) for lon, lat in cut]
             size = area(flat)
-            if size < MIN_AREA:
+            if size < floor:
                 continue
             # Допуск по размеру кольца: один и тот же на Россию и на Кипр
             # оставляет от Кипра пятиугольник. Крупному контуру полторы
             # единицы незаметны, мелкому — это весь остров.
-            eps = min(EPS, max(0.25, size**0.5 / 14))
+            eps = min(limit, max(0.25, size**0.5 / 14))
             kept.append(thin(flat, eps))
-    return path_of(kept), kept
-
-
-# --- точечный фон ----------------------------------------------------
-
-
-def backdrop(land: list[list[tuple[float, float]]], ours: list[list[tuple[float, float]]]) -> str:
-    """Точки по всей суше кадра, кроме стран, которые рисуются заливкой."""
-    cols = int((LON1 - LON0) / STEP)
-    rows = int((LAT1 - LAT0) / STEP)
-    # Растр в четыре раза мельче сетки: так точка ставится по тому, есть
-    # ли земля в самой ячейке, а не по одному её углу.
-    fine = 4
-    size = (cols * fine, rows * fine)
-
-    def draw(rings: list[list[tuple[float, float]]]) -> Image.Image:
-        im = Image.new("1", size, 0)
-        pen = ImageDraw.Draw(im)
-        for points in rings:
-            pen.polygon(
-                [(x / VIEW_W * size[0], y / VIEW_H * size[1]) for x, y in points],
-                fill=1,
-            )
-        return im
-
-    land_px = draw(land).load()
-    ours_px = draw(ours).load()
-
-    dots = []
-    for row in range(rows):
-        for col in range(cols):
-            hit = False
-            for dy in range(fine):
-                for dx in range(fine):
-                    x, y = col * fine + dx, row * fine + dy
-                    if land_px[x, y] and not ours_px[x, y]:
-                        hit = True
-                        break
-                if hit:
-                    break
-            if not hit:
-                continue
-            cx = (col + 0.5) / cols * VIEW_W
-            cy = (row + 0.5) / rows * VIEW_H
-            # Точка — подсегмент нулевой длины с круглым торцом: «M x y h0».
-            # Кружок дугами занимал бы втрое больше места, а рисуется так же.
-            dots.append(f"M{cx:.0f} {cy:.0f}h0")
-    return "".join(dots)
+    return path_of(kept)
 
 
 # --- сборка ----------------------------------------------------------
@@ -309,35 +264,32 @@ def main() -> None:
 
     topo = json.loads((src / "countries-50m.json").read_text())
     arcs = decode_arcs(topo)
-    by_name = {g["properties"]["name"]: g for g in topo["objects"]["countries"]["geometries"]}
+    geometries = topo["objects"]["countries"]["geometries"]
+    by_name = {g["properties"]["name"]: g for g in geometries}
 
     shapes: dict[str, str] = {}
-    ours: list[list[tuple[float, float]]] = []
     for key, name in COUNTRIES.items():
         geom = by_name.get(name)
         if geom is None:
             sys.exit(f"нет страны {name!r} в наборе")
-        d, rings = shape(geom, arcs)
+        d = shape(geom, arcs, EPS, MIN_AREA)
         if not d:
             sys.exit(f"страна {name!r} не попала в кадр")
         shapes[key] = d
-        ours.extend(rings)
 
-    land_topo = json.loads((src / "land-50m.json").read_text())
-    land_arcs = decode_arcs(land_topo)
-    land_rings: list[list[tuple[float, float]]] = []
-    for poly in polygons(land_topo["objects"]["land"], land_arcs):
-        for points in poly:
-            cut = frame(points)
-            if len(cut) < 3:
-                continue
-            land_rings.append([project(lat, lon) for lon, lat in cut])
-
-    dots = backdrop(land_rings, ours)
+    # Фон: все прочие страны, попавшие в кадр хотя бы заметным куском.
+    ours = set(COUNTRIES.values())
+    world: list[str] = []
+    for geom in geometries:
+        if geom["properties"]["name"] in ours:
+            continue
+        d = shape(geom, arcs, EPS_WORLD, MIN_WORLD)
+        if d:
+            world.append(d)
 
     body = [
         "/**",
-        " * Кадр присутствия Tranio: контуры стран и точечный фон.",
+        " * Кадр присутствия Tranio: контуры стран.",
         " *",
         " * Собрано скриптом scripts/tr-geo.py из набора world-atlas",
         " * (Natural Earth, 1:50 млн) — руками эти пути не пишут.",
@@ -357,16 +309,15 @@ def main() -> None:
         "  };",
         "}",
         "",
-        "/** Радиус точки фона в единицах кадра. */",
-        "export const DOT = %s;" % DOT,
-        "",
-        "/** Вся прочая суша кадра — точками, как фон. */",
-        "export const BACKDROP =",
-        '  "%s";' % dots,
-        "",
-        "/** Контуры стран, где компания работает. */",
-        "export const SHAPES: Record<string, string> = {",
+        "/** Прочие страны кадра: фон карты, по ним не кликают. */",
+        "export const WORLD: string[] = [",
     ]
+    for d in world:
+        body.append('  "%s",' % d)
+    body.append("];")
+    body.append("")
+    body.append("/** Контуры стран, где компания работает. */")
+    body.append("export const SHAPES: Record<string, string> = {")
     for key, d in shapes.items():
         body.append('  %s:\n    "%s",' % (key, d))
     body.append("};")
@@ -374,7 +325,7 @@ def main() -> None:
 
     out.write_text("\n".join(body))
     size = out.stat().st_size
-    print(f"{out}: {size // 1024} КБ, стран {len(shapes)}, точек фона {dots.count('M')}")
+    print(f"{out}: {size // 1024} КБ, присутствие {len(shapes)}, фон {len(world)}")
 
 
 if __name__ == "__main__":

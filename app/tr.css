@@ -54,6 +54,10 @@
   --w-shadow: 0 34px 80px -50px rgba(14, 23, 38, 0.4);
   --tr-brand: #0358b2;
   --tr-veil: rgba(14, 23, 38, 0.55);
+  --tr-sea: #dfe7f1;
+  --tr-land: #ced7e3;
+  --tr-border: #f6f8fb;
+  --tr-dim: #0e1726;
 }
 
 /* ---- Палитра 2: «Средиземноморье». Сделка на юге, тёплая бумага. ---- */
@@ -72,6 +76,10 @@
   --w-shadow: 0 34px 80px -50px rgba(23, 37, 31, 0.42);
   --tr-brand: #129a7e;
   --tr-veil: rgba(23, 37, 31, 0.52);
+  --tr-sea: #e4ece5;
+  --tr-land: #ded8c9;
+  --tr-border: #fffdf8;
+  --tr-dim: #17251f;
 }
 
 /* ---- Палитра 3: «Ночной терминал». Тёмная, для показа с проектора. ---- */
@@ -91,6 +99,10 @@
   --w-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.85);
   --tr-brand: #4a90e2;
   --tr-veil: rgba(5, 8, 12, 0.66);
+  --tr-sea: #0f1723;
+  --tr-land: #1e2836;
+  --tr-border: #2b3648;
+  --tr-dim: #05080c;
   color-scheme: dark;
 }
 
@@ -212,41 +224,48 @@
 /* ------------------------------------------------------------------
    Карта присутствия.
 
-   Два слоя. Фон — точечная суша: один путь, где каждая точка это
-   подсегмент нулевой длины с круглым торцом, поэтому весь фон красится
-   одним stroke и меняет цвет вместе с палитрой. Поверх — контуры стран,
-   где компания работает: их можно зажечь по одному.
+   Карта школьная: море, суша, границы по странам. Краска — токенами, по
+   три оттенка на палитру, поэтому одна и та же карта работает и на
+   белой бумаге, и на тёмном экране проектора.
+
+   Выбор страны устроен как указка на уроке: поверх карты ложится вуаль
+   в 24%, а выбранная страна перерисовывается над ней — значит, она не
+   тускнеет вместе с остальными, а остаётся в полном цвете. По её
+   контуру бежит светящийся штрих.
 
    Появление держит CSS: на <svg> приходит data-shown, дальше очередь
    раздаётся задержками из --tr-i. Порядок стран в разметке идёт с
    запада на восток, поэтому карта проявляется волной слева направо.
    ------------------------------------------------------------------ */
 
-.tr-geo__dots {
-  fill: none;
-  stroke: var(--w-muted);
-  stroke-linecap: round;
+.tr-geo__sea {
+  fill: var(--tr-sea);
+}
+
+.tr-geo__land {
+  fill: var(--tr-land);
+  stroke: var(--tr-border);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
   opacity: 0;
 }
 
-.tr-geo[data-shown] .tr-geo__dots {
-  opacity: 0.26;
-  transition: opacity 900ms var(--w-ease);
+.tr-geo[data-shown] .tr-geo__land {
+  opacity: 1;
+  transition: opacity 700ms var(--w-ease);
 }
 
 .tr-geo__shape {
   fill: var(--w-accent);
-  fill-opacity: 0.16;
+  fill-opacity: 0.28;
   stroke: var(--w-accent);
-  stroke-width: 1.1;
-  stroke-opacity: 0.5;
+  stroke-width: 0.9;
+  stroke-opacity: 0.55;
+  stroke-linejoin: round;
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
   scale: 0.94;
-  transition:
-    fill-opacity 260ms var(--w-ease),
-    stroke-opacity 260ms var(--w-ease);
 }
 
 .tr-geo[data-shown] .tr-geo__shape {
@@ -254,10 +273,8 @@
   scale: 1;
   transition:
     opacity 520ms var(--w-ease),
-    scale 620ms var(--w-ease),
-    fill-opacity 260ms var(--w-ease),
-    stroke-opacity 260ms var(--w-ease);
-  transition-delay: calc(var(--tr-i, 0) * 55ms);
+    scale 620ms var(--w-ease);
+  transition-delay: calc(300ms + var(--tr-i, 0) * 45ms);
 }
 
 /* Перо шире контура и без заливки: увеличивает цель, ничего не рисуя. */
@@ -269,15 +286,99 @@
   outline: none;
 }
 
-.tr-geo__place.is-on .tr-geo__shape {
-  fill-opacity: 0.55;
-  stroke-opacity: 1;
-  stroke-width: 1.6;
-}
-
 .tr-geo__hit:focus-visible {
   stroke: var(--w-accent);
   stroke-width: 3;
+}
+
+/* ---- Вуаль и выбранная страна ---- */
+
+.tr-geo__veil {
+  fill: var(--tr-dim);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 340ms var(--w-ease);
+}
+
+.tr-geo.is-picking .tr-geo__veil {
+  opacity: 0.24;
+}
+
+.tr-geo__chosen {
+  pointer-events: none;
+}
+
+.tr-geo__chosen-fill {
+  fill: var(--w-accent);
+  fill-opacity: 0.5;
+  animation: tr-chosen 420ms var(--w-ease);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.tr-geo__chosen-line {
+  fill: none;
+  stroke: var(--w-accent);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  animation: tr-chosen 420ms var(--w-ease);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes tr-chosen {
+  from {
+    opacity: 0;
+    scale: 1.04;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* Штрих бежит по контуру. pathLength=100 приводит все периметры к одной
+   мере, поэтому одна анимация одинаково идёт и по России, и по Кипру.
+   Перо тонкое: на Греции широкое сливалось в белое пятно и съедало
+   форму страны, ради которой всё и затевалось. */
+.tr-geo__chosen-run {
+  fill: none;
+  stroke: var(--w-surface);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-opacity: 0.9;
+  stroke-dasharray: 9 91;
+  animation: tr-trace 2.4s linear infinite;
+}
+
+@keyframes tr-trace {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Кольцо-указка вокруг мелкой страны: медленно вращается, чтобы его
+   заметили, и не спорит с контуром — штриховое и тонкое. */
+.tr-geo__ring {
+  fill: none;
+  stroke: var(--w-accent);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 9;
+  opacity: 0.8;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation:
+    tr-chosen 420ms var(--w-ease),
+    tr-spin 14s linear infinite;
+}
+
+@keyframes tr-spin {
+  to {
+    rotate: 360deg;
+  }
 }
 
 /* ---- Офисы ---- */
@@ -299,7 +400,7 @@
   transition:
     opacity 380ms var(--w-ease),
     scale 520ms var(--w-ease);
-  transition-delay: calc(900ms + var(--tr-i, 0) * 80ms);
+  transition-delay: calc(1100ms + var(--tr-i, 0) * 80ms);
 }
 
 .tr-geo__pin.is-on .tr-geo__dot {
@@ -319,7 +420,7 @@
 
 .tr-geo[data-shown] .tr-geo__ping {
   animation: tr-ping 3.4s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
-  animation-delay: calc(1200ms + var(--tr-i, 0) * 260ms);
+  animation-delay: calc(1400ms + var(--tr-i, 0) * 260ms);
 }
 
 @keyframes tr-ping {
@@ -349,13 +450,7 @@
   stroke: var(--w-surface);
   stroke-width: 4;
   stroke-linejoin: round;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 240ms var(--w-ease);
-}
-
-.tr-geo__pin.is-on .tr-geo__city {
-  opacity: 1;
 }
 
 /* ------------------------------------------------------------------
@@ -363,12 +458,8 @@
    ------------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
-  .tr-geo__dots,
-  .tr-geo[data-shown] .tr-geo__dots {
-    opacity: 0.26;
-    transition: none;
-  }
-
+  .tr-geo__land,
+  .tr-geo[data-shown] .tr-geo__land,
   .tr-geo__shape,
   .tr-geo[data-shown] .tr-geo__shape,
   .tr-geo__dot,
@@ -378,9 +469,23 @@
     transition: none;
   }
 
-  /* Подсветку оставляем: это не украшение, а ответ на действие. */
-  .tr-geo__place.is-on .tr-geo__shape {
-    transition: none;
+  /* Вуаль и заливка выбранной страны остаются: это не украшение, а
+     ответ на действие. Уходит только движение — проявление и бегущий
+     по контуру штрих, вместо него контур просто горит. */
+  .tr-geo__chosen-fill,
+  .tr-geo__chosen-line {
+    animation: none;
+  }
+
+  .tr-geo__chosen-run {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-width: 1.4;
+    opacity: 0.6;
+  }
+
+  .tr-geo__ring {
+    animation: none;
   }
 
   .tr-geo__pin.is-on .tr-geo__dot {

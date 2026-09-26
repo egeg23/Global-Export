@@ -24,6 +24,8 @@ export type Place = {
   offices: Office[];
   /** Карточка каталога, если направление в нём есть. */
   country?: Country;
+  /** Габариты контура в кадре: по ним ставится кольцо-указка. */
+  box: { x: number; y: number; w: number; h: number };
 };
 
 /** Страны без каталога: офис есть, направления в списке нет. */
@@ -48,6 +50,7 @@ export const places: Place[] = Object.keys(SHAPES)
       d: SHAPES[id],
       offices: byCountry.get(id) ?? [],
       country,
+      box: bounds(SHAPES[id]),
     };
   })
   // Слева направо: так же идёт и появление стран на карте, и порядок
@@ -56,12 +59,24 @@ export const places: Place[] = Object.keys(SHAPES)
 
 /** Левый край контура: по нему страны выстраиваются с запада на восток. */
 function left(d: string): number {
-  let min = Number.POSITIVE_INFINITY;
-  for (const match of d.matchAll(/[ML](-?\d+(?:\.\d+)?) /g)) {
+  return bounds(d).x;
+}
+
+/** Габариты пути: разбор координат из строки, без DOM и без браузера. */
+function bounds(d: string): { x: number; y: number; w: number; h: number } {
+  let x0 = Number.POSITIVE_INFINITY;
+  let y0 = Number.POSITIVE_INFINITY;
+  let x1 = Number.NEGATIVE_INFINITY;
+  let y1 = Number.NEGATIVE_INFINITY;
+  for (const match of d.matchAll(/[ML](-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g)) {
     const x = Number(match[1]);
-    if (x < min) min = x;
+    const y = Number(match[2]);
+    if (x < x0) x0 = x;
+    if (y < y0) y0 = y;
+    if (x > x1) x1 = x;
+    if (y > y1) y1 = y;
   }
-  return min;
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
 }
 
 /** Страна по ключу — для подсветки из списка и из фишек. */

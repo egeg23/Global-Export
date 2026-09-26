@@ -3,18 +3,23 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { offices } from "@/content/tr/company";
-import { BACKDROP, DOT, VIEW_H, VIEW_W, project } from "@/content/tr/geo";
+import { VIEW_H, VIEW_W, WORLD, project } from "@/content/tr/geo";
 import { places, placeOf, shown } from "@/content/tr/presence";
 import { cn } from "@/lib/cn";
 
 /**
  * Карта присутствия во весь экран.
  *
- * Раньше здесь была карта всего мира в точку: половину кадра занимали
- * Тихий океан и обе Америки, где компании нет, а Кипр, где у неё сделки,
- * был меньше точки. Теперь кадр обрезан по региону присутствия —
- * от Португалии до Бали, — страны нарисованы настоящими контурами, и
- * любую можно зажечь наведением или пальцем.
+ * Карта школьная: море, суша, границы по странам — как в атласе. Кадр
+ * обрезан по региону присутствия, от Португалии до Бали, поэтому в нём
+ * нет половины пустого океана, ради которого раньше мельчала Европа.
+ *
+ * Выбор устроен как указка на уроке: поверх карты ложится вуаль в 24%,
+ * а выбранная страна перерисовывается над ней — она остаётся в полном
+ * цвете, пока остальные тускнеют, и по её контуру бежит штрих. Рисовать
+ * её поверх вуали, а не подсвечивать под ней, приходится потому, что
+ * затемнение и подсветка иначе складываются в грязный промежуточный
+ * тон.
  *
  * Разметка одна на все ширины, раскладка разная. На большом экране карта
  * лежит фоном во весь экран, а заголовок и карточка плавают поверх неё в
@@ -92,15 +97,26 @@ export function Presence() {
           viewBox={`-26 -22 ${VIEW_W + 52} ${VIEW_H + 44}`}
           preserveAspectRatio="xMidYMid meet"
           data-shown={ready ? "" : undefined}
-          className="tr-geo absolute inset-0 h-full w-full"
+          className={cn(
+            "tr-geo absolute inset-0 h-full w-full",
+            activeId && "is-picking",
+          )}
           role="img"
           aria-label={`Карта присутствия: ${shown.offices} офисов и ${shown.directions} направлений от Португалии до Бали`}
         >
-          <path
-            d={BACKDROP}
-            className="tr-geo__dots"
-            style={{ strokeWidth: DOT * 2 } as React.CSSProperties}
+          <rect
+            x={-26}
+            y={-22}
+            width={VIEW_W + 52}
+            height={VIEW_H + 44}
+            className="tr-geo__sea"
           />
+
+          {/* Остальной мир в кадре: та же карта, только по нему не
+              кликают. Один путь на страну, границы — обводкой. */}
+          {WORLD.map((d) => (
+            <path key={d.slice(0, 24)} d={d} className="tr-geo__land" />
+          ))}
 
           {places.map((place, index) => {
             const on = activeId === place.id;
@@ -168,12 +184,58 @@ export function Presence() {
                   r="6"
                   className="tr-geo__dot"
                 />
-                <text x={point.x} y={point.y - 16} className="tr-geo__city">
-                  {office.city}
-                </text>
               </g>
             );
           })}
+
+          {/* Вуаль ложится поверх всей карты, но не ловит нажатия:
+              страны под ней по-прежнему кликаются. */}
+          <rect
+            x={-26}
+            y={-22}
+            width={VIEW_W + 52}
+            height={VIEW_H + 44}
+            className="tr-geo__veil"
+          />
+
+          {/* Выбранная страна — поверх вуали, поэтому в полном цвете.
+              key на группе перезапускает появление при смене выбора. */}
+          {active ? (
+            <g key={active.id} className="tr-geo__chosen">
+              {/* Мелкую страну на карте размером в экран глазами не
+                  сразу найдёшь, поэтому у Кипра, Черногории и Израиля
+                  вокруг контура встаёт кольцо — указка. Большим оно ни к
+                  чему: их и так видно. */}
+              {Math.max(active.box.w, active.box.h) < 90 ? (
+                <circle
+                  cx={active.box.x + active.box.w / 2}
+                  cy={active.box.y + active.box.h / 2}
+                  r={Math.max(active.box.w, active.box.h) / 2 + 22}
+                  className="tr-geo__ring"
+                />
+              ) : null}
+              <path d={active.d} className="tr-geo__chosen-fill" />
+              <path d={active.d} className="tr-geo__chosen-line" />
+              <path d={active.d} pathLength={100} className="tr-geo__chosen-run" />
+              {active.offices.map((office) => {
+                const point = project(office.lat, office.lon);
+                return (
+                  <g key={office.id}>
+                    <circle
+                      cx={point.x}
+                      cy={point.y}
+                      r="6"
+                      className="tr-geo__dot"
+                      style={{ opacity: 1, scale: "1.45" } as React.CSSProperties}
+                    />
+                    <text x={point.x} y={point.y - 16} className="tr-geo__city">
+                      {office.city}
+                    </text>
+                  </g>
+                );
+              })}
+            </g>
+          ) : null}
         </svg>
       </div>
 
