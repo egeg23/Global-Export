@@ -3,7 +3,7 @@ import { Offer } from "@/components/showcase/offer";
 import { Capital, Chapter, Contacts, Footer, Header, Analytics } from "@/components/tr/sections";
 import { trOffer } from "@/content/tr/offer";
 import { Hero } from "@/components/tr/hero";
-import { OfficeMap } from "@/components/tr/map";
+import { Presence } from "@/components/tr/presence";
 import { Permits } from "@/components/tr/permits";
 import { Search } from "@/components/tr/search";
 import { Strategies } from "@/components/tr/strategies";
@@ -57,19 +57,10 @@ export default function TranioPage() {
           <Strategies />
         </Chapter>
 
-        <Chapter
-          id="map"
-          number="03"
-          title={
-            <>
-              Десять офисов, <span className="text-[var(--w-accent)]">две с половиной тысячи</span>{" "}
-              сделок
-            </>
-          }
-          lead="Присутствие на карте, а не строкой в подвале: города стоят на своих настоящих координатах, дуги идут от Москвы, откуда мы родом."
-        >
-          <OfficeMap />
-        </Chapter>
+        {/* Карта — не блок внутри главы, а глава целиком: на ней и
+            заголовок, и карточка выбранной страны. Поэтому Chapter здесь
+            не нужен, разметку раздела компонент держит сам. */}
+        <Presence />
 
         <Chapter
           id="permits"

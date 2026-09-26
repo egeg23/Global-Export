@@ -82,22 +82,109 @@ export const nav = [
 ];
 
 /**
- * Офисы. Координаты — доли по карте мира в экваториальной проекции,
- * посчитанные из широты и долготы города: x = (lon + 180) / 360,
- * y = (90 − lat) / 180. Города взяты из их же фразы «10 офисов в
- * Евразии» и списка стран присутствия.
+ * Офисы.
+ *
+ * Список и адреса — со страницы контактов tranio.ru, снято 26.09.2026.
+ * Раньше здесь стояли десять городов, собранных из фразы «10 офисов в
+ * Евразии» и списка стран присутствия: половина угадана неверно. Лиссабона
+ * и Лимасола у компании нет, зато есть Брянск, Алматы и Торревьеха.
+ *
+ * Координаты городские, а не по подъезду: на карте страны офис — точка в
+ * пять пикселей, и уточнять её до дома нечем и незачем.
+ *
+ * `country` — ключ страны в content/tr/geo.ts и в каталоге направлений,
+ * по нему карта связывает офис, контур и карточку.
  */
-export const offices = [
-  { id: "moscow", city: "Москва", country: "Россия", lat: 55.75, lon: 37.62 },
-  { id: "athens", city: "Афины", country: "Греция", lat: 37.98, lon: 23.73 },
-  { id: "limassol", city: "Лимасол", country: "Кипр", lat: 34.71, lon: 33.02 },
-  { id: "dubai", city: "Дубай", country: "ОАЭ", lat: 25.2, lon: 55.27 },
-  { id: "istanbul", city: "Стамбул", country: "Турция", lat: 41.01, lon: 28.98 },
-  { id: "barcelona", city: "Барселона", country: "Испания", lat: 41.39, lon: 2.17 },
-  { id: "lisbon", city: "Лиссабон", country: "Португалия", lat: 38.72, lon: -9.14 },
-  { id: "berlin", city: "Берлин", country: "Германия", lat: 52.52, lon: 13.4 },
-  { id: "phuket", city: "Пхукет", country: "Таиланд", lat: 7.88, lon: 98.39 },
-  { id: "bali", city: "Бали", country: "Индонезия", lat: -8.41, lon: 115.19 },
+export type Office = {
+  id: string;
+  city: string;
+  country: string;
+  address: string;
+  lat: number;
+  lon: number;
+};
+
+export const offices: Office[] = [
+  {
+    id: "moscow",
+    city: "Москва",
+    country: "russia",
+    address: "Сретенский бульвар, 5, БЦ «Ключ», 107045",
+    lat: 55.767,
+    lon: 37.635,
+  },
+  {
+    id: "bryansk",
+    city: "Брянск",
+    country: "russia",
+    address: "Улица Институтская, 15, офис 217, 241035",
+    lat: 53.252,
+    lon: 34.372,
+  },
+  {
+    id: "berlin",
+    city: "Берлин",
+    country: "germany",
+    address: "Schlüterstraße 38, 10629",
+    lat: 52.503,
+    lon: 13.32,
+  },
+  {
+    id: "torrevieja",
+    city: "Торревьеха",
+    country: "spain",
+    address: "Calle del Palangre, 14, 03182, Аликанте",
+    lat: 37.979,
+    lon: -0.682,
+  },
+  {
+    id: "athens",
+    city: "Афины",
+    country: "greece",
+    address: "Frynonos, 33, 11632",
+    lat: 37.967,
+    lon: 23.75,
+  },
+  {
+    id: "istanbul",
+    city: "Стамбул",
+    country: "turkey",
+    address: "Fulya, Büyükdere Cd. No:76, 34394",
+    lat: 41.066,
+    lon: 29.006,
+  },
+  {
+    id: "dubai",
+    city: "Дубай",
+    country: "uae",
+    address: "Al Fattan Downtown, 32d St, 103–104, Al Satwa",
+    lat: 25.229,
+    lon: 55.262,
+  },
+  {
+    id: "almaty",
+    city: "Алматы",
+    country: "kazakhstan",
+    address: "Наурызбай батыра, 68, 050000",
+    lat: 43.257,
+    lon: 76.929,
+  },
+  {
+    id: "phuket",
+    city: "Пхукет",
+    country: "thailand",
+    address: "Lagoon Plaza, 21/6 Lagoon Rd, Cherngtalay, Thalang, 83110",
+    lat: 8.009,
+    lon: 98.298,
+  },
+  {
+    id: "bali",
+    city: "Бали",
+    country: "indonesia",
+    address: "67 Jl Bypass Ngurah Rai, Br Kerthayasa, Kuta, Badung, 80361",
+    lat: -8.717,
+    lon: 115.179,
+  },
 ];
 
 /** Заголовки аналитики — с их главной, вместе с датами. */

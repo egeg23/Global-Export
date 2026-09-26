@@ -210,65 +210,152 @@
 }
 
 /* ------------------------------------------------------------------
-   Карта офисов.
+   Карта присутствия.
 
-   Суша — один путь, красится currentColor. Дуги и точки ждут, пока карта
-   доедет до кадра: тогда на <svg> появляется data-shown, и очередь
-   раздаётся задержками из --tr-i. Рисовать дугу линией длиной 1000
-   единиц нельзя — у каждой своя длина, поэтому появление сделано
-   прозрачностью, а не штрихом.
+   Два слоя. Фон — точечная суша: один путь, где каждая точка это
+   подсегмент нулевой длины с круглым торцом, поэтому весь фон красится
+   одним stroke и меняет цвет вместе с палитрой. Поверх — контуры стран,
+   где компания работает: их можно зажечь по одному.
+
+   Появление держит CSS: на <svg> приходит data-shown, дальше очередь
+   раздаётся задержками из --tr-i. Порядок стран в разметке идёт с
+   запада на восток, поэтому карта проявляется волной слева направо.
    ------------------------------------------------------------------ */
 
-.tr-map__land {
-  fill: var(--w-muted);
-  opacity: 0.32;
-}
-
-.tr-map__arc {
+.tr-geo__dots {
   fill: none;
-  stroke: var(--w-accent);
-  stroke-width: 1.6;
+  stroke: var(--w-muted);
   stroke-linecap: round;
   opacity: 0;
 }
 
-.tr-map[data-shown] .tr-map__arc {
-  opacity: 0.5;
+.tr-geo[data-shown] .tr-geo__dots {
+  opacity: 0.26;
   transition: opacity 900ms var(--w-ease);
-  transition-delay: calc(360ms + var(--tr-i, 0) * 110ms);
 }
 
-.tr-map__dot {
+.tr-geo__shape {
   fill: var(--w-accent);
+  fill-opacity: 0.16;
+  stroke: var(--w-accent);
+  stroke-width: 1.1;
+  stroke-opacity: 0.5;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: 0.94;
+  transition:
+    fill-opacity 260ms var(--w-ease),
+    stroke-opacity 260ms var(--w-ease);
+}
+
+.tr-geo[data-shown] .tr-geo__shape {
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity 520ms var(--w-ease),
+    scale 620ms var(--w-ease),
+    fill-opacity 260ms var(--w-ease),
+    stroke-opacity 260ms var(--w-ease);
+  transition-delay: calc(var(--tr-i, 0) * 55ms);
+}
+
+/* Перо шире контура и без заливки: увеличивает цель, ничего не рисуя. */
+.tr-geo__hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 16;
+  cursor: pointer;
+  outline: none;
+}
+
+.tr-geo__place.is-on .tr-geo__shape {
+  fill-opacity: 0.55;
+  stroke-opacity: 1;
+  stroke-width: 1.6;
+}
+
+.tr-geo__hit:focus-visible {
+  stroke: var(--w-accent);
+  stroke-width: 3;
+}
+
+/* ---- Офисы ---- */
+
+.tr-geo__dot {
+  fill: var(--w-yield);
+  stroke: var(--w-surface);
+  stroke-width: 1.6;
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
   scale: 0.2;
+  cursor: pointer;
 }
 
-.tr-map[data-shown] .tr-map__dot {
+.tr-geo[data-shown] .tr-geo__dot {
   opacity: 1;
   scale: 1;
   transition:
-    opacity 420ms var(--w-ease),
+    opacity 380ms var(--w-ease),
     scale 520ms var(--w-ease);
-  transition-delay: calc(var(--tr-i, 0) * 90ms);
+  transition-delay: calc(900ms + var(--tr-i, 0) * 80ms);
 }
 
-.tr-map__halo {
-  fill: var(--w-accent);
+.tr-geo__pin.is-on .tr-geo__dot {
+  scale: 1.45;
+}
+
+/* Кольцо вокруг офиса: расходится и гаснет, чтобы точку было видно
+   раньше, чем читатель начнёт искать её глазами. */
+.tr-geo__ping {
+  fill: none;
+  stroke: var(--w-yield);
+  stroke-width: 1.4;
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-.tr-map__pin.is-on .tr-map__halo {
-  opacity: 0.22;
-  transition: opacity 260ms var(--w-ease);
+.tr-geo[data-shown] .tr-geo__ping {
+  animation: tr-ping 3.4s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+  animation-delay: calc(1200ms + var(--tr-i, 0) * 260ms);
 }
 
-.tr-map__pin.is-on .tr-map__dot {
-  scale: 1.35;
+@keyframes tr-ping {
+  0% {
+    scale: 0.7;
+    opacity: 0.5;
+  }
+  70% {
+    scale: 2.4;
+    opacity: 0;
+  }
+  100% {
+    scale: 2.4;
+    opacity: 0;
+  }
+}
+
+/* Название города держится у точки и появляется только у выбранной
+   страны: десять подписей разом налезают друг на друга. */
+.tr-geo__city {
+  fill: var(--w-ink);
+  font-family: var(--w-font);
+  font-size: 15px;
+  font-weight: 600;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--w-surface);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms var(--w-ease);
+}
+
+.tr-geo__pin.is-on .tr-geo__city {
+  opacity: 1;
 }
 
 /* ------------------------------------------------------------------
@@ -276,17 +363,32 @@
    ------------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
-  .tr-map__arc,
-  .tr-map[data-shown] .tr-map__arc {
-    opacity: 0.5;
+  .tr-geo__dots,
+  .tr-geo[data-shown] .tr-geo__dots {
+    opacity: 0.26;
     transition: none;
   }
 
-  .tr-map__dot,
-  .tr-map[data-shown] .tr-map__dot {
+  .tr-geo__shape,
+  .tr-geo[data-shown] .tr-geo__shape,
+  .tr-geo__dot,
+  .tr-geo[data-shown] .tr-geo__dot {
     opacity: 1;
     scale: 1;
     transition: none;
+  }
+
+  /* Подсветку оставляем: это не украшение, а ответ на действие. */
+  .tr-geo__place.is-on .tr-geo__shape {
+    transition: none;
+  }
+
+  .tr-geo__pin.is-on .tr-geo__dot {
+    scale: 1.45;
+  }
+
+  .tr-geo__ping {
+    display: none;
   }
 
   .tr-bar {
