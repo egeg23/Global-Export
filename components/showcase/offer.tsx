@@ -164,7 +164,7 @@ export function Offer({
             голоса на одно событие — это шум. */}
         <div
           aria-hidden
-          className="sticky top-16 z-20 flex items-baseline justify-between gap-3 rounded-[var(--w-radius)] border border-[var(--w-line)] bg-[var(--w-surface)] px-4 py-2.5 shadow-[var(--w-shadow)] lg:hidden"
+          className="sticky top-[4.5rem] z-20 flex items-baseline justify-between gap-3 rounded-[var(--w-radius)] border border-[var(--w-line)] bg-[var(--w-surface)] px-4 py-2.5 shadow-[var(--w-shadow)] lg:hidden"
         >
           <span className="text-[0.66rem] uppercase tracking-[0.2em] text-[var(--w-accent)]">
             {title}
