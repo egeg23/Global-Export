@@ -1,3 +1,4 @@
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Offer } from "@/components/showcase/offer";
 import { Capital, Chapter, Contacts, Footer, Header, Analytics } from "@/components/tr/sections";
 import { trOffer } from "@/content/tr/offer";
@@ -22,6 +23,7 @@ import { Strategies } from "@/components/tr/strategies";
 export default function TranioPage() {
   return (
     <>
+      <DevuzIntro project="tr" />
       <Header />
 
       <main>

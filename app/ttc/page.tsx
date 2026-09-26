@@ -1,5 +1,6 @@
 "use client";
 
+import { DevuzIntro } from "@/components/brand/devuz-intro";
 import { Offer } from "@/components/showcase/offer";
 import { Builder } from "@/components/tt/builder";
 import { DataCenter } from "@/components/tt/datacenter";
@@ -24,6 +25,7 @@ import { ttOffer } from "@/content/tt/offer";
 export default function TtcPage() {
   return (
     <>
+      <DevuzIntro project="tt" />
       <Header />
 
       <main>

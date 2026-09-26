@@ -7,6 +7,7 @@ import { PaletteSwitch } from "@/components/showcase/palette";
 import { useStage } from "@/components/showcase/depth";
 import { company, stats, topProperties } from "@/content/tr/company";
 import { trPalettes } from "@/content/tr/palettes";
+import { whenDevuzIntroDone } from "@/lib/brand/intro";
 
 /**
  * Первый экран: обложка меморандума.
@@ -225,14 +226,21 @@ function Count({ to, delay = 0 }: { to: number; delay?: number }) {
     };
 
     let settle = 0;
+    let unhook = () => {};
+    // Барабаны ждут заставку студии. Пустить их сразу — значит открутить
+    // всё под её слоем: кадр откроется, а цифры уже стоят на месте, и
+    // смотреть будет не на что.
     const onLoad = () => {
-      settle = window.setTimeout(watch, 460);
+      unhook = whenDevuzIntroDone(() => {
+        settle = window.setTimeout(watch, 460);
+      });
     };
     if (document.readyState === "complete") onLoad();
     else window.addEventListener("load", onLoad, { once: true });
 
     return () => {
       window.removeEventListener("load", onLoad);
+      unhook();
       window.clearTimeout(settle);
       cancelAnimationFrame(frame);
       observer?.disconnect();

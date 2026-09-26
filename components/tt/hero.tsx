@@ -8,6 +8,7 @@ import { useLang, useT } from "@/components/tt/lang";
 import { company, stats } from "@/content/tt/company";
 import { KZ_H, KZ_W, links } from "@/content/tt/kzmap";
 import { ttPalettesFor } from "@/content/tt/palettes";
+import { whenDevuzIntroDone } from "@/lib/brand/intro";
 
 /**
  * Первый экран: пульт.
@@ -198,14 +199,21 @@ function Count({ to, delay = 0 }: { to: number; delay?: number }) {
     };
 
     let settle = 0;
+    let unhook = () => {};
+    // Барабаны ждут заставку студии. Пустить их сразу — значит открутить
+    // всё под её слоем: кадр откроется, а цифры уже стоят на месте, и
+    // смотреть будет не на что.
     const onLoad = () => {
-      settle = window.setTimeout(watch, 460);
+      unhook = whenDevuzIntroDone(() => {
+        settle = window.setTimeout(watch, 460);
+      });
     };
     if (document.readyState === "complete") onLoad();
     else window.addEventListener("load", onLoad, { once: true });
 
     return () => {
       window.removeEventListener("load", onLoad);
+      unhook();
       window.clearTimeout(settle);
       cancelAnimationFrame(frame);
       observer?.disconnect();

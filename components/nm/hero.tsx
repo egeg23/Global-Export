@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { useStage } from "@/components/showcase/depth";
 import { company, contacts, stats } from "@/content/nm/company";
 import { cn } from "@/lib/cn";
+import { whenDevuzIntroDone } from "@/lib/brand/intro";
 
 /**
  * Глава первая: кто это и что они делают.
@@ -210,22 +211,21 @@ function Count({ to, delay = 0 }: { to: number; delay?: number }) {
     };
 
     let settle = 0;
-    if (document.readyState === "complete") {
-      settle = window.setTimeout(watch, 500);
-    } else {
-      const onLoad = () => {
+    let unhook = () => {};
+    // Барабаны ждут заставку студии. Пустить их сразу — значит открутить
+    // всё под её слоем: кадр откроется, а цифры уже стоят на месте, и
+    // смотреть будет не на что.
+    const onLoad = () => {
+      unhook = whenDevuzIntroDone(() => {
         settle = window.setTimeout(watch, 500);
-      };
-      window.addEventListener("load", onLoad, { once: true });
-      return () => {
-        window.removeEventListener("load", onLoad);
-        window.clearTimeout(settle);
-        cancelAnimationFrame(frame);
-        observer?.disconnect();
-      };
-    }
+      });
+    };
+    if (document.readyState === "complete") onLoad();
+    else window.addEventListener("load", onLoad, { once: true });
 
     return () => {
+      window.removeEventListener("load", onLoad);
+      unhook();
       window.clearTimeout(settle);
       cancelAnimationFrame(frame);
       observer?.disconnect();
