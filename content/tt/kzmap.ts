@@ -56,21 +56,72 @@ export type Link = {
   km: number;
   a: { x: number; y: number };
   b: { x: number; y: number };
+  /** Длина плеча в единицах схемы — по ней считается время пробега сигнала. */
+  len: number;
+  /** Сколько единиц схемы сигнал прошёл до начала этого плеча, считая от Астаны. */
+  lead: number;
 };
 
 /** Магистрали со схемы: координаты концов и настоящая длина. */
 export const links: Link[] = trunks.map(([from, to]) => {
   const one = byId.get(from)!;
   const two = byId.get(to)!;
+  const a = place(one.lat, one.lon);
+  const b = place(two.lat, two.lon);
   return {
     id: `${from}-${to}`,
     from,
     to,
     km: distance(one, two),
-    a: place(one.lat, one.lon),
-    b: place(two.lat, two.lon),
+    a,
+    b,
+    len: Math.hypot(b.x - a.x, b.y - a.y),
+    lead: 0,
   };
 });
+
+/**
+ * Сколько сигналу бежать от Астаны до каждого города.
+ *
+ * Плечи анимируются с постоянной скоростью, и если пустить их все разом,
+ * получится мигание. А так у каждого плеча своя фора: комета выходит из
+ * города ровно тогда, когда в него приходит предыдущая. Со стороны это
+ * читается как волна, которая расходится из столицы по магистралям.
+ *
+ * Обход в ширину по графу магистралей: длина в единицах схемы, а не в
+ * километрах, потому что бежит сигнал по нарисованной линии.
+ */
+const HUB = "astana";
+const reach = new Map<string, number>([[HUB, 0]]);
+const queue: string[] = [HUB];
+while (queue.length > 0) {
+  const city = queue.shift()!;
+  const done = reach.get(city)!;
+  for (const link of links) {
+    for (const [near, far] of [
+      [link.from, link.to],
+      [link.to, link.from],
+    ]) {
+      if (near !== city || reach.has(far)) continue;
+      reach.set(far, done + link.len);
+      queue.push(far);
+    }
+  }
+}
+
+for (const link of links) {
+  // Бежим от того конца, который ближе к Астане: так волна идёт наружу.
+  const fromHub = reach.get(link.from) ?? 0;
+  const toHub = reach.get(link.to) ?? 0;
+  if (toHub < fromHub) {
+    const { a, b, from, to } = link;
+    link.a = b;
+    link.b = a;
+    link.from = to;
+    link.to = from;
+  }
+  link.lead = Math.min(fromHub, toHub);
+}
 
 /** Сумма показанных плеч. Это не вся их сеть — у них около 15 000 км. */
 export const shownKm = links.reduce((sum, link) => sum + link.km, 0);

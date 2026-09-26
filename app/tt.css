@@ -200,8 +200,81 @@
   transition-delay: calc(var(--tt-i, 0) * 70ms);
 }
 
+/* Под бегущим сигналом волокно приглушено: если линия горит в полную
+   силу, комета по ней не читается — светится всё сразу. */
 .tt-net[data-shown] .tt-fibre[data-live] {
+  opacity: 0.6;
+  filter: drop-shadow(0 0 3px var(--w-accent));
+}
+
+/* ------------------------------------------------------------------
+   Сигнал по волокну.
+
+   Штрих бежит сдвигом пунктира: разрыв заведомо длиннее любого плеча,
+   поэтому на линии живёт ровно одна комета. Длина плеча, время пробега
+   и фора приходят из данных в переменных — иначе на длинной магистрали
+   сигнал полз бы, а на короткой стрелял.
+
+   Сдвиг идёт от длины штриха до минус длины плеча: штрих выходит из
+   города, проходит линию целиком и скрывается в следующем. Линии в
+   данных развёрнуты от Астаны наружу, поэтому и волна идёт оттуда.
+   ------------------------------------------------------------------ */
+
+.tt-net__pulse {
+  fill: none;
+  stroke: var(--w-accent);
+  --tt-comet: 34;
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-dasharray: var(--tt-comet) 4000;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px var(--w-accent));
+  pointer-events: none;
+}
+
+.tt-net[data-shown] .tt-net__pulse[data-live] {
   opacity: 1;
+  transition: opacity 500ms var(--w-ease);
+  animation: tt-run var(--tt-dur, 3s) linear var(--tt-delay, 0s) infinite;
+}
+
+@keyframes tt-run {
+  from {
+    stroke-dashoffset: 34;
+  }
+  to {
+    stroke-dashoffset: var(--tt-to, -300);
+  }
+}
+
+/* Кольцо узлового города: расходится и гаснет. */
+.tt-net__ping {
+  fill: none;
+  stroke: var(--w-accent);
+  stroke-width: 1.4;
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tt-net[data-shown] .tt-net__ping {
+  animation: tt-ping 3.6s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+@keyframes tt-ping {
+  0% {
+    scale: 1;
+    opacity: 0.55;
+  }
+  70% {
+    scale: 2.6;
+    opacity: 0;
+  }
+  100% {
+    scale: 2.6;
+    opacity: 0;
+  }
 }
 
 .tt-net__km {
@@ -318,5 +391,13 @@
 
   .tt-net .tt-fibre {
     opacity: 0.5;
+  }
+
+  /* Бегущий сигнал и кольцо узла — украшение, и при выключенном
+     движении их просто нет: замереть посреди линии было бы хуже, чем
+     не появляться вовсе. */
+  .tt-net__pulse,
+  .tt-net__ping {
+    display: none;
   }
 }

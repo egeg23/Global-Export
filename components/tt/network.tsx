@@ -22,7 +22,19 @@ import { cn } from "@/lib/cn";
  *
  * Волокно зажигается по очереди от Астаны, когда схема доезжает до
  * кадра: один наблюдатель, очередь держит CSS.
+ *
+ * Дальше по волокну идёт сигнал — короткий штрих бежит от города к
+ * городу и не останавливается. Считает его тоже CSS: у каждого плеча в
+ * переменных лежат длина, время пробега и фора, а движется штрих сдвигом
+ * пунктира. Ни rAF, ни библиотеки, и на телефоне это не греет батарею.
  */
+
+/** Единиц схемы в секунду. Плечо Астана — Караганда пробегается за ~1,1 с. */
+const SPEED = 60;
+
+/** Длина светящегося штриха в единицах схемы — около 90 км по масштабу.
+    Держится в CSS (--tt-comet), здесь нужна только для времени пробега. */
+const COMET = 34;
 export function Network() {
   const t = useT();
   const [shown, setShown] = useState(false);
@@ -66,17 +78,30 @@ export function Network() {
             kk: "Магистральдық желі схемасы: он төрт филиал және олардың арасындағы магистральдар",
           })}
         >
-          {links.map((link, index) => (
+          {links.map((link, index) => {
+            const d = `M${link.a.x.toFixed(1)} ${link.a.y.toFixed(1)}L${link.b.x.toFixed(1)} ${link.b.y.toFixed(1)}`;
+            const live =
+              shown && (active === null || link.from === active || link.to === active)
+                ? ""
+                : undefined;
+            return (
             <g key={link.id}>
+              <path d={d} className="tt-fibre" data-live={live} style={{ "--tt-i": index } as React.CSSProperties} />
+              {/* Сигнал: короткий штрих бежит по плечу. Скорость одна на
+                  всю схему, поэтому время пробега считается из длины, а
+                  фора — из расстояния до Астаны: волна расходится из
+                  столицы, а не мигает везде разом. */}
               <path
-                d={`M${link.a.x.toFixed(1)} ${link.a.y.toFixed(1)}L${link.b.x.toFixed(1)} ${link.b.y.toFixed(1)}`}
-                className="tt-fibre"
-                data-live={
-                  shown && (active === null || link.from === active || link.to === active)
-                    ? ""
-                    : undefined
+                d={d}
+                className="tt-net__pulse"
+                data-live={live}
+                style={
+                  {
+                    "--tt-to": `-${link.len.toFixed(1)}`,
+                    "--tt-dur": `${Math.min(6.5, Math.max(1.3, (link.len + COMET) / SPEED)).toFixed(2)}s`,
+                    "--tt-delay": `-${(link.lead / SPEED).toFixed(2)}s`,
+                  } as React.CSSProperties
                 }
-                style={{ "--tt-i": index } as React.CSSProperties}
               />
               <text
                 x={(link.a.x + link.b.x) / 2}
@@ -87,7 +112,8 @@ export function Network() {
                 {link.km}
               </text>
             </g>
-          ))}
+            );
+          })}
 
           {branches.map((branch, index) => {
             const point = place(branch.lat, branch.lon);
@@ -100,6 +126,11 @@ export function Network() {
                 onMouseEnter={() => setActive(branch.id)}
                 onMouseLeave={() => setActive(null)}
               >
+                {/* Два узловых города дышат кольцом: видно, откуда сеть
+                    расходится, даже когда сигнал уже разбежался. */}
+                {branch.hub ? (
+                  <circle cx={point.x} cy={point.y} r="9" className="tt-net__ping" />
+                ) : null}
                 <circle cx={point.x} cy={point.y} r={branch.hub ? 9 : 6} className="tt-net__dot" />
                 {/* Подписи соседних узлов налезали друг на друга — у
                     тесных городов сдвиг задан в данных, а не подобран
