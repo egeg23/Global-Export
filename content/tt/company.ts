@@ -74,7 +74,7 @@ export const nav: { href: string; label: Pair }[] = [
   { href: "#datacenter", label: { ru: "ЦОД", kk: "ДӨО" } },
   { href: "#tasks", label: { ru: "Задачи", kk: "Міндеттер" } },
   { href: "#projects", label: { ru: "Проекты", kk: "Жобалар" } },
-  { href: "#offer", label: { ru: "Цена", kk: "Баға" } },
+  { href: "#offer", label: { ru: "Состав", kk: "Құрамы" } },
   { href: "#contacts", label: { ru: "Контакты", kk: "Байланыс" } },
 ];
 
