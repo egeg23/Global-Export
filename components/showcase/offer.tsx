@@ -5,72 +5,61 @@ import { useState } from "react";
 import { cn } from "@/lib/cn";
 
 /**
- * Предложение студии: из чего складывается цена этого макета.
+ * Предложение студии: из каких блоков складывается этот макет.
  *
  * Блок нужен не заказчику сайта, а тому, кому мы этот макет показываем.
- * Поэтому он честно подписан: это цена нашей работы, а не что-то с их
+ * Поэтому он честно подписан: это состав нашей работы, а не что-то с их
  * стороны.
  *
- * ВНИМАНИЕ, расхождение с правилом витрины. В CLAUDE.md от 23.09.2026
- * записано: «цен студии на витрине нет — и возвращать их нельзя». Этот
- * блок добавлен 25.09.2026 по прямой просьбе владельца: он назвал суммы
- * (175 000 ₽ по России, $2 100 по Казахстану) и попросил тумблеры, чтобы
- * состав можно было урезать на встрече. Просьба свежее правила, поэтому
- * блок здесь, а расхождение вынесено владельцу отдельной строкой — если
- * правило портфолио в силе, блок снимается удалением одной главы на
- * каждой из двух страниц, всё остальное остаётся на месте.
+ * Цен здесь нет. 25.09.2026 владелец попросил суммы с тумблерами, 28.09 —
+ * «стоимости скрой, но конструкторы оставь по блокам»: это и правило
+ * витрины из CLAUDE.md, где цен студии нет вовсе. Сумм нет и в данных, а не
+ * только на экране: список уходит в браузер целиком, и спрятанное число
+ * читалось бы из кода страницы. Смета по собранному составу — на встрече,
+ * из панели devuz.studio.
  *
- * Смысл тумблеров в том, что торг идёт не «дайте скидку», а «уберите
- * блок». Базовая часть не выключается: сайт без вёрстки, адаптива и
- * выкатки не бывает, и делать вид, что бывает, — обман.
+ * Смысл тумблеров остался тем же: разговор идёт не «дайте скидку», а
+ * «уберите блок». Базовая часть не выключается: сайт без вёрстки, адаптива
+ * и выкатки не бывает, и делать вид, что бывает, — обман.
  *
- * Список делится надвое. Сверху — то, что в макете уже сделано и стоит
- * названных денег: эти тумблеры включены и цену снижают. Снизу — то, чего
- * в макете нет и что можно доделать: эти выключены и цену поднимают.
- * Смешивать их в одну кучу нельзя, иначе итог внизу перестаёт значить
- * «столько стоит то, что вы сейчас видите».
+ * Список делится надвое. Сверху — то, что в макете уже сделано: эти
+ * тумблеры включены, и снять блок можно. Снизу — то, чего в макете нет и
+ * что можно доделать: эти выключены, и тумблер добавляет блок в состав.
+ * Смешивать их в одну кучу нельзя, иначе итог перестаёт значить «вот что
+ * вы сейчас видите».
  */
 
 export type OfferItem = {
   id: string;
   label: string;
   note: string;
-  price: number;
   /** Входит всегда: снять тумблером нельзя. */
   locked?: boolean;
-  /** Цена без скидки — показывается зачёркнутой. */
-  was?: number;
-  /** Нет в макете: тумблер выключен, цена прибавляется сверх состава. */
+  /** Нет в макете: тумблер выключен, блок добавляется сверх состава. */
   extra?: boolean;
 };
 
-/**
- * Валюта передаётся ключом, а не функцией форматирования.
- *
- * Страница Tranio — серверный компонент, а функцию с сервера в клиентский
- * компонент передать нельзя. Ключ передать можно, и формат живёт там же,
- * где рисуется.
- */
-const formats: Record<"rub" | "usd", (value: number) => string> = {
-  rub: (value) => `${value.toLocaleString("ru-RU").replace(/\s/g, " ")} ₽`,
-  usd: (value) => `$${value.toLocaleString("ru-RU").replace(/\s/g, " ")}`,
-};
+/** «7 блоков», «1 блок», «3 блока». */
+function blocks(count: number): string {
+  const tens = count % 100;
+  const ones = count % 10;
+  if (tens >= 11 && tens <= 14) return `${count} блоков`;
+  if (ones === 1) return `${count} блок`;
+  if (ones >= 2 && ones <= 4) return `${count} блока`;
+  return `${count} блоков`;
+}
 
 export function Offer({
   items,
-  currency,
   title,
   lead,
-  fullLabel,
   note,
   madeLabel = "Что в макете уже сделано",
   extraLabel = "Что можно добавить сверх макета",
 }: {
   items: OfferItem[];
-  currency: "rub" | "usd";
   title: string;
   lead: string;
-  fullLabel: string;
   note: string;
   madeLabel?: string;
   extraLabel?: string;
@@ -81,20 +70,16 @@ export function Offer({
   const [off, setOff] = useState<string[]>(() =>
     items.filter((item) => item.extra).map((item) => item.id),
   );
-  const money = formats[currency];
 
   const made = items.filter((item) => !item.extra);
   const extras = items.filter((item) => item.extra);
 
   const on = (item: OfferItem) => item.locked || !off.includes(item.id);
-  const sum = (list: OfferItem[], only?: (item: OfferItem) => boolean) =>
-    list.reduce((acc, item) => (only && !only(item) ? acc : acc + item.price), 0);
 
-  const full = sum(made);
-  const kept = sum(made, on);
-  const added = sum(extras, on);
-  const total = kept + added;
-  const saved = full - kept;
+  const kept = made.filter(on).length;
+  const added = extras.filter(on);
+  const removed = made.length - kept;
+  const total = kept + added.length;
 
   const toggle = (id: string) =>
     setOff((prev) => (prev.includes(id) ? prev.filter((other) => other !== id) : [...prev, id]));
@@ -134,16 +119,7 @@ export function Offer({
                 </span>
 
                 <span className="min-w-0 flex-1">
-                  <span className="flex flex-wrap items-baseline justify-between gap-x-3">
-                    <span className="text-[0.95rem] font-medium">{item.label}</span>
-                    <span className="shrink-0 text-[0.86rem] text-[var(--w-muted)]">
-                      {item.was ? (
-                        <s className="mr-2 opacity-60">{money(item.was)}</s>
-                      ) : null}
-                      {item.extra ? "+ " : ""}
-                      {money(item.price)}
-                    </span>
-                  </span>
+                  <span className="block text-[0.95rem] font-medium">{item.label}</span>
                   <span className="mt-1 block text-[0.8rem] leading-snug text-[var(--w-muted)]">
                     {item.note}
                     {item.locked ? " · входит всегда" : ""}
@@ -158,8 +134,8 @@ export function Offer({
     <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14">
       <div className="grid gap-7">
         {/* На телефоне карточка с итогом уезжает под список, и человек
-            щёлкает тумблеры, не видя, что делается с суммой. Поэтому над
-            списком висит узкая полоса с той же цифрой. Экранному диктору
+            щёлкает тумблеры, не видя, что делается с составом. Поэтому над
+            списком висит узкая полоса с тем же числом. Экранному диктору
             её не читаем: об изменении он узнаёт из карточки ниже, а два
             голоса на одно событие — это шум. */}
         <div
@@ -169,7 +145,7 @@ export function Offer({
           <span className="text-[0.66rem] uppercase tracking-[0.2em] text-[var(--w-accent)]">
             {title}
           </span>
-          <span className="text-[1.05rem] font-medium text-[var(--w-ink)]">{money(total)}</span>
+          <span className="text-[1.05rem] font-medium text-[var(--w-ink)]">{blocks(total)}</span>
         </div>
 
         {extras.length > 0 ? (
@@ -196,18 +172,18 @@ export function Offer({
           </p>
 
           <p className="mt-4 text-[clamp(1.9rem,4.4vw,2.8rem)] leading-none text-[var(--w-ink)]">
-            {money(total)}
+            {blocks(total)}
           </p>
 
-          {/* Строка под суммой объясняет, из чего она сложилась: что снято
+          {/* Строка под числом объясняет, из чего оно сложилось: что снято
               с состава макета и что добавлено сверх него. Когда не тронуто
-              ничего, вместо арифметики стоит обычная подпись. */}
+              ничего, вместо подсчёта стоит обычная подпись. */}
           <p className="mt-3 text-[0.88rem] leading-relaxed text-[var(--w-muted)]" aria-live="polite">
-            {saved > 0 || added > 0 ? (
+            {removed > 0 || added.length > 0 ? (
               <>
-                {fullLabel} {money(full)}
-                {saved > 0 ? <> · вы убрали блоков на {money(saved)}</> : null}
-                {added > 0 ? <> · добавлено сверх макета на {money(added)}</> : null}
+                Из макета — {kept} из {made.length}
+                {removed > 0 ? <> · убрано: {removed}</> : null}
+                {added.length > 0 ? <> · сверх макета: {added.map((item) => item.label).join(", ")}</> : null}
               </>
             ) : (
               <>{lead}</>
