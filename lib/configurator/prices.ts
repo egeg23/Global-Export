@@ -27,6 +27,10 @@ import { extrasOf, tierOf, type Catalog } from "@/lib/configurator/catalog";
  *    блок, а весь сайт. Чата в смете не было — это допродажа, как у MAVERA.
  *  - Global Export — сметы по концепциям нет, цены ориентировочные, в
  *    масштабе MAVERA и ADAR. Перед разговором о деньгах их надо сверить.
+ *  - Comfort Mebel — задание владельца студии: сайт 1600, панель
+ *    управления 400, остальные допники — скромные ориентиры под мебельный
+ *    магазин (калькулятор по размерам, рассрочка, запись в шоурум…).
+ *    Обе палитры — один и тот же сайт, цена у них одна.
  *  - Услуги студии сверх сайта — прайс студии, общий для всех проектов.
  *
  * Подписка считается в месяц и в разовый итог не входит; «от» значит, что
@@ -118,6 +122,24 @@ const priceLists: Record<string, PriceList> = {
       categories: { usd: 400 },
       quality: { usd: 350 },
       news: { usd: 300 },
+      ...studioServices,
+    },
+  },
+  comfort: {
+    tiers: { a: 1600, b: 1600 },
+    addons: {
+      admin: { usd: 400 },
+      fit: { usd: 200 },
+      colors: { usd: 250 },
+      view3d: { usd: 350 },
+      booking: { usd: 120 },
+      installment: { usd: 100 },
+      catalog: { usd: 250 },
+      uz: { usd: 150 },
+      chat: { usd: 100 },
+      "tg-bot": { usd: 150 },
+      stock: { usd: 300, from: true },
+      "seo-start": { usd: 150 },
       ...studioServices,
     },
   },

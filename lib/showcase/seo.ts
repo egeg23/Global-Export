@@ -48,4 +48,7 @@ export const SHOWCASE_PAGES: readonly { path: string; priority: number }[] = [
   { path: "/akbar/katalog", priority: 0.7 },
   { path: "/tranio", priority: 0.9 },
   { path: "/ttc", priority: 0.9 },
+  { path: "/comfort", priority: 0.9 },
+  { path: "/comfort/a", priority: 0.7 },
+  { path: "/comfort/b", priority: 0.7 },
 ];
