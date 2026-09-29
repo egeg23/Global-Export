@@ -1,20 +1,27 @@
 import "server-only";
 
-import { extrasOf, tierOf, type Catalog } from "@/lib/configurator/catalog";
+import { tierOf, type Catalog } from "@/lib/configurator/catalog";
+import { priceOf, quoteWith, type AddonPrice, type PriceList, type Quote } from "@/lib/configurator/quote";
+
+export type { AddonPrice, Quote };
 
 /**
  * Прайс конструктора — только на сервере.
  *
- * Витрина стала публичным портфолио: её открывают по ссылке с devuz.studio,
- * и цены студии посетитель видеть не должен — ни на странице, ни в разметке,
- * ни в ответе сервера. Поэтому каталог (lib/configurator/catalog.ts) цен не
- * несёт, а они живут здесь. Модуль помечен `server-only`: импорт из
+ * Витрина — публичное портфолио: её открывают по ссылке с devuz.studio и из
+ * поиска. Цены студии посетитель без кода не видит — ни на странице, ни в
+ * разметке, ни в бандле. Поэтому каталог (lib/configurator/catalog.ts) цен
+ * не несёт, а они живут здесь. Модуль помечен `server-only`: импорт из
  * клиентского компонента сломает сборку, а не утечёт в браузер.
  *
- * Считает по нему один маршрут — бриф из конструктора
- * (app/api/showcase/brief/route.ts). Сумма уходит в студию и менеджеру в
- * Telegram: по ней он понимает масштаб заказа, а крупный бриф идёт только
- * владельцу.
+ * Отсюда цены уходят двумя путями, оба — с сервера:
+ *
+ *  - бриф из конструктора (app/api/showcase/brief/route.ts): сумма уходит в
+ *    студию и менеджеру в Telegram, крупный бриф — только владельцу;
+ *  - цены по коду (app/api/showcase/prices/route.ts): решение владельца от
+ *    29.09.2026 — код дают бот студии и менеджер (скаут), и с ним док
+ *    конструктора показывает цену каждого тумблера и итог. Без верного
+ *    кода маршрут не отдаёт ничего (lib/configurator/price-code.ts).
  *
  * Откуда цифры:
  *
@@ -37,21 +44,6 @@ import { extrasOf, tierOf, type Catalog } from "@/lib/configurator/catalog";
  * точную сумму назовут после разговора; «по запросу» в сумму не входит
  * вовсе — тумблер только отмечает интерес.
  */
-
-export type AddonPrice = {
-  usd: number;
-  /** Подписка: цена в месяц, в разовый итог не входит. */
-  monthly?: boolean;
-  /** Цена «от»: точную назовут после разговора. Итог тогда тоже «от». */
-  from?: boolean;
-  /** По запросу: в сумму не входит. */
-  onRequest?: boolean;
-};
-
-type PriceList = {
-  tiers: Record<string, number>;
-  addons: Record<string, AddonPrice>;
-};
 
 const studioServices: Record<string, AddonPrice> = {
   "crm-link": { usd: 1300 },
@@ -145,37 +137,29 @@ const priceLists: Record<string, PriceList> = {
   },
 };
 
-const FREE: AddonPrice = { usd: 0 };
-
 /** Цена блока. Неизвестный блок бесплатен: лучше недосчитать, чем выдумать. */
 export function addonPrice(catalog: Catalog, id: string): AddonPrice {
-  return priceLists[catalog.project]?.addons[id] ?? FREE;
+  return priceOf(priceLists[catalog.project], id);
 }
 
 export function tierPrice(catalog: Catalog, tier: string): number {
   return priceLists[catalog.project]?.tiers[tierOf(catalog, tier).id] ?? 0;
 }
 
-export type Quote = {
-  tierUsd: number;
-  /** Разовый итог: вариант и блоки сверх него, без подписок и «по запросу». */
-  totalUsd: number;
-  /** Подписки в месяц — отдельной суммой. */
-  monthlyUsd: number;
-  /** В наборе есть цена «от» — итог тоже «от». */
-  fromPrice: boolean;
-};
-
 export function quote(catalog: Catalog, tier: string, enabled: ReadonlySet<string>): Quote {
-  const extras = extrasOf(catalog, tier, enabled).map((addon) => addonPrice(catalog, addon.id));
-  const tierUsd = tierPrice(catalog, tier);
-  const once = extras.filter((price) => !price.monthly && !price.onRequest);
-  const monthly = extras.filter((price) => price.monthly && !price.onRequest);
+  return quoteWith(priceLists[catalog.project], catalog, tier, enabled);
+}
 
+/**
+ * Прайс проекта — для маршрута цен по коду (app/api/showcase/prices).
+ * Отдаются только варианты и блоки этого каталога, ничего сверх.
+ */
+export function priceListFor(catalog: Catalog): PriceList | null {
+  const list = priceLists[catalog.project];
+  if (!list) return null;
+  const known = new Set(catalog.addons.map((addon) => addon.id));
   return {
-    tierUsd,
-    totalUsd: tierUsd + once.reduce((sum, price) => sum + price.usd, 0),
-    monthlyUsd: monthly.reduce((sum, price) => sum + price.usd, 0),
-    fromPrice: extras.some((price) => price.from && !price.onRequest),
+    tiers: Object.fromEntries(catalog.tiers.map((tier) => [tier.id, list.tiers[tier.id] ?? 0])),
+    addons: Object.fromEntries(Object.entries(list.addons).filter(([id]) => known.has(id))),
   };
 }

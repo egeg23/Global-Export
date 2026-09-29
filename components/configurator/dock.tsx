@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 
 import { BriefForm } from "@/components/configurator/brief-form";
 import { Compare, useConfigurator } from "@/components/configurator/context";
+import { PriceProvider, priceErrorText, usePrices } from "@/components/configurator/prices";
 import { shareUrl, write } from "@/components/configurator/store";
 import { cn } from "@/lib/cn";
 import { blocks, firstSharedPage, pageOf, tierOf, type CatalogAddon } from "@/lib/configurator/catalog";
+import { formatPrice, priceOf, quoteWith, usd } from "@/lib/configurator/quote";
 
 /**
  * Док конструктора: свёрнут — пилюля со счётчиком, развёрнут — тумблеры.
@@ -23,12 +25,26 @@ import { blocks, firstSharedPage, pageOf, tierOf, type CatalogAddon } from "@/li
  * у них нет блока на макете. Внизу — сколько выбрано, ссылка и «Отправить
  * бриф»: набор уходит в студию.
  *
- * Денег в доке нет: витрина — публичное портфолио, и цены студии посетитель
- * не видит. Сумму брифа считает сервер (lib/configurator/prices.ts).
+ * Цены — по коду (решение владельца от 29.09.2026). Без кода денег в доке
+ * нет: витрина — публичное портфолио. Код дают бот студии и менеджер
+ * (скаут); сервер проверяет его и отдаёт прайс проекта
+ * (app/api/showcase/prices), и тогда у тумблеров появляются цены, а внизу —
+ * итог. Сумму брифа сервер по-прежнему считает сам.
  */
 
 export function Dock() {
   const ctx = useConfigurator();
+  if (!ctx) return null;
+  return (
+    <PriceProvider project={ctx.catalog.project}>
+      <DockBody />
+    </PriceProvider>
+  );
+}
+
+function DockBody() {
+  const ctx = useConfigurator();
+  const access = usePrices();
   const [copied, setCopied] = useState(false);
   const [view, setView] = useState<"list" | "brief">("list");
   // На телефоне пилюля закрывала главную кнопку первого экрана. Пока не
@@ -62,6 +78,8 @@ export function Dock() {
   const tier = tierOf(catalog, ctx.tier);
   const extrasOn = ctx.extras;
   const inTier = ctx.enabled.size - extrasOn;
+  const prices = access?.prices ?? null;
+  const sum = prices ? quoteWith(prices, catalog, ctx.tier, ctx.enabled) : null;
 
   if (!ctx.open) {
     return (
@@ -82,6 +100,12 @@ export function Dock() {
         {extrasOn ? (
           <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs text-[#f2efe9]/70">
             +{extrasOn}
+          </span>
+        ) : null}
+        {sum ? (
+          <span className="tabular-nums text-[#f2efe9]/80">
+            {sum.fromPrice ? "от " : ""}
+            {usd(sum.totalUsd)}
           </span>
         ) : null}
       </button>
@@ -130,6 +154,8 @@ export function Dock() {
         </button>
       </header>
 
+      {view === "list" ? <PriceGate /> : null}
+
       {view === "brief" ? (
         <div className="mt-3 min-h-0 flex-1 overflow-y-auto border-t border-white/10">
           <BriefForm onBack={() => setView("list")} />
@@ -147,6 +173,27 @@ export function Dock() {
               <span className="text-sm text-[#f2efe9]/60">Выбрано</span>
               <span className="text-2xl font-semibold tabular-nums">{blocks(ctx.enabled.size)}</span>
             </div>
+            {sum ? (
+              <dl className="mt-2 space-y-1 text-sm">
+                <div className="flex items-baseline justify-between gap-4 text-[#f2efe9]/60">
+                  <dt>Сайт «{tier.label}»</dt>
+                  <dd className="tabular-nums">{usd(sum.tierUsd)}</dd>
+                </div>
+                <div className="flex items-baseline justify-between gap-4">
+                  <dt className="text-[#f2efe9]/60">Итого разово</dt>
+                  <dd className="text-lg font-semibold tabular-nums text-[#ffd166]">
+                    {sum.fromPrice ? "от " : ""}
+                    {usd(sum.totalUsd)}
+                  </dd>
+                </div>
+                {sum.monthlyUsd ? (
+                  <div className="flex items-baseline justify-between gap-4 text-[#f2efe9]/60">
+                    <dt>Подписка</dt>
+                    <dd className="tabular-nums">{usd(sum.monthlyUsd)}/мес</dd>
+                  </div>
+                ) : null}
+              </dl>
+            ) : null}
             <p className="mt-1 text-xs leading-relaxed text-[#f2efe9]/45">
               {summary(tier.label, inTier, extrasOn)} Набор уходит в ссылку и в бриф.
             </p>
@@ -244,6 +291,7 @@ function Group({ where }: { where: string }) {
 
 function Row({ addon, target, virtual }: { addon: CatalogAddon; target: string | null; virtual: boolean }) {
   const ctx = useConfigurator();
+  const access = usePrices();
   if (!ctx) return null;
 
   const on = ctx.enabled.has(addon.id);
@@ -251,6 +299,7 @@ function Row({ addon, target, virtual }: { addon: CatalogAddon; target: string |
   const isFresh = !virtual && ctx.fresh?.id === addon.id;
   const inTier = ctx.isIncluded(addon.id);
   const { catalog } = ctx;
+  const prices = access?.prices ?? null;
   const openLabel =
     catalog.everywhere && addon.where === catalog.everywhere
       ? (firstSharedPage(catalog)?.label ?? ctx.placeLabel(addon.where))
@@ -282,7 +331,7 @@ function Row({ addon, target, virtual }: { addon: CatalogAddon; target: string |
         <div className="flex items-baseline justify-between gap-3">
           <span className={cn("text-sm", on ? "text-[#f2efe9]" : "text-[#f2efe9]/75")}>{addon.label}</span>
           <span className={cn("shrink-0 text-xs", inTier ? "text-[#f2efe9]/40" : "text-[#ffd166]")}>
-            {ctx.statusLabel(addon.id)}
+            {prices && !inTier ? formatPrice(priceOf(prices, addon.id)) : ctx.statusLabel(addon.id)}
           </span>
         </div>
         <p className="mt-0.5 text-xs leading-relaxed text-[#f2efe9]/50">{addon.effect}</p>
@@ -303,5 +352,83 @@ function Row({ addon, target, virtual }: { addon: CatalogAddon; target: string |
         ) : null}
       </div>
     </li>
+  );
+}
+
+/**
+ * Строка «Цены по коду» под заголовком дока. Свёрнута — одна ссылка;
+ * раскрыта — поле для кода; цены открыты — пометка и «скрыть».
+ */
+function PriceGate() {
+  const access = usePrices();
+  const [open, setOpen] = useState(false);
+  const [code, setCode] = useState("");
+  if (!access) return null;
+
+  if (access.prices) {
+    return (
+      <div className="mt-2 flex items-center justify-between gap-3 px-5 text-xs text-[#f2efe9]/55">
+        <span>Цены открыты по коду — у каждого блока и внизу.</span>
+        <button type="button" onClick={access.lock} className="shrink-0 underline decoration-dotted underline-offset-2 hover:text-[#f2efe9]">
+          Скрыть
+        </button>
+      </div>
+    );
+  }
+
+  if (!open) {
+    return (
+      <div className="mt-2 px-5">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="inline-flex items-center gap-1.5 text-xs text-[#ffd166]/85 underline decoration-dotted underline-offset-2 transition-colors hover:text-[#ffd166]"
+        >
+          <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+            <rect x="3" y="7" width="10" height="7" rx="1.5" />
+            <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+          </svg>
+          Показать цены по коду
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      className="mt-2 px-5"
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (code.trim()) void access.unlock(code);
+      }}
+    >
+      <label htmlFor="dz-price-code" className="block text-xs text-[#f2efe9]/55">
+        Код даёт бот студии или ваш менеджер
+      </label>
+      <div className="mt-1.5 flex gap-2">
+        <input
+          id="dz-price-code"
+          type="password"
+          inputMode="numeric"
+          autoComplete="off"
+          autoFocus
+          value={code}
+          onChange={(event) => setCode(event.target.value)}
+          className="min-w-0 flex-1 rounded-full bg-white/10 px-4 py-2 text-sm tracking-[0.3em] text-[#f2efe9] outline-none ring-1 ring-white/10 focus:ring-[#ffd166]"
+        />
+        <button
+          type="submit"
+          disabled={access.busy || !code.trim()}
+          className="rounded-full bg-[#ffd166] px-4 py-2 text-sm font-medium text-[#0b0d10] transition-opacity disabled:opacity-40"
+        >
+          {access.busy ? "…" : "Открыть"}
+        </button>
+      </div>
+      {access.error ? (
+        <p role="alert" className="mt-1.5 text-xs text-[#ff8a7a]">
+          {priceErrorText[access.error]}
+        </p>
+      ) : null}
+    </form>
   );
 }
