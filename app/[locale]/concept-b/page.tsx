@@ -15,6 +15,7 @@ import { CtaForm } from "@/components/sections/cta-form";
 import { NewsTeaser } from "@/components/sections/news-teaser";
 import { getDictionary } from "@/content/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { projectRobots } from "@/lib/showcase/seo";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -23,8 +24,9 @@ type Props = { params: Promise<{ locale: string }> };
  * with hqdriedfruits.uz: light ground, soft radii, counters and wide category
  * rows.
  *
- * A proposal route, not part of the site: excluded from the sitemap, marked
- * noindex, and removed once a direction is chosen.
+ * A proposal route, not part of the site. On the showcase it is open to search
+ * and listed in the sitemap like every studio project (lib/showcase/seo); on
+ * the live site it stays noindex and is removed once a direction is chosen.
  *
  * On the showcase every block is behind a toggle in the configurator dock, and
  * the blocks of concept A stand here as ghosts — switch one on to compare.
@@ -32,7 +34,7 @@ type Props = { params: Promise<{ locale: string }> };
  */
 export const metadata: Metadata = {
   title: "Концепция B — светлый каталог",
-  robots: { index: false, follow: false },
+  robots: projectRobots,
 };
 
 export default async function ConceptBPage({ params }: Props) {

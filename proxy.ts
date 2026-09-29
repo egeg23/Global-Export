@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { locales, matchLocale } from "@/lib/i18n";
+import { isShowcase } from "@/lib/showcase";
 import { isGate, LEGACY_KEY_PARAM, returnTo, showcaseFor } from "@/lib/showcase/access";
 import { refreshSession } from "@/lib/supabase/session";
 
@@ -44,7 +45,7 @@ export async function proxy(request: NextRequest) {
   // владельца от 23.09.2026, см. lib/showcase/access.ts), — от переменных
   // окружения это не зависит. Старые ссылки приводят туда же: бывшая
   // страница ввода кода ведёт на адрес из `next`, а ключ `?key=…` просто
-  // убирается из адреса. Из поиска витрины по-прежнему закрыты.
+  // убирается из адреса. С 29.09.2026 на площадке они открыты и поиску.
   const showcase = showcaseFor(pathname);
   if (showcase) {
     if (isGate(showcase, pathname)) {
@@ -139,8 +140,15 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-/** Витрины открыты по ссылке, но не для поиска. */
+/**
+ * Проекты чужих компаний — в поиск только с площадки.
+ *
+ * На площадке (`SHOWCASE_ROOT=true`) заголовок не ставится: с 29.09.2026
+ * проекты витрины открыты поиску (lib/showcase/seo). На боевом сайте Global
+ * Export, собранном из этого же кода, чужие проекты в выдаче не нужны.
+ */
 function noindex(response: NextResponse): NextResponse {
+  if (isShowcase) return response;
   response.headers.set("X-Robots-Tag", "noindex, nofollow");
   return response;
 }

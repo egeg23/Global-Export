@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 
 import "../globals.css";
+import { projectRobots } from "@/lib/showcase/seo";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   title: "Прототип сайта Global Export Company",
   description:
     "Рабочий прототип: каталог на трёх языках, две концепции дизайна, демонстрация анимации и панель управления.",
-  robots: { index: false, follow: false, nocache: true },
+  robots: projectRobots,
   // Без этого браузер просит /favicon.ico и получает 404 — мелочь, но она
   // видна в консоли на странице, которую открывают при заказчике.
   icons: { icon: "/favicon.svg" },

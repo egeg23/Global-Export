@@ -24,6 +24,7 @@ import { sets } from "@/content/adar/catalog";
 import { getConcept } from "@/content/adar/concepts";
 import { showcaseChrome } from "@/lib/adar/showcase";
 import { featuredSets, growthStages } from "@/lib/adar/catalog";
+import { projectRobots } from "@/lib/showcase/seo";
 
 /**
  * Вариант остаётся закрытым от поиска и на сервере заказчика: сайт у него
@@ -31,7 +32,7 @@ import { featuredSets, growthStages } from "@/lib/adar/catalog";
  */
 export const metadata: Metadata = {
   title: "Вариант 02 — «Каталог»",
-  robots: { index: false, follow: false },
+  robots: projectRobots,
 };
 
 /**

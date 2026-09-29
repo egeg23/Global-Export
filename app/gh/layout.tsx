@@ -5,6 +5,7 @@ import "../globals.css";
 
 import { Guard } from "@/components/mavera/guard";
 import { OpenAtTop } from "@/components/mavera/open-at-top";
+import { projectRobots } from "@/lib/showcase/seo";
 
 /** Заголовки: геометрический гротеск, близкий к надписи GOLDEN HOUSE на знаке. */
 const manrope = Manrope({
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   },
   description:
     "Макет главной страницы для застройщика Golden House: кинематографичная заставка, подбор квартиры, ипотечный калькулятор и панель управления.",
-  robots: { index: false, follow: false, nocache: true },
+  robots: projectRobots,
   icons: { icon: "/favicon.svg" },
   other: {
     copyright: "© 2026 Maximov Tech. Макет для Golden House; копирование запрещено.",

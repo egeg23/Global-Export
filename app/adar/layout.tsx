@@ -4,6 +4,7 @@ import { Cormorant, Manrope } from "next/font/google";
 import { adarIndexable, adarSiteUrl } from "@/lib/adar/seo";
 
 import "../globals.css";
+import { projectRobots } from "@/lib/showcase/seo";
 
 const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
@@ -24,9 +25,11 @@ const cormorant = Cormorant({
  * У него свой корень документа, а не общий с сайтом Global Export: другая
  * компания, другой язык, другая палитра и другие шрифты.
  *
- * На нашей площадке раздел закрыт от поиска целиком — это предложение, а не
- * чей-то сайт, и в выдаче ему делать нечего. На сервере заказчика та же
- * сборка открывается поисковикам: признак один, `SHOWCASE_ROOT`.
+ * На нашей площадке раздел открыт поиску как проект студии (lib/showcase/seo,
+ * решение владельца от 29.09.2026): заголовок и описание — про концепции, а
+ * не про магазин. На сервере заказчика та же сборка открывается поисковикам
+ * уже как сайт компании — со сниппетами и картой сайта под adar.uz; признак
+ * один, `SHOWCASE_ROOT`.
  */
 export const metadata: Metadata = {
   metadataBase: new URL(adarSiteUrl),
@@ -44,7 +47,7 @@ export const metadata: Metadata = {
         // выбирают глазами, и маленькая превьюшка стоит переходов.
         googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large", "max-video-preview": -1 },
       }
-    : { index: false, follow: false, nocache: true },
+    : projectRobots,
   icons: { icon: "/adar/favicon.svg" },
 };
 

@@ -7,6 +7,7 @@ import { OpenAtTop } from "@/components/mavera/open-at-top";
 import { langScript } from "@/lib/showcase/lang-script";
 import { paletteScript } from "@/lib/showcase/palette-script";
 import { TT_DEFAULT_PALETTE, TT_PALETTE_IDS } from "@/content/tt/palettes";
+import { projectRobots } from "@/lib/showcase/seo";
 
 /**
  * Шрифты выбраны под две кириллицы сразу.
@@ -47,6 +48,7 @@ const inter = Inter({
  * русский как язык по умолчанию.
  */
 export const metadata: Metadata = {
+  robots: projectRobots,
   title: {
     default: "Транстелеком — связь и цифровые решения Казахстана",
     template: "%s · Транстелеком",
