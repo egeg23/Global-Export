@@ -128,19 +128,29 @@ main() {
   # certbot, поэтому целиком файл не переписываем — убираем ровно эту строку,
   # проверяем nginx и только тогда перезагружаем. Не прошла проверка —
   # возвращаем файл как был, выкатка приложения от этого не страдает.
-  vhost="$(readlink -f "/etc/nginx/sites-enabled/${SERVICE}" 2>/dev/null || true)"
-  if [ -n "$vhost" ] && [ -f "$vhost" ] && grep -q 'X-Robots-Tag "noindex, nofollow"' "$vhost"; then
+  #
+  # Конфиг ищем не по имени, а по тому, что он проксирует наш порт: на
+  # живом сервере файл назывался иначе, чем служба, и прежняя проверка
+  # (29.09.2026) его не нашла. Строку тоже узнаём по смыслу — любая
+  # `add_header X-Robots-Tag … noindex …`, в каких бы кавычках и с какими
+  # пробелами её ни записали.
+  robots_re='^[[:space:]]*add_header[[:space:]]+X-Robots-Tag[^;]*noindex[^;]*;'
+  for link in /etc/nginx/sites-enabled/*; do
+    vhost="$(readlink -f "$link" 2>/dev/null || true)"
+    [ -n "$vhost" ] && [ -f "$vhost" ] || continue
+    grep -q "127.0.0.1:${PORT}" "$vhost" || continue
+    grep -Eq "$robots_re" "$vhost" || continue
     mkdir -p /var/backups
     saved="/var/backups/$(basename "$vhost").$(date +%Y%m%d-%H%M%S)"
     cp "$vhost" "$saved"
-    sed -i '/add_header X-Robots-Tag "noindex, nofollow" always;/d' "$vhost"
+    sed -Ei "/${robots_re}/d" "$vhost"
     if nginx -t >/dev/null 2>&1 && systemctl reload nginx; then
-      echo "✓ nginx: заголовок noindex снят, витрина открыта поиску (копия: ${saved})"
+      echo "✓ nginx: заголовок noindex снят в ${vhost}, витрина открыта поиску (копия: ${saved})"
     else
       cp "$saved" "$vhost"
-      echo "✗ nginx не принял правку — конфиг возвращён как был: ${saved}"
+      echo "✗ nginx не принял правку — ${vhost} возвращён как был: ${saved}"
     fi
-  fi
+  done
 
   # Второй проект живёт на своём корне и в витрину Global Export не входит.
   # Если ветка его не содержит, это не ошибка — просто нечего показывать.
