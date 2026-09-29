@@ -12,13 +12,14 @@ import { comparison, concepts } from "@/content/adar/concepts";
 import { priceRange } from "@/lib/adar/catalog";
 import { formatNumber } from "@/lib/adar/format";
 import { cn } from "@/lib/cn";
+import { projectRobots } from "@/lib/showcase/seo";
 
 /**
  * Страница нашей витрины, а не сайта компании: здесь варианты и их состав.
  * Из поиска закрыта всегда — и у нас, и на сервере заказчика.
  */
 export const metadata: Metadata = {
-  robots: { index: false, follow: false },
+  robots: projectRobots,
 };
 
 /**

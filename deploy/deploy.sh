@@ -122,6 +122,26 @@ main() {
     sleep 2
   done
 
+  # Витрина открыта поиску (решение владельца от 29.09.2026, lib/showcase/seo).
+  # Заголовок noindex на уровне nginx ставился при первой установке
+  # (setup.sh), и из репозитория его уже не достать: живой конфиг дописал
+  # certbot, поэтому целиком файл не переписываем — убираем ровно эту строку,
+  # проверяем nginx и только тогда перезагружаем. Не прошла проверка —
+  # возвращаем файл как был, выкатка приложения от этого не страдает.
+  vhost="$(readlink -f "/etc/nginx/sites-enabled/${SERVICE}" 2>/dev/null || true)"
+  if [ -n "$vhost" ] && [ -f "$vhost" ] && grep -q 'X-Robots-Tag "noindex, nofollow"' "$vhost"; then
+    mkdir -p /var/backups
+    saved="/var/backups/$(basename "$vhost").$(date +%Y%m%d-%H%M%S)"
+    cp "$vhost" "$saved"
+    sed -i '/add_header X-Robots-Tag "noindex, nofollow" always;/d' "$vhost"
+    if nginx -t >/dev/null 2>&1 && systemctl reload nginx; then
+      echo "✓ nginx: заголовок noindex снят, витрина открыта поиску (копия: ${saved})"
+    else
+      cp "$saved" "$vhost"
+      echo "✗ nginx не принял правку — конфиг возвращён как был: ${saved}"
+    fi
+  fi
+
   # Второй проект живёт на своём корне и в витрину Global Export не входит.
   # Если ветка его не содержит, это не ошибка — просто нечего показывать.
   if curl -fsS -o /dev/null "http://127.0.0.1:${PORT}/adar"; then

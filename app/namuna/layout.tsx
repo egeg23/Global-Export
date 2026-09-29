@@ -4,6 +4,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "../globals.css";
 
 import { OpenAtTop } from "@/components/mavera/open-at-top";
+import { projectRobots } from "@/lib/showcase/seo";
 
 /**
  * Заголовки — высококонтрастный антиквенный шрифт: надпись NAMUNA на их
@@ -33,6 +34,7 @@ const inter = Inter({
  * шрифтов, и тащить её на остальные витрины незачем.
  */
 export const metadata: Metadata = {
+  robots: projectRobots,
   title: {
     default: "Namuna — фабрика комфорта",
     template: "%s · Namuna",

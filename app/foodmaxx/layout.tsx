@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Nunito_Sans, Rubik, Unbounded } from "next/font/google";
 
 import "../globals.css";
+import { projectRobots } from "@/lib/showcase/seo";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
   },
   description:
     "Консервация под брендом FOODMAXX: огурцы и ассорти в стекле, тушёное мясо и готовые блюда. Производство ООО «Global Food Exclusive», Ташкентская область.",
-  robots: { index: false, follow: false, nocache: true },
+  robots: projectRobots,
   icons: { icon: "/foodmaxx/favicon.svg" },
 };
 

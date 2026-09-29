@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 
 import "../globals.css";
+import { projectRobots } from "@/lib/showcase/seo";
 
 /**
  * Заголовки — Cormorant Garamond: высокий контраст штриха, как у резьбы на
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
   },
   description:
     "Межкомнатные двери из МДФ в эмали, ясене и американском орехе — от классики до hi-tech, высотой до трёх метров. Собственное производство в Ташкенте с 2008 года.",
-  robots: { index: false, follow: false, nocache: true },
+  robots: projectRobots,
   icons: { icon: "/akbar/favicon.svg" },
 };
 

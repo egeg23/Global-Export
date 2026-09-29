@@ -6,6 +6,7 @@ import "../globals.css";
 import { OpenAtTop } from "@/components/mavera/open-at-top";
 import { paletteScript } from "@/lib/showcase/palette-script";
 import { TR_DEFAULT_PALETTE, TR_PALETTE_IDS } from "@/content/tr/palettes";
+import { projectRobots } from "@/lib/showcase/seo";
 
 /**
  * Три роли, три шрифта — жанр здесь инвестиционный меморандум.
@@ -47,6 +48,7 @@ const inter = Inter({
  * остальные витрины незачем.
  */
 export const metadata: Metadata = {
+  robots: projectRobots,
   title: {
     default: "Tranio — зарубежная недвижимость и инвестиции",
     template: "%s · Tranio",

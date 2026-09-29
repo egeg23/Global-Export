@@ -15,6 +15,7 @@ import { Addon } from "@/components/configurator/context";
 import { NewsTeaser } from "@/components/sections/news-teaser";
 import { getDictionary } from "@/content/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { projectRobots } from "@/lib/showcase/seo";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -22,8 +23,9 @@ type Props = { params: Promise<{ locale: string }> };
  * Design concept A — "cinematic", the direction the client pointed at with
  * loeschs.de: near-black frames, display typography and a pinned sequence.
  *
- * A proposal route, not part of the site: it is excluded from the sitemap and
- * marked noindex, and comes out once a direction is chosen.
+ * A proposal route, not part of the site. On the showcase it is open to search
+ * and listed in the sitemap like every studio project (lib/showcase/seo); on
+ * the live site it stays noindex and comes out once a direction is chosen.
  *
  * On the showcase every block is behind a toggle in the configurator dock, and
  * the blocks of concept B stand here as ghosts — switch one on to compare.
@@ -31,7 +33,7 @@ type Props = { params: Promise<{ locale: string }> };
  */
 export const metadata: Metadata = {
   title: "Концепция A — кинематографичная",
-  robots: { index: false, follow: false },
+  robots: projectRobots,
 };
 
 export default async function ConceptAPage({ params }: Props) {

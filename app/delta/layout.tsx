@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Nunito, Nunito_Sans } from "next/font/google";
 
 import "../globals.css";
+import { projectRobots } from "@/lib/showcase/seo";
 
 /**
  * Заголовки — Nunito Black: круглые окончания, кириллица, детский характер
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
   },
   description:
     "Детская IT-школа: программирование, логика и IT-английский три раза в неделю. Бесплатный пробный урок, на котором ребёнок сделает свою первую программу.",
-  robots: { index: false, follow: false, nocache: true },
+  robots: projectRobots,
   icons: { icon: "/delta/favicon.svg" },
 };
 
