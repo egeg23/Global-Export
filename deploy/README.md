@@ -326,6 +326,18 @@ delete from auth.users where email = 'demo@globalex.uz';
 `/admin` и API. Цен студии на витрине нет — сумму брифа из конструктора
 считает только сервер.
 
+Проверить, что витрина открыта поиску:
+
+```bash
+curl -sI https://globalex.maximov-tech.ru/mavera | grep -i x-robots   # пусто
+curl -s https://globalex.maximov-tech.ru/robots.txt                   # закрыты только /api/ и /admin
+curl -s https://globalex.maximov-tech.ru/sitemap.xml | grep -c '<loc>' # проекты в карте
+```
+
+Первая выкатка после смены `deploy.sh` идёт ещё старой копией скрипта: autodeploy
+запускает файл до `git reset`. Поэтому заголовок в nginx снимается со второй
+выкатки после изменения.
+
 ---
 
 ## Перенос сайта ADAR на сервер заказчика
