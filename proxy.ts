@@ -106,9 +106,10 @@ export async function proxy(request: NextRequest) {
   }
 
   // Проект витрины — прототип сайта мебельной фабрики Comfort Mebel.
-  // Без языкового префикса; от поиска закрыт только на боевом сайте.
+  // Без языкового префикса. Индексацию решают метаданные страницы
+  // (`projectRobots`): на площадке открыт поиску, на боевом сайте закрыт.
   if (pathname === "/comfort" || pathname.startsWith("/comfort/")) {
-    return noindex(NextResponse.next());
+    return NextResponse.next();
   }
 
   // On the demo deployment the root is the showcase; on the live site it stays
