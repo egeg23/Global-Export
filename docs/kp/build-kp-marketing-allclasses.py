@@ -114,6 +114,54 @@ PACKAGES = [
 ]
 
 
+# Рекламный бюджет клиента: $3 500 в месяц — только в кабинеты, без нашей работы.
+AD_BUDGET = 3500
+SPLIT = [  # канал, $, на что
+    ("Meta: Instagram и Facebook", 1400, [
+        ("IELTS — пробный Speaking, ru и uz", 600),
+        ("General English с нуля, ru и uz", 400),
+        ("Ретаргетинг: начал пробник или тарифы и не оплатил", 250),
+        ("Тест Multilevel (CEFR)", 150)]),
+    ("Telegram Ads", 800, [
+        ("Каналы про IELTS и учёбу за рубежом", 500),
+        ("Каналы про английский и саморазвитие", 300)]),
+    ("Google: поиск и ремаркетинг", 600, [
+        ("Поиск: «IELTS онлайн», «IELTS tayyorlov», «ingliz tili onlayn»", 450),
+        ("Ремаркетинг КМС на посетителей сайта", 150)]),
+    ("Яндекс Директ", 400, [
+        ("Поиск на русском: IELTS и английский онлайн", 300),
+        ("РСЯ: ретаргетинг на посетителей сайта", 100)]),
+    ("Резерв на масштабирование", 300, [
+        ("С 3-й недели — в связку с лучшей ценой оплаченной подписки", 300)]),
+]
+assert sum(x[1] for x in SPLIT) == AD_BUDGET
+
+
+def split_html():
+    rows = []
+    for ch, total, parts in SPLIT:
+        rows.append(f'<tr><td><b>{ch}</b></td><td class="num money">${total:,}</td><td class="num">{round(total * 100 / AD_BUDGET)}%</td></tr>'.replace(",", " "))
+        for name, v in parts:
+            rows.append(f'<tr><td class="d" style="padding-left:18px">{name}</td><td class="num d">${v:,}</td><td></td></tr>'.replace(",", " "))
+    fee = off(L_M) / RATE
+    com = AD_BUDGET * 0.07
+    rows.append(f'<tr class="sum total"><td>Рекламный бюджет в месяц</td><td class="num">${AD_BUDGET:,}</td><td class="num">100%</td></tr>'.replace(",", " "))
+    return ('<table class="smeta"><thead><tr><th>Канал и кампании</th><th class="num">В месяц</th><th class="num">Доля</th></tr></thead><tbody>'
+            + "".join(rows) + "</tbody></table>"), fee, com
+
+
+SPLIT_TABLE, FEE_USD, COM_USD = split_html()
+
+
+def d(v: float) -> str:
+    return "$" + f"{round(v):,}".replace(",", "\u00a0")
+
+TOTAL_USD = AD_BUDGET + FEE_USD + COM_USD
+FIRST_USD = AD_BUDGET + off(L_F + SETUP_P) / RATE + COM_USD
+# Если $3 500 — это всё вместе с нашей работой: пакет «Лиды» и комиссия 7% из той же суммы.
+ALT_SPEND = (AD_BUDGET - FEE_USD) / 1.07
+
+
 def packages_html():
     out = []
     for name, tag, m, f, items in PACKAGES:
@@ -178,7 +226,28 @@ table.smeta td b {{ font-weight: 600; }}
     Суммы в сумах; в долларах — по курсу ЦБ {RATE_TXT} (cbu.uz, 30.09.2026).
   </div>
 
-  <h2><span class="num">2</span>Как мы закрываем вопрос с заявками</h2>
+
+  <h2><span class="num">2</span>Как распределим ваши $3 500 на рекламу</h2>
+  <p style="margin-top:3mm;color:{MUTED}">
+    Тестовый месяц — на пакете «Лиды»: четыре канала, где ищут английский и IELTS в Узбекистане. Больше всего — в Meta:
+    там ваша аудитория, и туда встаёт ретаргетинг на тех, кто начал пробный Speaking и не оплатил. Бюджет идёт напрямую
+    в ваши рекламные кабинеты, примерно {d(AD_BUDGET / 4)} в неделю.
+  </p>
+  {SPLIT_TABLE}
+  <div class="tiles">
+    <div class="tile"><p class="k">Реклама</p><p class="v">{d(AD_BUDGET)}</p><p class="s">в ваши кабинеты</p></div>
+    <div class="tile"><p class="k">Наша работа</p><p class="v">{d(FEE_USD + COM_USD)}</p><p class="s">пакет «Лиды» {d(FEE_USD)} ({som(off(L_M))}) + 7% с бюджета {d(COM_USD)}</p></div>
+    <div class="tile pay"><p class="k">Всего в месяц</p><p class="v">{d(TOTAL_USD)}</p><p class="s">первый месяц со стратегией — {d(FIRST_USD)}</p></div>
+  </div>
+  <div class="note">
+    <b>Со второго месяца деньги двигаем за результатом:</b> каналы, где оплаченная подписка дешевле, получают больше,
+    слабые кампании отключаем. Доли в таблице — стартовые, а не постоянные. Пакет «Лиды + контент» (рилс и посевы)
+    подключаем, когда станет видно, каким креативам не хватает объёма.
+    Если $3 500 — это вся сумма вместе с нашей работой, в кабинеты уходит около {d(ALT_SPEND)}:
+    Meta $950, Telegram Ads $600, Google $520; Яндекс подключаем со второго месяца.
+  </div>
+
+  <h2><span class="num">3</span>Как мы закрываем вопрос с заявками</h2>
   <table class="days"><tbody>
     {"".join(f"<tr><td>{d}</td><td>{t}</td></tr>" for d, t in STEPS)}
   </tbody></table>
@@ -193,21 +262,21 @@ table.smeta td b {{ font-weight: 600; }}
       в вашей нише покажет только тест. Со второго месяца план и цена заявки записываются в допсоглашение.</span></li>
   </ul>
 
-  <h2><span class="num">3</span>Стартовые работы — разово</h2>
+  <h2><span class="num">4</span>Стартовые работы — разово</h2>
   {table(SETUP, once=True)}
 
-  <h2><span class="num">4</span>Рекламные каналы — ежемесячно</h2>
+  <h2><span class="num">5</span>Рекламные каналы — ежемесячно</h2>
   {table(CHANNELS)}
 
-  <h2><span class="num">5</span>Контент и посевы — ежемесячно</h2>
+  <h2><span class="num">6</span>Контент и посевы — ежемесячно</h2>
   {table(CONTENT)}
 
-  <h2><span class="num">6</span>По желанию</h2>
+  <h2><span class="num">7</span>По желанию</h2>
   {table(OPTIONS)}
 
   <div class="two">
     <div>
-      <h2><span class="num">7</span>Что нужно от вас</h2>
+      <h2><span class="num">8</span>Что нужно от вас</h2>
       <ol class="need">
         <li>Доступы к рекламным кабинетам Meta, Google Ads, Яндекс Директ, Telegram Ads — или создадим на вас</li>
         <li>Решение по рекламному бюджету на тестовый месяц</li>
@@ -216,7 +285,7 @@ table.smeta td b {{ font-weight: 600; }}
       </ol>
     </div>
     <div>
-      <h2><span class="num">8</span>Условия</h2>
+      <h2><span class="num">9</span>Условия</h2>
       <ul class="terms">
         <li>Предоплата за месяц, минимальный срок — 3 месяца</li>
         <li>Скидка 30% — на весь срок работы</li>
