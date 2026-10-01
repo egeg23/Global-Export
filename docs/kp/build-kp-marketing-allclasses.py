@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-КП AllClasses по маркетингу: заявки в школу. Не договор — предложение;
-условия те же, что в Приложении № 5 к Договору № 4127.
+КП AllClasses по маркетингу: только реклама (Meta, Google, Яндекс, Telegram Ads).
+Не договор — предложение; условия — в Договоре № 4127 на рекламу.
 
-Данные — docs/kp/allclasses_marketing.py: состав работ по каналам и рыночные
-цены из таблицы владельца, цены для AllClasses назначены владельцем
-01.10.2026 (наши услуги по каналу в месяц; рекламный бюджет $3 500 — сверх,
-без комиссии).
+Данные — docs/kp/allclasses_marketing.py: состав работ по каналам из таблицы
+владельца, цены — рынок минус 10% без подачи как скидки (владелец,
+01.10.2026). Рыночных цен в документе нет. Рекламный бюджет $3 500 — сверх,
+без комиссии.
 
 Бланк, шрифты и стили — из build-kp-allclasses.py, без копирования.
 
@@ -34,14 +34,14 @@ TOTAL = MK.FEE + BUDGET_SOM
 
 
 def channel_block(c: dict) -> str:
-    rows = "".join(f'<tr><td class="d">{w}</td><td class="num was" style="width:96px">{som(v)}</td></tr>' for w, v in c["works"])
+    rows = "".join(f'<tr><td class="d">{w}</td></tr>' for w, _ in c["works"])
     budget = next(v for k, v, _ in MK.SPLIT if k == c["key"])
-    return (f'<table class="smeta ch"><thead><tr><th>{c["name"]}</th><th class="num">Рынок</th></tr></thead><tbody>{rows}'
-            f'<tr><td class="d">Старт без доплаты: {", ".join(c["setup"])}</td><td class="num was">{som(c["market_first"] - c["market"])}</td></tr>'
-            f'<tr class="pay"><td>Для AllClasses — в месяц <span class="d" style="font-size:8.5pt;font-weight:400">'
-            f'· рекламный бюджет канала на старте {d(budget)}</span></td>'
-            f'<td class="num">{som(c["price"])}<br><span class="d" style="font-size:8pt">≈ {d(c["usd"])} · рынок {som(c["market"])}</span></td></tr>'
-            "</tbody></table>")
+    return (f'<table class="smeta ch"><thead><tr><th>{c["name"]} — что входит каждый месяц</th></tr></thead><tbody>{rows}'
+            f'<tr><td class="d">В первый месяц дополнительно: {", ".join(c["setup"])}</td></tr></tbody></table>'
+            f'<table class="smeta ch" style="margin-top:0"><tbody><tr class="pay"><td>Стоимость в месяц'
+            f'<br><span class="d" style="font-size:8.5pt;font-weight:400">первый месяц со стартовыми работами — {som(c["price_first"])} · '
+            f'рекламный бюджет канала на старте {d(budget)}</span></td>'
+            f'<td class="num">{som(c["price"])}<br><span class="d" style="font-size:8pt">≈ {d(c["usd"])}</span></td></tr></tbody></table>')
 
 
 def split_table() -> str:
@@ -90,30 +90,23 @@ table.smeta td b {{ font-weight: 600; }}
   <p class="lead">
     Вам нужны заявки в школу — этот вопрос берём на себя целиком. Ведём рекламу в четырёх каналах, где ищут
     английский и IELTS в Узбекистане: Instagram и Facebook, Google, Яндекс и Telegram. Креативы и тексты — на русском
-    и узбекском. Каждую заявку считаем в вашей админке, от клика до оплаты. Сайт доводим по договору на доработку:
-    пиксель, посадочные под объявления и короткий пробный Speaking — реклама с ними платит за учеников, а не за клики.
+    и узбекском. Каждую заявку считаем в вашей админке, от клика до оплаты, и учим рекламу на оплатах, а не на кликах.
   </p>
 
   <div class="tiles">
     <div class="tile"><p class="k">Наша работа, 4 канала</p><p class="v">{som(MK.FEE)}</p>
-      <p class="s">в месяц, ≈ {d(MK.FEE_USD)} · на рынке <span class="was">{som(MK.MARKET)}</span></p></div>
+      <p class="s">в месяц, ≈ {d(MK.FEE_USD)} · первый месяц — {som(MK.FEE_FIRST)}</p></div>
     <div class="tile"><p class="k">Рекламный бюджет</p><p class="v">{d(MK.AD_BUDGET_USD)}</p>
       <p class="s">в месяц, в ваши кабинеты · ≈ {som(BUDGET_SOM)}</p></div>
     <div class="tile pay"><p class="k">Всего в месяц</p><p class="v">≈ {som(TOTAL)}</p>
-      <p class="s">≈ {d(MK.FEE_USD + MK.AD_BUDGET_USD)} · комиссии с бюджета нет</p></div>
-  </div>
-
-  <div class="promise">
-    <b>Что вы не платите:</b> стартовые работы первого месяца — медиаплан, стратегия, семантика, профили Google и Яндекс
-    (на рынке первый месяц стоит {som(MK.MARKET_FIRST)}), и комиссию с рекламного бюджета (на рынке — 10%).
-    Ниже по каждому каналу — полный состав работ с рыночной ценой и ваша цена.
+      <p class="s">≈ {d(MK.FEE_USD + MK.AD_BUDGET_USD)} · бюджет без нашей комиссии</p></div>
   </div>
 
   <h2><span class="num">1</span>Каналы: что делаем и сколько стоит</h2>
   {"".join(channel_block(c) for c in MK.CHANNELS)}
   <div class="note">
-    Рыночные цены — по смете маркетингового агентства полного цикла из Ташкента, 2026 год, без НДС, по расчётному курсу
-    {MK.RATE:,} сум за доллар. Наши цены НДС не облагаются.
+    Цены в сумах, НДС не облагается. Доллары — по расчётному курсу {MK.RATE:,} сум. Первый месяц дороже обычного на стартовые
+    работы: медиаплан и стратегию, семантику, профили Google и Яндекс, подбор каналов Telegram.
   </div>
 
   <h2><span class="num">2</span>Как распределим ваши {d(MK.AD_BUDGET_USD)} на рекламу</h2>
@@ -131,8 +124,8 @@ table.smeta td b {{ font-weight: 600; }}
   <ul class="what">
     <li><b>Что считаем заявкой.</b> <span>Регистрацию или пройденный пробный Speaking с контактом — определение фиксируем
       до старта. Считаем в вашей админке по меткам рекламы, а не в отчётах кабинетов.</span></li>
-    <li><b>Оптимизируем на оплату, а не на клик.</b> <span>Meta и Google учатся на событии оплаты с сервера — это делается
-      по договору на доработку, поэтому рекламу запускаем после его первого релиза.</span></li>
+    <li><b>Оптимизируем на оплату, а не на клик.</b> <span>Чтобы Meta и Google учились на оплатах, на сайте нужны пиксель
+      Meta и события регистрации и оплаты. Код и инструкцию даём мы, ставит ваш разработчик; проверяем вместе до запуска.</span></li>
     <li><b>Отчёт каждую неделю.</b> <span>Расход, заявки, цена заявки и оплаты по каждому каналу и кампании; что отключили,
       что масштабируем.</span></li>
     <li><b>План с цифрой — после теста.</b> <span>Цену заявки в вашей нише покажет только тестовый месяц. Со второго месяца
@@ -143,8 +136,8 @@ table.smeta td b {{ font-weight: 600; }}
   <table class="smeta"><tbody>
     <tr><td><b>SMM под ключ.</b> <span class="d">Стратегия и SMM-дизайн, контент-план, 8 рилс и 4 публикации, 30 сторис в месяц,
       тексты на ru и uz, постинг в Instagram, Facebook и Telegram, ответы на комментарии и сообщения, аналитика.
-      Первый месяц со стратегией: <span class="was">{som(MK.SMM["market_first"])}</span> <b>{som(MK.SMM["price_first"])}</b>.</span></td>
-      <td class="num money" style="width:118px"><span class="was">{som(MK.SMM["market"])}</span><br><b>{som(MK.SMM["price"])}</b> / мес</td></tr>
+      Первый месяц со стратегией — {som(MK.SMM["price_first"])}.</span></td>
+      <td class="num money" style="width:118px"><b>{som(MK.SMM["price"])}</b> / мес</td></tr>
   </tbody></table>
 
   <div class="two">
@@ -155,6 +148,7 @@ table.smeta td b {{ font-weight: 600; }}
         <li>Пополнение кабинетов рекламным бюджетом до начала месяца</li>
         <li>Согласование креативов в течение 2 рабочих дней</li>
         <li>Доступ к отчёту по источникам и оплатам в админке</li>
+        <li>Установка пикселя и событий на сайт вашим разработчиком по нашей инструкции</li>
       </ol>
     </div>
     <div>
@@ -163,7 +157,7 @@ table.smeta td b {{ font-weight: 600; }}
         <li>Предоплата за месяц до 5-го числа, минимальный срок — 3 месяца</li>
         <li>Цены в сумах, НДС не облагается</li>
         <li>Кабинеты, аудитории и материалы — ваши</li>
-        <li>Входит в Договор № 4127, Приложение № 5</li>
+        <li>Оформляется Договором № 4127 на рекламу</li>
       </ul>
     </div>
   </div>

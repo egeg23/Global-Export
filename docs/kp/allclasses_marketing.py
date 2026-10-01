@@ -3,8 +3,10 @@
 
 Состав работ по каналам и рыночные цены — из таблицы владельца (Google Sheets
 «SMM / Таргет / Контекст», расчётный курс 12 000 сум за доллар). Цены для
-AllClasses назначил владелец 01.10.2026: это стоимость наших услуг по каналу в
-месяц, рекламный бюджет оплачивается сверх неё и комиссией не облагается.
+AllClasses — рынок минус 10% (владелец, 01.10.2026: «убери скидки, сделай чуть
+дешевле рынка на 10% просто»), и за месяц, и за первый месяц со стартовыми
+работами. Скидкой это нигде не подаётся: рыночных цен в документах для клиента
+нет. Рекламный бюджет оплачивается сверх и комиссией не облагается.
 
 В таблице Google и Яндекс — один блок «Контекстная реклама» (10 350 000 сум в
 месяц). Здесь он разделён на два канала, потому что цены для AllClasses
@@ -26,7 +28,7 @@ _CTX_SHARED = [
 
 CHANNELS = [
     dict(key="meta", name="Таргетированная реклама Meta (Instagram, Facebook)", short="Meta",
-         price=1_800_000, usd=150, market=8_000_000, market_first=10_000_000,
+         market=8_000_000, market_first=10_000_000,
          setup=["Медиаплан и digital-стратегия"],
          works=[
              ("Мониторинг рынка и конкурентов", 500_000),
@@ -44,7 +46,7 @@ CHANNELS = [
              ("Анализ месяца и корректировка медиаплана", 1_000_000),
          ]),
     dict(key="google", name="Контекстная реклама Google", short="Google",
-         price=2_400_000, usd=200, market=5_500_000, market_first=7_100_000,
+         market=5_500_000, market_first=7_100_000,
          setup=["Медиаплан и digital-стратегия", "Семантическое ядро", "Google Business Profile"],
          works=[
              ("Настройка и поддержка рекламного кабинета", 400_000),
@@ -56,7 +58,7 @@ CHANNELS = [
              *_CTX_SHARED,
          ]),
     dict(key="yandex", name="Контекстная реклама Яндекс", short="Яндекс",
-         price=2_400_000, usd=200, market=4_850_000, market_first=6_450_000,
+         market=4_850_000, market_first=6_450_000,
          setup=["Медиаплан и digital-стратегия", "Семантическое ядро", "Яндекс Бизнес"],
          works=[
              ("Настройка и поддержка рекламного кабинета", 400_000),
@@ -67,7 +69,7 @@ CHANNELS = [
              *_CTX_SHARED,
          ]),
     dict(key="tg", name="Реклама в Telegram (Telegram Ads)", short="Telegram Ads",
-         price=2_400_000, usd=200, market=3_300_000, market_first=4_900_000,
+         market=3_300_000, market_first=4_900_000,
          setup=["Медиаплан продвижения", "Подбор и проверка каналов"],
          works=[
              ("Анализ ниши, аудитории и конкурентов", 500_000),
@@ -79,14 +81,24 @@ CHANNELS = [
          ]),
 ]
 
+BELOW_MARKET = 0.10
+
+
+def _price(v: int) -> int:
+    return round(v * (1 - BELOW_MARKET) / 1000) * 1000
+
+
 for _c in CHANNELS:
     assert sum(v for _, v in _c["works"]) == _c["market"], (_c["key"], sum(v for _, v in _c["works"]))
-    assert _c["price"] == _c["usd"] * RATE, _c["key"]
+    _c["price"] = _price(_c["market"])
+    _c["price_first"] = _price(_c["market_first"])
+    _c["usd"] = _c["price"] / RATE
 assert sum(c["market"] for c in CHANNELS if c["key"] in ("google", "yandex")) == 10_350_000
 assert sum(c["market_first"] for c in CHANNELS if c["key"] in ("google", "yandex")) == 13_550_000
 
-FEE = sum(c["price"] for c in CHANNELS)            # 9 000 000 сум
-FEE_USD = sum(c["usd"] for c in CHANNELS)          # $750
+FEE = sum(c["price"] for c in CHANNELS)            # 19 485 000 сум
+FEE_FIRST = sum(c["price_first"] for c in CHANNELS)
+FEE_USD = FEE / RATE
 MARKET = sum(c["market"] for c in CHANNELS)        # 21 650 000 сум
 MARKET_FIRST = sum(c["market_first"] for c in CHANNELS)
 
@@ -105,8 +117,9 @@ assert sum(x[1] for x in SPLIT) == AD_BUDGET_USD
 for _k, _v, _parts in SPLIT:
     assert sum(p[1] for p in _parts) == _v
 
-# SMM — по желанию, по таблице: ежемесячно со скидкой 30%.
-SMM = dict(market=25_840_000, market_first=39_840_000, price=18_088_000, price_first=27_888_000)
+# SMM — по желанию, по таблице, тоже рынок −10%.
+SMM = dict(market=25_840_000, market_first=39_840_000)
+SMM["price"], SMM["price_first"] = _price(SMM["market"]), _price(SMM["market_first"])
 
 NAMES = {c["key"]: c["short"] for c in CHANNELS} | {"reserve": "Резерв на масштабирование"}
 
