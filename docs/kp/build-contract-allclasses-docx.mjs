@@ -86,6 +86,7 @@ body.push(
     run(`Работы — 15 рабочих дней, два релиза, ${money(data.PAY)} вместо ${money(data.LIST)} (скидка 30%). ` +
       `Сопровождение со статьями — от ${money(data.plans[0].pay)} в месяц, скидка 30% на весь срок. ` +
       "Гарантии по региону продвижения и требованиям Яндекса и Google к статьям — разделы 8 и 9 и Приложение № 4. " +
+      (data.mk ? `Маркетинг — ${data.mk.fee.toLocaleString("ru-RU").replace(/\u00a0/g, " ")} сум в месяц за четыре канала, рекламный бюджет $${data.mk.budget.toLocaleString("ru-RU").replace(/\u00a0/g, " ")} — сверх, без комиссии (раздел 10 и Приложение № 5). ` : "") +
       "Дополнительные работы оформляются дополнительными соглашениями к Договору.", { size: 18, color: "5B544A" }),
   ], { shade: "FBF5EF", after: 120 }),
 );
@@ -218,6 +219,39 @@ const appSign = () =>
     ...data.app4_tech.map((t, i) => para([run(`${i + 1}. `, { bold: true, color: GREY }), run(t)], { indent: { left: 280, hanging: 280 } })),
     para([run(data.app4_note, { size: 16, color: GREY })], { before: 160 }),
     appSign());
+}
+
+// ── Приложение 5 ────────────────────────────────────────────────────────────
+if (data.mk) {
+  const mk = data.mk;
+  const som = (v) => Number(v).toLocaleString("ru-RU").replace(/ /g, " ") + " сум";
+  const w = [W - 1900 - 2000, 1900, 2000];
+  const rows = [headRow(w, ["Канал и состав работ в месяц", "Рынок", "Для Заказчика"], [undefined, R, R])];
+  for (const c of mk.channels) {
+    rows.push(new TableRow({ cantSplit: true, children: [
+      cell([[run(`${c.name}. `, { bold: true, size: 18 }), run(c.works.join("; ") + ". ", { size: 18 }),
+        run(`Старт: ${c.setup.join(", ")} — без доплаты.`, { size: 16, color: GREY })]], w[0]),
+      cell(som(c.market), w[1], { align: R, strike: true, color: GREY }),
+      cell([[run(som(c.price), { bold: true, size: 18 })], [run(`≈ $${c.usd}`, { size: 16, color: GREY })]], w[2], { align: R }),
+    ] }));
+  }
+  rows.push(new TableRow({ children: [
+    cell("Маркетинг в месяц", w[0], { bold: true }),
+    cell(som(mk.market), w[1], { align: R, strike: true, color: GREY }),
+    cell([[run(som(mk.fee), { bold: true, size: 18 })], [run(`≈ $${mk.fee_usd}`, { size: 16, color: GREY })]], w[2], { align: R }),
+  ] }));
+  const w2 = [W - 1600 - 1200, 1600, 1200];
+  const br = [headRow(w2, ["Канал и кампании", "В месяц", "Доля"], [undefined, R, R])];
+  for (const s of mk.split) {
+    br.push(new TableRow({ children: [cell(s.name, w2[0], { bold: true, fill: "FBF5EF", color: ORANGE }),
+      cell(money(s.usd), w2[1], { align: R, bold: true, fill: "FBF5EF" }),
+      cell(`${Math.round((s.usd * 100) / mk.budget)}%`, w2[2], { align: R, fill: "FBF5EF" })] }));
+    for (const [n, v] of s.parts) br.push(new TableRow({ children: [cell(n, w2[0]), cell(money(v), w2[1], { align: R }), cell("", w2[2])] }));
+  }
+  br.push(new TableRow({ children: [cell("Рекламный бюджет в месяц", w2[0], { bold: true }), cell(money(mk.budget), w2[1], { align: R, bold: true }), cell("100%", w2[2], { align: R })] }));
+  body.push(...appHead(5, "Маркетинг: каналы, стоимость и рекламный бюджет"), table(w, rows),
+    sub("Рекламный бюджет: стартовое распределение"), table(w2, br),
+    para([run(mk.note, { size: 16, color: GREY })], { before: 160 }), appSign());
 }
 
 const doc = new Document({

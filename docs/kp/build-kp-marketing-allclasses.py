@@ -1,190 +1,73 @@
 #!/usr/bin/env python3
 """
-КП AllClasses по маркетингу: лиды в школу. Не договор — предложение.
+КП AllClasses по маркетингу: заявки в школу. Не договор — предложение;
+условия те же, что в Приложении № 5 к Договору № 4127.
 
-Цены: за базу взяты рыночные цены маркетингового агентства полного цикла из
-Ташкента (присланное владельцем КП 2026 года, цены в сумах без НДС). Для
-AllClasses от всех цен — и от услуг, и от комиссий с рекламного бюджета —
-скидка 30%. Названия агентства в документе нет: это наш прайс-ориентир, а не
-чужое предложение.
+Данные — docs/kp/allclasses_marketing.py: состав работ по каналам и рыночные
+цены из таблицы владельца, цены для AllClasses назначены владельцем
+01.10.2026 (наши услуги по каналу в месяц; рекламный бюджет $3 500 — сверх,
+без комиссии).
 
-Бланк, шрифты и стили — те же, что у КП на доработку (build-kp-allclasses.py):
-оттуда берутся без копирования.
+Бланк, шрифты и стили — из build-kp-allclasses.py, без копирования.
 
     python3 docs/kp/build-kp-marketing-allclasses.py
     SRC=docs/kp/kp-marketing-allclasses.html OUT=docs/kp/KP-AllClasses-marketing.pdf node docs/kp/render.mjs
 """
 
 import pathlib
+import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import allclasses_marketing as MK  # noqa: E402
+
 _base = (HERE / "build-kp-allclasses.py").read_text()
 ns: dict = {"__file__": str(HERE / "build-kp-allclasses.py")}
 exec(_base[: _base.index("HTML = f\"\"\"")], ns)
 CSS = eval('f"""' + _base[_base.index("<style>") + 7: _base.index("</style>")] + '"""', ns)
-LOGO_SVG, SIGN = ns["LOGO_SVG"], ns["SIGN"]
-DARK, ORANGE, ORANGE_DARK, MUTED = ns["DARK"], ns["ORANGE"], ns["ORANGE_DARK"], ns["MUTED"]
+LOGO_SVG, SIGN, MUTED = ns["LOGO_SVG"], ns["SIGN"], ns["MUTED"]
 
-DATE_RU, SIGN_DATE = "30 сентября 2026", "30.09.2026"
-RATE, RATE_TXT = 11821.18, "11 821,18"   # cbu.uz на 30.09.2026
-DISCOUNT = 0.30
-
-
-def som(v: float) -> str:
-    return f"{round(v):,}".replace(",", " ") + " сум"
+DATE_RU, SIGN_DATE = "1 октября 2026", "01.10.2026"
+som, d = MK.som, MK.dollars
+BUDGET_SOM = MK.AD_BUDGET_USD * MK.RATE
+TOTAL = MK.FEE + BUDGET_SOM
 
 
-def off(v: float) -> float:
-    return round(v * (1 - DISCOUNT) / 1000) * 1000
+def channel_block(c: dict) -> str:
+    rows = "".join(f'<tr><td class="d">{w}</td><td class="num was" style="width:96px">{som(v)}</td></tr>' for w, v in c["works"])
+    budget = next(v for k, v, _ in MK.SPLIT if k == c["key"])
+    return (f'<table class="smeta ch"><thead><tr><th>{c["name"]}</th><th class="num">Рынок</th></tr></thead><tbody>{rows}'
+            f'<tr><td class="d">Старт без доплаты: {", ".join(c["setup"])}</td><td class="num was">{som(c["market_first"] - c["market"])}</td></tr>'
+            f'<tr class="pay"><td>Для AllClasses — в месяц <span class="d" style="font-size:8.5pt;font-weight:400">'
+            f'· рекламный бюджет канала на старте {d(budget)}</span></td>'
+            f'<td class="num">{som(c["price"])}<br><span class="d" style="font-size:8pt">≈ {d(c["usd"])} · рынок {som(c["market"])}</span></td></tr>'
+            "</tbody></table>")
 
 
-def usd(v: float) -> str:
-    return "≈ $" + f"{round(v / RATE):,}".replace(",", " ")
-
-
-# Услуги: (название, что входит, ежемесячно, первый месяц или None, комиссия с бюджета)
-SETUP = [
-    ("Стратегия и медиаплан",
-     "Аудитории (IELTS, General English, Multilevel; ru и uz), офферы под каждую, распределение бюджета по каналам, "
-     "цели по заявкам и цене заявки, схема подсчёта лида в вашей админке", 6_800_000),
-]
-CHANNELS = [
-    ("Таргетированная реклама Meta (Instagram, Facebook)",
-     "Кампании на регистрацию и пробный Speaking, ретаргетинг на тех, кто начал пробник и не оплатил, "
-     "лид-формы, креативы и тексты на ru и uz, еженедельная оптимизация", 8_000_000, 10_000_000, 10),
-    ("Реклама в Telegram (Telegram Ads)",
-     "Подбор каналов про английский, IELTS и учёбу за рубежом, медиаплан, запуск и ведение кампаний, отчётность", 3_300_000, 4_900_000, 10),
-    ("Контекстная реклама Google и Яндекс",
-     "Поиск по запросам «IELTS онлайн», «IELTS tayyorlov», «ingliz tili onlayn» и подобным, ремаркетинг КМС и РСЯ, "
-     "Google и Яндекс Бизнес, настройка конверсий", 10_350_000, 13_550_000, 10),
-]
-CONTENT = [
-    ("Видео-рилс для рекламы — 3 ролика в месяц",
-     "Сценарии, съёмка на телефон, монтаж до 60 секунд, тексты на ru и uz. Формат «разбор ответа Speaking» и «как выглядит оценка ИИ»",
-     9_400_000, None, None),
-    ("Посевы в Telegram-каналах и у блогеров",
-     "Подбор каналов и преподавателей-блогеров по IELTS и Multilevel, креативы, размещение, отчёт по заявкам с каждого размещения",
-     8_000_000, None, 20),
-]
-OPTIONS = [
-    ("SMM: ведение Instagram под ключ",
-     "Стратегия, контент-план, 8 рилс и 4 публикации, 30 сторис в месяц, тексты на ru и uz, ответы на комментарии и сообщения",
-     25_840_000, 39_840_000, 20),
-    ("Отдел продаж и CRM: дожим тех, кто не оплатил",
-     "Воронка в CRM, скрипты звонков и сообщений в Telegram, обучение менеджера, дашборд «заявка → оплата»; разово, 1,5 месяца",
-     22_000_000, None, None, True),
-]
-
-
-def row(name, what, monthly, first=None, commission=None, once=False):
-    price = (f'<span class="was">{som(monthly)}</span><br><b>{som(off(monthly))}</b>'
-             + ("" if once else " / мес"))
-    extra = []
-    if first:
-        extra.append(f'первый месяц с запуском: <span class="was">{som(first)}</span> <b>{som(off(first))}</b>')
-    if commission:
-        extra.append(f'комиссия с рекламного бюджета: <span class="was">{commission}%</span> <b>{round(commission * (1 - DISCOUNT))}%</b>')
-    sub = f'<div class="d" style="margin-top:3px">{" · ".join(extra)}</div>' if extra else ""
-    return f'<tr><td><b>{name}.</b> <span class="d">{what}</span>{sub}</td><td class="num money" style="width:118px">{price}</td></tr>'
-
-
-def table(items, once=False):
-    return ('<table class="smeta"><thead><tr><th>Услуга</th><th class="num">Рынок → для вас</th></tr></thead><tbody>'
-            + "".join(row(*x[:5], once=once or (len(x) > 5 and x[5])) if len(x) >= 5 else row(x[0], x[1], x[2], once=True) for x in items)
-            + "</tbody></table>")
-
-
-def pkg(items):
-    monthly = sum(x[2] for x in items)
-    first = sum((x[3] or x[2]) for x in items)
-    return monthly, first
-
-
-L_M, L_F = pkg(CHANNELS)
-P_M, P_F = pkg(CHANNELS + CONTENT)
-SETUP_P = SETUP[0][2]
-
-PACKAGES = [
-    ("Лиды", "Три рекламных канала под ключ", L_M, L_F + SETUP_P,
-     ["Meta, Telegram Ads, Google и Яндекс", "Стратегия и медиаплан на старте", "Креативы и тексты на ru и uz",
-      "Еженедельный отчёт: заявки и цена заявки по каналам"]),
-    ("Лиды + контент", "Каналы, свои ролики и посевы", P_M, P_F + SETUP_P,
-     ["Всё из пакета «Лиды»", "3 рекламных рилс в месяц", "Посевы в Telegram-каналах и у блогеров",
-      "План по заявкам на месяц с цифрой — после тестового месяца"]),
-]
-
-
-# Рекламный бюджет клиента: $3 500 в месяц — только в кабинеты, без нашей работы.
-AD_BUDGET = 3500
-SPLIT = [  # канал, $, на что
-    ("Meta: Instagram и Facebook", 1400, [
-        ("IELTS — пробный Speaking, ru и uz", 600),
-        ("General English с нуля, ru и uz", 400),
-        ("Ретаргетинг: начал пробник или тарифы и не оплатил", 250),
-        ("Тест Multilevel (CEFR)", 150)]),
-    ("Telegram Ads", 800, [
-        ("Каналы про IELTS и учёбу за рубежом", 500),
-        ("Каналы про английский и саморазвитие", 300)]),
-    ("Google: поиск и ремаркетинг", 600, [
-        ("Поиск: «IELTS онлайн», «IELTS tayyorlov», «ingliz tili onlayn»", 450),
-        ("Ремаркетинг КМС на посетителей сайта", 150)]),
-    ("Яндекс Директ", 400, [
-        ("Поиск на русском: IELTS и английский онлайн", 300),
-        ("РСЯ: ретаргетинг на посетителей сайта", 100)]),
-    ("Резерв на масштабирование", 300, [
-        ("С 3-й недели — в связку с лучшей ценой оплаченной подписки", 300)]),
-]
-assert sum(x[1] for x in SPLIT) == AD_BUDGET
-
-
-def split_html():
+def split_table() -> str:
     rows = []
-    for ch, total, parts in SPLIT:
-        rows.append(f'<tr><td><b>{ch}</b></td><td class="num money">${total:,}</td><td class="num">{round(total * 100 / AD_BUDGET)}%</td></tr>'.replace(",", " "))
-        for name, v in parts:
-            rows.append(f'<tr><td class="d" style="padding-left:18px">{name}</td><td class="num d">${v:,}</td><td></td></tr>'.replace(",", " "))
-    fee = off(L_M) / RATE
-    com = AD_BUDGET * 0.07
-    rows.append(f'<tr class="sum total"><td>Рекламный бюджет в месяц</td><td class="num">${AD_BUDGET:,}</td><td class="num">100%</td></tr>'.replace(",", " "))
+    for key, v, parts in MK.SPLIT:
+        rows.append(f'<tr><td><b>{MK.NAMES[key]}</b></td><td class="num money">{d(v)}</td><td class="num">{round(v * 100 / MK.AD_BUDGET_USD)}%</td></tr>')
+        rows += [f'<tr><td class="d" style="padding-left:18px">{n}</td><td class="num d">{d(x)}</td><td></td></tr>' for n, x in parts]
+    rows.append(f'<tr class="sum total"><td>Рекламный бюджет в месяц</td><td class="num">{d(MK.AD_BUDGET_USD)}</td><td class="num">100%</td></tr>')
     return ('<table class="smeta"><thead><tr><th>Канал и кампании</th><th class="num">В месяц</th><th class="num">Доля</th></tr></thead><tbody>'
-            + "".join(rows) + "</tbody></table>"), fee, com
-
-
-SPLIT_TABLE, FEE_USD, COM_USD = split_html()
-
-
-def d(v: float) -> str:
-    return "$" + f"{round(v):,}".replace(",", "\u00a0")
-
-TOTAL_USD = AD_BUDGET + FEE_USD + COM_USD
-FIRST_USD = AD_BUDGET + off(L_F + SETUP_P) / RATE + COM_USD
-# Если $3 500 — это всё вместе с нашей работой: пакет «Лиды» и комиссия 7% из той же суммы.
-ALT_SPEND = (AD_BUDGET - FEE_USD) / 1.07
-
-
-def packages_html():
-    out = []
-    for name, tag, m, f, items in PACKAGES:
-        li = "".join(f"<li>{x}</li>" for x in items)
-        out.append(
-            f'<div class="plan"><p class="pn">{name}</p><p class="ps" style="margin:2px 0 4px">{tag}</p>'
-            f'<p class="pp"><span class="was">{som(m)}</span><br><b>{som(off(m))}</b> / мес</p>'
-            f'<p class="ps">{usd(off(m))} · первый месяц со стратегией: {som(off(f))}</p><ul>{li}</ul></div>'
-        )
-    return "".join(out)
+            + "".join(rows) + "</tbody></table>")
 
 
 STEPS = [
-    ("Неделя 1", "Стратегия и медиаплан, доступы к рекламным кабинетам, проверка пикселя и событий, креативы на ru и uz"),
-    ("Недели 2–4", "Тестовый месяц: запуск всех каналов, поиск связок «аудитория — оффер — креатив», перераспределение бюджета еженедельно"),
-    ("Месяц 2", "Фиксируем письменно план по заявкам и цену заявки по каждому каналу — по фактам тестового месяца, а не на глаз"),
-    ("Дальше", "Масштабируем то, что приносит оплаты: бюджет идёт в каналы с лучшей ценой оплаченной подписки, а не заявки"),
+    ("Неделя 1", "Медиаплан и стратегия, доступы к кабинетам, проверка пикселя и событий, семантика, креативы и тексты на ru и uz"),
+    ("Недели 2–4", "Тестовый месяц: запуск всех четырёх каналов, поиск связок «аудитория — оффер — креатив», перераспределение бюджета каждую неделю"),
+    ("Месяц 2", "Письменный план: число заявок и цена заявки по каждому каналу — по фактам теста, дополнительным соглашением к договору"),
+    ("Дальше", "Бюджет идёт туда, где дешевле оплаченная подписка, а не клик или заявка; слабые кампании отключаем"),
 ]
 
 HTML = f"""<!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
 <title>Коммерческое предложение — маркетинг AllClasses</title>
 <style>{CSS}
+table.smeta.ch {{ margin-top: 3mm; font-size: 8.2pt; }}
+table.smeta.ch td {{ padding: 2.5px 7px; }}
+table.smeta.ch tr.pay td {{ font-size: 10.5pt; padding-top: 5px; }}
 table.smeta td b {{ font-weight: 600; }}
 </style></head><body><div class="sheet">
 
@@ -205,92 +88,82 @@ table.smeta td b {{ font-weight: 600; }}
   </div>
 
   <p class="lead">
-    Вам нужны заявки в школу — мы берём этот вопрос на себя целиком: реклама во всех каналах, где ищут
-    английский и IELTS в Узбекистане, креативы на русском и узбекском, посевы, и подсчёт каждой заявки
-    в вашей же админке — от клика до оплаты. Сайт при этом доводим по договору на доработку: пиксель,
-    посадочные под каждое объявление и короткий пробный Speaking. Реклама без них платит за клики,
-    с ними — за учеников.
+    Вам нужны заявки в школу — этот вопрос берём на себя целиком. Ведём рекламу в четырёх каналах, где ищут
+    английский и IELTS в Узбекистане: Instagram и Facebook, Google, Яндекс и Telegram. Креативы и тексты — на русском
+    и узбекском. Каждую заявку считаем в вашей админке, от клика до оплаты. Сайт доводим по договору на доработку:
+    пиксель, посадочные под объявления и короткий пробный Speaking — реклама с ними платит за учеников, а не за клики.
   </p>
+
+  <div class="tiles">
+    <div class="tile"><p class="k">Наша работа, 4 канала</p><p class="v">{som(MK.FEE)}</p>
+      <p class="s">в месяц, ≈ {d(MK.FEE_USD)} · на рынке <span class="was">{som(MK.MARKET)}</span></p></div>
+    <div class="tile"><p class="k">Рекламный бюджет</p><p class="v">{d(MK.AD_BUDGET_USD)}</p>
+      <p class="s">в месяц, в ваши кабинеты · ≈ {som(BUDGET_SOM)}</p></div>
+    <div class="tile pay"><p class="k">Всего в месяц</p><p class="v">≈ {som(TOTAL)}</p>
+      <p class="s">≈ {d(MK.FEE_USD + MK.AD_BUDGET_USD)} · комиссии с бюджета нет</p></div>
+  </div>
 
   <div class="promise">
-    <b>Скидка 30% — от всех цен:</b> ведение каналов, контент, посевы и комиссии с рекламного бюджета.
-    Везде рядом стоят обе цифры: зачёркнутая — рыночная цена в Ташкенте, жирная — ваша.
-    НДС не начисляется.
+    <b>Что вы не платите:</b> стартовые работы первого месяца — медиаплан, стратегия, семантика, профили Google и Яндекс
+    (на рынке первый месяц стоит {som(MK.MARKET_FIRST)}), и комиссию с рекламного бюджета (на рынке — 10%).
+    Ниже по каждому каналу — полный состав работ с рыночной ценой и ваша цена.
   </div>
 
-  <h2><span class="num">1</span>Пакеты — в месяц</h2>
-  <div class="plans">{packages_html()}</div>
+  <h2><span class="num">1</span>Каналы: что делаем и сколько стоит</h2>
+  {"".join(channel_block(c) for c in MK.CHANNELS)}
   <div class="note">
-    Рекламный бюджет оплачивается отдельно, напрямую в рекламные кабинеты; наша комиссия с него — 7% вместо 10%
-    (для посевов и блогеров — 14% вместо 20%). Рекомендуемый стартовый бюджет — от $500 на канал в тестовый месяц.
-    Суммы в сумах; в долларах — по курсу ЦБ {RATE_TXT} (cbu.uz, 30.09.2026).
+    Рыночные цены — по смете маркетингового агентства полного цикла из Ташкента, 2026 год, без НДС, по расчётному курсу
+    {MK.RATE:,} сум за доллар. Наши цены НДС не облагаются.
   </div>
 
-
-  <h2><span class="num">2</span>Как распределим ваши $3 500 на рекламу</h2>
+  <h2><span class="num">2</span>Как распределим ваши {d(MK.AD_BUDGET_USD)} на рекламу</h2>
   <p style="margin-top:3mm;color:{MUTED}">
-    Тестовый месяц — на пакете «Лиды»: четыре канала, где ищут английский и IELTS в Узбекистане. Больше всего — в Meta:
-    там ваша аудитория, и туда встаёт ретаргетинг на тех, кто начал пробный Speaking и не оплатил. Бюджет идёт напрямую
-    в ваши рекламные кабинеты, примерно {d(AD_BUDGET / 4)} в неделю.
+    Больше всего — в Meta: там ваша аудитория, и туда встаёт ретаргетинг на тех, кто начал пробный Speaking и не оплатил.
+    Бюджет идёт напрямую в ваши рекламные кабинеты, примерно {d(MK.AD_BUDGET_USD / 4)} в неделю.
+    Со второго месяца доли меняем по результатам: до 20% бюджета перекладываем в каналы с самой дешёвой оплаченной подпиской.
   </p>
-  {SPLIT_TABLE}
-  <div class="tiles">
-    <div class="tile"><p class="k">Реклама</p><p class="v">{d(AD_BUDGET)}</p><p class="s">в ваши кабинеты</p></div>
-    <div class="tile"><p class="k">Наша работа</p><p class="v">{d(FEE_USD + COM_USD)}</p><p class="s">пакет «Лиды» {d(FEE_USD)} ({som(off(L_M))}) + 7% с бюджета {d(COM_USD)}</p></div>
-    <div class="tile pay"><p class="k">Всего в месяц</p><p class="v">{d(TOTAL_USD)}</p><p class="s">первый месяц со стратегией — {d(FIRST_USD)}</p></div>
-  </div>
-  <div class="note">
-    <b>Со второго месяца деньги двигаем за результатом:</b> каналы, где оплаченная подписка дешевле, получают больше,
-    слабые кампании отключаем. Доли в таблице — стартовые, а не постоянные. Пакет «Лиды + контент» (рилс и посевы)
-    подключаем, когда станет видно, каким креативам не хватает объёма.
-    Если $3 500 — это вся сумма вместе с нашей работой, в кабинеты уходит около {d(ALT_SPEND)}:
-    Meta $950, Telegram Ads $600, Google $520; Яндекс подключаем со второго месяца.
-  </div>
+  {split_table()}
 
   <h2><span class="num">3</span>Как мы закрываем вопрос с заявками</h2>
   <table class="days"><tbody>
-    {"".join(f"<tr><td>{d}</td><td>{t}</td></tr>" for d, t in STEPS)}
+    {"".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in STEPS)}
   </tbody></table>
   <ul class="what">
     <li><b>Что считаем заявкой.</b> <span>Регистрацию или пройденный пробный Speaking с контактом — определение фиксируем
-      вместе до старта. Считаем в вашей админке по меткам рекламы, а не в отчётах кабинетов.</span></li>
+      до старта. Считаем в вашей админке по меткам рекламы, а не в отчётах кабинетов.</span></li>
     <li><b>Оптимизируем на оплату, а не на клик.</b> <span>Meta и Google учатся на событии оплаты с сервера — это делается
-      по договору на доработку. Поэтому рекламу разумно запускать после его первого релиза.</span></li>
-    <li><b>Отчёт каждую неделю.</b> <span>Заявки, цена заявки и оплаты по каждому каналу и объявлению; что отключили,
+      по договору на доработку, поэтому рекламу запускаем после его первого релиза.</span></li>
+    <li><b>Отчёт каждую неделю.</b> <span>Расход, заявки, цена заявки и оплаты по каждому каналу и кампании; что отключили,
       что масштабируем.</span></li>
-    <li><b>План с цифрой — после теста.</b> <span>Называть число заявок до первого месяца значило бы гадать: цену заявки
-      в вашей нише покажет только тест. Со второго месяца план и цена заявки записываются в допсоглашение.</span></li>
+    <li><b>План с цифрой — после теста.</b> <span>Цену заявки в вашей нише покажет только тестовый месяц. Со второго месяца
+      план по заявкам и их цене записываем в дополнительное соглашение.</span></li>
   </ul>
 
-  <h2><span class="num">4</span>Стартовые работы — разово</h2>
-  {table(SETUP, once=True)}
-
-  <h2><span class="num">5</span>Рекламные каналы — ежемесячно</h2>
-  {table(CHANNELS)}
-
-  <h2><span class="num">6</span>Контент и посевы — ежемесячно</h2>
-  {table(CONTENT)}
-
-  <h2><span class="num">7</span>По желанию</h2>
-  {table(OPTIONS)}
+  <h2><span class="num">4</span>По желанию: SMM — ведение Instagram</h2>
+  <table class="smeta"><tbody>
+    <tr><td><b>SMM под ключ.</b> <span class="d">Стратегия и SMM-дизайн, контент-план, 8 рилс и 4 публикации, 30 сторис в месяц,
+      тексты на ru и uz, постинг в Instagram, Facebook и Telegram, ответы на комментарии и сообщения, аналитика.
+      Первый месяц со стратегией: <span class="was">{som(MK.SMM["market_first"])}</span> <b>{som(MK.SMM["price_first"])}</b>.</span></td>
+      <td class="num money" style="width:118px"><span class="was">{som(MK.SMM["market"])}</span><br><b>{som(MK.SMM["price"])}</b> / мес</td></tr>
+  </tbody></table>
 
   <div class="two">
     <div>
-      <h2><span class="num">8</span>Что нужно от вас</h2>
+      <h2><span class="num">5</span>Что нужно от вас</h2>
       <ol class="need">
-        <li>Доступы к рекламным кабинетам Meta, Google Ads, Яндекс Директ, Telegram Ads — или создадим на вас</li>
-        <li>Решение по рекламному бюджету на тестовый месяц</li>
-        <li>Преподаватель на 1–2 часа в месяц для съёмки роликов</li>
+        <li>Доступы к кабинетам Meta, Google Ads, Яндекс Директ, Telegram Ads — или создадим на вас</li>
+        <li>Пополнение кабинетов рекламным бюджетом до начала месяца</li>
+        <li>Согласование креативов в течение 2 рабочих дней</li>
         <li>Доступ к отчёту по источникам и оплатам в админке</li>
       </ol>
     </div>
     <div>
-      <h2><span class="num">9</span>Условия</h2>
+      <h2><span class="num">6</span>Условия</h2>
       <ul class="terms">
-        <li>Предоплата за месяц, минимальный срок — 3 месяца</li>
-        <li>Скидка 30% — на весь срок работы</li>
-        <li>Рекламные кабинеты и все материалы — ваши</li>
-        <li>Оформляется допсоглашением к Договору № 4127</li>
+        <li>Предоплата за месяц до 5-го числа, минимальный срок — 3 месяца</li>
+        <li>Цены в сумах, НДС не облагается</li>
+        <li>Кабинеты, аудитории и материалы — ваши</li>
+        <li>Входит в Договор № 4127, Приложение № 5</li>
       </ul>
     </div>
   </div>
@@ -304,8 +177,8 @@ table.smeta td b {{ font-weight: 600; }}
     <p><b>ИП MAKSIMOV EGOR ANDREEVICH</b> · Республика Узбекистан, г. Ташкент, улица Шота Руставели, 138 · ПИНФЛ 32303946570039</p>
     <p>Предложение носит информационный характер и не является публичной офертой. Состав работ и цена фиксируются договором.</p>
   </footer>
-</div></body></html>"""
+</div></body></html>""".replace(f"{MK.RATE:,}", f"{MK.RATE:,}".replace(",", " "))
 
 out = HERE / "kp-marketing-allclasses.html"
 out.write_text(HTML)
-print("Собрано:", out, "| Лиды:", som(off(L_M)), "/мес | Лиды+контент:", som(off(P_M)), "/мес")
+print("Собрано:", out, "| работа", som(MK.FEE), "| всего", som(TOTAL))
