@@ -1,0 +1,403 @@
+/* ------------------------------------------------------------------
+   MedAcademy — два разных мира и витрина между ними.
+
+   Палитры не из пресетов: сгенерированы Adobe Leonardo
+   (@adobe/leonardo-contrast-colors, Apache-2.0) под заданный контраст к
+   фону и перепроверены culori (MIT) по WCAG 2 — весь текст не ниже 4,6:1.
+
+   A «Клиника» — тёплая бумага, чернила глубокого петрольного, красный
+     пульс из их логотипа (линия ЭКГ). Literata + Onest, Phosphor Light.
+   B «Лаборатория» — ультрафиолет, кислотный лайм, голубой и розовый
+     маркеры. Dela Gothic One + Commissioner, Hugeicons.
+
+   Общие блоки допников написаны один раз и пользуются семантическими
+   классами (`ma-card`, `ma-btn`…), а вид им задаёт атрибут `data-ma`.
+   ------------------------------------------------------------------ */
+
+@theme {
+  --color-ma-bg: var(--ma-bg);
+  --color-ma-surface: var(--ma-surface);
+  --color-ma-surface-2: var(--ma-surface-2);
+  --color-ma-ink: var(--ma-ink);
+  --color-ma-ink-2: var(--ma-ink-2);
+  --color-ma-muted: var(--ma-muted);
+  --color-ma-line: var(--ma-line);
+  --color-ma-accent: var(--ma-accent);
+  --color-ma-accent-ink: var(--ma-accent-ink);
+  --color-ma-pop: var(--ma-pop);
+  --color-ma-pop-2: var(--ma-pop-2);
+  --color-ma-deep: var(--ma-deep);
+  --color-ma-on-deep: var(--ma-on-deep);
+
+  --ease-ma: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Tailwind кладёт эти переменные в :root, где токенов мира ещё нет, —
+   поэтому они переобъявлены на корне мира и считаются уже от его палитры. */
+[data-ma] {
+  --color-ma-bg: var(--ma-bg);
+  --color-ma-surface: var(--ma-surface);
+  --color-ma-surface-2: var(--ma-surface-2);
+  --color-ma-ink: var(--ma-ink);
+  --color-ma-ink-2: var(--ma-ink-2);
+  --color-ma-muted: var(--ma-muted);
+  --color-ma-line: var(--ma-line);
+  --color-ma-accent: var(--ma-accent);
+  --color-ma-accent-ink: var(--ma-accent-ink);
+  --color-ma-pop: var(--ma-pop);
+  --color-ma-pop-2: var(--ma-pop-2);
+  --color-ma-deep: var(--ma-deep);
+  --color-ma-on-deep: var(--ma-on-deep);
+  color: var(--ma-ink);
+  background: var(--ma-bg);
+  font-family: var(--ma-body-font), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+[data-ma] ::selection {
+  background: var(--ma-accent);
+  color: var(--ma-accent-ink);
+}
+[data-ma] :focus-visible {
+  outline: 2px solid var(--ma-focus, var(--ma-accent));
+  outline-offset: 3px;
+}
+
+/* A «Клиника». */
+[data-ma="a"] {
+  --ma-body-font: var(--font-ma-onest);
+  --ma-display-font: var(--font-ma-literata);
+  --ma-bg: #f7f5f1;
+  --ma-surface: #f1eee8;
+  --ma-surface-2: #e9e4da;
+  --ma-ink: #122833;
+  --ma-ink-2: #415661;
+  --ma-muted: #60727a;
+  --ma-line: #c4cbce;
+  --ma-accent: #ac1f1b;
+  --ma-accent-ink: #ffffff;
+  --ma-pop: #709087;
+  --ma-pop-2: #d1dbd8;
+  --ma-deep: #122833;
+  --ma-on-deep: #f7f5f1;
+  --ma-radius: 0.375rem;
+  --ma-card-shadow: 0 1px 3px rgb(18 40 51 / 0.08), 0 10px 24px -12px rgb(18 40 51 / 0.18);
+  --ma-focus: #ac1f1b;
+}
+
+/* B «Лаборатория». */
+[data-ma="b"] {
+  --ma-body-font: var(--font-ma-commissioner);
+  --ma-display-font: var(--font-ma-dela);
+  --ma-bg: #191337;
+  --ma-surface: #1f1743;
+  --ma-surface-2: #251c52;
+  --ma-ink: #e5e4ee;
+  --ma-ink-2: #cfcde0;
+  --ma-muted: #a9a5c6;
+  --ma-line: rgb(229 228 238 / 0.14);
+  --ma-accent: #cff846;
+  --ma-accent-ink: #191337;
+  --ma-pop: #8d66ff;
+  --ma-pop-2: #e995be;
+  --ma-sky: #7dc2e3;
+  --ma-deep: #f5f4ff;
+  --ma-on-deep: #191337;
+  --ma-radius: 1.5rem;
+  --ma-card-shadow: 0 15px 35px -18px rgb(0 0 0 / 0.6);
+  --ma-focus: #cff846;
+}
+
+/* Витрина выбора — нейтральная, между двумя мирами. */
+[data-ma="hub"] {
+  --ma-body-font: var(--font-ma-onest);
+  --ma-display-font: var(--font-ma-literata);
+  --ma-bg: #10181d;
+  --ma-surface: #172229;
+  --ma-surface-2: #1d2a32;
+  --ma-ink: #eef0ee;
+  --ma-ink-2: #cdd4d6;
+  --ma-muted: #9eabb1;
+  --ma-line: rgb(238 240 238 / 0.13);
+  --ma-accent: #cff846;
+  --ma-accent-ink: #191337;
+  --ma-pop: #ac1f1b;
+  --ma-pop-2: #8d66ff;
+  --ma-deep: #f7f5f1;
+  --ma-on-deep: #122833;
+  --ma-radius: 1rem;
+}
+
+@layer components {
+  .ma-display {
+    font-family: var(--ma-display-font), ui-serif, Georgia, serif;
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  [data-ma="b"] .ma-display {
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .ma-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .ma-muted {
+    color: var(--ma-muted);
+  }
+
+  .ma-card {
+    border-radius: var(--ma-radius);
+    background: var(--ma-surface);
+    box-shadow: var(--ma-card-shadow);
+  }
+  [data-ma="a"] .ma-card {
+    background: #fffdf9;
+    box-shadow: inset 0 0 0 1px var(--ma-line);
+  }
+  [data-ma="b"] .ma-card {
+    box-shadow:
+      inset 0 0 0 1px var(--ma-line),
+      var(--ma-card-shadow);
+  }
+
+  .ma-btn {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 1.5rem;
+    border-radius: var(--ma-radius);
+    background: var(--ma-accent);
+    color: var(--ma-accent-ink);
+    font-weight: 700;
+    font-size: 1rem;
+    transition:
+      transform 0.2s var(--ease-ma),
+      opacity 0.2s;
+  }
+  .ma-btn:hover {
+    transform: translate3d(0, -2px, 0);
+  }
+  .ma-btn:active {
+    transform: translate3d(0, 1px, 0) scale(0.98);
+  }
+  [data-ma="b"] .ma-btn {
+    border-radius: 999px;
+  }
+  .ma-btn-ghost {
+    background: transparent;
+    color: var(--ma-ink);
+    box-shadow: inset 0 0 0 1px var(--ma-line);
+  }
+
+  .ma-chip {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    border-radius: var(--ma-radius);
+    font-size: 0.875rem;
+    color: var(--ma-ink-2);
+    box-shadow: inset 0 0 0 1px var(--ma-line);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  [data-ma="b"] .ma-chip {
+    border-radius: 999px;
+  }
+  .ma-chip[aria-pressed="true"],
+  .ma-chip[aria-checked="true"],
+  .ma-chip[aria-selected="true"] {
+    background: var(--ma-ink);
+    color: var(--ma-bg);
+    box-shadow: none;
+  }
+  [data-ma="b"] .ma-chip[aria-pressed="true"],
+  [data-ma="b"] .ma-chip[aria-checked="true"],
+  [data-ma="b"] .ma-chip[aria-selected="true"] {
+    background: var(--ma-accent);
+    color: var(--ma-accent-ink);
+  }
+
+  .ma-field {
+    width: 100%;
+    min-height: 3rem;
+    border-radius: var(--ma-radius);
+    background: var(--ma-bg);
+    padding: 0 1rem;
+    color: var(--ma-ink);
+    font-size: 1rem;
+    box-shadow: inset 0 0 0 1px var(--ma-line);
+    font-variant-numeric: tabular-nums;
+  }
+  [data-ma="b"] .ma-field {
+    background: rgb(255 255 255 / 0.05);
+  }
+
+  .ma-range {
+    width: 100%;
+    accent-color: var(--ma-accent);
+    min-height: 2rem;
+  }
+
+  .ma-num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Появления. Только transform и opacity; у каждого блока своё движение.
+   ------------------------------------------------------------------ */
+
+[data-ma] .ma-in {
+  opacity: 0;
+  transition:
+    opacity 0.8s var(--ease-ma),
+    transform 1s var(--ease-ma);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+[data-ma] .ma-in[data-in="rise"] {
+  transform: translate3d(0, 2rem, 0);
+}
+[data-ma] .ma-in[data-in="slide"] {
+  transform: translate3d(-2.5rem, 0, 0);
+}
+[data-ma] .ma-in[data-in="zoom"] {
+  transform: scale(0.94);
+}
+[data-ma] .ma-in[data-in="tilt"] {
+  transform: perspective(900px) rotateX(12deg) translate3d(0, 1.5rem, 0);
+  transform-origin: 50% 100%;
+}
+[data-ma] .ma-in[data-in="drop"] {
+  transform: translate3d(0, -1.5rem, 0) rotate(-2deg);
+}
+[data-ma] .ma-in[data-in="fade"] {
+  transform: none;
+}
+[data-ma] .ma-in.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Линия ЭКГ: открывается маской, которая едет вбок, — transform, не ширина. */
+@keyframes ma-ecg-wipe {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+.ma-ecg-wipe {
+  animation: ma-ecg-wipe 2.2s cubic-bezier(0.65, 0, 0.35, 1) 0.3s both;
+}
+
+@keyframes ma-beat {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  12% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+  24% {
+    transform: scale(1);
+  }
+}
+.ma-beat {
+  animation: ma-beat 1.6s ease-out infinite;
+}
+
+@keyframes ma-marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.ma-marquee {
+  animation: ma-marquee 40s linear infinite;
+}
+.ma-marquee-paused .ma-marquee,
+.ma-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ma-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(var(--r, 0deg));
+  }
+}
+.ma-float {
+  animation: ma-float 6s ease-in-out infinite;
+}
+
+@keyframes ma-pop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0) scale(0.98);
+  }
+}
+.ma-pop {
+  animation: ma-pop 0.4s var(--ease-ma) both;
+}
+
+/* Карточка преподавателя B переворачивается — rotateY, не ширина. */
+.ma-flip {
+  transform-style: preserve-3d;
+  transition: transform 0.7s var(--ease-ma);
+}
+.ma-flip[data-flipped="true"] {
+  transform: rotateY(180deg);
+}
+.ma-flip > * {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.ma-flip > .ma-back {
+  transform: rotateY(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-ma] .ma-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .ma-ecg-wipe {
+    animation: none;
+    transform: translate3d(100%, 0, 0);
+  }
+  .ma-beat,
+  .ma-marquee,
+  .ma-float,
+  .ma-pop {
+    animation: none;
+  }
+  .ma-btn,
+  .ma-btn:hover,
+  .ma-flip {
+    transition: none;
+  }
+  .ma-btn:hover {
+    transform: none;
+  }
+}

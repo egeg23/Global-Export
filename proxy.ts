@@ -112,6 +112,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Проект витрины — макет сайта MedAcademy, центра подготовки в медвузы.
+  // Без языкового префикса, индексацию решает `projectRobots`, как у Comfort.
+  if (pathname === "/medacademy" || pathname.startsWith("/medacademy/")) {
+    return NextResponse.next();
+  }
+
   // On the demo deployment the root is the showcase; on the live site it stays
   // the language redirect. One variable rather than two builds of the app.
   if (pathname === "/" && process.env.SHOWCASE_ROOT === "true") {
