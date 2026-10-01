@@ -174,3 +174,47 @@
 
 Перевод на узбекский и английский сделан для шапки и первого экрана —
 чтобы показать переключатель.
+
+## 7. Цены допников — ниже рынка на 15–30%
+
+Решение владельца, 01.10.2026: «сделай дешевле рынка на 15–30%. У них не
+сильно много денег». Рынок — прайсы Ташкента 2026 года. Где узбекские студии
+модуль отдельно не продают, взяты СНГ-фриланс (Kwork) и студия Team-B (РФ).
+Курс — 11 821 сум за $ (ЦБ, 30.09.2026). Цены студии живут только в
+`lib/configurator/prices.ts`; на витрине их видно лишь по коду.
+
+| Доп | Рынок, $ (от–до) | Медиана, $ | Наша цена, $ | Дешевле |
+|---|---|---|---|---|
+| Подбор курса (квиз) | 30–415 | 190 | 140 | 26% |
+| Запись и расписание | 180–360 | 240 | 190 | 21% |
+| Проверка сертификата | публичных цен нет; ~12 ч × 6–14 $/ч ≈ 70–170 | ~120 (оценка) | 90 | 25% |
+| Кабинет студента (модуль) | 300–600 | 595 | 450 | 24% |
+| Оплата Payme / Click / Uzum | 100–1700 | 300 | 240 | 20% |
+| Блог и SEO-старт | 85–212 | 150 | 120 | 20% |
+| Панель управления (своя) | в пакетах WordPress/Битрикс; своя ≈ 40 ч × 6–14 $/ч ≈ 240–560 | ~400 (оценка) | 300 | 25% |
+| Узбекская версия | 68 (MXMEDIA) – 595 (РФ) | 68 (Ташкент) | 50 | 26% |
+| Английская версия (третий язык) | 127 (MXMEDIA) – 595 (РФ) | 127 (Ташкент) | 90 | 29% |
+| Чат Telegram / WhatsApp | 6–60 | 18 | 15 | 17% |
+| Telegram-бот заявок | 210–850 | 254 | 190 | 25% |
+| Заявки в amoCRM / Bitrix24 | 18–296 | 125 | 90 | 28% |
+
+**Сайт, 1400 $:** верх среднего сегмента Ташкента. Стартовые пакеты студий —
+около 680 $, сайт с уникальным дизайном — около 1270 $ (Innosoft, Piksel,
+Bit-box — 1270–1520 $), верх рынка — 2100–3400 $.
+
+Источники:
+- [mxmedia.uz](https://mxmedia.uz/ru/xizmatlar/web-saytlar/) — модули: оплата, языки, бот, CRM, SEO;
+- [innosoft.uz/ru/tseny](https://innosoft.uz/ru/tseny),
+  [innosoft.uz — сайты](https://innosoft.uz/ru/razrabotka-sayt-tashkent/tseny-sozdaniya-sajtov);
+- [bit-box.uz](https://bit-box.uz/), [icorp.uz/web](https://icorp.uz/web),
+  [go-web.uz](https://go-web.uz/), [piksel.uz](https://piksel.uz/razrabotka-sajtov);
+- [uzneo.uz — сайт в Ташкенте 2026](https://uzneo.uz/blog/skolko-stoit-sajt-v-tashkente-2026),
+  [uzneo.uz — Payme/Click/Uzum](https://uzneo.uz/blog/payme-click-uzum-podklyuchit-oplatu);
+- [globalsoft.uz — интеграция оплаты](https://www.globalsoft.uz/ru/blog/integraciya-payme-click-uzum-na-sajt);
+- [saytyaratish.uz](https://saytyaratish.uz/blog/skolko-stoit-sozdanie-sajta-v-tashkente-v-2026-godu/),
+  [katov.uz](https://www.katov.uz/blog/website-narxi-uzbekistonda);
+- [team-b.ru](https://team-b.ru/ceny/stoimost-sozdaniya-sayta/) (РФ), [dextra.ru](https://www.dextra.ru/marketing/quiz/) (РФ);
+- Kwork: [квиз](https://kwork.ru/website-development/12974224/sdelayu-kviz-lending),
+  [квиз на Marquiz](https://kwork.ru/website-development/9120701/sozdam-sayt-na-wix-ili-flexbe-kviz-na-marquiz-ru),
+  [amoCRM по API](https://kwork.ru/website-repair/35763568/integratsiya-formy-s-amocrm-po-api-amo),
+  [виджет WhatsApp](https://kwork.ru/website-repair/2100010/whatsapp-vidzhet-na-sayt).
