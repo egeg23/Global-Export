@@ -4,9 +4,8 @@
 Не договор — предложение; условия — в Договоре № 4127 на рекламу.
 
 Данные — docs/kp/allclasses_marketing.py: состав работ по каналам из таблицы
-владельца, цены — рынок минус 10% без подачи как скидки (владелец,
-01.10.2026). Рыночных цен в документе нет. Рекламный бюджет $3 500 — сверх,
-без комиссии.
+владельца, цены рыночные, без скидок (владелец, 01.10.2026). Рекламный
+бюджет $3 500 — сверх; к нему НДС 12% и наша комиссия 10% с рекламного баланса.
 
 Бланк, шрифты и стили — из build-kp-allclasses.py, без копирования.
 
@@ -30,7 +29,7 @@ LOGO_SVG, SIGN, MUTED = ns["LOGO_SVG"], ns["SIGN"], ns["MUTED"]
 DATE_RU, SIGN_DATE = "1 октября 2026", "01.10.2026"
 som, d = MK.som, MK.dollars
 BUDGET_SOM = MK.AD_BUDGET_USD * MK.RATE
-TOTAL = MK.FEE + BUDGET_SOM
+TOTAL = MK.FEE + MK.ADS_TOTAL_USD * MK.RATE
 
 
 def channel_block(c: dict) -> str:
@@ -50,6 +49,9 @@ def split_table() -> str:
         rows.append(f'<tr><td><b>{MK.NAMES[key]}</b></td><td class="num money">{d(v)}</td><td class="num">{round(v * 100 / MK.AD_BUDGET_USD)}%</td></tr>')
         rows += [f'<tr><td class="d" style="padding-left:18px">{n}</td><td class="num d">{d(x)}</td><td></td></tr>' for n, x in parts]
     rows.append(f'<tr class="sum total"><td>Рекламный бюджет в месяц</td><td class="num">{d(MK.AD_BUDGET_USD)}</td><td class="num">100%</td></tr>')
+    rows.append(f'<tr><td class="d">НДС 12% к рекламному бюджету — при пополнении кабинетов</td><td class="num d">{d(MK.VAT_USD)}</td><td></td></tr>')
+    rows.append(f'<tr><td class="d">Комиссия DevUz 10% с рекламного баланса — от суммы пополнения без НДС</td><td class="num d">{d(MK.COMMISSION_USD)}</td><td></td></tr>')
+    rows.append(f'<tr class="sum total"><td>Итого по рекламе в месяц</td><td class="num">{d(MK.ADS_TOTAL_USD)}</td><td></td></tr>')
     return ('<table class="smeta"><thead><tr><th>Канал и кампании</th><th class="num">В месяц</th><th class="num">Доля</th></tr></thead><tbody>'
             + "".join(rows) + "</tbody></table>")
 
@@ -96,16 +98,16 @@ table.smeta td b {{ font-weight: 600; }}
   <div class="tiles">
     <div class="tile"><p class="k">Наша работа, 4 канала</p><p class="v">{som(MK.FEE)}</p>
       <p class="s">в месяц, ≈ {d(MK.FEE_USD)} · первый месяц — {som(MK.FEE_FIRST)}</p></div>
-    <div class="tile"><p class="k">Рекламный бюджет</p><p class="v">{d(MK.AD_BUDGET_USD)}</p>
-      <p class="s">в месяц, в ваши кабинеты · ≈ {som(BUDGET_SOM)}</p></div>
+    <div class="tile"><p class="k">Реклама</p><p class="v">{d(MK.ADS_TOTAL_USD)}</p>
+      <p class="s">бюджет {d(MK.AD_BUDGET_USD)} + НДС 12% {d(MK.VAT_USD)} + комиссия 10% {d(MK.COMMISSION_USD)}</p></div>
     <div class="tile pay"><p class="k">Всего в месяц</p><p class="v">≈ {som(TOTAL)}</p>
-      <p class="s">≈ {d(MK.FEE_USD + MK.AD_BUDGET_USD)} · бюджет без нашей комиссии</p></div>
+      <p class="s">≈ {d(MK.FEE_USD + MK.ADS_TOTAL_USD)} по курсу {MK.RATE:,} сум</p></div>
   </div>
 
   <h2><span class="num">1</span>Каналы: что делаем и сколько стоит</h2>
   {"".join(channel_block(c) for c in MK.CHANNELS)}
   <div class="note">
-    Цены в сумах, НДС не облагается. Доллары — по расчётному курсу {MK.RATE:,} сум. Первый месяц дороже обычного на стартовые
+    Стоимость работы — в сумах, НДС на неё не начисляется. Доллары — по расчётному курсу {MK.RATE:,} сум. Первый месяц дороже обычного на стартовые
     работы: медиаплан и стратегию, семантику, профили Google и Яндекс, подбор каналов Telegram.
   </div>
 
@@ -145,7 +147,7 @@ table.smeta td b {{ font-weight: 600; }}
       <h2><span class="num">5</span>Что нужно от вас</h2>
       <ol class="need">
         <li>Доступы к кабинетам Meta, Google Ads, Яндекс Директ, Telegram Ads — или создадим на вас</li>
-        <li>Пополнение кабинетов рекламным бюджетом до начала месяца</li>
+        <li>Пополнение кабинетов рекламным бюджетом с НДС до начала месяца</li>
         <li>Согласование креативов в течение 2 рабочих дней</li>
         <li>Доступ к отчёту по источникам и оплатам в админке</li>
         <li>Установка пикселя и событий на сайт вашим разработчиком по нашей инструкции</li>
@@ -155,7 +157,7 @@ table.smeta td b {{ font-weight: 600; }}
       <h2><span class="num">6</span>Условия</h2>
       <ul class="terms">
         <li>Предоплата за месяц до 5-го числа, минимальный срок — 3 месяца</li>
-        <li>Цены в сумах, НДС не облагается</li>
+        <li>Работа — в сумах, без НДС; к рекламному бюджету — НДС 12% и комиссия 10%</li>
         <li>Кабинеты, аудитории и материалы — ваши</li>
         <li>Оформляется Договором № 4127 на рекламу</li>
       </ul>

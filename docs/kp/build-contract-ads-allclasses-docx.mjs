@@ -168,6 +168,11 @@ const appSign = () =>
     for (const [n, v] of s.parts) br.push(new TableRow({ children: [cell(n, w2[0]), cell(money(v), w2[1], { align: R }), cell("", w2[2])] }));
   }
   br.push(new TableRow({ children: [cell("Рекламный бюджет в месяц", w2[0], { bold: true }), cell(money(mk.budget), w2[1], { align: R, bold: true }), cell("100%", w2[2], { align: R })] }));
+  if (mk.ads) {
+    br.push(new TableRow({ children: [cell("НДС 12% к рекламному бюджету", w2[0]), cell(money(mk.ads.vat), w2[1], { align: R }), cell("", w2[2])] }));
+    br.push(new TableRow({ children: [cell("Комиссия Исполнителя 10% с рекламного баланса", w2[0]), cell(money(mk.ads.commission), w2[1], { align: R }), cell("", w2[2])] }));
+    br.push(new TableRow({ children: [cell("Итого по рекламе в месяц", w2[0], { bold: true }), cell(money(mk.ads.total), w2[1], { align: R, bold: true }), cell("", w2[2])] }));
+  }
   body.push(...appHead(1, "Маркетинг: каналы, стоимость и рекламный бюджет"), table(w, rows),
     sub("Рекламный бюджет: стартовое распределение"), table(w2, br),
     para([run(mk.note, { size: 16, color: GREY })], { before: 160 }), appSign());
