@@ -9,7 +9,7 @@ import { siteUrl } from "@/lib/seo";
  * портфолио студии (lib/showcase/seo, решение владельца от 29.09.2026). На
  * боевом сайте Global Export витрина и чужие проекты по-прежнему закрыты.
  */
-const CLOSED_ON_SITE = ["/api/", "/admin", "/present", "/mavera", "/gh", "/akbar", "/comfort", "/motion.html"];
+const CLOSED_ON_SITE = ["/api/", "/admin", "/present", "/mavera", "/gh", "/akbar", "/comfort", "/medacademy", "/motion.html"];
 const CLOSED_ON_SHOWCASE = ["/api/", "/admin"];
 
 export default function robots(): MetadataRoute.Robots {
