@@ -47,3 +47,4 @@ docs/kp/.fonts/
 docs/kp/*.html
 docs/kp/*.pdf
 docs/kp/*.docx
+docs/kp/__pycache__/
