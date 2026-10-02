@@ -3,7 +3,7 @@ import { comfortCatalog } from "@/content/comfort/catalog";
 import { globalexCatalog } from "@/content/globalex/addons";
 import { maveraCatalog } from "@/content/mavera/catalog";
 import { medacademyCatalog } from "@/content/medacademy/catalog";
-import { webnameCatalog } from "@/content/webname/catalog";
+import { webnameCatalog, webnamePremiumCatalog } from "@/content/webname/catalog";
 import type { Catalog } from "@/lib/configurator/catalog";
 
 /** Все каталоги витрины — по ключу проекта. Сервер брифа ищет здесь. */
@@ -14,6 +14,7 @@ export const catalogs: Record<string, Catalog> = {
   [comfortCatalog.project]: comfortCatalog,
   [medacademyCatalog.project]: medacademyCatalog,
   [webnameCatalog.project]: webnameCatalog,
+  [webnamePremiumCatalog.project]: webnamePremiumCatalog,
 };
 
 export function catalogOf(project: string): Catalog | null {

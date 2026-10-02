@@ -26,7 +26,7 @@ const count = (value: number | "∞") => (value === "∞" ? "без лимита
  * «Хостинг»; цены в сумах. Переключатель «месяц / год» крутит цифры
  * (@number-flow/react), семейства — вкладки.
  */
-export function Hosting() {
+export function Hosting({ base = "/webname" }: { base?: string }) {
   const [family, setFamily] = useState<Plan["family"]>("Gold");
   const [yearly, setYearly] = useState(false);
   const list = plans.filter((plan) => plan.family === family);
@@ -104,7 +104,7 @@ export function Hosting() {
                     </li>
                   ))}
                 </ul>
-                <Link href={`/webname/hosting?plan=${encodeURIComponent(plan.name)}`} className={cn("wn-btn mt-6", index !== 0 && "wn-btn-ink")}>
+                <Link href={`${base}/hosting?plan=${encodeURIComponent(plan.name)}`} className={cn("wn-btn mt-6", index !== 0 && "wn-btn-ink")}>
                   Выбрать {plan.name}
                 </Link>
               </div>

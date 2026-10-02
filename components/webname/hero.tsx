@@ -99,8 +99,12 @@ export function isFree(name: string, zone: string): boolean {
 
 const DEMO = ["osh-markazi", "samarkand-tour", "toshkent-dental", "mening-biznesim"];
 
-export function Hero() {
-  const t = useT();
+/**
+ * Поиск первого экрана — общий для обеих версий макета («Реестр» и
+ * «Премиум»): автонабор демо-имён, пока человек не тронул поле, и ответ
+ * через мгновение после последней буквы.
+ */
+export function useDemoSearch() {
   const search = useSearch();
   const [typed, setTyped] = useState("");
   const [autoWanted, setAuto] = useState(true);
@@ -165,6 +169,12 @@ export function Hero() {
   }, [value, auto]);
   const settled = auto ? DEMO.includes(name) && typed === name : name.length > 0;
 
+  return { search, value, name, settled, auto, setAuto, focused, setFocused, input };
+}
+
+export function Hero() {
+  const t = useT();
+  const { search, value, name, settled, auto, setAuto, focused, setFocused, input } = useDemoSearch();
   return (
     <section id="top" className="relative isolate overflow-hidden">
       <Guilloche />
@@ -403,7 +413,7 @@ function MicroText() {
 }
 
 /** Пример ответа реестра — блок допа «Живая проверка». */
-function Whois({ name }: { name: string }) {
+export function Whois({ name }: { name: string }) {
   const free = isFree(name, ".uz");
   const rows = free
     ? [

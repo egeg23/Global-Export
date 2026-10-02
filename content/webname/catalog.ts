@@ -50,3 +50,21 @@ export const webnameCatalog: Catalog = {
 export function webnameHrefs(): Record<string, string> {
   return { main: "/webname", domains: "/webname/domains", hosting: "/webname/hosting" };
 }
+
+/**
+ * Вариант «Премиум» — жидкое стекло. Тот же набор блоков и допов, свои
+ * страницы: тумблер с пошаговых страниц ведёт на главную этого варианта.
+ * Отдельный проект в каталоге, чтобы набор тумблеров и бриф не смешивались
+ * с «Реестром».
+ */
+export const webnamePremiumCatalog: Catalog = {
+  ...webnameCatalog,
+  project: "webname-premium",
+  label: "Arsenal D — сайт регистратора .UZ, вариант «Премиум»",
+  tiers: [{ id: "premium", label: "Премиум · жидкое стекло" }],
+  included: { premium: [] },
+};
+
+export function webnamePremiumHrefs(): Record<string, string> {
+  return { main: "/webname/premium", domains: "/webname/premium/domains", hosting: "/webname/premium/hosting" };
+}
