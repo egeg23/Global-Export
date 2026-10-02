@@ -14,6 +14,8 @@ import type { Catalog, CatalogAddon } from "@/lib/configurator/catalog";
  * в lib/configurator/prices.ts.
  */
 export const webnameAddons: CatalogAddon[] = [
+  { id: "logo-a", label: "Новый логотип · A «Адрес» (arsenal.d)", effect: "Имя как домен, знак «.d» — меняется в шапке и подвале на всех страницах", where: "site", exclusive: "logo" },
+  { id: "logo-b", label: "Новый логотип · B «Щит»", effect: "Щит с буквой D и звездой из старого знака — меняется в шапке и подвале на всех страницах", where: "site", exclusive: "logo" },
   { id: "whois", label: "Живая проверка домена через реестр .UZ", effect: "Поиск на первом экране спрашивает реестр и WHOIS по-настоящему, а не в демо-режиме", where: "main" },
   { id: "board", label: "Табло освободившихся доменов", effect: "Домены, которые только что освободились, перелистываются на табло — как в аэропорту", where: "main" },
   { id: "calc", label: "Калькулятор «домен + хостинг + сайт»", effect: "Зона, тариф, SSL и сайт — итог в сумах и заявка в Telegram одним нажатием", where: "main" },

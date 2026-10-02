@@ -10,6 +10,7 @@ import { isFree, useDemoSearch, useSearch, Whois } from "@/components/webname/he
 import { Hosting } from "@/components/webname/hosting";
 import { Icon, type IconName } from "@/components/webname/icons";
 import { useT } from "@/components/webname/lang";
+import { LogoShowcase } from "@/components/webname/logos";
 import { In, reducedMotion } from "@/components/webname/motion";
 import { PREMIUM, PremiumShell } from "@/components/webname/premium/shell";
 import { Block, Contacts, Lifecycle, Sites } from "@/components/webname/site";
@@ -31,6 +32,12 @@ export function PremiumSite() {
     <PremiumShell>
       <main className="relative">
         <PremiumHero />
+        <Addon id="logo-a">
+          <LogoShowcase kind="a" />
+        </Addon>
+        <Addon id="logo-b">
+          <LogoShowcase kind="b" />
+        </Addon>
         <Addon id="board">
           <FreedRibbon />
         </Addon>
