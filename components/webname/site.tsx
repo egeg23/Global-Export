@@ -29,6 +29,9 @@ import { cn } from "@/lib/cn";
  * Каркас всех страниц макета: мир «реестра», языки, общее состояние поиска,
  * шапка и подвал. Главная и пошаговые страницы (домены, хостинг) — в нём.
  */
+/** Адрес версии «Реестр»: на /webname теперь окно выбора вариантов. */
+export const REGISTRY = "/webname/registry";
+
 export function WebnameShell({ children }: { children: React.ReactNode }) {
   return (
     <div data-wn className="min-h-dvh overflow-x-clip">
@@ -58,7 +61,7 @@ export function WebnameSite() {
           <FreeBoard />
         </Addon>
         <Services />
-        <Hosting />
+        <Hosting base={REGISTRY} />
         <Addon id="calc">
           <Block id="calc" title="Домен, хостинг и сайт — одним счётом" lead="Выберите зону, тариф и сертификат — итог в сумах сразу. Расчёт уходит менеджеру одним нажатием.">
             <Calculator />
@@ -98,15 +101,15 @@ function Header() {
   // «Домены» и «Хостинг» ведут на пошаговые страницы: заказчик видит, что
   // идёт после первого экрана. Остальное — якоря главной.
   const links: [string, string][] = [
-    ["/webname/domains", t("domains")],
-    ["/webname/hosting", t("hosting")],
-    ["/webname#services", t("ssl")],
-    ["/webname#contacts", t("contacts")],
+    [`${REGISTRY}/domains`, t("domains")],
+    [`${REGISTRY}/hosting`, t("hosting")],
+    [`${REGISTRY}#services`, t("ssl")],
+    [`${REGISTRY}#contacts`, t("contacts")],
   ];
   return (
     <header className="sticky top-0 z-50 border-b border-wn-line bg-wn-paper/95 backdrop-blur-sm">
       <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
-        <Link href="/webname" className="shrink-0" aria-label="Arsenal D — на главную">
+        <Link href={REGISTRY} className="shrink-0" aria-label="Arsenal D — на главную">
           <BrandLogo className="aspect-[480/92] h-7 w-auto text-wn-ink sm:h-8" />
         </Link>
         <nav aria-label="Разделы" className="ml-6 hidden items-center gap-6 text-sm lg:flex">
@@ -366,6 +369,9 @@ function Footer() {
       <p className="wn-muted text-xs sm:mx-auto sm:text-center">
         © Arsenal D. Макет — DevUz. Логотип, тарифы, цены и контакты — с webname.uz; цена .UZ — с registrars.uz.
       </p>
+      <Link href="/webname" className="wn-btn wn-btn-ghost min-h-11 self-start px-4 text-sm sm:self-auto">
+        Все варианты
+      </Link>
       <Link href="/webname/premium" className="wn-btn wn-btn-ink min-h-11 self-start px-4 text-sm sm:self-auto">
         Вариант «Премиум»
         <Icon name="arrow-right" className="h-4 w-4" />
