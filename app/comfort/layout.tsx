@@ -5,6 +5,7 @@ import "../globals.css";
 
 import { OpenAtTop } from "@/components/mavera/open-at-top";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /**
  * Заголовки — Manrope 800: жирный гротеск с открытыми формами, как в
@@ -61,6 +62,7 @@ export default function ComfortLayout({ children }: { children: React.ReactNode 
       <body className="min-h-screen overflow-x-clip bg-[#1d1a20] antialiased">
         <OpenAtTop />
         {children}
+        <MockupTerms />
       </body>
     </html>
   );
