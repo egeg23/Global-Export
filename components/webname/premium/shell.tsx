@@ -273,10 +273,13 @@ function GlassNav() {
 export function VersionSwitch({ className }: { className?: string }) {
   const pathname = usePathname();
   const premium = pathname.startsWith(PREMIUM);
-  const tail = pathname.replace(PREMIUM, "").replace("/webname", "");
+  const tail = pathname.replace(PREMIUM, "").replace("/webname/registry", "");
   return (
-    <div role="group" aria-label="Версия макета" className={cn("inline-flex rounded-full bg-white/5 p-1 text-sm ring-1 ring-white/10", className)}>
-      <Link href={`/webname${tail}`} aria-current={!premium ? "page" : undefined} className={cn("min-h-10 rounded-full px-4 leading-10", !premium ? "bg-white/15 text-wn-ink" : "text-wn-ink-2")}>
+    <div role="group" aria-label="Версия макета" className={cn("inline-flex flex-wrap rounded-full bg-white/5 p-1 text-sm ring-1 ring-white/10", className)}>
+      <Link href="/webname" className="min-h-10 rounded-full px-4 leading-10 text-wn-ink-2 hover:text-wn-ink">
+        Все варианты
+      </Link>
+      <Link href={`/webname/registry${tail}`} aria-current={!premium ? "page" : undefined} className={cn("min-h-10 rounded-full px-4 leading-10", !premium ? "bg-white/15 text-wn-ink" : "text-wn-ink-2")}>
         Реестр
       </Link>
       <Link href={`${PREMIUM}${tail}`} aria-current={premium ? "page" : undefined} className={cn("min-h-10 rounded-full px-4 leading-10", premium ? "bg-[#ecd09a] text-[#1a1208]" : "text-wn-ink-2")}>

@@ -275,8 +275,8 @@ function Frame({ crumb, title, lead, base, children }: { crumb: string; title: s
 
 const DOMAIN_STEPS = ["Имя и зоны", "Владелец", "Настройка", "Оплата"];
 
-/** `base` — главная версии макета: «/webname» или «/webname/premium». */
-export function DomainFlow({ base = "/webname" }: { base?: string }) {
+/** `base` — главная версии макета: «/webname/registry» или «/webname/premium». */
+export function DomainFlow({ base = "/webname/registry" }: { base?: string }) {
   const params = useSearchParams();
   const [at, setAt] = useState(0);
   const top = useStepScroll(at);
@@ -480,7 +480,7 @@ export function DomainFlow({ base = "/webname" }: { base?: string }) {
 const HOSTING_STEPS = ["Тариф", "Домен", "Срок и допы", "Оплата"];
 const FAMILIES: Plan["family"][] = ["Silver", "Gold", "Platin", "Diamant", "Brillant"];
 
-export function HostingFlow({ base = "/webname" }: { base?: string }) {
+export function HostingFlow({ base = "/webname/registry" }: { base?: string }) {
   const params = useSearchParams();
   const fromUrl = plans.find((plan) => plan.name === params.get("plan"));
   const [at, setAt] = useState(0);

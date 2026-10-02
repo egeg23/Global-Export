@@ -1,28 +1,15 @@
-import type { Metadata } from "next";
-import { Suspense } from "react";
+import { permanentRedirect } from "next/navigation";
 
-import { DevuzIntro } from "@/components/brand/devuz-intro";
-import { ConfiguratorProvider } from "@/components/configurator/context";
-import { DomainFlow } from "@/components/webname/flow";
-import { WebnameShell } from "@/components/webname/site";
-import { webnameCatalog, webnameHrefs } from "@/content/webname/catalog";
-
-export const metadata: Metadata = {
-  title: "Регистрация домена",
-  description: "Макет Arsenal D: регистрация домена .UZ в четыре шага — имя и зоны, владелец, настройка NS, оплата Payme, Click или Uzum.",
-};
-
-/** Пошаговая страница из меню макета — что идёт после первого экрана. */
-export default function Page() {
-  return (
-    <ConfiguratorProvider catalog={webnameCatalog} tier="full" page="domains" hrefs={webnameHrefs()}>
-      <DevuzIntro project="webname" />
-      <WebnameShell>
-        {/* Параметр из адреса (?name=, ?plan=) читается в браузере. */}
-        <Suspense>
-          <DomainFlow />
-        </Suspense>
-      </WebnameShell>
-    </ConfiguratorProvider>
-  );
+/**
+ * Старый адрес шага «Реестра». С 02.10.2026 на /webname — окно выбора
+ * вариантов, а «Реестр» живёт на /webname/registry; ссылки, уже отправленные
+ * заказчику, ведут туда же, со всеми параметрами (?name=, ?plan=, ?addons=).
+ */
+export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(await searchParams)) {
+    for (const item of Array.isArray(value) ? value : value ? [value] : []) query.append(key, item);
+  }
+  const tail = query.toString();
+  permanentRedirect(`/webname/registry/domains${tail ? `?${tail}` : ""}`);
 }

@@ -50,7 +50,7 @@ export const webnameCatalog: Catalog = {
 };
 
 export function webnameHrefs(): Record<string, string> {
-  return { main: "/webname", domains: "/webname/domains", hosting: "/webname/hosting" };
+  return { main: "/webname/registry", domains: "/webname/registry/domains", hosting: "/webname/registry/hosting" };
 }
 
 /**

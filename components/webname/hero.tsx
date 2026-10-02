@@ -347,7 +347,7 @@ function Certificate({ name, settled }: { name: string; settled: boolean }) {
         </dl>
         <div className="mt-7 flex min-h-12 flex-wrap items-center gap-3">
           {free ? (
-            <Link href={`/webname/domains?name=${encodeURIComponent(name)}`} className="wn-btn">
+            <Link href={`/webname/registry/domains?name=${encodeURIComponent(name)}`} className="wn-btn">
               Занять {name}.uz
               <Icon name="arrow-right" className="h-5 w-5" />
             </Link>

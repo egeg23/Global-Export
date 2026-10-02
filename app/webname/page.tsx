@@ -1,14 +1,19 @@
-import { DevuzIntro } from "@/components/brand/devuz-intro";
-import { ConfiguratorProvider } from "@/components/configurator/context";
-import { WebnameSite } from "@/components/webname/site";
-import { webnameCatalog, webnameHrefs } from "@/content/webname/catalog";
+import type { Metadata } from "next";
 
-/** Макет сайта Arsenal D — одна «сочная» версия со всеми фишками. */
-export default function Webname() {
+import { DevuzIntro } from "@/components/brand/devuz-intro";
+import { VariantsHub } from "@/components/webname/hub";
+
+export const metadata: Metadata = {
+  title: "Варианты сайта",
+  description: "Макет сайта Arsenal D (webname.uz): два дизайна — «Реестр» и «Премиум» — и три логотипа в одном окне. Выберите сочетание и откройте сайт.",
+};
+
+/** Окно выбора вариантов макета Arsenal D — одна ссылка на всё. */
+export default function WebnameVariants() {
   return (
-    <ConfiguratorProvider catalog={webnameCatalog} tier="full" page="main" hrefs={webnameHrefs()}>
+    <>
       <DevuzIntro project="webname" />
-      <WebnameSite />
-    </ConfiguratorProvider>
+      <VariantsHub />
+    </>
   );
 }
