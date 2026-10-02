@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Addon } from "@/components/configurator/context";
 import { Calculator } from "@/components/webname/calculator";
@@ -72,21 +72,28 @@ export function PremiumSite() {
 /* Первый экран                                                        */
 /* ------------------------------------------------------------------ */
 
-/** Заголовок проявляется по словам — когда заставка студии освободит кадр. */
+/**
+ * Заголовок проявляется по словам — когда заставка студии освободит кадр.
+ *
+ * Расстояние между словами — отступ самого слова, а не пробел между ними:
+ * в Safari на iPhone и во встроенном браузере Telegram пробел между
+ * блоками-словами схлопывался, и заголовок читался «своёимяв.UZ».
+ */
 function Words({ text, className }: { text: string; className?: string }) {
   const [shown, setShown] = useState(false);
   useEffect(() => whenDevuzIntroDone(() => window.requestAnimationFrame(() => setShown(true))), []);
+  // Фраза целиком — для скринридеров и поиска; слова-блоки — только глазу.
   return (
-    <span className={cn("lg-words", shown && "is-in", className)}>
-      {text.split(" ").map((word, index) => (
-        <Fragment key={`${word}-${index}`}>
-          {index ? " " : null}
-          <span className="lg-word" style={{ "--w": index } as React.CSSProperties}>
+    <>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true" className={cn("lg-words", shown && "is-in", className)}>
+        {text.split(" ").map((word, index) => (
+          <span key={`${word}-${index}`} className="lg-word" style={{ "--w": index } as React.CSSProperties}>
             <span>{word}</span>
           </span>
-        </Fragment>
-      ))}
-    </span>
+        ))}
+      </span>
+    </>
   );
 }
 
