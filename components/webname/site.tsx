@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Link from "next/link";
 
 import { Addon } from "@/components/configurator/context";
 import { FreeBoard } from "@/components/webname/board";
@@ -9,6 +9,7 @@ import { Pulse } from "@/components/webname/globe";
 import { Hero, SearchProvider } from "@/components/webname/hero";
 import { Hosting } from "@/components/webname/hosting";
 import { Icon, type IconName } from "@/components/webname/icons";
+import { BrandLogo, LogoShowcase } from "@/components/webname/logos";
 import { LangPills, LangProvider, useT } from "@/components/webname/lang";
 import { In } from "@/components/webname/motion";
 import { Cabinet, Dns, Pay, Transfer } from "@/components/webname/tools";
@@ -24,47 +25,20 @@ import { cn } from "@/lib/cn";
  * перенос, DNS, жизненный цикл домена, кабинет. Блоки допов включает
  * конструктор (док справа внизу).
  */
-export function WebnameSite() {
+/**
+ * Каркас всех страниц макета: мир «реестра», языки, общее состояние поиска,
+ * шапка и подвал. Главная и пошаговые страницы (домены, хостинг) — в нём.
+ */
+/** Адрес версии «Реестр»: на /webname теперь окно выбора вариантов. */
+export const REGISTRY = "/webname/registry";
+
+export function WebnameShell({ children }: { children: React.ReactNode }) {
   return (
     <div data-wn className="min-h-dvh overflow-x-clip">
       <LangProvider>
         <SearchProvider>
           <Header />
-          <main>
-            <Hero />
-            <Addon id="board">
-              <FreeBoard />
-            </Addon>
-            <Services />
-            <Hosting />
-            <Addon id="calc">
-              <Block id="calc" title="Домен, хостинг и сайт — одним счётом" lead="Выберите зону, тариф и сертификат — итог в сумах сразу. Расчёт уходит менеджеру одним нажатием.">
-                <Calculator />
-              </Block>
-            </Addon>
-            <Pulse />
-            <Addon id="transfer">
-              <Block id="transfer" title="Перенос домена — три шага" lead="Домен у другого регистратора? Заберём его вместе с сайтом, без простоя.">
-                <Transfer />
-              </Block>
-            </Addon>
-            <Addon id="dns">
-              <Block id="dns" title="DNS — без звонка в поддержку" lead="Сайт, почта Google или Яндекс — готовым набором. DNSSEC — одним тумблером." tone="paper-2">
-                <Dns />
-              </Block>
-            </Addon>
-            <Lifecycle />
-            <Addon id="cabinet">
-              <Block id="cabinet" title="Кабинет, который помнит сроки" lead="Домены, хостинг и сертификаты — карточками. Что скоро истечёт, видно красным.">
-                <Cabinet />
-              </Block>
-            </Addon>
-            <Addon id="pay" className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
-              <Pay />
-            </Addon>
-            <Sites />
-            <Contacts />
-          </main>
+          {children}
           <Footer />
         </SearchProvider>
       </LangProvider>
@@ -72,27 +46,77 @@ export function WebnameSite() {
   );
 }
 
+export function WebnameSite() {
+  return (
+    <WebnameShell>
+      <main>
+        <Hero />
+        <Addon id="logo-a">
+          <LogoShowcase kind="a" />
+        </Addon>
+        <Addon id="logo-b">
+          <LogoShowcase kind="b" />
+        </Addon>
+        <Addon id="board">
+          <FreeBoard />
+        </Addon>
+        <Services />
+        <Hosting base={REGISTRY} />
+        <Addon id="calc">
+          <Block id="calc" title="Домен, хостинг и сайт — одним счётом" lead="Выберите зону, тариф и сертификат — итог в сумах сразу. Расчёт уходит менеджеру одним нажатием.">
+            <Calculator />
+          </Block>
+        </Addon>
+        <Pulse />
+        <Addon id="transfer">
+          <Block id="transfer" title="Перенос домена — три шага" lead="Домен у другого регистратора? Заберём его вместе с сайтом, без простоя.">
+            <Transfer />
+          </Block>
+        </Addon>
+        <Addon id="dns">
+          <Block id="dns" title="DNS — без звонка в поддержку" lead="Сайт, почта Google или Яндекс — готовым набором. DNSSEC — одним тумблером." tone="paper-2">
+            <Dns />
+          </Block>
+        </Addon>
+        <Lifecycle />
+        <Addon id="cabinet">
+          <Block id="cabinet" title="Кабинет, который помнит сроки" lead="Домены, хостинг и сертификаты — карточками. Что скоро истечёт, видно красным.">
+            <Cabinet />
+          </Block>
+        </Addon>
+        <Addon id="pay" className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
+          <Pay />
+        </Addon>
+        <Sites />
+        <Contacts />
+      </main>
+    </WebnameShell>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 
 function Header() {
   const t = useT();
+  // «Домены» и «Хостинг» ведут на пошаговые страницы: заказчик видит, что
+  // идёт после первого экрана. Остальное — якоря главной.
   const links: [string, string][] = [
-    ["#top", t("domains")],
-    ["#hosting", t("hosting")],
-    ["#services", t("ssl")],
-    ["#contacts", t("contacts")],
+    [`${REGISTRY}/domains`, t("domains")],
+    [`${REGISTRY}/hosting`, t("hosting")],
+    [`${REGISTRY}#services`, t("ssl")],
+    [`${REGISTRY}#contacts`, t("contacts")],
   ];
   return (
     <header className="sticky top-0 z-50 border-b border-wn-line bg-wn-paper/95 backdrop-blur-sm">
       <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
-        <a href="#top" className="shrink-0" aria-label="Arsenal D — наверх">
-          <Image src="/images/webname/arsenal-d.png" alt="Arsenal D" width={363} height={105} className="h-8 w-auto sm:h-9" preload />
-        </a>
+        <Link href={REGISTRY} className="shrink-0" aria-label="Arsenal D — на главную">
+          <BrandLogo className="aspect-[480/92] h-7 w-auto text-wn-ink sm:h-8" />
+        </Link>
         <nav aria-label="Разделы" className="ml-6 hidden items-center gap-6 text-sm lg:flex">
           {links.map(([href, label]) => (
-            <a key={href} href={href} className="text-wn-ink-2 transition-colors hover:text-wn-stamp">
+            <Link key={href} href={href} className="text-wn-ink-2 transition-colors hover:text-wn-stamp">
               {label}
-            </a>
+            </Link>
           ))}
         </nav>
         <LangPills className="ml-auto" />
@@ -114,11 +138,18 @@ function Header() {
           {t("write")}
         </a>
       </div>
+      <nav aria-label="Разделы" className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-3 pb-2 text-sm lg:hidden">
+        {links.map(([href, label]) => (
+          <Link key={href} href={href} className="flex min-h-11 shrink-0 items-center rounded-lg px-3 text-wn-ink-2 hover:bg-wn-card hover:text-wn-stamp">
+            {label}
+          </Link>
+        ))}
+      </nav>
     </header>
   );
 }
 
-function Block({
+export function Block({
   id,
   title,
   lead,
@@ -199,7 +230,7 @@ const LIFE = [
  * («Схема жизненного цикла домена»). Линия дорисовывается scaleX, этапы
  * встают по очереди. Сроков в днях на макете нет: их на сайте не называют.
  */
-function Lifecycle() {
+export function Lifecycle() {
   return (
     <section id="life" className="scroll-mt-20 bg-wn-paper-2">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
@@ -230,7 +261,7 @@ function Lifecycle() {
 /* ------------------------------------------------------------------ */
 
 /** Сайты: SitePad бесплатно и студия под ключ. Адреса — их перечень клиентов. */
-function Sites() {
+export function Sites() {
   const row = [...clientSites, ...clientSites];
   return (
     <section id="sites" className="scroll-mt-20 overflow-hidden">
@@ -273,7 +304,7 @@ function Sites() {
 
 /* ------------------------------------------------------------------ */
 
-function Contacts() {
+export function Contacts() {
   return (
     <section id="contacts" className="scroll-mt-20 px-3 pb-3 sm:px-5 sm:pb-5">
       <div className="wn-dark mx-auto grid max-w-7xl gap-10 overflow-hidden rounded-[1.5rem] p-6 sm:p-10 lg:grid-cols-12 lg:p-14">
@@ -334,10 +365,17 @@ function Card({ icon, label, wide, children }: { icon: IconName; label: string; 
 function Footer() {
   return (
     <footer className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:px-6">
-      <Image src="/images/webname/arsenal-d.png" alt="Arsenal D" width={363} height={105} className="h-9 w-auto" />
+      <BrandLogo trigger="view" className="aspect-[480/92] h-8 w-auto self-start text-wn-ink sm:self-auto" />
       <p className="wn-muted text-xs sm:mx-auto sm:text-center">
         © Arsenal D. Макет — DevUz. Логотип, тарифы, цены и контакты — с webname.uz; цена .UZ — с registrars.uz.
       </p>
+      <Link href="/webname" className="wn-btn wn-btn-ghost min-h-11 self-start px-4 text-sm sm:self-auto">
+        Все варианты
+      </Link>
+      <Link href="/webname/premium" className="wn-btn wn-btn-ink min-h-11 self-start px-4 text-sm sm:self-auto">
+        Вариант «Премиум»
+        <Icon name="arrow-right" className="h-4 w-4" />
+      </Link>
       <a href={`https://t.me/${contacts.telegram}`} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="flex h-11 w-11 items-center justify-center rounded-xl ring-1 ring-wn-line hover:bg-wn-card">
         <Icon name="brand-telegram" className="h-5 w-5" />
       </a>

@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { Addon, useAddon } from "@/components/configurator/context";
 import { Icon } from "@/components/webname/icons";
 import { useT } from "@/components/webname/lang";
 import { Parallax, reducedMotion } from "@/components/webname/motion";
-import { clientSites, sum, tgHref, zones, type Zone } from "@/content/webname/facts";
+import { clientSites, sum, zones, type Zone } from "@/content/webname/facts";
 import { whenDevuzIntroDone } from "@/lib/brand/intro";
 import { cn } from "@/lib/cn";
 
@@ -98,8 +99,12 @@ export function isFree(name: string, zone: string): boolean {
 
 const DEMO = ["osh-markazi", "samarkand-tour", "toshkent-dental", "mening-biznesim"];
 
-export function Hero() {
-  const t = useT();
+/**
+ * Поиск первого экрана — общий для обеих версий макета («Реестр» и
+ * «Премиум»): автонабор демо-имён, пока человек не тронул поле, и ответ
+ * через мгновение после последней буквы.
+ */
+export function useDemoSearch() {
   const search = useSearch();
   const [typed, setTyped] = useState("");
   const [autoWanted, setAuto] = useState(true);
@@ -164,6 +169,12 @@ export function Hero() {
   }, [value, auto]);
   const settled = auto ? DEMO.includes(name) && typed === name : name.length > 0;
 
+  return { search, value, name, settled, auto, setAuto, focused, setFocused, input };
+}
+
+export function Hero() {
+  const t = useT();
+  const { search, value, name, settled, auto, setAuto, focused, setFocused, input } = useDemoSearch();
   return (
     <section id="top" className="relative isolate overflow-hidden">
       <Guilloche />
@@ -336,10 +347,10 @@ function Certificate({ name, settled }: { name: string; settled: boolean }) {
         </dl>
         <div className="mt-7 flex min-h-12 flex-wrap items-center gap-3">
           {free ? (
-            <a href={tgHref(`Здравствуйте! Хочу зарегистрировать ${name}.uz`)} target="_blank" rel="noopener noreferrer" className="wn-btn">
-              <Icon name="brand-telegram" className="h-5 w-5" />
+            <Link href={`/webname/registry/domains?name=${encodeURIComponent(name)}`} className="wn-btn">
               Занять {name}.uz
-            </a>
+              <Icon name="arrow-right" className="h-5 w-5" />
+            </Link>
           ) : settled ? (
             <p className="text-sm">
               {alternatives.length ? (
@@ -402,7 +413,7 @@ function MicroText() {
 }
 
 /** Пример ответа реестра — блок допа «Живая проверка». */
-function Whois({ name }: { name: string }) {
+export function Whois({ name }: { name: string }) {
   const free = isFree(name, ".uz");
   const rows = free
     ? [
