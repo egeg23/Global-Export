@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Montserrat } from "next/font/google";
 
 import "../globals.css";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /**
  * Заголовки — Cormorant Garamond: высокий контраст штриха, как у резьбы на
@@ -51,6 +52,7 @@ export default function AkbarLayout({ children }: { children: React.ReactNode })
     <html lang="ru" className={`${display.variable} ${body.variable}`}>
       <body data-akbar="" className="min-h-screen overflow-x-clip bg-ak-ivory font-ak text-ak-ink antialiased">
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

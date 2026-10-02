@@ -219,3 +219,9 @@
     animation: none;
   }
 }
+
+/* Строка с условиями макета (components/showcase/mockup-terms) — над
+   плавающими кнопками внизу экрана: док конструктора, чат. */
+body:has(.fixed[class*="bottom-"]) [data-terms-line] {
+  padding-bottom: 5.5rem !important;
+}

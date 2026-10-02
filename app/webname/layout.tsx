@@ -5,6 +5,7 @@ import "../globals.css";
 
 import { OpenAtTop } from "@/components/mavera/open-at-top";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /**
  * Три гарнитуры, все с кириллицей (OFL), и ни одна ещё не стояла на витрине:
@@ -56,6 +57,7 @@ export default function WebnameLayout({ children }: { children: React.ReactNode 
       <body className="min-h-dvh overflow-x-clip bg-[#edf2ef] antialiased">
         <OpenAtTop />
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

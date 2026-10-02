@@ -6,6 +6,7 @@ import "../globals.css";
 import { Guard } from "@/components/mavera/guard";
 import { OpenAtTop } from "@/components/mavera/open-at-top";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /** Заголовки: геометрический гротеск, близкий к надписи GOLDEN HOUSE на знаке. */
 const manrope = Manrope({
@@ -55,6 +56,7 @@ export default function GoldenHouseLayout({ children }: { children: React.ReactN
         <Guard />
         <OpenAtTop />
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

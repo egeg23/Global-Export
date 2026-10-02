@@ -6,6 +6,7 @@ import "../globals.css";
 import { Guard } from "@/components/mavera/guard";
 import { OpenAtTop } from "@/components/mavera/open-at-top";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /** «Стандарт» — гротеск швейцарской школы: техничный, спокойный, без характера. */
 const plex = IBM_Plex_Sans({
@@ -63,6 +64,7 @@ export default function MaveraLayout({ children }: { children: React.ReactNode }
         <Guard />
         <OpenAtTop />
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

@@ -10,6 +10,7 @@ import { isLocale, localeTags, locales, t, type Locale } from "@/lib/i18n";
 import { alternates, organizationJsonLd, siteUrl } from "@/lib/seo";
 
 import "../globals.css";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -104,6 +105,7 @@ export default async function LocaleLayout({
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <MockupTerms locale={locale} />
       </body>
     </html>
   );

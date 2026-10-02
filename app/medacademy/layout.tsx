@@ -5,6 +5,7 @@ import "../globals.css";
 
 import { OpenAtTop } from "@/components/mavera/open-at-top";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /**
  * Две пары шрифтов — по одной на вариант, все с кириллицей (OFL):
@@ -57,6 +58,7 @@ export default function MedacademyLayout({ children }: { children: React.ReactNo
       <body className="min-h-dvh overflow-x-clip bg-[#10181d] antialiased">
         <OpenAtTop />
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

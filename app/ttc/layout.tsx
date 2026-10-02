@@ -8,6 +8,7 @@ import { langScript } from "@/lib/showcase/lang-script";
 import { paletteScript } from "@/lib/showcase/palette-script";
 import { TT_DEFAULT_PALETTE, TT_PALETTE_IDS } from "@/content/tt/palettes";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /**
  * Шрифты выбраны под две кириллицы сразу.
@@ -85,6 +86,7 @@ export default function TtcLayout({ children }: { children: React.ReactNode }) {
         />
         <OpenAtTop />
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

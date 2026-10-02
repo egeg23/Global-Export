@@ -3,6 +3,7 @@ import { Inter, Nunito_Sans, Rubik, Unbounded } from "next/font/google";
 
 import "../globals.css";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -61,6 +62,7 @@ export default function FoodmaxxLayout({ children }: { children: React.ReactNode
         className="min-h-screen bg-fm-ink-950 font-fm text-fm-cream-50 antialiased"
       >
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

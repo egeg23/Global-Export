@@ -5,6 +5,7 @@ import "../globals.css";
 
 import { OpenAtTop } from "@/components/mavera/open-at-top";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /**
  * Заголовки — высококонтрастный антиквенный шрифт: надпись NAMUNA на их
@@ -58,6 +59,7 @@ export default function NamunaLayout({ children }: { children: React.ReactNode }
       <body data-world="nm" className="min-h-screen antialiased">
         <OpenAtTop />
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

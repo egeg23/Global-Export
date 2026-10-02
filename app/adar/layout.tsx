@@ -5,6 +5,7 @@ import { adarIndexable, adarSiteUrl } from "@/lib/adar/seo";
 
 import "../globals.css";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
@@ -59,6 +60,7 @@ export default function AdarLayout({ children }: { children: React.ReactNode }) 
         className="min-h-screen bg-adar-cream-50 font-adar text-adar-ink antialiased"
       >
         {children}
+        <MockupTerms />
       </body>
     </html>
   );

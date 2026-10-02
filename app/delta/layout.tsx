@@ -3,6 +3,7 @@ import { JetBrains_Mono, Nunito, Nunito_Sans } from "next/font/google";
 
 import "../globals.css";
 import { projectRobots } from "@/lib/showcase/seo";
+import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /**
  * Заголовки — Nunito Black: круглые окончания, кириллица, детский характер
@@ -55,6 +56,7 @@ export default function DeltaLayout({ children }: { children: React.ReactNode })
     <html lang="ru" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body data-delta="" className="min-h-screen bg-dl-paper font-dl text-dl-ink antialiased">
         {children}
+        <MockupTerms />
       </body>
     </html>
   );
