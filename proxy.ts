@@ -118,6 +118,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Проект витрины — макет сайта Arsenal D (webname.uz), регистратора .UZ и
+  // хостинга. Без языкового префикса, индексацию решает `projectRobots`.
+  if (pathname === "/webname" || pathname.startsWith("/webname/")) {
+    return NextResponse.next();
+  }
+
   // On the demo deployment the root is the showcase; on the live site it stays
   // the language redirect. One variable rather than two builds of the app.
   if (pathname === "/" && process.env.SHOWCASE_ROOT === "true") {
