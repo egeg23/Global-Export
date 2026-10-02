@@ -1,0 +1,415 @@
+/* ------------------------------------------------------------------
+   Arsenal D (webname.uz) — «реестр».
+
+   Регистратор выдаёт людям адрес — по сути, свидетельство. Поэтому мир
+   макета — защищённая бумага: холодная серо-зелёная основа, гильош из
+   тонких линий, как на банкнотах и дипломах, кобальтовые чернила и красная
+   печать — цвет буквы «D» из их логотипа. Тёмные блоки не чёрные, а
+   кобальтовые, как обложка паспорта.
+
+   Палитра не из пресетов: подобрана Adobe Leonardo
+   (@adobe/leonardo-contrast-colors, Apache-2.0) под заданный контраст и
+   перепроверена culori (MIT) по WCAG 2 — весь текст не ниже 4,7:1.
+   Tektur + Martian Mono + Geologica, иконки Tabler (MIT).
+   ------------------------------------------------------------------ */
+
+@theme {
+  --color-wn-paper: var(--wn-paper);
+  --color-wn-paper-2: var(--wn-paper-2);
+  --color-wn-card: var(--wn-card);
+  --color-wn-ink: var(--wn-ink);
+  --color-wn-ink-2: var(--wn-ink-2);
+  --color-wn-muted: var(--wn-muted);
+  --color-wn-line: var(--wn-line);
+  --color-wn-cobalt: var(--wn-cobalt);
+  --color-wn-cobalt-2: var(--wn-cobalt-2);
+  --color-wn-on-cobalt: var(--wn-on-cobalt);
+  --color-wn-muted-cobalt: var(--wn-muted-cobalt);
+  --color-wn-stamp: var(--wn-stamp);
+  --color-wn-sky: var(--wn-sky);
+  --color-wn-sky-bright: var(--wn-sky-bright);
+  --color-wn-mint: var(--wn-mint);
+  --color-wn-mint-bg: var(--wn-mint-bg);
+  --color-wn-amber: var(--wn-amber);
+
+  --ease-wn: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-wn] {
+  --wn-paper: #edf2ef;
+  --wn-paper-2: #e0e8e4;
+  --wn-card: #f8faf8;
+  --wn-ink: #111b3b;
+  --wn-ink-2: #36415f;
+  --wn-muted: #56607b;
+  --wn-line: rgb(17 27 59 / 0.16);
+  --wn-cobalt: #17256a;
+  --wn-cobalt-2: #1f3080;
+  --wn-on-cobalt: #eef2f0;
+  --wn-muted-cobalt: #b7c0e2;
+  --wn-stamp: #c4221a;
+  --wn-sky: #13689f;
+  --wn-sky-bright: #6fd0ff;
+  --wn-mint: #0b7a52;
+  --wn-mint-bg: #c6eedb;
+  --wn-amber: #ffc94d;
+
+  --color-wn-paper: var(--wn-paper);
+  --color-wn-paper-2: var(--wn-paper-2);
+  --color-wn-card: var(--wn-card);
+  --color-wn-ink: var(--wn-ink);
+  --color-wn-ink-2: var(--wn-ink-2);
+  --color-wn-muted: var(--wn-muted);
+  --color-wn-line: var(--wn-line);
+  --color-wn-cobalt: var(--wn-cobalt);
+  --color-wn-cobalt-2: var(--wn-cobalt-2);
+  --color-wn-on-cobalt: var(--wn-on-cobalt);
+  --color-wn-muted-cobalt: var(--wn-muted-cobalt);
+  --color-wn-stamp: var(--wn-stamp);
+  --color-wn-sky: var(--wn-sky);
+  --color-wn-sky-bright: var(--wn-sky-bright);
+  --color-wn-mint: var(--wn-mint);
+  --color-wn-mint-bg: var(--wn-mint-bg);
+  --color-wn-amber: var(--wn-amber);
+
+  color: var(--wn-ink);
+  background: var(--wn-paper);
+  font-family: var(--font-wn-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+[data-wn] ::selection {
+  background: var(--wn-stamp);
+  color: #fff;
+}
+[data-wn] :focus-visible {
+  outline: 2px solid var(--wn-sky);
+  outline-offset: 3px;
+}
+/* У адресной строки фокус рисует вся строка (focus-within), не поле. */
+[data-wn] #wn-q:focus-visible {
+  outline: none;
+}
+[data-wn] .wn-dark :focus-visible {
+  outline-color: var(--wn-sky-bright);
+}
+
+@layer components {
+  .wn-display {
+    font-family: var(--font-wn-display), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  .wn-mono {
+    font-family: var(--font-wn-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .wn-num {
+    font-variant-numeric: tabular-nums;
+  }
+  .wn-muted {
+    color: var(--wn-muted);
+  }
+  .wn-card {
+    border-radius: 1.25rem;
+    background: var(--wn-card);
+    box-shadow:
+      inset 0 0 0 1px var(--wn-line),
+      0 18px 40px -28px rgb(17 27 59 / 0.45);
+  }
+  .wn-dark {
+    background: var(--wn-cobalt);
+    color: var(--wn-on-cobalt);
+  }
+  .wn-dark .wn-muted {
+    color: var(--wn-muted-cobalt);
+  }
+  .wn-dark .wn-card {
+    background: var(--wn-cobalt-2);
+    box-shadow:
+      inset 0 0 0 1px rgb(238 242 240 / 0.14),
+      0 20px 40px -26px rgb(4 8 30 / 0.8);
+  }
+  .wn-btn {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 1.5rem;
+    border-radius: 0.75rem;
+    background: var(--wn-stamp);
+    color: #fff;
+    font-weight: 700;
+    transition: transform 0.2s var(--ease-wn);
+  }
+  .wn-btn:hover {
+    transform: translate3d(0, -2px, 0);
+  }
+  .wn-btn:active {
+    transform: translate3d(0, 1px, 0) scale(0.98);
+  }
+  .wn-btn-ink {
+    background: var(--wn-ink);
+  }
+  .wn-btn-ghost {
+    background: transparent;
+    color: inherit;
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+  .wn-chip {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    color: inherit;
+    box-shadow: inset 0 0 0 1px var(--wn-line);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .wn-dark .wn-chip {
+    box-shadow: inset 0 0 0 1px rgb(238 242 240 / 0.22);
+  }
+  .wn-chip[aria-pressed="true"],
+  .wn-chip[aria-selected="true"],
+  .wn-chip[aria-checked="true"] {
+    background: var(--wn-ink);
+    color: var(--wn-paper);
+    box-shadow: none;
+  }
+  .wn-dark .wn-chip[aria-pressed="true"],
+  .wn-dark .wn-chip[aria-selected="true"],
+  .wn-dark .wn-chip[aria-checked="true"] {
+    background: var(--wn-amber);
+    color: var(--wn-ink);
+  }
+  .wn-field {
+    width: 100%;
+    min-height: 3rem;
+    border-radius: 0.75rem;
+    background: var(--wn-card);
+    padding: 0 0.875rem;
+    color: var(--wn-ink);
+    font-size: 1rem;
+    box-shadow: inset 0 0 0 1px var(--wn-line);
+  }
+  .wn-dark .wn-field {
+    background: rgb(238 242 240 / 0.08);
+    color: var(--wn-on-cobalt);
+    box-shadow: inset 0 0 0 1px rgb(238 242 240 / 0.22);
+  }
+  .wn-dark .wn-field option {
+    color: var(--wn-ink);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Появления. Только transform и opacity; у каждого блока своё движение.
+   ------------------------------------------------------------------ */
+[data-wn] .wn-in {
+  opacity: 0;
+  transition:
+    opacity 0.7s var(--ease-wn),
+    transform 0.9s var(--ease-wn);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+/* Строка реестра въезжает справа, как запись в журнал. */
+[data-wn] .wn-in[data-in="ledger"] {
+  transform: translate3d(2rem, 0, 0);
+}
+/* Бланк разворачивается сверху, как лист из папки. */
+[data-wn] .wn-in[data-in="unfold"] {
+  transform: perspective(1000px) rotateX(-14deg) translate3d(0, -1rem, 0);
+  transform-origin: 50% 0;
+}
+/* Марка ложится на конверт. */
+[data-wn] .wn-in[data-in="stamp"] {
+  transform: scale(1.08) rotate(-2deg);
+}
+[data-wn] .wn-in[data-in="rise"] {
+  transform: translate3d(0, 2rem, 0);
+}
+[data-wn] .wn-in[data-in="slide"] {
+  transform: translate3d(-2rem, 0, 0);
+}
+[data-wn] .wn-in.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Каретка адресной строки. */
+@keyframes wn-caret {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.wn-caret {
+  animation: wn-caret 1s steps(1) infinite;
+}
+
+/* Печать «СВОБОДЕН»: падает сверху, с отскоком, бумага под ней вздрагивает. */
+@keyframes wn-stamp {
+  0% {
+    opacity: 0;
+    transform: scale(2.4) rotate(-22deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-7deg);
+  }
+  75% {
+    transform: scale(1.04) rotate(-9deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+.wn-stamp {
+  animation: wn-stamp 0.55s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+@keyframes wn-thud {
+  0%,
+  100% {
+    transform: none;
+  }
+  40% {
+    transform: translate3d(0, 3px, 0) scale(0.995);
+  }
+}
+.wn-thud {
+  animation: wn-thud 0.35s ease-out 0.28s both;
+}
+
+/* Плитка зоны — щелчок на место по очереди. */
+@keyframes wn-tick {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.75rem, 0) rotate(-3deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.wn-tick {
+  animation: wn-tick 0.45s var(--ease-wn) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+/* Табло: ячейка перелистывается вокруг горизонтальной оси. */
+@keyframes wn-flap {
+  0% {
+    transform: perspective(300px) rotateX(-90deg);
+    opacity: 0.4;
+  }
+  100% {
+    transform: perspective(300px) rotateX(0);
+    opacity: 1;
+  }
+}
+.wn-flap {
+  animation: wn-flap 0.32s cubic-bezier(0.3, 0.7, 0.4, 1) both;
+  animation-delay: calc(var(--c, 0) * 28ms);
+  transform-origin: 50% 50%;
+}
+
+/* Пульс сервера — точка дышит. */
+@keyframes wn-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.wn-pulse {
+  animation: wn-pulse 1.8s ease-out infinite;
+}
+
+/* Полоса, которая дорисовывается: scaleX, не ширина. */
+.wn-grow {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 1.2s var(--ease-wn);
+}
+.is-in .wn-grow,
+.wn-grow.is-on {
+  transform: scaleX(1);
+}
+
+@keyframes wn-marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.wn-marquee {
+  animation: wn-marquee 50s linear infinite;
+}
+.wn-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes wn-pop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.wn-pop {
+  animation: wn-pop 0.4s var(--ease-wn) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-wn] .wn-in,
+  [data-wn] .wn-in[data-in] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .wn-caret,
+  .wn-stamp,
+  .wn-thud,
+  .wn-tick,
+  .wn-flap,
+  .wn-pulse,
+  .wn-marquee,
+  .wn-pop {
+    animation: none;
+  }
+  .wn-stamp {
+    opacity: 1;
+    transform: rotate(-8deg);
+  }
+  .wn-grow {
+    transform: none;
+    transition: none;
+  }
+  [data-wn] * {
+    scroll-behavior: auto;
+  }
+}
