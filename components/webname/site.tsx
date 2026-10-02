@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { Addon } from "@/components/configurator/context";
@@ -10,6 +9,7 @@ import { Pulse } from "@/components/webname/globe";
 import { Hero, SearchProvider } from "@/components/webname/hero";
 import { Hosting } from "@/components/webname/hosting";
 import { Icon, type IconName } from "@/components/webname/icons";
+import { ArsenalLogo } from "@/components/webname/logo";
 import { LangPills, LangProvider, useT } from "@/components/webname/lang";
 import { In } from "@/components/webname/motion";
 import { Cabinet, Dns, Pay, Transfer } from "@/components/webname/tools";
@@ -101,7 +101,7 @@ function Header() {
     <header className="sticky top-0 z-50 border-b border-wn-line bg-wn-paper/95 backdrop-blur-sm">
       <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
         <Link href="/webname" className="shrink-0" aria-label="Arsenal D — на главную">
-          <Image src="/images/webname/arsenal-d.png" alt="Arsenal D" width={363} height={105} className="h-8 w-auto sm:h-9" preload />
+          <ArsenalLogo className="aspect-[480/92] h-7 w-auto text-wn-ink sm:h-8" />
         </Link>
         <nav aria-label="Разделы" className="ml-6 hidden items-center gap-6 text-sm lg:flex">
           {links.map(([href, label]) => (
@@ -356,7 +356,7 @@ function Card({ icon, label, wide, children }: { icon: IconName; label: string; 
 function Footer() {
   return (
     <footer className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:px-6">
-      <Image src="/images/webname/arsenal-d.png" alt="Arsenal D" width={363} height={105} className="h-9 w-auto self-start sm:self-auto" />
+      <ArsenalLogo trigger="view" className="aspect-[480/92] h-8 w-auto self-start text-wn-ink sm:self-auto" />
       <p className="wn-muted text-xs sm:mx-auto sm:text-center">
         © Arsenal D. Макет — DevUz. Логотип, тарифы, цены и контакты — с webname.uz; цена .UZ — с registrars.uz.
       </p>
