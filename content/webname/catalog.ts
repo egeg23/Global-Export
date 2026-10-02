@@ -14,15 +14,15 @@ import type { Catalog, CatalogAddon } from "@/lib/configurator/catalog";
  * в lib/configurator/prices.ts.
  */
 export const webnameAddons: CatalogAddon[] = [
-  { id: "whois", label: "Живая проверка домена через реестр .UZ", effect: "Поиск на первом экране спрашивает реестр и WHOIS по-настоящему, а не в демо-режиме", where: "site" },
-  { id: "board", label: "Табло освободившихся доменов", effect: "Домены, которые только что освободились, перелистываются на табло — как в аэропорту", where: "site" },
-  { id: "calc", label: "Калькулятор «домен + хостинг + сайт»", effect: "Зона, тариф, SSL и сайт — итог в сумах и заявка в Telegram одним нажатием", where: "site" },
-  { id: "compare", label: "Сравнение тарифов хостинга", effect: "Три тарифа рядом: диск, сайты, базы, почта — разница подсвечена", where: "site" },
-  { id: "transfer", label: "Перенос домена и сайта в три шага", effect: "Мастер переноса от другого регистратора: бланк, подтверждение, DNS", where: "site" },
-  { id: "dns", label: "DNS-панель в браузере", effect: "Записи A, CNAME, MX и TXT, готовые наборы для почты и сайта — без звонка в поддержку", where: "site" },
-  { id: "status", label: "Статус серверов и плановые работы", effect: "Пульс хостинга, DNS и почты онлайн и график работ вместо новостей", where: "site" },
-  { id: "cabinet", label: "Новый личный кабинет", effect: "Домены, сроки продления, счета и договоры — карточками, с телефона", where: "site" },
-  { id: "pay", label: "Онлайн-оплата Payme, Click, Uzum", effect: "Продлить домен или хостинг прямо со страницы, без счёта и банка", where: "site" },
+  { id: "whois", label: "Живая проверка домена через реестр .UZ", effect: "Поиск на первом экране спрашивает реестр и WHOIS по-настоящему, а не в демо-режиме", where: "main" },
+  { id: "board", label: "Табло освободившихся доменов", effect: "Домены, которые только что освободились, перелистываются на табло — как в аэропорту", where: "main" },
+  { id: "calc", label: "Калькулятор «домен + хостинг + сайт»", effect: "Зона, тариф, SSL и сайт — итог в сумах и заявка в Telegram одним нажатием", where: "main" },
+  { id: "compare", label: "Сравнение тарифов хостинга", effect: "Три тарифа рядом: диск, сайты, базы, почта — разница подсвечена", where: "main" },
+  { id: "transfer", label: "Перенос домена и сайта в три шага", effect: "Мастер переноса от другого регистратора: бланк, подтверждение, DNS", where: "main" },
+  { id: "dns", label: "DNS-панель в браузере", effect: "Записи A, CNAME, MX и TXT, готовые наборы для почты и сайта — без звонка в поддержку", where: "main" },
+  { id: "status", label: "Статус серверов и плановые работы", effect: "Пульс хостинга, DNS и почты онлайн и график работ вместо новостей", where: "main" },
+  { id: "cabinet", label: "Новый личный кабинет", effect: "Домены, сроки продления, счета и договоры — карточками, с телефона", where: "main" },
+  { id: "pay", label: "Онлайн-оплата Payme, Click, Uzum", effect: "Продлить домен или хостинг прямо со страницы, без счёта и банка", where: "main" },
   { id: "uz", label: "Узбекская версия", effect: "Переключатель RU / UZ в шапке", where: "site" },
   { id: "en", label: "Английская версия", effect: "Переключатель EN — для клиентов из-за рубежа", where: "site" },
   { id: "chat", label: "Чат Telegram / WhatsApp", effect: "Плавающая кнопка мессенджера", where: "site" },
@@ -41,12 +41,12 @@ export const webnameCatalog: Catalog = {
   tiers: [{ id: "full", label: "Сочная версия" }],
   addons: [...webnameAddons, ...studioServices],
   included: { full: [] },
-  pages: [{ id: "main", label: "Главная" }, ...servicePages],
+  pages: [{ id: "main", label: "Главная" }, { id: "domains", label: "Регистрация домена" }, { id: "hosting", label: "Заказ хостинга" }, ...servicePages],
   everywhere: "site",
   everywhereLabel: "Сайт",
   chat: { id: "chat", text: "Здравствуйте! Хочу зарегистрировать домен.", site: "https://webname.uz" },
 };
 
 export function webnameHrefs(): Record<string, string> {
-  return { main: "/webname" };
+  return { main: "/webname", domains: "/webname/domains", hosting: "/webname/hosting" };
 }
