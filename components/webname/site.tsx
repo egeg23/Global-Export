@@ -140,7 +140,7 @@ function Header() {
   );
 }
 
-function Block({
+export function Block({
   id,
   title,
   lead,
@@ -221,7 +221,7 @@ const LIFE = [
  * («Схема жизненного цикла домена»). Линия дорисовывается scaleX, этапы
  * встают по очереди. Сроков в днях на макете нет: их на сайте не называют.
  */
-function Lifecycle() {
+export function Lifecycle() {
   return (
     <section id="life" className="scroll-mt-20 bg-wn-paper-2">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
@@ -252,7 +252,7 @@ function Lifecycle() {
 /* ------------------------------------------------------------------ */
 
 /** Сайты: SitePad бесплатно и студия под ключ. Адреса — их перечень клиентов. */
-function Sites() {
+export function Sites() {
   const row = [...clientSites, ...clientSites];
   return (
     <section id="sites" className="scroll-mt-20 overflow-hidden">
@@ -295,7 +295,7 @@ function Sites() {
 
 /* ------------------------------------------------------------------ */
 
-function Contacts() {
+export function Contacts() {
   return (
     <section id="contacts" className="scroll-mt-20 px-3 pb-3 sm:px-5 sm:pb-5">
       <div className="wn-dark mx-auto grid max-w-7xl gap-10 overflow-hidden rounded-[1.5rem] p-6 sm:p-10 lg:grid-cols-12 lg:p-14">
@@ -360,6 +360,10 @@ function Footer() {
       <p className="wn-muted text-xs sm:mx-auto sm:text-center">
         © Arsenal D. Макет — DevUz. Логотип, тарифы, цены и контакты — с webname.uz; цена .UZ — с registrars.uz.
       </p>
+      <Link href="/webname/premium" className="wn-btn wn-btn-ink min-h-11 self-start px-4 text-sm sm:self-auto">
+        Вариант «Премиум»
+        <Icon name="arrow-right" className="h-4 w-4" />
+      </Link>
       <a href={`https://t.me/${contacts.telegram}`} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="flex h-11 w-11 items-center justify-center rounded-xl ring-1 ring-wn-line hover:bg-wn-card">
         <Icon name="brand-telegram" className="h-5 w-5" />
       </a>

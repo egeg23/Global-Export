@@ -29,7 +29,7 @@ const ROUTES: { zone: string; city: string; at: [number, number] }[] = [
  * пальцем его можно повернуть. Библиотека грузится отдельным куском, когда
  * блок подъезжает к экрану.
  */
-function Globe() {
+function Globe({ premium = false }: { premium?: boolean }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [wrap, visible] = useOnScreen<HTMLDivElement>("200px");
   const drag = useRef<{ x: number; phi: number } | null>(null);
@@ -57,12 +57,12 @@ function Globe() {
         diffuse: 1.4,
         mapSamples: size < 400 ? 9000 : 16000,
         mapBrightness: 5,
-        baseColor: [0.16, 0.22, 0.52],
-        markerColor: [1, 0.79, 0.3],
-        glowColor: [0.27, 0.36, 0.78],
+        baseColor: premium ? [0.2, 0.17, 0.27] : [0.16, 0.22, 0.52],
+        markerColor: premium ? [0.95, 0.82, 0.58] : [1, 0.79, 0.3],
+        glowColor: premium ? [0.55, 0.22, 0.32] : [0.27, 0.36, 0.78],
         markers: [{ location: TASHKENT, size: 0.09, color: [0.85, 0.2, 0.15] }, ...ROUTES.map((route) => ({ location: route.at, size: 0.035 }))],
         arcs: ROUTES.map((route) => ({ from: TASHKENT, to: route.at })),
-        arcColor: [0.44, 0.82, 1],
+        arcColor: premium ? [1, 0.55, 0.6] : [0.44, 0.82, 1],
         arcWidth: 0.6,
         arcHeight: 0.28,
       });
@@ -81,7 +81,7 @@ function Globe() {
       window.cancelAnimationFrame(frame);
       globe?.destroy();
     };
-  }, [visible]);
+  }, [visible, premium]);
 
   return (
     <div ref={wrap} className="relative mx-auto aspect-square w-full max-w-[34rem]">
@@ -107,7 +107,7 @@ function Globe() {
   );
 }
 
-export function Pulse() {
+export function Pulse({ premium = false }: { premium?: boolean }) {
   return (
     <section id="pulse" className="wn-dark scroll-mt-20 overflow-hidden">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:py-24">
@@ -130,7 +130,7 @@ export function Pulse() {
           </ul>
         </div>
         <div className="lg:col-span-7">
-          <Globe />
+          <Globe premium={premium} />
         </div>
       </div>
       <Addon id="status" className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:pb-24">

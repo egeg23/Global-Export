@@ -49,6 +49,8 @@ export type { AddonPrice, Quote };
  *    владельца там же); где публичных цен нет (живой WHOIS, табло,
  *    DNS-панель, статус, перенос), ориентир — середина ставки 6–14 $/ч,
  *    10 $/ч. Рынок и ссылки — docs/webname-research.md, раздел 6.
+ *    Вариант «Премиум» (жидкое стекло) — тот же сайт и те же допы, цена
+ *    пока та же; владелец может назначить свою.
  *  - Услуги студии сверх сайта — прайс студии, общий для всех проектов.
  *
  * Подписка считается в месяц и в разовый итог не входит; «от» значит, что
@@ -166,6 +168,27 @@ const priceLists: Record<string, PriceList> = {
   },
   webname: {
     tiers: { full: 1700 },
+    addons: {
+      whois: { usd: 200 },
+      board: { usd: 80 },
+      calc: { usd: 85 },
+      compare: { usd: 50 },
+      transfer: { usd: 100 },
+      dns: { usd: 160 },
+      status: { usd: 120 },
+      cabinet: { usd: 255 },
+      pay: { usd: 295 },
+      uz: { usd: 80 },
+      en: { usd: 125 },
+      chat: { usd: 40 },
+      "tg-bot": { usd: 210 },
+      crm: { usd: 190 },
+      blog: { usd: 150 },
+      ...studioServices,
+    },
+  },
+  "webname-premium": {
+    tiers: { premium: 1700 },
     addons: {
       whois: { usd: 200 },
       board: { usd: 80 },

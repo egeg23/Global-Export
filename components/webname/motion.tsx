@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 
 export { onScrollFrame, Parallax, reducedMotion } from "@/components/cf/motion";
 
-type Variant = "ledger" | "unfold" | "stamp" | "rise" | "slide";
+type Variant = "ledger" | "unfold" | "stamp" | "rise" | "slide" | "glass" | "lift";
 
 /**
  * Появление блока при прокрутке — один наблюдатель, срабатывает один раз.

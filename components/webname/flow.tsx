@@ -192,7 +192,7 @@ function Payment({ order, onPaid }: { order: string; onPaid: () => void }) {
   );
 }
 
-function Done({ stamp, title, next, order }: { stamp: string; title: string; next: string[]; order: string }) {
+function Done({ stamp, title, next, order, base }: { stamp: string; title: string; next: string[]; order: string; base: string }) {
   return (
     <div className="wn-pop">
       <div className="relative overflow-hidden rounded-2xl bg-wn-card p-6 ring-1 ring-wn-line sm:p-10">
@@ -224,7 +224,7 @@ function Done({ stamp, title, next, order }: { stamp: string; title: string; nex
             <Icon name="brand-telegram" className="h-5 w-5" />
             Отправить заказ в Telegram
           </a>
-          <Link href="/webname" className="wn-btn wn-btn-ghost">
+          <Link href={base} className="wn-btn wn-btn-ghost">
             На главную
           </Link>
         </div>
@@ -253,11 +253,11 @@ function useStepScroll(at: number) {
   return ref;
 }
 
-function Frame({ crumb, title, lead, children }: { crumb: string; title: string; lead: string; children: React.ReactNode }) {
+function Frame({ crumb, title, lead, base, children }: { crumb: string; title: string; lead: string; base: string; children: React.ReactNode }) {
   return (
     <main className="mx-auto max-w-7xl px-4 pb-20 pt-8 sm:px-6 lg:pt-12">
       <nav aria-label="Хлебные крошки" className="text-sm text-wn-muted">
-        <Link href="/webname" className="hover:text-wn-stamp">
+        <Link href={base} className="hover:text-wn-stamp">
           Главная
         </Link>{" "}
         / <span className="text-wn-ink-2">{crumb}</span>
@@ -275,7 +275,8 @@ function Frame({ crumb, title, lead, children }: { crumb: string; title: string;
 
 const DOMAIN_STEPS = ["Имя и зоны", "Владелец", "Настройка", "Оплата"];
 
-export function DomainFlow() {
+/** `base` — главная версии макета: «/webname» или «/webname/premium». */
+export function DomainFlow({ base = "/webname" }: { base?: string }) {
   const params = useSearchParams();
   const [at, setAt] = useState(0);
   const top = useStepScroll(at);
@@ -307,7 +308,7 @@ export function DomainFlow() {
   const ownerOk = owner.name.trim().length > 1 && owner.phone.replace(/\D/g, "").length >= 9;
 
   return (
-    <Frame crumb="Регистрация домена" title="Регистрация домена" lead="Четыре шага до своего адреса: имя, владелец, настройка и оплата. Домен в .UZ — от 1 до 10 лет.">
+    <Frame base={base} crumb="Регистрация домена" title="Регистрация домена" lead="Четыре шага до своего адреса: имя, владелец, настройка и оплата. Домен в .UZ — от 1 до 10 лет.">
       <div ref={top} className="scroll-mt-32">{at < DOMAIN_STEPS.length ? <Steps steps={DOMAIN_STEPS} at={at} go={setAt} /> : null}</div>
       <div className="mt-8 grid gap-6 lg:grid-cols-12">
         <div className="min-w-0 lg:col-span-8">
@@ -450,6 +451,7 @@ export function DomainFlow() {
 
           {at === 4 ? (
             <Done
+              base={base}
               stamp="Зарегистрирован"
               title={`${free.map((zone) => `${name}${zone}`).join(", ")} — ваш`}
               order={order}
@@ -478,7 +480,7 @@ export function DomainFlow() {
 const HOSTING_STEPS = ["Тариф", "Домен", "Срок и допы", "Оплата"];
 const FAMILIES: Plan["family"][] = ["Silver", "Gold", "Platin", "Diamant", "Brillant"];
 
-export function HostingFlow() {
+export function HostingFlow({ base = "/webname" }: { base?: string }) {
   const params = useSearchParams();
   const fromUrl = plans.find((plan) => plan.name === params.get("plan"));
   const [at, setAt] = useState(0);
@@ -513,7 +515,7 @@ export function HostingFlow() {
   const disk = (mb: number) => (mb >= 1024 ? `${mb / 1024} Гб` : `${mb} Мб`);
 
   return (
-    <Frame crumb="Заказ хостинга" title="Заказ хостинга" lead="Тариф, домен, срок — и сайт на хостинге в сумах. Почта на своём домене, MySQL и FTP — в каждом тарифе.">
+    <Frame base={base} crumb="Заказ хостинга" title="Заказ хостинга" lead="Тариф, домен, срок — и сайт на хостинге в сумах. Почта на своём домене, MySQL и FTP — в каждом тарифе.">
       <div ref={top} className="scroll-mt-32">{at < HOSTING_STEPS.length ? <Steps steps={HOSTING_STEPS} at={at} go={setAt} /> : null}</div>
       <div className="mt-8 grid gap-6 lg:grid-cols-12">
         <div className="min-w-0 lg:col-span-8">
@@ -616,6 +618,7 @@ export function HostingFlow() {
 
           {at === 4 ? (
             <Done
+              base={base}
               stamp="Активирован"
               title={`Хостинг ${plan.name} включён`}
               order={order}
