@@ -90,6 +90,14 @@
 [data-wn] #wn-q:focus-visible {
   outline: none;
 }
+/* Общий фокус Global Export (globals.css) добавляет тёмный ореол тенью.
+   В мире «реестра» фокус — только наша обводка; гасим ореол в том же слое
+   base, чтобы тени утилит и компонентов (рамки чипов, карточек) остались. */
+@layer base {
+  [data-wn] :focus-visible {
+    box-shadow: none;
+  }
+}
 [data-wn] .wn-dark :focus-visible {
   outline-color: var(--wn-sky-bright);
 }
