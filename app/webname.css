@@ -400,7 +400,140 @@
   animation: wn-pop 0.4s var(--ease-wn) both;
 }
 
+/* ------------------------------------------------------------------
+   Логотип (components/webname/logo.tsx): буквы поднимаются по одной,
+   стойка «D» падает, чаша раскрывается от стойки, звезда влетает с
+   поворотом, по знаку проходит блик. Только transform и opacity.
+   ------------------------------------------------------------------ */
+.al-logo {
+  display: block;
+  overflow: visible;
+}
+.al-logo .al-ch,
+.al-logo .al-stem,
+.al-logo .al-bowl,
+.al-logo .al-star {
+  transform-box: fill-box;
+}
+.al-logo:not(.is-in) .al-ch,
+.al-logo:not(.is-in) .al-stem,
+.al-logo:not(.is-in) .al-bowl,
+.al-logo:not(.is-in) .al-star {
+  opacity: 0;
+}
+@keyframes al-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 45%, 0) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes al-drop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -70%, 0);
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 6%, 0);
+  }
+  80% {
+    transform: translate3d(0, -2%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes al-open {
+  from {
+    opacity: 0;
+    transform: scaleX(0.05);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes al-star {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-200deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.35) rotate(15deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes al-gloss {
+  from {
+    transform: translate3d(0, 0, 0) skewX(-20deg);
+  }
+  to {
+    transform: translate3d(720px, 0, 0) skewX(-20deg);
+  }
+}
+@keyframes al-twinkle {
+  0%,
+  88%,
+  100% {
+    transform: none;
+  }
+  94% {
+    transform: scale(1.25) rotate(45deg);
+  }
+}
+.al-logo .al-ch {
+  transform-origin: 50% 100%;
+}
+.al-logo.is-in .al-ch {
+  animation: al-rise 0.7s cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: calc(var(--c, 0) * 55ms);
+}
+.al-logo.is-in .al-stem {
+  animation: al-drop 0.75s cubic-bezier(0.3, 1.2, 0.5, 1) 0.42s both;
+}
+.al-logo .al-bowl {
+  transform-origin: 0 50%;
+}
+.al-logo.is-in .al-bowl {
+  animation: al-open 0.6s cubic-bezier(0.19, 1, 0.22, 1) 0.72s both;
+}
+.al-logo .al-star {
+  transform-origin: 50% 50%;
+}
+.al-logo.is-in .al-star {
+  animation:
+    al-star 0.8s cubic-bezier(0.3, 1.3, 0.5, 1) 0.95s both,
+    al-twinkle 7s ease-in-out 2.5s infinite;
+}
+.al-logo .al-gloss {
+  transform: translate3d(0, 0, 0);
+}
+.al-logo.is-in .al-gloss {
+  animation: al-gloss 1.1s cubic-bezier(0.5, 0, 0.3, 1) 1.45s both;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .al-logo .al-ch,
+  .al-logo .al-stem,
+  .al-logo .al-bowl,
+  .al-logo .al-star,
+  .al-logo.is-in .al-ch,
+  .al-logo.is-in .al-stem,
+  .al-logo.is-in .al-bowl,
+  .al-logo.is-in .al-star,
+  .al-logo.is-in .al-gloss {
+    opacity: 1;
+    animation: none;
+  }
   [data-wn] .wn-in,
   [data-wn] .wn-in[data-in] {
     opacity: 1;
