@@ -55,4 +55,6 @@ export const SHOWCASE_PAGES: readonly { path: string; priority: number }[] = [
   { path: "/medacademy/a", priority: 0.7 },
   { path: "/medacademy/b", priority: 0.7 },
   { path: "/webname", priority: 0.9 },
+  { path: "/webname/domains", priority: 0.7 },
+  { path: "/webname/hosting", priority: 0.7 },
 ];

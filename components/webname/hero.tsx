@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { Addon, useAddon } from "@/components/configurator/context";
 import { Icon } from "@/components/webname/icons";
 import { useT } from "@/components/webname/lang";
 import { Parallax, reducedMotion } from "@/components/webname/motion";
-import { clientSites, sum, tgHref, zones, type Zone } from "@/content/webname/facts";
+import { clientSites, sum, zones, type Zone } from "@/content/webname/facts";
 import { whenDevuzIntroDone } from "@/lib/brand/intro";
 import { cn } from "@/lib/cn";
 
@@ -336,10 +337,10 @@ function Certificate({ name, settled }: { name: string; settled: boolean }) {
         </dl>
         <div className="mt-7 flex min-h-12 flex-wrap items-center gap-3">
           {free ? (
-            <a href={tgHref(`Здравствуйте! Хочу зарегистрировать ${name}.uz`)} target="_blank" rel="noopener noreferrer" className="wn-btn">
-              <Icon name="brand-telegram" className="h-5 w-5" />
+            <Link href={`/webname/domains?name=${encodeURIComponent(name)}`} className="wn-btn">
               Занять {name}.uz
-            </a>
+              <Icon name="arrow-right" className="h-5 w-5" />
+            </Link>
           ) : settled ? (
             <p className="text-sm">
               {alternatives.length ? (

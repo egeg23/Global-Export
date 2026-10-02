@@ -86,8 +86,16 @@
   outline: 2px solid var(--wn-sky);
   outline-offset: 3px;
 }
-/* У адресной строки фокус рисует вся строка (focus-within), не поле. */
-[data-wn] #wn-q:focus-visible {
+/* На телефоне под шапкой ещё полоса меню — якорям нужен запас сверху. */
+@media (max-width: 1023px) {
+  [data-wn] section[id] {
+    scroll-margin-top: 7.5rem;
+  }
+}
+/* У адресной строки и полей в рамке (`wn-bare`) фокус рисует обёртка
+   (focus-within), не само поле. */
+[data-wn] #wn-q:focus-visible,
+[data-wn] .wn-bare:focus-visible {
   outline: none;
 }
 /* Общий фокус Global Export (globals.css) добавляет тёмный ореол тенью.

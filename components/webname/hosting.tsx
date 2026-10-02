@@ -1,12 +1,13 @@
 "use client";
 
 import NumberFlow from "@number-flow/react";
+import Link from "next/link";
 import { useState } from "react";
 
 import { Addon } from "@/components/configurator/context";
 import { Icon } from "@/components/webname/icons";
 import { In } from "@/components/webname/motion";
-import { plans, plansTotal, tgHref, type Plan } from "@/content/webname/facts";
+import { plans, plansTotal, type Plan } from "@/content/webname/facts";
 import { cn } from "@/lib/cn";
 
 const FAMILIES: { id: Plan["family"]; note: string }[] = [
@@ -103,14 +104,9 @@ export function Hosting() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={tgHref(`Здравствуйте! Хочу хостинг ${plan.name}.`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn("wn-btn mt-6", index !== 0 && "wn-btn-ink")}
-                >
+                <Link href={`/webname/hosting?plan=${encodeURIComponent(plan.name)}`} className={cn("wn-btn mt-6", index !== 0 && "wn-btn-ink")}>
                   Выбрать {plan.name}
-                </a>
+                </Link>
               </div>
             </li>
           ))}
