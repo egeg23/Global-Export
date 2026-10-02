@@ -9,7 +9,7 @@ import { Pulse } from "@/components/webname/globe";
 import { Hero, SearchProvider } from "@/components/webname/hero";
 import { Hosting } from "@/components/webname/hosting";
 import { Icon, type IconName } from "@/components/webname/icons";
-import { ArsenalLogo } from "@/components/webname/logo";
+import { BrandLogo, LogoShowcase } from "@/components/webname/logos";
 import { LangPills, LangProvider, useT } from "@/components/webname/lang";
 import { In } from "@/components/webname/motion";
 import { Cabinet, Dns, Pay, Transfer } from "@/components/webname/tools";
@@ -48,6 +48,12 @@ export function WebnameSite() {
     <WebnameShell>
       <main>
         <Hero />
+        <Addon id="logo-a">
+          <LogoShowcase kind="a" />
+        </Addon>
+        <Addon id="logo-b">
+          <LogoShowcase kind="b" />
+        </Addon>
         <Addon id="board">
           <FreeBoard />
         </Addon>
@@ -101,7 +107,7 @@ function Header() {
     <header className="sticky top-0 z-50 border-b border-wn-line bg-wn-paper/95 backdrop-blur-sm">
       <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
         <Link href="/webname" className="shrink-0" aria-label="Arsenal D — на главную">
-          <ArsenalLogo className="aspect-[480/92] h-7 w-auto text-wn-ink sm:h-8" />
+          <BrandLogo className="aspect-[480/92] h-7 w-auto text-wn-ink sm:h-8" />
         </Link>
         <nav aria-label="Разделы" className="ml-6 hidden items-center gap-6 text-sm lg:flex">
           {links.map(([href, label]) => (
@@ -356,7 +362,7 @@ function Card({ icon, label, wide, children }: { icon: IconName; label: string; 
 function Footer() {
   return (
     <footer className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:px-6">
-      <ArsenalLogo trigger="view" className="aspect-[480/92] h-8 w-auto self-start text-wn-ink sm:self-auto" />
+      <BrandLogo trigger="view" className="aspect-[480/92] h-8 w-auto self-start text-wn-ink sm:self-auto" />
       <p className="wn-muted text-xs sm:mx-auto sm:text-center">
         © Arsenal D. Макет — DevUz. Логотип, тарифы, цены и контакты — с webname.uz; цена .UZ — с registrars.uz.
       </p>

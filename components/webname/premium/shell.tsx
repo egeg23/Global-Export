@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { SearchProvider } from "@/components/webname/hero";
-import { ArsenalLogo } from "@/components/webname/logo";
+import { BrandLogo } from "@/components/webname/logos";
 import { Icon, type IconName } from "@/components/webname/icons";
 import { LangPills, LangProvider, useT } from "@/components/webname/lang";
 import { onScrollFrame, Parallax, reducedMotion } from "@/components/webname/motion";
@@ -187,7 +187,7 @@ function GlassNav() {
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-5">
       <div data-refract className="lg-glass lg-sheen mx-auto flex min-h-16 max-w-7xl items-center gap-2 overflow-hidden rounded-full py-2 pl-5 pr-2">
         <Link href={PREMIUM} className="shrink-0 rounded-full" aria-label="Arsenal D — на главную">
-          <ArsenalLogo className="aspect-[480/92] h-6 w-auto text-wn-ink sm:h-7" />
+          <BrandLogo className="aspect-[480/92] h-6 w-auto text-wn-ink sm:h-7" />
         </Link>
         <nav ref={navRef} aria-label="Разделы" className="relative ml-4 hidden items-center text-sm xl:flex">
           {pill ? (
@@ -234,7 +234,7 @@ function GlassNav() {
         <div id="lg-menu" role="dialog" aria-modal="true" aria-label="Меню" className="fixed inset-0 z-[80] overflow-y-auto bg-[#0b0a10]/70 p-3 backdrop-blur-md">
           <div className="lg-glass lg-sheet mx-auto max-w-lg p-5">
             <div className="flex items-center justify-between">
-              <ArsenalLogo className="aspect-[480/92] h-7 w-auto text-wn-ink" />
+              <BrandLogo className="aspect-[480/92] h-7 w-auto text-wn-ink" />
               <button type="button" onClick={() => setOpen(false)} aria-label="Закрыть меню" className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10">
                 <Icon name="x" className="h-5 w-5" />
               </button>
@@ -290,7 +290,7 @@ function PremiumFooter() {
   return (
     <footer className="relative mx-auto max-w-7xl px-4 pb-10 pt-6 sm:px-6">
       <div className="lg-glass flex flex-col gap-6 p-6 sm:flex-row sm:items-center">
-        <ArsenalLogo trigger="view" className="aspect-[480/92] h-8 w-auto self-start text-wn-ink sm:self-auto" />
+        <BrandLogo trigger="view" className="aspect-[480/92] h-8 w-auto self-start text-wn-ink sm:self-auto" />
         <p className="text-xs text-wn-muted sm:mx-auto sm:text-center">
           © Arsenal D. Макет — DevUz. Логотип, тарифы, цены и контакты — с webname.uz; цена .UZ — с registrars.uz.
         </p>

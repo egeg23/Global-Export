@@ -49,6 +49,9 @@ export type { AddonPrice, Quote };
  *    владельца там же); где публичных цен нет (живой WHOIS, табло,
  *    DNS-панель, статус, перенос), ориентир — середина ставки 6–14 $/ч,
  *    10 $/ч. Рынок и ссылки — docs/webname-research.md, раздел 6.
+ *    Новый логотип (вариант A или B) — 215: медиана цен разработки
+ *    логотипа в Ташкенте, 2,55 млн сум (prom.uz, megagroup.uz, piksel.uz,
+ *    itspace.uz, glotr.uz; docs/webname-research.md, раздел 9).
  *    Вариант «Премиум» (жидкое стекло) — тот же сайт и те же допы, цена
  *    пока та же; владелец может назначить свою.
  *  - Услуги студии сверх сайта — прайс студии, общий для всех проектов.
@@ -169,6 +172,8 @@ const priceLists: Record<string, PriceList> = {
   webname: {
     tiers: { full: 1700 },
     addons: {
+      "logo-a": { usd: 215 },
+      "logo-b": { usd: 215 },
       whois: { usd: 200 },
       board: { usd: 80 },
       calc: { usd: 85 },
@@ -190,6 +195,8 @@ const priceLists: Record<string, PriceList> = {
   "webname-premium": {
     tiers: { premium: 1700 },
     addons: {
+      "logo-a": { usd: 215 },
+      "logo-b": { usd: 215 },
       whois: { usd: 200 },
       board: { usd: 80 },
       calc: { usd: 85 },
