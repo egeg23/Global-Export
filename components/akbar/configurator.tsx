@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
+import { Favorites, Installment, KitTotal, kitPrice } from "@/components/akbar/kit";
+import { Addon, useAddon } from "@/components/configurator/context";
 import type { ConfiguratorModel, Variant } from "@/lib/akbar/catalog";
 import { useCalmMotion } from "@/lib/calm-motion";
 
@@ -29,9 +31,13 @@ const unique = <T,>(list: T[]) => list.filter((value, index) => list.indexOf(val
  * сочетания, что фабрика реально делает, и картинка — их же рендер. Высота
  * и комплект — параметры заявки: цену по ним считает менеджер, сайт её не
  * выдумывает. «Получить расчёт» переносит собранное в форму заявки.
+ *
+ * Допники конструктора сайта (components/akbar/kit.tsx) встают сюда же:
+ * цена набора, рассрочка и подборка в Telegram.
  */
 export function Configurator({ models }: { models: ConfiguratorModel[] }) {
   const calm = useCalmMotion();
+  const priced = useAddon("prices");
   const [modelId, setModelId] = useState(models[0].id);
   const [material, setMaterial] = useState<string>(models[0].variants[0].material);
   const [color, setColor] = useState<string>(models[0].variants[0].color);
@@ -68,8 +74,15 @@ export function Configurator({ models }: { models: ConfiguratorModel[] }) {
     ["полотно", ...kitList.map((part) => part.toLowerCase())].join(" + "),
   ].join(" · ");
 
-  const request = () => {
-    window.dispatchEvent(new CustomEvent(PICK_EVENT, { detail: summary }));
+  const price = kitPrice({
+    material: view.variant.material,
+    glass: glazingLabel === "со стеклом",
+    height: heightInfo.id,
+    kit: kitList,
+  });
+
+  const request = (note?: string) => {
+    window.dispatchEvent(new CustomEvent(PICK_EVENT, { detail: note ? `${summary} · ${note}` : summary }));
     document.getElementById("zayavka")?.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" });
   };
 
@@ -273,13 +286,32 @@ export function Configurator({ models }: { models: ConfiguratorModel[] }) {
             <div className="rounded-[1.75rem] bg-ak-ink p-6 text-ak-ivory sm:p-7">
               <p className="ak-eyebrow text-ak-gold-300">Ваш набор</p>
               <p className="mt-3 text-[0.9375rem] leading-relaxed text-ak-ivory/85">{summary}</p>
+              <Addon id="prices" compact className="mt-6">
+                <KitTotal total={price.total} parts={price.parts} />
+              </Addon>
+              <Addon id="installment" compact className="mt-5">
+                <Installment total={price.total} onApply={request} />
+              </Addon>
               <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-                <p className="text-sm text-ak-ivory/70">Цену по этому набору назовёт менеджер</p>
-                <button type="button" onClick={request} className="ak-btn ak-btn-gold">
+                <p className="text-sm text-ak-ivory/70">
+                  {priced ? "Менеджер подтвердит цену и сроки" : "Цену по этому набору назовёт менеджер"}
+                </p>
+                <button type="button" onClick={() => request()} className="ak-btn ak-btn-gold">
                   Получить расчёт
                 </button>
               </div>
             </div>
+
+            <Addon id="favorites" compact>
+              <Favorites
+                current={{
+                  key: `${view.variant.id}|${heightInfo.id}|${kitList.join("+")}`,
+                  title: model.name,
+                  summary,
+                  thumb: view.variant.thumb,
+                }}
+              />
+            </Addon>
           </div>
         </div>
       </div>
