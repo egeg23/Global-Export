@@ -1,45 +1,52 @@
 /**
- * Доступ к витринам застройщиков: MAVERA и Golden House.
+ * Доступ к витринам застройщиков: MAVERA и Golden House — обе по коду.
  *
- * MAVERA — по коду. Владелец, 06.10.2026: «Закрой кодом доступ к сайту
- * MAVERA». Golden House открыта всем, у кого есть ссылка, как и вся
- * витрина с 23.09.2026.
+ * Владелец, 06.10.2026: «Закрой кодом доступ к сайту MAVERA», затем «У
+ * golden house тоже закрой кодом». С 23.09 по 06.10 обе были открыты всем.
  *
- * Как устроен код. Репозиторий публичный, поэтому самого кода в нём нет —
- * только отпечаток (`MAVERA_ACCESS_HASH`): SHA-256 от ключа, который
- * выводится из кода через PBKDF2 (100 000 раундов). По отпечатку код не
- * восстановить, а перебор упирается в PBKDF2. Сам код знают владелец и
- * менеджеры студии.
+ * У каждой витрины свой код, своя куки и своя переменная на сервере:
+ * ссылка, отданная одному заказчику, не открывает макет другого.
  *
- * Код на сервере можно сменить без правки кода: `MAVERA_ACCESS_CODE` в
- * `.env.local` — тогда действует он, а встроенный отпечаток — нет; `off`
- * открывает витрину всем. Сменили код — все выданные куки перестают
- * подходить: в куки лежит ключ, выведенный из кода. Переменная новая
- * намеренно: старая `SHOWCASE_ACCESS_CODE` могла остаться на сервере с
- * прошлым кодом, и он не должен снова открыть витрину.
+ * Как устроен код. Репозиторий публичный, поэтому самих кодов в нём нет —
+ * только отпечатки (`hash`): SHA-256 от ключа, который выводится из кода
+ * через PBKDF2 (100 000 раундов, своя соль у каждой витрины). По отпечатку
+ * код не восстановить, а перебор упирается в PBKDF2. Сами коды знают
+ * владелец и менеджеры студии.
+ *
+ * Код на сервере можно сменить без правки кода — переменной из `codeEnv` в
+ * `.env.local` (`MAVERA_ACCESS_CODE`, `GOLDEN_ACCESS_CODE`): тогда действует
+ * она, а встроенный отпечаток — нет; `off` открывает витрину всем. Сменили
+ * код — все выданные куки перестают подходить: в куки лежит ключ, выведенный
+ * из кода. Имена переменных новые намеренно: старые `SHOWCASE_ACCESS_CODE` и
+ * `GH_ACCESS_CODE` могли остаться на сервере с прошлыми кодами (они есть в
+ * открытой истории репозитория), и прошлый код не должен снова открыть
+ * витрину.
  *
  * Граница стоит в прокси, до отдачи разметки: кто не знает кода, не видит ни
  * макетов, ни разметки, ни скриптов. Всё, что уже попало в браузер,
  * скопировать можно всегда.
- *
- * Старые ссылки Golden House (`/gh?key=…`, `/gh/access?next=…`) приводят на
- * ту же страницу витрины.
  *
  * Работает и в прокси, и в серверной функции: только Web Crypto.
  */
 
 export type ShowcaseId = "mavera" | "gh";
 
-type Showcase = {
+export type Showcase = {
   id: ShowcaseId;
   /** Корень витрины в адресе. */
   prefix: string;
-  /** Страница ввода кода; у открытой витрины — только переадресация. */
+  /** Страница ввода кода. */
   gate: string;
-  /** Закрыта кодом. */
-  locked: boolean;
   label: string;
   intro: string;
+  /** Куки с ключом доступа — своя у каждой витрины. */
+  cookie: string;
+  /** Переменная на сервере, которой код меняют без правки кода. */
+  codeEnv: string;
+  /** Соль PBKDF2 — своя у каждой витрины. */
+  salt: string;
+  /** Отпечаток встроенного кода. Сам код в репозиторий не кладётся. */
+  hash: string;
 };
 
 export const showcases: Showcase[] = [
@@ -47,28 +54,34 @@ export const showcases: Showcase[] = [
     id: "mavera",
     prefix: "/mavera",
     gate: "/mavera/access",
-    locked: true,
     label: "MAVERA",
     intro:
       "Три варианта сайта, панель управления и смета показываются по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную или запросите у менеджера DevUz Studio.",
+    cookie: "showcase_access",
+    codeEnv: "MAVERA_ACCESS_CODE",
+    salt: "globalex:mavera:access:v2",
+    hash: "9bc7fd9dd70a6f8326e6ed7c44e52b2d212504c39a476b399f2ead92c64d96f7",
   },
-  { id: "gh", prefix: "/gh", gate: "/gh/access", locked: false, label: "Golden House", intro: "" },
+  {
+    id: "gh",
+    prefix: "/gh",
+    gate: "/gh/access",
+    label: "Golden House",
+    intro:
+      "Макет главной страницы и панель управления показываются по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную или запросите у менеджера DevUz Studio.",
+    cookie: "showcase_gh_access",
+    codeEnv: "GOLDEN_ACCESS_CODE",
+    salt: "globalex:gh:access:v2",
+    hash: "11f4cdb3eb7ae8fe790357ea0d7e3cf19e7419d760d5938a59c5d174d64206aa",
+  },
 ];
 
 /** Параметр, в котором код приходит в ссылке. */
 export const KEY_PARAM = "key";
-/** Старое имя — у открытых витрин ключ из адреса просто убирается. */
-export const LEGACY_KEY_PARAM = KEY_PARAM;
 
-/** Куки с ключом доступа к MAVERA. */
-export const ACCESS_COOKIE = "showcase_access";
 /** 60 дней: ссылка живёт столько, сколько идёт обсуждение с заказчиком. */
 export const ACCESS_MAX_AGE = 60 * 60 * 24 * 60;
 
-/** Отпечаток встроенного кода MAVERA. Сам код в репозиторий не кладётся. */
-export const MAVERA_ACCESS_HASH = "9bc7fd9dd70a6f8326e6ed7c44e52b2d212504c39a476b399f2ead92c64d96f7";
-
-const KDF_SALT = "globalex:mavera:access:v2";
 const KDF_ROUNDS = 100_000;
 
 function under(pathname: string, prefix: string) {
@@ -90,8 +103,8 @@ export function isGate(showcase: Showcase, pathname: string): boolean {
 }
 
 /**
- * Код как его вводят люди: регистр и пробелы не важны — «mav-7q4k-…» из
- * сообщения и «MAV 7Q4K …» с клавиатуры одно и то же.
+ * Код как его вводят люди: регистр и пробелы не важны — «gh-7q4k-…» из
+ * сообщения и «GH 7Q4K …» с клавиатуры одно и то же.
  */
 export function normalizeCode(raw: string): string {
   return raw.trim().toUpperCase().replace(/\s+/g, "-");
@@ -101,13 +114,13 @@ const hex = (bytes: ArrayBuffer) =>
   Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
 
 /** Ключ доступа из кода — он же значение куки. */
-export async function accessKey(code: string): Promise<string> {
+export async function accessKey(showcase: Showcase, code: string): Promise<string> {
   const encoder = new TextEncoder();
   const material = await crypto.subtle.importKey("raw", encoder.encode(normalizeCode(code)), "PBKDF2", false, [
     "deriveBits",
   ]);
   const bits = await crypto.subtle.deriveBits(
-    { name: "PBKDF2", hash: "SHA-256", salt: encoder.encode(KDF_SALT), iterations: KDF_ROUNDS },
+    { name: "PBKDF2", hash: "SHA-256", salt: encoder.encode(showcase.salt), iterations: KDF_ROUNDS },
     material,
     256,
   );
@@ -126,42 +139,45 @@ export function sameSecret(given: string, expected: string): boolean {
   return diff === 0;
 }
 
-let envHash: { code: string; hash: string } | null = null;
+const envHashes = new Map<ShowcaseId, { code: string; hash: string }>();
 
 /**
- * Действующий отпечаток или null, если витрина открыта: код из
- * `MAVERA_ACCESS_CODE`, если он задан на сервере, иначе встроенный.
+ * Действующий отпечаток или null, если витрина открыта: код из переменной
+ * витрины, если она задана на сервере, иначе встроенный.
  */
-async function expectedHash(): Promise<string | null> {
-  const env = process.env.MAVERA_ACCESS_CODE?.trim();
+async function expectedHash(showcase: Showcase): Promise<string | null> {
+  const env = process.env[showcase.codeEnv]?.trim();
   if (env === "off") return null;
-  if (!env) return MAVERA_ACCESS_HASH;
-  if (envHash?.code !== env) envHash = { code: env, hash: await sha256(await accessKey(env)) };
-  return envHash.hash;
+  if (!env) return showcase.hash;
+  const cached = envHashes.get(showcase.id);
+  if (cached?.code === env) return cached.hash;
+  const hash = await sha256(await accessKey(showcase, env));
+  envHashes.set(showcase.id, { code: env, hash });
+  return hash;
 }
 
 /** Закрыта ли витрина сейчас. */
 export async function isLocked(showcase: Showcase): Promise<boolean> {
-  return showcase.locked && (await expectedHash()) !== null;
+  return (await expectedHash(showcase)) !== null;
 }
 
-/** Подходит ли ключ из куки. */
-export async function verifyKey(key: string | undefined): Promise<boolean> {
-  const hash = await expectedHash();
+/** Подходит ли ключ из куки этой витрины. */
+export async function verifyKey(showcase: Showcase, key: string | undefined): Promise<boolean> {
+  const hash = await expectedHash(showcase);
   if (hash === null) return true;
   if (!key || !/^[0-9a-f]{64}$/.test(key)) return false;
   return sameSecret(await sha256(key), hash);
 }
 
 /** Проверить введённый код. Подошёл — ключ для куки, нет — null. */
-export async function checkCode(code: string): Promise<string | null> {
+export async function checkCode(showcase: Showcase, code: string): Promise<string | null> {
   if (!code.trim()) return null;
-  const key = await accessKey(code);
-  return (await verifyKey(key)) ? key : null;
+  const key = await accessKey(showcase, code);
+  return (await verifyKey(showcase, key)) ? key : null;
 }
 
-export const accessCookie = (value: string) => ({
-  name: ACCESS_COOKIE,
+export const accessCookie = (showcase: Showcase, value: string) => ({
+  name: showcase.cookie,
   value,
   httpOnly: true,
   sameSite: "lax" as const,
@@ -171,10 +187,9 @@ export const accessCookie = (value: string) => ({
 });
 
 /**
- * Куда вести после кода или со старой страницы кода: адрес из `next`, если
- * он свой — относительный, внутри этой витрины и не сама страница кода, —
- * иначе корень витрины. Чужой адрес в `next` превратил бы переадресацию в
- * открытый редирект.
+ * Куда вести после кода: адрес из `next`, если он свой — относительный,
+ * внутри этой витрины и не сама страница кода, — иначе корень витрины. Чужой
+ * адрес в `next` превратил бы переадресацию в открытый редирект.
  */
 export function returnTo(showcase: Showcase, next: string | null | undefined): string {
   if (!next || !next.startsWith("/") || next.startsWith("//") || next.startsWith("/\\")) {

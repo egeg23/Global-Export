@@ -3,7 +3,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { locales, matchLocale } from "@/lib/i18n";
 import { isShowcase } from "@/lib/showcase";
 import {
-  ACCESS_COOKIE,
   accessCookie,
   checkCode,
   isGate,
@@ -52,13 +51,11 @@ export async function proxy(request: NextRequest) {
   // Витрины застройщиков MAVERA и Golden House — без языкового префикса:
   // предложение одноязычное, а языки показаны внутри макетов.
   //
-  // MAVERA закрыта кодом (владелец, 06.10.2026; lib/showcase/access.ts).
-  // Ключ в адресе (?key=…) ставит куки и убирает себя из адреса — так ссылку
-  // отправляют заказчику. Без куки — страница ввода кода. Граница стоит
-  // здесь, до отдачи разметки. Закрытая витрина закрыта и от поиска.
-  //
-  // Golden House открыта всем, у кого есть ссылка; её старые ссылки ведут
-  // туда же: страница кода — на адрес из `next`, ключ из адреса убирается.
+  // Обе закрыты кодом, у каждой своим (владелец, 06.10.2026;
+  // lib/showcase/access.ts). Ключ в адресе (?key=…) ставит куки и убирает
+  // себя из адреса — так ссылку отправляют заказчику. Без куки — страница
+  // ввода кода. Граница стоит здесь, до отдачи разметки. Закрытая витрина
+  // закрыта и от поиска.
   const showcase = showcaseFor(pathname);
   if (showcase) {
     if (await isLocked(showcase)) {
@@ -68,19 +65,21 @@ export async function proxy(request: NextRequest) {
       if (key !== null) {
         const url = request.nextUrl.clone();
         url.searchParams.delete(KEY_PARAM);
-        const granted = await checkCode(key);
+        const granted = await checkCode(showcase, key);
         if (!granted) return hidden(NextResponse.redirect(gateUrl(request, showcase.gate, url, true), 307));
         const response = NextResponse.redirect(url, 307);
-        response.cookies.set(accessCookie(granted));
+        response.cookies.set(accessCookie(showcase, granted));
         return hidden(response);
       }
 
-      if (!(await verifyKey(request.cookies.get(ACCESS_COOKIE)?.value))) {
+      if (!(await verifyKey(showcase, request.cookies.get(showcase.cookie)?.value))) {
         return hidden(NextResponse.redirect(gateUrl(request, showcase.gate, request.nextUrl), 307));
       }
       return hidden(NextResponse.next());
     }
 
+    // Код снят на сервере (`off`): страница кода и ключ в адресе просто
+    // приводят на страницу витрины.
     if (isGate(showcase, pathname)) {
       const target = new URL(returnTo(showcase, request.nextUrl.searchParams.get("next")), "http://showcase.local");
       const url = request.nextUrl.clone();
