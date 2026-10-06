@@ -34,8 +34,8 @@ export const metadata: Metadata = {
     default: "Engelberg — окно как часть архитектуры",
     template: "%s · Engelberg",
   },
-  description:
-    "Макет сайта Engelberg: непрерывная история на прокрутке — окна в пол, три контура профиля, тишина, ручки, раздвижные и фасадные системы.",
+  // Описание видно и на странице кода — поэтому без содержания макета.
+  description: "Макет сайта Engelberg — закрытый показ DevUz Studio.",
   robots: { index: false, follow: false, nocache: true },
   icons: { icon: "/images/engelberg/crest.svg" },
   other: {
