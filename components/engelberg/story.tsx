@@ -245,7 +245,7 @@ function Shot({
   );
 }
 
-function Specs({ items }: { items: { label: string; value: string }[] }) {
+export function Specs({ items }: { items: { label: string; value: string }[] }) {
   return (
     <dl className="eb-specs">
       {items.map((item) => (
@@ -258,7 +258,7 @@ function Specs({ items }: { items: { label: string; value: string }[] }) {
   );
 }
 
-function Hotspot({ k, u, v, label }: { k: string; u: number; v: number; label: string }) {
+export function Hotspot({ k, u, v, label }: { k: string; u: number; v: number; label: string }) {
   return (
     <div className="eb-hotspot" data-k={k} style={{ left: `${u * 100}%`, top: `${v * 100}%` }}>
       <i />

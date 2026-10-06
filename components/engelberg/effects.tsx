@@ -168,3 +168,62 @@ export function Snow({ live }: { live: Live }) {
   const ref = useCanvasLoop(live, snowSetup);
   return <canvas ref={ref} className="eb-canvas" aria-hidden="true" />;
 }
+
+/* ------------------------------------------------------------------ */
+/* Воздух у разреза на фотографии (вторая версия)                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Координаты — в долях кадра profile (v2): холст лежит внутри камеры и
+ * движется вместе со снимком. На их разрезе петля створки — слева, значит
+ * слева дом, справа улица. Стёкла стоят около u 0.49–0.55 и поднимаются от
+ * рамы (v 0.62) вверх.
+ */
+function photoCold(p: number, lane: number, seed: number): [number, number] {
+  const v0 = 0.12 + lane * 0.42;
+  if (p < 0.58) {
+    const k = p / 0.58;
+    return [1.02 - k * 0.455, v0 + Math.sin(k * 5 + seed) * 0.012];
+  }
+  const k = (p - 0.58) / 0.42;
+  return [0.565 + k * 0.12 + Math.sin(k * 3) * 0.01, v0 + k * k * (0.6 - v0 * 0.6)];
+}
+
+function photoWarm(p: number, lane: number): [number, number] {
+  const a = p * Math.PI * 2;
+  return [0.3 + Math.cos(a) * (0.08 + lane * 0.05), 0.4 - Math.sin(a) * (0.22 + lane * 0.08)];
+}
+
+function photoAirSetup(): Draw {
+  const rnd = random(5);
+  const motes = Array.from({ length: 170 }, (_, i) => {
+    const warm = i % 2 === 0;
+    return { p: rnd(), lane: rnd(), speed: warm ? 0.05 + rnd() * 0.03 : 0.11 + rnd() * 0.07, warm, seed: rnd() * 6 };
+  });
+
+  return (ctx, w, h, dt, level) => {
+    ctx.clearRect(0, 0, w, h);
+    ctx.lineCap = "round";
+    const lw = Math.max(1.2, w / 1400);
+    for (const m of motes) {
+      m.p = (m.p + m.speed * dt) % 1;
+      const at = (p: number) => (m.warm ? photoWarm(p, m.lane) : photoCold(p, m.lane, m.seed));
+      const [x1, y1] = at(m.p);
+      const [x0, y0] = at(Math.max(0, m.p - (m.warm ? 0.03 : 0.045)));
+      const fade = Math.sin(Math.PI * m.p);
+      ctx.strokeStyle = m.warm
+        ? `rgba(255, 176, 98, ${0.6 * fade * level})`
+        : `rgba(150, 202, 255, ${0.65 * fade * level})`;
+      ctx.lineWidth = (m.warm ? 2.2 : 1.7) * lw;
+      ctx.beginPath();
+      ctx.moveTo(x0 * w, y0 * h);
+      ctx.lineTo(x1 * w, y1 * h);
+      ctx.stroke();
+    }
+  };
+}
+
+export function PhotoAirflow({ live }: { live: Live }) {
+  const ref = useCanvasLoop(live, photoAirSetup);
+  return <canvas ref={ref} className="eb-canvas" aria-hidden="true" />;
+}
