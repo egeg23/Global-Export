@@ -10,11 +10,15 @@ import { brand, catalog } from "@/content/engelberg/site";
  * Форма — часть макета: заявка никуда не уходит, показывается только
  * благодарность. Подключение к их почте или CRM — работа по договору.
  */
-export function After() {
+export function After({ backdrop }: { backdrop?: string } = {}) {
   const [sent, setSent] = useState(false);
 
   return (
-    <section id="eb-contact" className="eb-after">
+    <section
+      id="eb-contact"
+      className={`eb-after${backdrop ? " eb-after-photo" : ""}`}
+      style={backdrop ? ({ "--eb-backdrop": `url(${backdrop})` } as React.CSSProperties) : undefined}
+    >
       <div className="eb-after-grid">
         <div>
           <p className="eb-eyebrow">Консультация и замер</p>

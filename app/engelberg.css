@@ -1287,3 +1287,83 @@ html.lenis {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
+
+/* ---------------- Вторая версия (рендеры) ---------------- */
+
+.eb-on {
+  opacity: 1;
+}
+/* Раздвижные двери: открытое состояние проявляется справа налево —
+   так, как уезжают створки. */
+.eb-opening {
+  clip-path: inset(0 0 0 calc((1 - var(--eb-open, 0)) * 100%));
+}
+.eb-mark-dot {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transform: translate(-16px, -16px);
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+}
+.eb-mark-dot i {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--eb-ink);
+  background: rgba(12, 13, 16, 0.6);
+  font: 600 0.7rem var(--font-eb-sans), sans-serif;
+  font-style: normal;
+  letter-spacing: 0.06em;
+}
+.eb-mark-left {
+  flex-direction: row-reverse;
+  transform: translate(calc(-100% + 16px), -16px);
+}
+.eb-mark-up {
+  flex-direction: column-reverse;
+  transform: translate(-50%, calc(-100% + 16px));
+}
+.eb-mark-accent i {
+  border-color: var(--eb-red);
+  background: var(--eb-red);
+}
+.eb-mark-dot span {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(12, 13, 16, 0.72);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+@media (max-width: 760px) {
+  .eb-mark-dot span {
+    display: none;
+  }
+  .eb-v2 .eb-chamber,
+  .eb-v2 .eb-chamber-slot {
+    bottom: auto;
+  }
+  .eb-v2 .eb-chamber-0,
+  .eb-v2 .eb-chamber-slot {
+    top: 13.2rem;
+  }
+  .eb-v2 .eb-chamber-1 {
+    top: 18.2rem;
+  }
+  .eb-v2 .eb-chamber-2 {
+    top: 23.2rem;
+  }
+  .eb-v2 .eb-chamber-slot .eb-p {
+    font-size: 0.8rem;
+  }
+}
+.eb-after-photo {
+  background:
+    linear-gradient(90deg, rgba(12, 13, 16, 0.92) 30%, rgba(12, 13, 16, 0.55)),
+    var(--eb-backdrop) center / cover no-repeat,
+    var(--eb-dark);
+}
