@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { accessCookie, checkCode, returnTo, showcaseFor, showcases } from "@/lib/showcase/access";
+import { grantCookie, grantFor, returnTo, showcaseFor, showcases } from "@/lib/showcase/access";
 
 /**
  * Проверка кода с формы закрытой витрины.
@@ -19,14 +19,14 @@ export async function POST(request: Request) {
   const raw = String(form.get("next") ?? "");
   const showcase = (raw.startsWith("/") ? showcaseFor(raw.split(/[?#]/)[0]) : null) ?? showcases[0];
   const next = returnTo(showcase, raw);
-  const key = await checkCode(showcase, String(form.get("code") ?? ""));
+  const granted = await grantFor(showcase, String(form.get("code") ?? ""));
 
-  if (!key) {
+  if (!granted) {
     const back = `${showcase.gate}?next=${encodeURIComponent(next)}&error=1`;
     return new NextResponse(null, { status: 303, headers: { Location: back } });
   }
 
   const response = new NextResponse(null, { status: 303, headers: { Location: next } });
-  response.cookies.set(accessCookie(showcase, key));
+  response.cookies.set(grantCookie(granted));
   return response;
 }

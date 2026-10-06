@@ -3,14 +3,14 @@ import { NextResponse, type NextRequest } from "next/server";
 import { locales, matchLocale } from "@/lib/i18n";
 import { isShowcase } from "@/lib/showcase";
 import {
-  accessCookie,
-  checkCode,
+  grantCookie,
+  grantFor,
+  hasAccess,
   isGate,
   isLocked,
   KEY_PARAM,
   returnTo,
   showcaseFor,
-  verifyKey,
 } from "@/lib/showcase/access";
 import { refreshSession } from "@/lib/supabase/session";
 
@@ -52,7 +52,8 @@ export async function proxy(request: NextRequest) {
   // предложение одноязычное, а языки показаны внутри макетов.
   //
   // Обе закрыты кодом, у каждой своим (владелец, 06.10.2026;
-  // lib/showcase/access.ts). Ключ в адресе (?key=…) ставит куки и убирает
+  // lib/showcase/access.ts): постоянным кодом студии или кодом из 5 цифр на
+  // 24 часа (lib/showcase/timed.ts). Ключ в адресе (?key=…) ставит куки и убирает
   // себя из адреса — так ссылку отправляют заказчику. Без куки — страница
   // ввода кода. Граница стоит здесь, до отдачи разметки. Закрытая витрина
   // закрыта и от поиска.
@@ -65,14 +66,14 @@ export async function proxy(request: NextRequest) {
       if (key !== null) {
         const url = request.nextUrl.clone();
         url.searchParams.delete(KEY_PARAM);
-        const granted = await checkCode(showcase, key);
+        const granted = await grantFor(showcase, key);
         if (!granted) return hidden(NextResponse.redirect(gateUrl(request, showcase.gate, url, true), 307));
         const response = NextResponse.redirect(url, 307);
-        response.cookies.set(accessCookie(showcase, granted));
+        response.cookies.set(grantCookie(granted));
         return hidden(response);
       }
 
-      if (!(await verifyKey(showcase, request.cookies.get(showcase.cookie)?.value))) {
+      if (!(await hasAccess(showcase, (name) => request.cookies.get(name)?.value))) {
         return hidden(NextResponse.redirect(gateUrl(request, showcase.gate, request.nextUrl), 307));
       }
       return hidden(NextResponse.next());
