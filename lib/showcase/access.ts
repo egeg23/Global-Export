@@ -29,8 +29,13 @@
  * макетов, ни разметки, ни скриптов. Всё, что уже попало в браузер,
  * скопировать можно всегда.
  *
- * Работает и в прокси, и в серверной функции: только Web Crypto.
+ * Кроме постоянных кодов — коды на 24 часа из пяти цифр (владелец, 06.10.2026):
+ * они живут в базе студии, см. lib/showcase/timed.ts.
+ *
+ * Работает и в прокси, и в серверной функции: только Web Crypto и fetch.
  */
+
+import { timedCodeExpiry, timedDigits } from "@/lib/showcase/timed";
 
 export type ShowcaseId = "mavera" | "gh" | "engelberg";
 
@@ -59,7 +64,7 @@ export const showcases: Showcase[] = [
     gate: "/mavera/access",
     label: "MAVERA",
     intro:
-      "Три варианта сайта, панель управления и смета показываются по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную или запросите у менеджера DevUz Studio.",
+      "Три варианта сайта, панель управления и смета показываются по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную. Код из 5 цифр от менеджера DevUz Studio действует 24 часа.",
     cookie: "showcase_access",
     codeEnv: "MAVERA_ACCESS_CODE",
     salt: "globalex:mavera:access:v2",
@@ -71,7 +76,7 @@ export const showcases: Showcase[] = [
     gate: "/gh/access",
     label: "Golden House",
     intro:
-      "Макет главной страницы и панель управления показываются по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную или запросите у менеджера DevUz Studio.",
+      "Макет главной страницы и панель управления показываются по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную. Код из 5 цифр от менеджера DevUz Studio действует 24 часа.",
     cookie: "showcase_gh_access",
     codeEnv: "GOLDEN_ACCESS_CODE",
     salt: "globalex:gh:access:v2",
@@ -199,6 +204,46 @@ export const accessCookie = (showcase: Showcase, value: string) => ({
   secure: process.env.NODE_ENV === "production",
   path: "/",
   maxAge: ACCESS_MAX_AGE,
+});
+
+/** Куки с кодом на 24 часа — отдельная от постоянной. */
+export const timedCookieName = (showcase: Showcase) => `${showcase.cookie}_t`;
+
+export type Grant = { name: string; value: string; maxAge: number };
+
+/**
+ * Пустить по коду: постоянный код студии (длинный, отпечаток здесь) или код
+ * на 24 часа (пять цифр, база студии — lib/showcase/timed.ts). Подошёл —
+ * какую куки поставить; куки кода на 24 часа живёт ровно до конца его срока.
+ */
+export async function grantFor(showcase: Showcase, raw: string, now = Date.now()): Promise<Grant | null> {
+  const digits = timedDigits(raw);
+  if (digits) {
+    const expires = await timedCodeExpiry(showcase.id, digits, now);
+    if (expires) {
+      return { name: timedCookieName(showcase), value: digits, maxAge: Math.max(1, Math.floor((expires.getTime() - now) / 1000)) };
+    }
+  }
+  // Не код на 24 часа — значит, постоянный: пять цифр могут оказаться и им.
+  const key = await checkCode(showcase, raw);
+  return key ? { name: showcase.cookie, value: key, maxAge: ACCESS_MAX_AGE } : null;
+}
+
+/** Есть ли доступ по куки: постоянный ключ или ещё живой код на 24 часа. */
+export async function hasAccess(showcase: Showcase, cookie: (name: string) => string | undefined): Promise<boolean> {
+  if (await verifyKey(showcase, cookie(showcase.cookie))) return true;
+  const timed = cookie(timedCookieName(showcase));
+  return Boolean(timed && (await timedCodeExpiry(showcase.id, timed)));
+}
+
+export const grantCookie = (grant: Grant) => ({
+  name: grant.name,
+  value: grant.value,
+  httpOnly: true,
+  sameSite: "lax" as const,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+  maxAge: grant.maxAge,
 });
 
 /**
