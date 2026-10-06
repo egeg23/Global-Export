@@ -5,7 +5,6 @@ import "../globals.css";
 
 import { Guard } from "@/components/mavera/guard";
 import { OpenAtTop } from "@/components/mavera/open-at-top";
-import { projectRobots } from "@/lib/showcase/seo";
 import { MockupTerms } from "@/components/showcase/mockup-terms";
 
 /** «Стандарт» — гротеск швейцарской школы: техничный, спокойный, без характера. */
@@ -45,7 +44,9 @@ export const metadata: Metadata = {
   },
   description:
     "Три рабочих сайта для застройщика: строгий каталог, журнальный разворот и светлый премиум с генпланом и подбором квартиры.",
-  robots: projectRobots,
+  // Закрыта кодом (lib/showcase/access.ts) — и от поиска тоже: из выдачи
+  // человек попал бы только на форму кода.
+  robots: { index: false, follow: false, nocache: true },
   icons: { icon: "/favicon.svg" },
   other: {
     copyright: "© 2026 Maximov Tech. Макеты для MAVERA; копирование запрещено.",
