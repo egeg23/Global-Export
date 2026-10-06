@@ -1,0 +1,1289 @@
+/* ------------------------------------------------------------------
+   Engelberg — макет для engelberg-window.com.
+
+   Краска их сайта: графит #2b2d3b, красный знака #ee3537, серые
+   #6b6b6b / #bdbdbd; шрифты — Cormorant для заголовков и Inter для
+   текста. Здесь к ним добавлены тёплые тона интерьера и холодный/тёплый
+   цвет воздуха для сцены с разрезом профиля. Все цвета — переменные:
+   площадка сдвигает их на свои оттенки (lib/showcase/tone.mjs).
+
+   Сцена одна и приколота к экрану (.eb-stage). Слои лежат друг на друге,
+   прозрачность и движение им пишет движок (components/engelberg/engine.ts).
+   Пока скрипт не запущен, видны только слои первого кадра (.eb-first).
+   ------------------------------------------------------------------ */
+
+[data-world="engelberg"] {
+  --eb-ink: #f4f1ec;
+  --eb-ink-soft: rgba(244, 241, 236, 0.72);
+  --eb-ink-mute: rgba(244, 241, 236, 0.5);
+  --eb-dark: #0c0d10;
+  --eb-dark-2: #15171c;
+  --eb-graphite: #2b2d3b;
+  --eb-red: #ee3537;
+  --eb-paper: #f3efe8;
+  --eb-paper-ink: #1d1e24;
+  --eb-paper-mute: #6b6b6b;
+  --eb-line: rgba(244, 241, 236, 0.18);
+  --eb-line-dark: rgba(29, 30, 36, 0.14);
+
+  /* Разрез профиля */
+  --eb-alu-hi: #5b5f69;
+  --eb-alu: #32353d;
+  --eb-alu-lo: #1c1e23;
+  --eb-alu-edge: #6c717c;
+  --eb-hollow: #101115;
+  --eb-break: #c8302f;
+  --eb-foam: #24262c;
+  --eb-foam-line: #2f323a;
+  --eb-glass: #7fa6bf;
+  --eb-glass-hi: #d6e8f2;
+  --eb-spacer: #8b8f98;
+  --eb-seal: #0a0a0c;
+  --eb-cold: #5aa7ff;
+  --eb-warm: #ff9a4d;
+
+  /* Ламинации: RAL — по номеру, дубы — тоном плёнки */
+  --eb-charcoal-oak: #3a3330;
+  --eb-golden-oak: #a8692f;
+  --eb-anthracite: #383e42;
+  --eb-pure-white: #f1f0ea;
+  --eb-silver: #a5a8a6;
+  --eb-bronze: #403a3a;
+
+  background: var(--eb-dark);
+  color: var(--eb-ink);
+  font-family: var(--font-eb-sans), system-ui, sans-serif;
+}
+
+/* ---------------- Шапка ---------------- */
+
+.eb-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem clamp(1rem, 3vw, 2.5rem);
+  color: var(--eb-ink);
+  transition: color 0.6s ease;
+  pointer-events: none;
+}
+.eb-header > * {
+  pointer-events: auto;
+}
+html[data-eb-tone="light"] .eb-header {
+  color: var(--eb-paper-ink);
+}
+.eb-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.eb-logo img {
+  width: 34px;
+  height: auto;
+}
+.eb-logo svg {
+  width: 112px;
+  height: auto;
+  color: var(--eb-red);
+}
+.eb-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.eb-nav a:not(.eb-cta) {
+  opacity: 0.75;
+  transition: opacity 0.3s;
+}
+.eb-nav a:hover {
+  opacity: 1;
+}
+.eb-cta {
+  border: 1px solid currentColor;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+.eb-cta:hover {
+  background: var(--eb-ink);
+  color: var(--eb-dark);
+}
+@media (max-width: 760px) {
+  .eb-nav a:not(.eb-cta) {
+    display: none;
+  }
+  .eb-logo svg {
+    width: 92px;
+  }
+  .eb-cta {
+    padding: 0.55rem 0.9rem;
+    font-size: 0.62rem;
+  }
+}
+
+/* ---------------- Сцена ---------------- */
+
+.eb-track {
+  position: relative;
+  height: 7100vh;
+}
+.eb-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100lvh;
+  overflow: hidden;
+  perspective: 1400px;
+  background: var(--eb-dark);
+}
+.eb-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  will-change: opacity, transform;
+}
+.eb-first {
+  opacity: 1;
+  visibility: visible;
+}
+.eb-cam {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.eb-cam > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+.eb-veil {
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(12, 13, 16, 0.15), rgba(12, 13, 16, 0.65) 75%),
+    linear-gradient(180deg, rgba(12, 13, 16, 0.35), transparent 30%, transparent 65%, rgba(12, 13, 16, 0.7));
+  pointer-events: none;
+}
+.eb-mist {
+  opacity: 0;
+  visibility: hidden;
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(236, 238, 240, 0.98), rgba(214, 219, 224, 0.92) 45%, rgba(170, 178, 186, 0.85));
+  pointer-events: none;
+}
+
+/* Дом: тёмный, пока окна не загорятся */
+.eb-unlit {
+  filter: brightness(0.3) saturate(0.25) contrast(1.05);
+}
+.eb-lit {
+  opacity: 0;
+}
+.eb-frames {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.eb-frames polygon,
+.eb-frames line {
+  fill: none;
+  stroke: var(--eb-ink);
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* Разрез */
+.eb-lab {
+  background:
+    radial-gradient(ellipse at 50% 60%, var(--eb-dark-2), var(--eb-dark) 70%);
+}
+.eb-section-wrap {
+  transform-origin: 50% 66%;
+}
+.eb-section-box {
+  position: absolute;
+  left: 50%;
+  top: 41%;
+  width: min(84vw, 44vh);
+  aspect-ratio: 600 / 580;
+  transform: translate(-50%, -50%);
+}
+@media (min-width: 900px) {
+  .eb-section-box {
+    left: 38%;
+    top: 54%;
+    width: min(46vw, 80vh);
+  }
+}
+.eb-section {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.eb-section .eb-sec-glass,
+.eb-section .eb-sec-metal,
+.eb-section .eb-sec-break {
+  opacity: var(--eb-sec, 0);
+}
+.eb-section .eb-sec-glass {
+  transform: translateY(calc((1 - var(--eb-sec, 0)) * -60px));
+}
+.eb-section .eb-sec-break {
+  transform: scaleX(var(--eb-sec, 0));
+  transform-origin: 500px 0;
+}
+.eb-sec-heat {
+  opacity: calc(var(--eb-heat, 0) * 0.55);
+  mix-blend-mode: screen;
+}
+.eb-mark {
+  stroke: var(--eb-ink);
+  stroke-dasharray: 6 6;
+}
+.eb-mark-1 {
+  opacity: var(--eb-m1, 0);
+}
+.eb-mark-2 {
+  opacity: var(--eb-m2, 0);
+  stroke: var(--eb-red);
+}
+.eb-mark-3 {
+  opacity: var(--eb-m3, 0);
+}
+.eb-num {
+  font: 600 20px var(--font-eb-sans), sans-serif;
+  fill: var(--eb-ink);
+  letter-spacing: 0.1em;
+}
+.eb-num-1 {
+  opacity: var(--eb-m1, 0);
+}
+.eb-num-2 {
+  opacity: var(--eb-m2, 0);
+  fill: var(--eb-red);
+}
+.eb-num-3 {
+  opacity: var(--eb-m3, 0);
+}
+.eb-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.eb-side {
+  position: absolute;
+  top: 34%;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--eb-ink-mute);
+  opacity: var(--eb-heat, 0);
+}
+.eb-side-out {
+  left: 0;
+  color: var(--eb-cold);
+}
+.eb-side-in {
+  right: 0;
+  color: var(--eb-warm);
+}
+
+/* Туннель */
+.eb-tunnel-wrap {
+  background: radial-gradient(ellipse at 50% 50%, var(--eb-dark-2), var(--eb-dark) 70%);
+  perspective: 600px;
+}
+.eb-tunnel {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.eb-rib {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(70vw, 900px);
+  height: min(46vw, 560px);
+  border: 1px solid rgba(160, 166, 178, 0.45);
+  border-radius: 14px;
+  transform: translate3d(-50%, -50%, -2000px);
+  opacity: 0;
+}
+.eb-rib i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--eb-red);
+  opacity: 0.6;
+  top: 22%;
+  box-shadow: 0 calc(min(46vw, 560px) * 0.56) 0 var(--eb-red);
+}
+@media (max-width: 760px) {
+  .eb-rib {
+    width: 84vw;
+    height: 120vw;
+  }
+  .eb-rib i {
+    box-shadow: 0 calc(120vw * 0.56) 0 var(--eb-red);
+  }
+}
+.eb-glow {
+  background: radial-gradient(circle at 50% 50%, #fffaf2, #f6eee2 40%, rgba(246, 238, 226, 0.9));
+}
+
+/* Метки на снимках */
+.eb-hotspot {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transform: translate(-9px, -9px);
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+}
+.eb-hotspot i {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--eb-ink);
+  box-shadow: 0 0 0 6px rgba(244, 241, 236, 0.25);
+}
+.eb-hotspot i::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--eb-ink);
+  animation: eb-ping 2.4s ease-out infinite;
+}
+.eb-hotspot span {
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(12, 13, 16, 0.72);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+@keyframes eb-ping {
+  from {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* Ручка */
+.eb-hstage {
+  background:
+    radial-gradient(ellipse at 50% 46%, #22242a, #07080a 70%);
+  perspective: 1200px;
+}
+.eb-handle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(68vh, 86vw);
+  aspect-ratio: 488 / 512;
+  margin: calc(min(68vh, 86vw) * -0.525) 0 0 calc(min(68vh, 86vw) * -0.5);
+  transform-origin: 33% 26%;
+  will-change: transform, opacity;
+}
+/* Чёрный фон их снимка вырезан в прозрачность ещё при подготовке файла:
+   ручка висит в воздухе без квадрата вокруг и без смешивания слоёв. */
+.eb-handle img {
+  width: 100%;
+  height: 100%;
+}
+/* Блик бежит только по самой ручке: маска — её же вырезанный снимок. */
+.eb-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent calc(var(--eb-sweep, 0) * 140% - 40%),
+    rgba(255, 255, 255, 0.28) calc(var(--eb-sweep, 0) * 140% - 25%),
+    transparent calc(var(--eb-sweep, 0) * 140% - 10%)
+  );
+  -webkit-mask: url("/images/engelberg/handle-black.webp") center / 100% 100% no-repeat;
+  mask: url("/images/engelberg/handle-black.webp") center / 100% 100% no-repeat;
+}
+.eb-handle-alt {
+  position: absolute;
+  inset: auto 0 9vh;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 2vw, 1.5rem);
+  padding: 0 1rem;
+}
+.eb-handle-alt figure {
+  width: min(22vh, 27vw);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--eb-line);
+}
+.eb-handle-alt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Окно в зиму */
+.eb-snow {
+  pointer-events: none;
+}
+.eb-wframe {
+  --frame: clamp(28px, 6vw, 80px);
+  border: var(--frame) solid var(--eb-anthracite);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.06),
+    inset 0 0 120px rgba(255, 150, 80, 0.18),
+    0 0 0 100vmax #0b0c0e;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.07), transparent 35%);
+}
+.eb-wf-mullion,
+.eb-wf-transom {
+  position: absolute;
+  background: linear-gradient(90deg, #2c3134, var(--eb-anthracite) 40%, #4a5156);
+}
+.eb-wf-mullion {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--frame) * 0.7);
+  transform: translateX(-50%);
+}
+.eb-wf-transom {
+  left: 0;
+  right: 0;
+  top: 72%;
+  height: calc(var(--frame) * 0.55);
+  background: linear-gradient(180deg, #2c3134, var(--eb-anthracite) 40%, #4a5156);
+}
+
+/* BKH 65 */
+.eb-slide-lines polygon,
+.eb-slide-lines line {
+  stroke: var(--eb-ink);
+}
+.eb-bkh-cards {
+  display: none;
+}
+@media (min-width: 1100px) {
+  .eb-bkh-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    inset: 20vh auto auto auto;
+    right: calc(clamp(1.25rem, 5vw, 5rem) + 420px + 2rem);
+    width: min(14vw, 220px);
+  }
+  .eb-bkh-cards figure {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  }
+  .eb-bkh-cards img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.eb-slide-demo {
+  position: relative;
+  height: 54px;
+  margin: 0.4rem 0 1.4rem;
+  border-bottom: 1px solid var(--eb-line);
+}
+.eb-slide-demo span {
+  position: absolute;
+  bottom: 10px;
+  width: 48%;
+  height: 8px;
+  border-radius: 2px;
+}
+.eb-slide-fixed {
+  right: 0;
+  background: var(--eb-ink-mute);
+}
+.eb-slide-move {
+  left: 0;
+  bottom: 24px !important;
+  background: var(--eb-red);
+  transform: translateX(calc(var(--eb-slide, 0) * 100%));
+}
+
+/* FS 50 */
+.eb-blueprint {
+  filter: grayscale(1) brightness(0.28) contrast(1.2);
+}
+.eb-built {
+  clip-path: inset(calc((1 - var(--eb-build, 0)) * 100%) 0 0 0);
+}
+.eb-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  top: calc((1 - var(--eb-build, 0)) * 100%);
+  background: var(--eb-ink);
+  box-shadow: 0 0 24px 6px rgba(255, 255, 255, 0.45);
+  opacity: calc(min(var(--eb-build, 0) * 8, 1) * (1 - var(--eb-build, 0)) * 1.4);
+}
+
+/* Отделка */
+.eb-finish {
+  background: var(--eb-paper);
+}
+.eb-swatches {
+  position: absolute;
+  inset: 34vh 4vw 6vh;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: clamp(0.5rem, 1.2vw, 1.2rem);
+}
+.eb-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--eb-paper-ink);
+}
+.eb-swatch span {
+  flex: 1;
+  border-radius: 12px;
+  background: var(--tone);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 30px 50px -35px rgba(0, 0, 0, 0.5);
+}
+.eb-swatch span.eb-wood {
+  background:
+    repeating-linear-gradient(92deg, rgba(0, 0, 0, 0.08) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(88deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 23px),
+    var(--tone);
+}
+.eb-swatch b {
+  font-family: var(--font-eb-serif), serif;
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  font-weight: 500;
+}
+.eb-swatch small {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--eb-paper-mute);
+}
+@media (max-width: 760px) {
+  .eb-swatches {
+    inset: 36vh 5vw 10vh;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 1.2rem 0.6rem;
+  }
+}
+
+/* Портфолио */
+.eb-port {
+  background: var(--eb-paper);
+}
+.eb-port-row {
+  position: absolute;
+  left: 0;
+  top: 40vh;
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  will-change: transform;
+}
+.eb-port-row figure {
+  width: clamp(260px, 32vw, 520px);
+  color: var(--eb-paper-ink);
+}
+.eb-port-row img {
+  width: 100%;
+  aspect-ratio: 4 / 3.4;
+  object-fit: cover;
+  border-radius: 14px;
+}
+.eb-port-row figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 0.9rem;
+}
+.eb-port-row figcaption b {
+  font-family: var(--font-eb-serif), serif;
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+.eb-port-row figcaption span {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--eb-paper-mute);
+}
+@media (max-width: 760px) {
+  .eb-port-row {
+    top: 46vh;
+  }
+  .eb-port-row figure {
+    width: 72vw;
+  }
+}
+
+/* ---------------- Бренд в начале ---------------- */
+
+.eb-brand {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  text-align: center;
+  will-change: transform, opacity;
+}
+.eb-crest {
+  width: clamp(120px, 16vw, 210px);
+  height: auto;
+  animation: eb-crest 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
+}
+.eb-wordmark {
+  width: clamp(240px, 34vw, 520px);
+  height: auto;
+  color: var(--eb-ink);
+  animation: eb-word 2.2s 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.eb-slogan {
+  font-family: var(--font-eb-serif), serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  color: var(--eb-ink-soft);
+  animation: eb-rise 1.6s 1.3s ease both;
+}
+@keyframes eb-crest {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.92);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
+  }
+}
+@keyframes eb-word {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.2;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+@keyframes eb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.eb-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 4.5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  transform: translateX(-50%);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--eb-ink-soft);
+  animation: eb-rise 1.4s 2s ease both;
+}
+.eb-hint i {
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(var(--eb-ink), transparent);
+  animation: eb-drop 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes eb-drop {
+  0% {
+    transform: scaleY(0);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+/* ---------------- Подписи ---------------- */
+
+.eb-beat {
+  position: absolute;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  max-width: min(560px, 88vw);
+  text-shadow: 0 1px 30px rgba(0, 0, 0, 0.35);
+}
+.eb-beat [data-line] {
+  will-change: transform, opacity;
+}
+.eb-at-center {
+  left: 50%;
+  top: 50%;
+  max-width: min(900px, 90vw);
+  margin: 0;
+  translate: -50% -50%;
+  text-align: center;
+}
+.eb-at-left-bottom {
+  left: clamp(1.25rem, 5vw, 5rem);
+  bottom: clamp(5rem, 12vh, 9rem);
+}
+.eb-at-right-bottom {
+  right: clamp(1.25rem, 5vw, 5rem);
+  bottom: clamp(5rem, 12vh, 9rem);
+  text-align: right;
+}
+.eb-at-left {
+  left: clamp(1.25rem, 5vw, 5rem);
+  top: 50%;
+  translate: 0 -50%;
+}
+.eb-at-right {
+  right: clamp(1.25rem, 5vw, 5rem);
+  top: 50%;
+  translate: 0 -50%;
+}
+.eb-at-top {
+  left: clamp(1.25rem, 5vw, 5rem);
+  top: clamp(5.5rem, 13vh, 9rem);
+  max-width: min(720px, 88vw);
+}
+.eb-ink {
+  color: var(--eb-paper-ink);
+  text-shadow: none;
+}
+.eb-ink .eb-p {
+  color: var(--eb-paper-mute);
+}
+
+.eb-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--eb-ink-mute);
+  margin-bottom: 1rem;
+}
+.eb-ink .eb-eyebrow {
+  color: var(--eb-paper-mute);
+}
+.eb-display {
+  font-family: var(--font-eb-serif), serif;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6.4vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.eb-display-s {
+  font-size: clamp(2rem, 4.4vw, 4rem);
+  max-width: 14ch;
+}
+.eb-sub {
+  margin: 1.4rem auto 0;
+  max-width: 46ch;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--eb-ink-soft);
+}
+.eb-h {
+  font-family: var(--font-eb-serif), serif;
+  font-weight: 400;
+  font-size: clamp(2rem, 4.2vw, 3.8rem);
+  line-height: 1.04;
+}
+.eb-h-xl {
+  font-size: clamp(3.2rem, 9vw, 8.5rem);
+  line-height: 0.92;
+}
+.eb-h3 {
+  font-family: var(--font-eb-serif), serif;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  line-height: 1.08;
+}
+.eb-p {
+  margin-top: 1.1rem;
+  max-width: 44ch;
+  font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--eb-ink-soft);
+}
+.eb-at-right-bottom .eb-p {
+  margin-left: auto;
+}
+.eb-badge {
+  display: inline-block;
+  margin-top: 1.4rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--eb-line);
+  border-radius: 999px;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.eb-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--eb-ink-mute);
+}
+.eb-cold-dot,
+.eb-warm-dot {
+  width: 22px;
+  height: 2px;
+  background: var(--eb-cold);
+}
+.eb-warm-dot {
+  margin-left: 0.8rem;
+  background: var(--eb-warm);
+}
+
+/* Панель характеристик */
+.eb-panel {
+  width: min(420px, 88vw);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border: 1px solid var(--eb-line);
+  border-radius: 18px;
+  background: rgba(12, 13, 16, 0.55);
+  backdrop-filter: blur(12px);
+  text-shadow: none;
+}
+.eb-big {
+  display: flex;
+  gap: 1.6rem;
+  margin-bottom: 1.4rem;
+}
+.eb-big div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.eb-big b {
+  font-family: var(--font-eb-serif), serif;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+  line-height: 1;
+}
+.eb-big span {
+  font-size: 0.7rem;
+  color: var(--eb-ink-mute);
+}
+.eb-specs div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.62rem 0;
+  border-top: 1px solid var(--eb-line);
+  font-size: 0.85rem;
+}
+.eb-specs dt {
+  color: var(--eb-ink-mute);
+}
+.eb-specs dd {
+  text-align: right;
+}
+
+/* Три контура */
+.eb-chamber {
+  right: clamp(1.25rem, 5vw, 5rem);
+  display: flex;
+  gap: 1rem;
+  width: min(330px, 30vw);
+}
+.eb-chamber-0 {
+  top: 32vh;
+}
+.eb-chamber-1 {
+  top: calc(32vh + 8.5rem);
+}
+.eb-chamber-2 {
+  top: calc(32vh + 17rem);
+}
+.eb-chamber-n {
+  font-family: var(--font-eb-serif), serif;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--eb-ink-mute);
+}
+.eb-chamber-1 .eb-chamber-n {
+  color: var(--eb-red);
+}
+.eb-chamber b {
+  font-weight: 500;
+}
+.eb-chamber p {
+  margin-top: 0.35rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--eb-ink-soft);
+}
+.eb-chamber-slot {
+  right: clamp(1.25rem, 5vw, 5rem);
+  top: 32vh;
+  width: min(380px, 32vw);
+}
+@media (max-width: 899px) {
+  .eb-chamber {
+    left: 1.25rem;
+    right: 1.25rem;
+    width: auto;
+    top: auto;
+  }
+  .eb-chamber-0 {
+    bottom: 14.6rem;
+  }
+  .eb-chamber-1 {
+    bottom: 9.2rem;
+  }
+  .eb-chamber-2 {
+    bottom: 3.8rem;
+  }
+  .eb-chamber-n {
+    font-size: 1.3rem;
+  }
+  .eb-chamber p {
+    margin-top: 0.2rem;
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+  .eb-chamber-slot {
+    left: 1.25rem;
+    right: 1.25rem;
+    width: auto;
+    top: auto;
+    bottom: 3.5rem;
+  }
+}
+
+/* Тишина */
+.eb-db {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+.eb-db b {
+  font-family: var(--font-eb-serif), serif;
+  font-weight: 400;
+  font-size: clamp(3.4rem, 8vw, 7rem);
+  line-height: 0.9;
+}
+.eb-db svg {
+  width: clamp(120px, 16vw, 240px);
+  overflow: visible;
+}
+.eb-wave {
+  fill: none;
+  stroke: var(--eb-ink);
+  stroke-width: 1.5;
+  transform-origin: 0 20px;
+  transform: scaleY(calc(1 - var(--eb-quiet, 0) * 0.94));
+  opacity: calc(1 - var(--eb-quiet, 0) * 0.5);
+}
+
+/* Мобильная раскладка подписей: всё — внизу кадра, над затемнением */
+@media (max-width: 760px) {
+  .eb-at-left,
+  .eb-at-right {
+    left: 1.25rem;
+    right: 1.25rem;
+    top: auto;
+    bottom: 4rem;
+    translate: none;
+    text-align: left;
+  }
+  .eb-at-left-bottom,
+  .eb-at-right-bottom {
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 4rem;
+    text-align: left;
+  }
+  .eb-at-right-bottom .eb-p {
+    margin-left: 0;
+  }
+  .eb-panel {
+    width: auto;
+    padding: 1.1rem 1.2rem;
+  }
+  .eb-specs div {
+    padding: 0.45rem 0;
+    font-size: 0.78rem;
+  }
+  .eb-big {
+    margin-bottom: 0.8rem;
+  }
+  .eb-handle-copy {
+    bottom: auto;
+    top: 6.5rem;
+  }
+  .eb-handle {
+    top: 64%;
+    width: min(46vh, 70vw);
+    margin: calc(min(46vh, 70vw) * -0.525) 0 0 calc(min(46vh, 70vw) * -0.5);
+  }
+  .eb-stage::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 55%;
+    background: linear-gradient(transparent, rgba(8, 9, 11, 0.72));
+    pointer-events: none;
+    z-index: 4;
+    transition: opacity 0.8s ease;
+  }
+}
+
+/* Затемнение под подписями: на светлых снимках текст иначе тонет.
+   На светлых сценах (отделка, портфолио) не нужно. */
+.eb-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 75% 70% at 0% 100%, rgba(8, 9, 11, 0.72), transparent 70%),
+    radial-gradient(ellipse 60% 60% at 100% 100%, rgba(8, 9, 11, 0.45), transparent 70%);
+  transition: opacity 0.8s ease;
+}
+html[data-eb-tone="light"] .eb-stage::before,
+html[data-eb-tone="light"] .eb-stage::after {
+  opacity: 0;
+}
+
+.eb-narrow {
+  max-width: min(24rem, 88vw);
+}
+
+/* Приборы: глава и прогресс */
+.eb-hud {
+  position: absolute;
+  z-index: 6;
+  left: clamp(1.25rem, 5vw, 5rem);
+  right: clamp(1.25rem, 5vw, 5rem);
+  bottom: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--eb-ink-mute);
+  transition: color 0.6s;
+}
+html[data-eb-tone="light"] .eb-hud {
+  color: var(--eb-paper-mute);
+}
+.eb-hud span {
+  white-space: nowrap;
+}
+.eb-hud i {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+.eb-hud b {
+  position: absolute;
+  inset: 0;
+  background: var(--eb-red);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* ---------------- После истории ---------------- */
+
+.eb-after {
+  position: relative;
+  z-index: 2;
+  background: var(--eb-dark);
+  padding: clamp(5rem, 12vw, 10rem) clamp(1.25rem, 5vw, 5rem) 3rem;
+}
+.eb-after-grid {
+  display: grid;
+  gap: 3rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+@media (min-width: 960px) {
+  .eb-after-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 6rem;
+  }
+}
+.eb-form {
+  display: grid;
+  gap: 1rem;
+}
+.eb-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--eb-ink-mute);
+}
+.eb-form input,
+.eb-form textarea {
+  border: 0;
+  border-bottom: 1px solid var(--eb-line);
+  background: transparent;
+  padding: 0.7rem 0;
+  font: inherit;
+  font-size: 1rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--eb-ink);
+  outline: none;
+  transition: border-color 0.3s;
+}
+.eb-form input:focus,
+.eb-form textarea:focus {
+  border-color: var(--eb-ink);
+}
+.eb-form .eb-check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: 0.82rem;
+}
+.eb-submit {
+  justify-self: start;
+  margin-top: 0.6rem;
+  padding: 1rem 1.8rem;
+  border-radius: 999px;
+  background: var(--eb-red);
+  color: #fff;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transition: filter 0.3s;
+}
+.eb-submit:hover {
+  filter: brightness(1.1);
+}
+.eb-contacts a {
+  display: block;
+  font-family: var(--font-eb-serif), serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.3;
+}
+.eb-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1280px;
+  margin: 6rem auto 0;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--eb-line);
+  font-size: 0.72rem;
+  color: var(--eb-ink-mute);
+}
+
+/* ---------------- Без движения ---------------- */
+
+.eb-static {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .eb-story {
+    display: none;
+  }
+  .eb-static {
+    display: block;
+  }
+}
+.eb-static section {
+  position: relative;
+  min-height: 80vh;
+  display: grid;
+  align-items: end;
+  padding: 6rem clamp(1.25rem, 5vw, 5rem) 4rem;
+  overflow: hidden;
+}
+.eb-static section > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.55);
+}
+.eb-static section > div {
+  position: relative;
+  max-width: 640px;
+}
+
+/* Lenis ведёт прокрутку сам: плавность браузера ему мешает. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+html.lenis {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
