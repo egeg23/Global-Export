@@ -2,7 +2,17 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { locales, matchLocale } from "@/lib/i18n";
 import { isShowcase } from "@/lib/showcase";
-import { isGate, LEGACY_KEY_PARAM, returnTo, showcaseFor } from "@/lib/showcase/access";
+import {
+  ACCESS_COOKIE,
+  accessCookie,
+  checkCode,
+  isGate,
+  isLocked,
+  KEY_PARAM,
+  returnTo,
+  showcaseFor,
+  verifyKey,
+} from "@/lib/showcase/access";
 import { refreshSession } from "@/lib/supabase/session";
 
 const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webmanifest)$/i;
@@ -40,14 +50,37 @@ export async function proxy(request: NextRequest) {
   }
 
   // Витрины застройщиков MAVERA и Golden House — без языкового префикса:
-  // предложение одноязычное, а языки показаны внутри макетов. Раньше они
-  // открывались по коду, теперь открыты всем, у кого есть ссылка (решение
-  // владельца от 23.09.2026, см. lib/showcase/access.ts), — от переменных
-  // окружения это не зависит. Старые ссылки приводят туда же: бывшая
-  // страница ввода кода ведёт на адрес из `next`, а ключ `?key=…` просто
-  // убирается из адреса. С 29.09.2026 на площадке они открыты и поиску.
+  // предложение одноязычное, а языки показаны внутри макетов.
+  //
+  // MAVERA закрыта кодом (владелец, 06.10.2026; lib/showcase/access.ts).
+  // Ключ в адресе (?key=…) ставит куки и убирает себя из адреса — так ссылку
+  // отправляют заказчику. Без куки — страница ввода кода. Граница стоит
+  // здесь, до отдачи разметки. Закрытая витрина закрыта и от поиска.
+  //
+  // Golden House открыта всем, у кого есть ссылка; её старые ссылки ведут
+  // туда же: страница кода — на адрес из `next`, ключ из адреса убирается.
   const showcase = showcaseFor(pathname);
   if (showcase) {
+    if (await isLocked(showcase)) {
+      if (isGate(showcase, pathname)) return hidden(NextResponse.next());
+
+      const key = request.nextUrl.searchParams.get(KEY_PARAM);
+      if (key !== null) {
+        const url = request.nextUrl.clone();
+        url.searchParams.delete(KEY_PARAM);
+        const granted = await checkCode(key);
+        if (!granted) return hidden(NextResponse.redirect(gateUrl(request, showcase.gate, url, true), 307));
+        const response = NextResponse.redirect(url, 307);
+        response.cookies.set(accessCookie(granted));
+        return hidden(response);
+      }
+
+      if (!(await verifyKey(request.cookies.get(ACCESS_COOKIE)?.value))) {
+        return hidden(NextResponse.redirect(gateUrl(request, showcase.gate, request.nextUrl), 307));
+      }
+      return hidden(NextResponse.next());
+    }
+
     if (isGate(showcase, pathname)) {
       const target = new URL(returnTo(showcase, request.nextUrl.searchParams.get("next")), "http://showcase.local");
       const url = request.nextUrl.clone();
@@ -56,9 +89,9 @@ export async function proxy(request: NextRequest) {
       return noindex(NextResponse.redirect(url, 307));
     }
 
-    if (request.nextUrl.searchParams.has(LEGACY_KEY_PARAM)) {
+    if (request.nextUrl.searchParams.has(KEY_PARAM)) {
       const url = request.nextUrl.clone();
-      url.searchParams.delete(LEGACY_KEY_PARAM);
+      url.searchParams.delete(KEY_PARAM);
       return noindex(NextResponse.redirect(url, 307));
     }
 
@@ -170,6 +203,24 @@ function noindex(response: NextResponse): NextResponse {
   if (isShowcase) return response;
   response.headers.set("X-Robots-Tag", "noindex, nofollow");
   return response;
+}
+
+/** Закрытая витрина закрыта от поиска и на площадке: поисковик видел бы только форму кода. */
+function hidden(response: NextResponse): NextResponse {
+  response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return response;
+}
+
+/** Страница кода с адресом возврата — без ключа в нём. */
+function gateUrl(request: NextRequest, gate: string, from: URL, wrongKey = false): URL {
+  const back = new URL(from);
+  back.searchParams.delete(KEY_PARAM);
+  const url = request.nextUrl.clone();
+  url.pathname = gate;
+  url.search = "";
+  url.searchParams.set("next", `${back.pathname}${back.search}`);
+  if (wrongKey) url.searchParams.set("error", "1");
+  return url;
 }
 
 export const config = {
