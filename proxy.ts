@@ -24,7 +24,8 @@ const PUBLIC_FILE = /\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico|txt|xml|json|webman
  * Three routes sit outside that rule. The admin panel is a single-language tool
  * and needs its Supabase session refreshed on the way through. The showcase at
  * `/present` belongs to the pitch rather than to the company's site, and
- * `/adar`, `/mavera` and `/gh` are pitches for other companies altogether.
+ * `/adar`, `/mavera`, `/gh` and `/engelberg` are pitches for other companies
+ * altogether.
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -48,10 +49,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Витрины застройщиков MAVERA и Golden House — без языкового префикса:
-  // предложение одноязычное, а языки показаны внутри макетов.
+  // Закрытые витрины — MAVERA, Golden House и Engelberg — без языкового
+  // префикса: предложение одноязычное, а языки показаны внутри макетов.
   //
-  // Обе закрыты кодом, у каждой своим (владелец, 06.10.2026;
+  // Все закрыты кодом, у каждой своим (владелец, 06.10.2026;
   // lib/showcase/access.ts). Ключ в адресе (?key=…) ставит куки и убирает
   // себя из адреса — так ссылку отправляют заказчику. Без куки — страница
   // ввода кода. Граница стоит здесь, до отдачи разметки. Закрытая витрина
