@@ -1,8 +1,10 @@
 /**
- * Доступ к витринам застройщиков: MAVERA и Golden House — обе по коду.
+ * Доступ к закрытым витринам: MAVERA, Golden House и Engelberg — по коду.
  *
  * Владелец, 06.10.2026: «Закрой кодом доступ к сайту MAVERA», затем «У
  * golden house тоже закрой кодом». С 23.09 по 06.10 обе были открыты всем.
+ * Engelberg (engelberg-window.com) закрыт кодом с первого дня: макет до
+ * договора.
  *
  * У каждой витрины свой код, своя куки и своя переменная на сервере:
  * ссылка, отданная одному заказчику, не открывает макет другого.
@@ -14,7 +16,8 @@
  * владелец и менеджеры студии.
  *
  * Код на сервере можно сменить без правки кода — переменной из `codeEnv` в
- * `.env.local` (`MAVERA_ACCESS_CODE`, `GOLDEN_ACCESS_CODE`): тогда действует
+ * `.env.local` (`MAVERA_ACCESS_CODE`, `GOLDEN_ACCESS_CODE`,
+ * `ENGELBERG_ACCESS_CODE`): тогда действует
  * она, а встроенный отпечаток — нет; `off` открывает витрину всем. Сменили
  * код — все выданные куки перестают подходить: в куки лежит ключ, выведенный
  * из кода. Имена переменных новые намеренно: старые `SHOWCASE_ACCESS_CODE` и
@@ -34,7 +37,7 @@
 
 import { timedCodeExpiry, timedDigits } from "@/lib/showcase/timed";
 
-export type ShowcaseId = "mavera" | "gh";
+export type ShowcaseId = "mavera" | "gh" | "engelberg";
 
 export type Showcase = {
   id: ShowcaseId;
@@ -78,6 +81,18 @@ export const showcases: Showcase[] = [
     codeEnv: "GOLDEN_ACCESS_CODE",
     salt: "globalex:gh:access:v2",
     hash: "11f4cdb3eb7ae8fe790357ea0d7e3cf19e7419d760d5938a59c5d174d64206aa",
+  },
+  {
+    id: "engelberg",
+    prefix: "/engelberg",
+    gate: "/engelberg/access",
+    label: "Engelberg",
+    intro:
+      "Макет сайта Engelberg показывается по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную или запросите у менеджера DevUz Studio.",
+    cookie: "showcase_engelberg_access",
+    codeEnv: "ENGELBERG_ACCESS_CODE",
+    salt: "globalex:engelberg:access:v1",
+    hash: "889e58890c6084a7bdbeac467f25ee99dd8c3e30b63846ebc170b4b2b6d78a92",
   },
 ];
 
@@ -205,9 +220,11 @@ export async function grantFor(showcase: Showcase, raw: string, now = Date.now()
   const digits = timedDigits(raw);
   if (digits) {
     const expires = await timedCodeExpiry(showcase.id, digits, now);
-    if (!expires) return null;
-    return { name: timedCookieName(showcase), value: digits, maxAge: Math.max(1, Math.floor((expires.getTime() - now) / 1000)) };
+    if (expires) {
+      return { name: timedCookieName(showcase), value: digits, maxAge: Math.max(1, Math.floor((expires.getTime() - now) / 1000)) };
+    }
   }
+  // Не код на 24 часа — значит, постоянный: пять цифр могут оказаться и им.
   const key = await checkCode(showcase, raw);
   return key ? { name: showcase.cookie, value: key, maxAge: ACCESS_MAX_AGE } : null;
 }
