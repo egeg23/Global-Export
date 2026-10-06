@@ -26,12 +26,11 @@ export const projectRobots: Metadata["robots"] = isShowcase
  * Страницы проектов для карты сайта площадки. Новый проект витрины — строка
  * здесь: без неё поисковик найдёт его только по ссылке с devuz.studio.
  * Панели управления в карту не входят — это не то, с чего стоит начинать
- * знакомство, — но и не закрыты. MAVERA здесь нет: с 06.10.2026 она закрыта
- * кодом доступа (lib/showcase/access.ts).
+ * знакомство, — но и не закрыты. MAVERA и Golden House здесь нет: с
+ * 06.10.2026 они закрыты кодом доступа (lib/showcase/access.ts).
  */
 export const SHOWCASE_PAGES: readonly { path: string; priority: number }[] = [
   { path: "/present", priority: 0.9 },
-  { path: "/gh", priority: 0.9 },
   { path: "/adar", priority: 0.9 },
   { path: "/adar/base", priority: 0.7 },
   { path: "/adar/plus", priority: 0.7 },
