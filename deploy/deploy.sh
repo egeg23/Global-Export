@@ -39,6 +39,16 @@ main() {
   # и служба под globalex не сможет писать туда кеш изображений.
   as_app() { runuser -u "$APP_USER" -- "$@"; }
 
+  # Одна выкатка за раз: автовыкатка по таймеру и ручной запуск, сойдясь,
+  # собирают в один .next и ломают друг другу сборку (07.10.2026 так и
+  # было: «Another next build process is already running», а следом —
+  # испорченный .next/build). Вторая ждёт, пока первая закончит.
+  exec 9>/run/globalex-deploy.lock
+  if ! flock -w 1800 9; then
+    echo "✗ Другая выкатка идёт больше 30 минут — эту пропускаем"
+    exit 1
+  fi
+
   need=20
   have="$(node -v 2>/dev/null | sed 's/^v//; s/\..*//')" || have=0
   if [ "${have:-0}" -lt "$need" ]; then
@@ -109,7 +119,16 @@ main() {
   as_app npm ci
 
   echo "→ Сборка"
-  as_app npm run build
+  # .next/build — служебные куски самого сборщика (postcss и т. п.), площадке
+  # они не нужны. Оборванная сборка оставляет их битыми, и следующая падает
+  # на «Cannot find module '@vercel/turbopack/postcss'» — поэтому каждый раз
+  # с чистого листа. Не прошла сборка — ещё раз, без кеша сборщика.
+  rm -rf .next/build
+  if ! as_app npm run build; then
+    echo "· сборка не прошла — повторяем без кеша сборщика"
+    rm -rf .next/build .next/cache
+    as_app npm run build
+  fi
 
   echo "→ Перезапуск ${SERVICE} (порт ${PORT})"
   systemctl restart "$SERVICE"
