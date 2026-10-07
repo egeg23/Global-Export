@@ -54,8 +54,12 @@ export type Showcase = {
   codeEnv: string;
   /** Соль PBKDF2 — своя у каждой витрины. */
   salt: string;
-  /** Отпечаток встроенного кода. Сам код в репозиторий не кладётся. */
-  hash: string;
+  /**
+   * Отпечаток встроенного постоянного кода. Сам код в репозиторий не
+   * кладётся. null — постоянного кода нет, пускает только пароль из базы
+   * студии (lib/showcase/timed.ts).
+   */
+  hash: string | null;
 };
 
 export const showcases: Showcase[] = [
@@ -65,8 +69,8 @@ export const showcases: Showcase[] = [
     gate: "/mavera/access",
     label: "MAVERA",
     intro:
-      "Три варианта сайта, панель управления и смета показываются по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную. Код из 5 цифр от менеджера DevUz Studio действует 24 часа.",
-    cookie: "showcase_access",
+      "Три варианта сайта, панель управления и смета показываются по паролю. Введите пароль, который вам дал менеджер DevUz Studio.",
+    cookie: "showcase_pass",
     codeEnv: "MAVERA_ACCESS_CODE",
     salt: "globalex:mavera:access:v2",
     hash: "9bc7fd9dd70a6f8326e6ed7c44e52b2d212504c39a476b399f2ead92c64d96f7",
@@ -77,8 +81,8 @@ export const showcases: Showcase[] = [
     gate: "/gh/access",
     label: "Golden House",
     intro:
-      "Макет главной страницы и панель управления показываются по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную. Код из 5 цифр от менеджера DevUz Studio действует 24 часа.",
-    cookie: "showcase_gh_access",
+      "Макет главной страницы и панель управления показываются по паролю. Введите пароль, который вам дал менеджер DevUz Studio.",
+    cookie: "showcase_gh_pass",
     codeEnv: "GOLDEN_ACCESS_CODE",
     salt: "globalex:gh:access:v2",
     hash: "11f4cdb3eb7ae8fe790357ea0d7e3cf19e7419d760d5938a59c5d174d64206aa",
@@ -89,11 +93,11 @@ export const showcases: Showcase[] = [
     gate: "/engelberg/access",
     label: "Engelberg",
     intro:
-      "Макет сайта Engelberg показывается по коду. Код есть в ссылке, которую вам отправили; если ссылка без кода — введите его вручную или запросите у менеджера DevUz Studio.",
-    cookie: "showcase_engelberg_access",
+      "Макет сайта Engelberg показывается по паролю. Введите пароль, который вам дал менеджер DevUz Studio.",
+    cookie: "showcase_engelberg_pass",
     codeEnv: "ENGELBERG_ACCESS_CODE",
     salt: "globalex:engelberg:access:v1",
-    hash: "889e58890c6084a7bdbeac467f25ee99dd8c3e30b63846ebc170b4b2b6d78a92",
+    hash: null,
   },
 ];
 
@@ -162,14 +166,18 @@ export function sameSecret(given: string, expected: string): boolean {
 
 const envHashes = new Map<ShowcaseId, { code: string; hash: string }>();
 
+/** Код снят на сервере (`off` в переменной витрины) — витрина открыта всем. */
+function isOpen(showcase: Showcase): boolean {
+  return process.env[showcase.codeEnv]?.trim() === "off";
+}
+
 /**
- * Действующий отпечаток или null, если витрина открыта: код из переменной
- * витрины, если она задана на сервере, иначе встроенный.
+ * Отпечаток действующего постоянного кода: из переменной витрины, если она
+ * задана на сервере, иначе встроенный. null — постоянного кода нет.
  */
 async function expectedHash(showcase: Showcase): Promise<string | null> {
   const env = process.env[showcase.codeEnv]?.trim();
-  if (env === "off") return null;
-  if (!env) return showcase.hash;
+  if (!env || env === "off") return showcase.hash;
   const cached = envHashes.get(showcase.id);
   if (cached?.code === env) return cached.hash;
   const hash = await sha256(await accessKey(showcase, env));
@@ -179,13 +187,14 @@ async function expectedHash(showcase: Showcase): Promise<string | null> {
 
 /** Закрыта ли витрина сейчас. */
 export async function isLocked(showcase: Showcase): Promise<boolean> {
-  return (await expectedHash(showcase)) !== null;
+  return !isOpen(showcase);
 }
 
 /** Подходит ли ключ из куки этой витрины. */
 export async function verifyKey(showcase: Showcase, key: string | undefined): Promise<boolean> {
+  if (isOpen(showcase)) return true;
   const hash = await expectedHash(showcase);
-  if (hash === null) return true;
+  if (hash === null) return false;
   if (!key || !/^[0-9a-f]{64}$/.test(key)) return false;
   return sameSecret(await sha256(key), hash);
 }
