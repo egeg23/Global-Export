@@ -29,8 +29,9 @@
  * макетов, ни разметки, ни скриптов. Всё, что уже попало в браузер,
  * скопировать можно всегда.
  *
- * Кроме постоянных кодов — коды на 24 часа из пяти цифр (владелец, 06.10.2026):
- * они живут в базе студии, см. lib/showcase/timed.ts.
+ * Кроме постоянных кодов — короткие коды из базы студии: пять цифр на 24 часа
+ * (владелец, 06.10.2026) и пароль из четырёх цифр к Engelberg (07.10.2026), см.
+ * lib/showcase/timed.ts.
  *
  * Работает и в прокси, и в серверной функции: только Web Crypto и fetch.
  */
@@ -221,7 +222,10 @@ export async function grantFor(showcase: Showcase, raw: string, now = Date.now()
   if (digits) {
     const expires = await timedCodeExpiry(showcase.id, digits, now);
     if (expires) {
-      return { name: timedCookieName(showcase), value: digits, maxAge: Math.max(1, Math.floor((expires.getTime() - now) / 1000)) };
+      // Куки живёт до конца срока кода, но не дольше постоянной — у долгих
+      // паролей срок в годах.
+      const left = Math.floor((expires.getTime() - now) / 1000);
+      return { name: timedCookieName(showcase), value: digits, maxAge: Math.max(1, Math.min(left, ACCESS_MAX_AGE)) };
     }
   }
   // Не код на 24 часа — значит, постоянный: пять цифр могут оказаться и им.
