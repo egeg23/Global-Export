@@ -1,5 +1,6 @@
 import { adarCatalog } from "@/content/adar/addons";
 import { akbarCatalog } from "@/content/akbar/addons";
+import { apolloCatalog } from "@/content/apollo/addons";
 import { comfortCatalog } from "@/content/comfort/catalog";
 import { globalexCatalog } from "@/content/globalex/addons";
 import { maveraCatalog } from "@/content/mavera/catalog";
@@ -17,6 +18,7 @@ export const catalogs: Record<string, Catalog> = {
   [webnameCatalog.project]: webnameCatalog,
   [webnamePremiumCatalog.project]: webnamePremiumCatalog,
   [akbarCatalog.project]: akbarCatalog,
+  [apolloCatalog.project]: apolloCatalog,
 };
 
 export function catalogOf(project: string): Catalog | null {
