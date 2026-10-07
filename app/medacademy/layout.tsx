@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Commissioner, Dela_Gothic_One, Literata, Onest } from "next/font/google";
+import { Dela_Gothic_One, Literata, Onest } from "next/font/google";
 
 import "../globals.css";
 
@@ -14,14 +14,14 @@ import { MockupTerms } from "@/components/showcase/mockup-terms";
  *    крупно читается как медицинский справочник, а не как реклама; Onest —
  *    спокойный гротеск для текста и цифр.
  *  - B «Лаборатория»: Dela Gothic One — плотный дисплейный гротеск, слово
- *    поперёк экрана; Commissioner — живой текстовый гротеск.
+ *    поперёк экрана; Commissioner — живой текстовый гротеск
+ *    (его файлы лежат у нас — app/medacademy.css).
  *
  * Веса — 400 и 700: ослабляем цветом, а не весом.
  */
 const literata = Literata({ subsets: ["latin", "cyrillic"], weight: ["400", "700"], display: "swap", variable: "--font-ma-literata" });
 const onest = Onest({ subsets: ["latin", "cyrillic"], weight: ["400", "700"], display: "swap", variable: "--font-ma-onest" });
 const dela = Dela_Gothic_One({ subsets: ["latin", "cyrillic"], weight: "400", display: "swap", variable: "--font-ma-dela" });
-const commissioner = Commissioner({ subsets: ["latin", "cyrillic"], weight: ["400", "700"], display: "swap", variable: "--font-ma-commissioner" });
 
 /**
  * Проект витрины: макет сайта MedAcademy — центра подготовки абитуриентов
@@ -49,7 +49,7 @@ export const viewport: Viewport = {
 
 export default function MedacademyLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${literata.variable} ${onest.variable} ${dela.variable} ${commissioner.variable}`}>
+    <html lang="ru" className={`${literata.variable} ${onest.variable} ${dela.variable}`}>
       <head>
         <noscript>
           <style>{`[data-ma] .ma-in { opacity: 1 !important; transform: none !important; }`}</style>
