@@ -3,8 +3,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { locales, matchLocale } from "@/lib/i18n";
 import { isShowcase } from "@/lib/showcase";
 import {
-  grantCookie,
-  grantFor,
   hasAccess,
   isGate,
   isLocked,
@@ -54,24 +52,26 @@ export async function proxy(request: NextRequest) {
   //
   // Все закрыты кодом, у каждой своим (владелец, 06.10.2026;
   // lib/showcase/access.ts): постоянным кодом студии и короткими кодами из базы
-  // студии — 5 цифр на 24 часа, у Engelberg пароль из 4 цифр (lib/showcase/timed.ts). Ключ в адресе
-  // (?key=…) ставит куки и убирает себя из адреса — так ссылку отправляют
-  // заказчику. Без куки — страница ввода кода. Граница стоит здесь, до отдачи
-  // разметки. Закрытая витрина закрыта и от поиска.
+  // студии — 5 цифр на 24 часа, у Engelberg пароль из 4 цифр (lib/showcase/timed.ts).
+  // Только вводом на странице пароля: ключ в адресе (?key=…) не пускает.
+  // Без куки — страница пароля. Граница стоит здесь, до отдачи разметки.
+  // Закрытая витрина закрыта и от поиска.
   const showcase = showcaseFor(pathname);
   if (showcase) {
     if (await isLocked(showcase)) {
       if (isGate(showcase, pathname)) return hidden(NextResponse.next());
 
-      const key = request.nextUrl.searchParams.get(KEY_PARAM);
-      if (key !== null) {
+      // Владелец, 07.10.2026: «сделай доступы только по паролю». Ключ в
+      // адресе больше не пускает — он просто убирается, и человек вводит
+      // пароль сам. Ссылки с ключом, уже отправленные заказчикам, ведут на
+      // страницу пароля, без «код не подошёл».
+      if (request.nextUrl.searchParams.has(KEY_PARAM)) {
         const url = request.nextUrl.clone();
         url.searchParams.delete(KEY_PARAM);
-        const granted = await grantFor(showcase, key);
-        if (!granted) return hidden(NextResponse.redirect(gateUrl(request, showcase.gate, url, true), 307));
-        const response = NextResponse.redirect(url, 307);
-        response.cookies.set(grantCookie(granted));
-        return hidden(response);
+        if (await hasAccess(showcase, (name) => request.cookies.get(name)?.value)) {
+          return hidden(NextResponse.redirect(url, 307));
+        }
+        return hidden(NextResponse.redirect(gateUrl(request, showcase.gate, url), 307));
       }
 
       if (!(await hasAccess(showcase, (name) => request.cookies.get(name)?.value))) {

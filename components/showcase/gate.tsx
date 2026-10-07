@@ -26,7 +26,7 @@ export function Gate({ id, next, error }: { id: ShowcaseId; next: string; error?
         >
           <input type="hidden" name="next" value={next} />
           <label className="block">
-            <span className="text-[0.65rem] uppercase tracking-[0.16em] text-sand-300/60">Код доступа</span>
+            <span className="text-[0.65rem] uppercase tracking-[0.16em] text-sand-300/60">Пароль</span>
             <input
               name="code"
               type="password"
@@ -40,7 +40,7 @@ export function Gate({ id, next, error }: { id: ShowcaseId; next: string; error?
           </label>
           {error ? (
             <p role="alert" className="mt-3 text-sm text-[#ffb4a2]">
-              Код не подошёл. Проверьте ссылку или запросите код у менеджера DevUz Studio.
+              Пароль не подошёл. Проверьте его или запросите у менеджера DevUz Studio.
             </p>
           ) : null}
           <button
