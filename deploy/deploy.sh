@@ -94,7 +94,12 @@ main() {
   fi
 
   echo "→ Забираем ${BRANCH}"
-  as_app git fetch origin "$BRANCH"
+  # Путь к GitHub у сервера в России иногда рвётся — тогда тот же
+  # репозиторий по HTTPS (он публичный). Тайм-ауты — чтобы выкатка не висела.
+  if ! timeout 120 runuser -u "$APP_USER" -- env GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="ssh -o BatchMode=yes -o ConnectTimeout=10" git fetch origin "$BRANCH"; then
+    echo "· origin не ответил — забираем ${BRANCH} по HTTPS"
+    timeout 180 runuser -u "$APP_USER" -- env GIT_TERMINAL_PROMPT=0 git fetch "${FALLBACK_URL:-https://github.com/egeg23/Global-Export.git}" "+refs/heads/${BRANCH}:refs/remotes/origin/${BRANCH}"
+  fi
   as_app git checkout "$BRANCH"
   as_app git reset --hard "origin/${BRANCH}"
 

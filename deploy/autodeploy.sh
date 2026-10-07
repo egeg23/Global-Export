@@ -34,7 +34,20 @@ STAMP="${STAMP:-${APP_DIR}/.deployed-commit}"
 FAILED="${FAILED:-${APP_DIR}/.deploy-failed}"
 RETRY_SEC="${RETRY_SEC:-600}"
 
-as_app git fetch --quiet origin "$branch"
+# Сервер стоит в России, и путь к GitHub у него время от времени рвётся
+# (так же, как у выкатки devuz.studio). Без тайм-аутов git висел до конца
+# TimeoutStartSec, а без запасного пути выкатка вставала совсем. Поэтому:
+# без прокси из окружения, без вопросов о логине, с тайм-аутом на SSH, и
+# если origin не отвечает — тот же репозиторий по HTTPS (он публичный).
+export GIT_TERMINAL_PROMPT=0
+export GIT_SSH_COMMAND="ssh -o BatchMode=yes -o ConnectTimeout=10"
+unset HTTPS_PROXY HTTP_PROXY ALL_PROXY https_proxy http_proxy all_proxy
+FALLBACK_URL="${FALLBACK_URL:-https://github.com/egeg23/Global-Export.git}"
+
+if ! timeout 120 runuser -u "$APP_USER" -- env GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND="$GIT_SSH_COMMAND" git fetch --quiet origin "$branch"; then
+  echo "· origin не ответил — забираем ${branch} по HTTPS"
+  timeout 180 runuser -u "$APP_USER" -- env GIT_TERMINAL_PROMPT=0 git fetch --quiet "$FALLBACK_URL" "+refs/heads/${branch}:refs/remotes/origin/${branch}"
+fi
 
 here="$(as_app git rev-parse HEAD)"
 there="$(as_app git rev-parse "origin/${branch}")"
