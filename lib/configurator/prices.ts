@@ -61,6 +61,11 @@ export type { AddonPrice, Quote };
  *    подборка, импорт), ориентир — часы по 8 $/ч. Панель управления —
  *    отдельный допник, 300. Рынок и ссылки — docs/akbar-research.md,
  *    раздел 6.
+ *  - Apollo Travel (goapollo.uz) — сайт 2200 (назначил владелец,
+ *    07.10.2026): их сайт, переодетый целиком, движок поиска туров
+ *    (Tourvisor) остаётся сторонним. Допники — по медиане рынка Ташкента,
+ *    как у Arsenal D; где публичных цен нет (бюджет-глобус, визовый
+ *    помощник, автопостинг горящих), ориентир — 10 $/ч.
  *  - Услуги студии сверх сайта — прайс студии, общий для всех проектов.
  *
  * Подписка считается в месяц и в разовый итог не входит; «от» значит, что
@@ -240,6 +245,27 @@ const priceLists: Record<string, PriceList> = {
       admin: { usd: 300 },
       excel: { usd: 65 },
       sync: { usd: 230 },
+      "tg-bot": { usd: 165 },
+      crm: { usd: 150 },
+      ...studioServices,
+    },
+  },
+  apollo: {
+    tiers: { site: 2200 },
+    addons: {
+      budget: { usd: 240 },
+      calendar: { usd: 120 },
+      "flight-search": { usd: 150 },
+      visa: { usd: 140 },
+      installment: { usd: 120 },
+      pay: { usd: 230 },
+      "tg-hot": { usd: 160 },
+      reviews: { usd: 45 },
+      journal: { usd: 115 },
+      chat: { usd: 32 },
+      uz: { usd: 70 },
+      en: { usd: 95 },
+      admin: { usd: 300 },
       "tg-bot": { usd: 165 },
       crm: { usd: 150 },
       ...studioServices,

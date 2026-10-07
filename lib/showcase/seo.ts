@@ -56,4 +56,5 @@ export const SHOWCASE_PAGES: readonly { path: string; priority: number }[] = [
   { path: "/webname/premium", priority: 0.8 },
   { path: "/webname/premium/domains", priority: 0.6 },
   { path: "/webname/premium/hosting", priority: 0.6 },
+  { path: "/apollo", priority: 0.9 },
 ];
