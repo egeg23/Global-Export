@@ -22,14 +22,40 @@ if [ -z "$branch" ]; then
   branch="$(as_app git symbolic-ref --short HEAD)"
 fi
 
+# Последний коммит, выкаченный до конца, и последняя неудачная попытка.
+#
+# Раньше сверялись с HEAD рабочего каталога. Но deploy.sh переводит каталог
+# на новый коммит до сборки, и если сборка или перезапуск падали, HEAD уже
+# совпадал с GitHub — автовыкатка считала, что делать нечего, и площадка
+# оставалась на старой сборке до следующего слияния (07.10.2026 так застрял
+# PR #36). Теперь «выкачено» — только то, что прошло deploy.sh целиком, а
+# неудачную выкатку повторяем, но не чаще раза в RETRY_SEC.
+STAMP="${STAMP:-${APP_DIR}/.deployed-commit}"
+FAILED="${FAILED:-${APP_DIR}/.deploy-failed}"
+RETRY_SEC="${RETRY_SEC:-600}"
+
 as_app git fetch --quiet origin "$branch"
 
 here="$(as_app git rev-parse HEAD)"
 there="$(as_app git rev-parse "origin/${branch}")"
+done_commit="$(tr -d '[:space:]' < "$STAMP" 2>/dev/null || true)"
 
 # Обычный исход: ничего не изменилось. Молчим, чтобы журнал не забивался
 # шестьюдесятью строками в час.
-[ "$here" = "$there" ] && exit 0
+[ "$here" = "$there" ] && [ "$done_commit" = "$there" ] && exit 0
 
-echo "→ ${branch}: ${here:0:7} → ${there:0:7}"
-BRANCH="$branch" bash "${APP_DIR}/deploy/deploy.sh"
+# Этот же коммит недавно не выкатился — ждём, а не пересобираем каждую минуту.
+read -r failed_commit failed_at < "$FAILED" 2>/dev/null || true
+if [ "${failed_commit:-}" = "$there" ] && [ $(( $(date +%s) - ${failed_at:-0} )) -lt "$RETRY_SEC" ]; then
+  exit 0
+fi
+
+echo "→ ${branch}: ${done_commit:0:7}${done_commit:+ }${here:0:7} → ${there:0:7}"
+if BRANCH="$branch" bash "${APP_DIR}/deploy/deploy.sh"; then
+  echo "$there" > "$STAMP"
+  rm -f "$FAILED"
+else
+  echo "$there $(date +%s)" > "$FAILED"
+  echo "✗ Выкатка ${there:0:7} не прошла — повторим через $(( RETRY_SEC / 60 )) мин. Журнал: journalctl -u globalex-autodeploy -n 200 --no-pager"
+  exit 1
+fi

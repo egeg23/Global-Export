@@ -46,3 +46,7 @@ next-env.d.ts
 docs/kp/.fonts/
 docs/kp/*.html
 docs/kp/*.pdf
+
+# Отметки автовыкатки на сервере (deploy/autodeploy.sh)
+/.deployed-commit
+/.deploy-failed
