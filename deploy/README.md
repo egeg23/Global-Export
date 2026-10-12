@@ -1,6 +1,6 @@
 # Демонстрационная площадка
 
-Разворачивание прототипа на поддомене `globalex.maximov-tech.ru`, где заказчик
+Разворачивание прототипа на поддомене `cases.devuz.studio`, где заказчик
 может всё потыкать: сайт на трёх языках, две концепции оформления, страницу с
 анимацией и панель управления.
 
@@ -12,13 +12,13 @@
 
 ## 1. DNS
 
-У регистратора домена `maximov-tech.ru` добавить запись:
+У регистратора домена `devuz.studio` (Namecheap → Advanced DNS) добавить запись:
 
 | Тип | Имя | Значение |
 |---|---|---|
-| A | `globalex` | IP вашего сервера |
+| A | `cases` | IP вашего сервера |
 
-Проверить, что разошлось: `dig +short globalex.maximov-tech.ru`
+Проверить, что разошлось: `dig +short cases.devuz.studio`
 
 ## 2. Свободный порт
 
@@ -62,7 +62,7 @@ node -v || (curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - &&
 Заполнить `/srv/globalex/.env.local` (файл читают и сборка, и служба):
 
 ```ini
-NEXT_PUBLIC_SITE_URL=https://globalex.maximov-tech.ru
+NEXT_PUBLIC_SITE_URL=https://cases.devuz.studio
 NEXT_PUBLIC_SUPABASE_URL=https://<проект>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<публичный ключ>
 
@@ -138,7 +138,7 @@ sudo nginx -t && sudo systemctl reload nginx
 Только после того, как DNS разошёлся — certbot проверяет домен через него:
 
 ```bash
-sudo certbot --nginx -d globalex.maximov-tech.ru
+sudo certbot --nginx -d cases.devuz.studio
 ```
 
 certbot сам допишет ssl-блок и редирект с 80 порта в тот же файл.
@@ -252,7 +252,7 @@ sudo BRANCH=claude/adar-uz-design-concepts-c6fbwj bash /srv/globalex/deploy/depl
 
 ## Что показать заказчику
 
-Одна ссылка: **https://globalex.maximov-tech.ru** — она открывает витрину со
+Одна ссылка: **https://cases.devuz.studio** — она открывает витрину со
 всеми разделами. Вверху витрины стоит переключатель проектов, так что со
 второго заказчика площадка открывается той же ссылкой.
 
@@ -339,9 +339,9 @@ DevUz: таблица `showcase_codes` (отпечаток «витрина:ко
 Проверить, что витрина открыта поиску:
 
 ```bash
-curl -sI https://globalex.maximov-tech.ru/mavera | grep -i x-robots   # пусто
-curl -s https://globalex.maximov-tech.ru/robots.txt                   # закрыты только /api/ и /admin
-curl -s https://globalex.maximov-tech.ru/sitemap.xml | grep -c '<loc>' # проекты в карте
+curl -sI https://cases.devuz.studio/mavera | grep -i x-robots   # пусто
+curl -s https://cases.devuz.studio/robots.txt                   # закрыты только /api/ и /admin
+curl -s https://cases.devuz.studio/sitemap.xml | grep -c '<loc>' # проекты в карте
 ```
 
 Первая выкатка после смены `deploy.sh` идёт ещё старой копией скрипта: autodeploy

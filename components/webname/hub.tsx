@@ -164,7 +164,7 @@ export function VariantsHub() {
                   <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
                   <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
                 </span>
-                <span className="wn-mono ml-2 min-w-0 truncate rounded-md bg-wn-paper-2 px-3 py-1 text-xs text-wn-ink-2">globalex.maximov-tech.ru{current.base}</span>
+                <span className="wn-mono ml-2 min-w-0 truncate rounded-md bg-wn-paper-2 px-3 py-1 text-xs text-wn-ink-2">cases.devuz.studio{current.base}</span>
               </span>
               <span key={`${design}-${mark}`} className="wn-pop relative block aspect-[16/10] bg-wn-paper-2">
                 <Image
