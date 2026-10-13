@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const SITE = "globalex.maximov-tech.ru/adar";
+const SITE = "cases.devuz.studio/adar";
 
 /** Листов в комплекте — подписывается в подвале каждого. */
 const SHEETS = 4;

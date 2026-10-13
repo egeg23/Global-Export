@@ -60,7 +60,7 @@ SHOT_ROOM = b64("akbar-shot-room.jpg")
 SHOT_MENU = b64("akbar-shot-menu.jpg")
 SHOT_CONFIG = b64("akbar-shot-config.jpg")
 
-PROTOTYPE = "globalex.maximov-tech.ru/akbar"
+PROTOTYPE = "cases.devuz.studio/akbar"
 
 # Палитра — их продукция: орех, патина, эмаль.
 INK, WALNUT, WALNUT_500 = "#16120e", "#3b2417", "#7a4a2a"

@@ -11,7 +11,7 @@ set -euo pipefail
 APP_DIR="${APP_DIR:-/srv/globalex}"
 APP_USER="${APP_USER:-globalex}"
 SERVICE="${SERVICE:-globalex-demo}"
-DOMAIN="${DOMAIN:-globalex.maximov-tech.ru}"
+DOMAIN="${DOMAIN:-cases.devuz.studio}"
 BRANCH="${BRANCH:-claude/global-export-website-u6yg03}"
 
 say()  { printf '\n\033[1m→ %s\033[0m\n' "$*"; }
@@ -110,7 +110,7 @@ if [ -f "$VHOST" ] && grep -q "ssl_certificate" "$VHOST"; then
   ok "порт обновлён, конфиг с сертификатом сохранён"
 else
   sed -e "s|127\.0\.0\.1:3210|127.0.0.1:${PORT}|g" \
-      -e "s|globalex\.maximov-tech\.ru|${DOMAIN}|g" \
+      -e "s|cases\.devuz\.studio|${DOMAIN}|g" \
       "$APP_DIR/deploy/globalex.nginx.conf" > "$VHOST"
   ok "конфиг записан"
 fi
